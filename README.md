@@ -14,4 +14,6 @@ Evitiamo di tenere materiale dei professori, è loro e spesso è coperto da lice
 Per favore, qualunque suggerimento, issue o pull request che vi venga in mente fatela!!
 Nota: l'unico scopo del repo è essere una risorsa utile per la vita universitaria, NON un modo per copiare o condividere materiale che non è condivisibile. Mi riservo l'ultima parola sulle decisioni.
 
+Appena riesco indicherò la licenza, per ora tutti i diritti riservati.
+
 ~ Stefano
