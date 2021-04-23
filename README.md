@@ -5,6 +5,7 @@ Al momento questo repo è un po' vuoto e dobbiamo ancora iniziare, ma l'idea è 
 
 La struttura è da definire; al momento alcune idee/linee guida sarebbero:
  - Indicare per i corsi effettivamente cosa si fa, estensivamente. Motivazione: dare chiare indicazioni su cosa si impara, per quali corsi serve successivamente, ecc. E' sicuramente utile anche per far capire se i corsi che si possono scegliere effettivamente possono interessare al lettore (a volte i nomi sono fuorvianti e anche le descrizioni non sono sempre chiarissime).
+ - Spiegare i progetti, indicare risorse ed esempi.
  - Indicare per ogni risorsa link **ufficiali**, preferibilmente che non cadano.
  - Dare motivazioni, specialmente per le pull request o per spiegazioni; non lasciare nulla per scontato.
  - Dare sempre indicazioni delle fonti e delle sorgenti di quello che viene indicato qua sopra.
