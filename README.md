@@ -1,6 +1,8 @@
 # La guida **degli** Studenti
 ## Dipartimento di Informatica, UNITO
 
+Tutto il materiale coperto da copyright è coperto dalla propria licenza; il resto del repository (comprese le contribuzioni) è sotto licenza [Creative Commons Attribution-ShareAlike 4.0 International](https://creativecommons.org/licenses/by-sa/4.0/).
+
 Al momento questo repo è un po' vuoto e dobbiamo ancora iniziare, ma l'idea è di creare un documento attivo che possa essere di aiuto agli studenti del Dipartimento di Informatica di UNITO.
 
 La struttura è da definire; al momento alcune idee/linee guida sarebbero:
@@ -14,7 +16,5 @@ Evitiamo di tenere materiale dei professori, è loro e spesso è coperto da lice
 
 Per favore, qualunque suggerimento, issue o pull request che vi venga in mente fatela!!
 Nota: l'unico scopo del repo è essere una risorsa utile per la vita universitaria, NON un modo per copiare o condividere materiale che non è condivisibile. Mi riservo l'ultima parola sulle decisioni.
-
-Appena riesco indicherò la licenza, per ora tutti i diritti riservati.
 
 ~ Stefano
