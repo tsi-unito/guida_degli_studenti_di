@@ -6,7 +6,7 @@ Per quanto riguarda le pull request in questa specifica sezione controllate semp
 condizioni garantite:
 
 * Ogni materia ha una cartella separata con un file README.md al suo interno
-* Ogni cartella ha il nome della materia nel formato ristretto (ovvero Agenti Intelligenti deve essere AI)
+* Ogni cartella ha il nome della materia nel formato ristretto (ovvero Agenti Intelligenti deve essere AI). Se non si è sicuri del nome nel formato ristretto, visitare la pagina dell'insegnamento o degli orari, dove sono indicati.
 * Ogni README.md contenuto nella cartella deve avere delle istruzioni su come contribuire, simili a queste 
   e il contenuto della cartella diviso sezione per sezione
 * La cartella della materia X deve essere ordinata e simili a quelle esistenti.
