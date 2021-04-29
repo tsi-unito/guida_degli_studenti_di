@@ -1,0 +1,163 @@
+{\rtf1\ansi\ansicpg1252\cocoartf1265\cocoasubrtf210
+{\fonttbl\f0\froman\fcharset0 TimesNewRomanPSMT;\f1\ftech\fcharset77 Symbol;}
+{\colortbl;\red255\green255\blue255;}
+{\*\listtable{\list\listtemplateid1\listhybrid{\listlevel\levelnfc23\levelnfcn23\leveljc0\leveljcn0\levelfollow0\levelstartat1\levelspace360\levelindent0{\*\levelmarker \{disc\}}{\leveltext\leveltemplateid1\'01\uc0\u8226 ;}{\levelnumbers;}\fi-360\li720\lin720 }{\listname ;}\listid1}}
+{\*\listoverridetable{\listoverride\listid1\listoverridecount0\ls1}}
+{\info
+{\title -----------------------}
+{\author Pietro Torasso}
+{\*\company Dipartimento di Informatica}}\paperw11900\paperh16840\margl1134\margr1134\margb1134\margt1417\vieww33380\viewh18140\viewkind0
+\deftab708
+\pard\pardeftab708\ri-6\qc
+
+\f0\fs24 \cf0 DOMINIO LOGISTICA\uc0\u8232 \
+\pard\pardeftab708\ri-6
+\cf0 In questo dominio si suppone di avere un certo insieme di mezzi di trasporto (chiamati plane) dislocati in certi airport. Inoltre vi sono dei carichi (cargo) dislocati in certe localit\'e0 (airport) e che devono essere alla fine localizzati in altri airport.\
+\
+Nella modellazione del dominio si suppone che ciascun palne sia in grado di trasportare un solo cargo. Il fatto che plane P sia scarico \'e8 rappresentato da empty(P). Il fatto che il plane P sia nel airport A \'e8 modellato da  at(P;A), se il cargo C \'e8 nel \'91 airport  A \'e8 modellato da is-in(C,A). Infine se il cargo C \'e8 sul plane P abbiamo loaded(C,P)\
+\
+Nel dominio sono definiti i seguenti tre operatori\
+\
+move(P,Source,Dest)\
+\pard\pardeftab708\fi708\ri-6
+\cf0 IF plane(P)  and  airport(Source) and  airport(Dest) and (Sourceat,Dest) and at(P,Source)\
+THEN \
+DELETE (at(P,Source))\
+ADD (at(P,Dest))\
+\
+\pard\pardeftab708\ri-6
+\cf0 \
+unload(P,A,C)\
+\pard\pardeftab708\fi708\ri-6
+\cf0 IF plane(P)  and  airport(A) and cargo(C) and at(P,A) and loaded(C,P)\
+THEN \
+DELETE (loaded(C,P))\
+ADD (is-in(C, A))\
+ADD (empty(P))\
+\pard\pardeftab708\ri-6
+\cf0 \
+\
+load(P,A,C)\
+\pard\pardeftab708\fi708\ri-6
+\cf0 IF plane(P)  and  airport(A) and cargo(C) and at(P,A) and  is-in(C, A) and empty(P)\
+THEN \
+DELETE (is-in(C, A))\
+DELETE (empty(P))\
+ADD  (loaded(C,P))\
+\pard\pardeftab708\ri-6
+\cf0 \
+Si consideri lo stato iniziale descritto dai seguenti fatti :\
+\
+plane(p1)  \
+plane(p2)\
+airport(Roma)	\
+airport(Parigi)\
+airport(Vienna).\
+cargo(c1\
+cargo(c2)\
+cargo(c3).\
+is-in(c1,Parigi)	\
+is-in (c2,Roma)\
+is-in (c3,Roma)\
+empty(p1)	\
+empty(p2)\
+at(p1,Roma)	\
+at(p2,Vienna)\
+\
+\
+STATO Finale\
+is-in(c1,Vienna)\
+is-in(c2,Vienna)\
+\
+\
+Si noti che qualunque strategia di ricerca venga applicata (in ampiezza, in profondit\'e0, A*, ecc), il passo fondamentale per un sistema di problem solving automatico \'e8 quello di  individuare quali sono gli operatori che risultano potenzialmente applicabili a partire dallo stato corrente.\
+ \
+\
+Supponendo di essere nello stato iniziale, si vede che sono applicabili diversi operatori:\
+\
+Infatti se la variabile P viene legata a p1, la variabile Source a Roma e la variabile Dest a Vienna\
+l\'92operatore move(p1,Roma,Vienna) \'e8 applicabile nello stato iniziale  in quanto tutte le precondizioni sono soddisfatte nello stato iniziale: infatti le seguenti condizioni atomiche\
+\pard\tx720\pardeftab708\li720\fi-360\ri-6
+\ls1\ilvl0
+\f1 \cf0 \'a5	
+\f0 plane(p1)  \
+\ls1\ilvl0
+\f1 \'a5	
+\f0 airport(Roma) \
+\ls1\ilvl0
+\f1 \'a5	
+\f0 airport(Vienna) \
+\ls1\ilvl0
+\f1 \'a5	
+\f0 (Roma,Vienna) \
+\ls1\ilvl0
+\f1 \'a5	
+\f0 at(p1,Roma)\
+\pard\pardeftab708\ri-6
+\cf0 sono tutte vere nello stato iniziale\
+\
+Con considerazioni analoghe si vede che sono applicabili anche i seguenti operatori\
+move(p1,Roma, Parigi)\
+move(p2,Vienna, Parigi)\
+move(p2,Vienna, Roma)\
+load(p1, Roma, c2)\
+load(p1, Roma, c3)\
+\
+L\'92operatore unload non pu\'f2 essere applicato in nessun modo allo stato iniziale perch\'e9 nello stato iniziale non c\'92\'e8 alcun fatto di tipo loaded\
+L\'92operatore move(p1, Roma, Roma) non pu\'f2 essere applicato perch\'e9 la condizione elementare \
+(Roma,Roma)  non \'e8 soddisfacibile\
+\
+Quando il sistema trova che un operatore \'e8 applicabile deve generare lo stato successore.\
+Poich\'e9 gli operatori sono stati definiti secondo lo stile STRIPS, lo stato successore \'e8 ottenuto dallo stato precedente aggiungendo i fatti che diventano veri dopo l\'92applicazione dell\'92operatore e togliendo quelli che diventano falsi come conseguenza dell\'92applicazione dell\'92operatore.\
+\
+Se allo stato iniziale si applica l\'92operatore move(p1,Roma,Vienna) si ottiene come sttao successore uno stato che contiene i seguenti fatti\
+plane(p1)  \
+plane(p2)\
+airport(Roma)	\
+airport(Parigi)\
+airport(Vienna).\
+cargo(c1\
+cargo(c2)\
+cargo(c3).\
+is-in(c1,Parigi)	\
+is-in (c2,Roma)\
+is-in (c3,Roma)\
+empty(p1)	\
+empty(p2)\
+at(p1,Vienna)	\
+at(p2,Vienna)\
+dove at(p2,Vienna) \'e8 il fatto aggiunto come prescritto dall\'92operatore e dove non compare pi\'f9 \
+at(p1,Roma) che \'e8 il fatto cancellato.\
+\
+Poich\'e9  allo stato iniziale si possono applicare molti operatori, per ciascuno di essi si generer\'e0 un nuovo stato successore. Se si considera  l\'92operatore load(p1, Roma, c2)\
+si ottiene come stato successore uno stato che contiene i seguenti fatti\
+plane(p1)  \
+plane(p2)\
+airport(Roma)	\
+airport(Parigi)\
+airport(Vienna).\
+cargo(c1\
+cargo(c2)\
+cargo(c3).\
+is-in(c1,Parigi)	\
+is-in (c3,Roma)	\
+empty(p2)\
+at(p1,Roma)	\
+at(p2,Vienna)\
+loaded(c2,p1)\
+dove loaded(c2,p1) \'e8 il fatto aggiunto come prescritto dall\'92operatore e dove non compaiono pi\'f9 \
+is-in (c2,Roma) e empty(p1) che sono i fatti cancellati.\
+\
+Quindi a partire dallo stato iniziale sopra riportato si ottengono sei distinti stati successori (uno per ogni operatore applicato). Poich\'e9 nessuno degli stati successori soddisfa la condizione del GOAL, la ricerca deve proseguire. \
+La scelta dello stato da cui  continuare la ricerca dipende dalla strategia adottata.\
+\
+\
+\
+\
+ \
+\
+\
+\
+\
+\
+}

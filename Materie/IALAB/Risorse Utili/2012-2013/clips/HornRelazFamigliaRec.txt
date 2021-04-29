@@ -1,0 +1,88 @@
+
+(deffacts initial
+      (H P1)  	(FE P1)
+      (H P2)    (MA P2)
+      (H P3)	(FE P3)
+      (H P4)	(MA P4)
+      (H P5)	(FE P5)
+      (H P6)	(MA P6)
+      (H P7)	(FE P7)
+      (H P8)	(MA P8)
+      (H P9)	(MA P9)
+      (H P10)   (FE P10)
+      (H P11)   (MA P11)
+      (H P12)   (FE P12)
+      (H P13)   (MA P13)      
+      (HC P1 P6)	
+      (HC P1 P5)
+      (HC P2 P6)
+      (HC P3 P7)
+      (HC P3 P8)
+      (HC P5 P9)
+      (HC P6 P11)
+      (HC P8 P9)
+      (HC P8 P12)
+      (HC P9 P10)
+      (HC P11 P13)
+      (HC P12 P13)
+)
+
+(deffacts final (goal sibling P13 P1))
+
+(defrule goal-achieved
+(declare (salience 100))
+	(goal sibling ?x ?y)
+        (sibling ?x ?y)
+          =>
+	(printout t crlf ?x "  sibling of " ?y crlf)
+        (halt)
+        
+)
+
+
+(defrule r1
+   (ancestor ?x ?y)
+   => (assert (sibling ?y ?x))
+)
+
+(defrule r2
+   (parent ?x ?y)
+   => (assert (ancestor ?x ?y))
+)
+
+
+(defrule r4
+   (parent ?x ?z)
+   (ancestor ?z ?y)
+   => (assert (ancestor ?x ?y))
+)
+
+
+
+(defrule r6
+   (father ?x ?y)
+   => (assert (parent ?x ?y))
+)
+
+(defrule r7
+   (mother ?x ?y)
+   => (assert (parent ?x ?y))
+)
+
+(defrule r8
+   (H ?x)
+   (MA ?x)
+   (H ?y)
+   (HC ?x ?y)
+   => (assert (father ?x ?y))
+)
+
+
+(defrule r9
+   (H ?x)
+   (FE ?x)
+   (H ?y)
+   (HC ?x ?y)
+   => (assert (mother ?x ?y))
+)
+
