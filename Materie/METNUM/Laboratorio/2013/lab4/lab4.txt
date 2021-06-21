@@ -1,0 +1,92 @@
+
+% TEST DI DIFFDIV
+>> diffdiv([0,1,2] , [3,4,7])
+ans =
+     3     1     1
+
+% PROGRAMMIAMO ANCHE NEWTONEVAL, NODICHEB, PROVANEWTON
+% TEST SU sin(x) fra 0 e 2*pi con 4 nodi
+>> provanewton(@(x)sin(x),0,2*pi,4)
+Errore di interpolazione con nodi equispaziati: 0.255346
+Errore di interpolazione con nodi di Chebichev: 0.195372
+
+% TEST DI RUNGE: l'errore di interpolazione cresce se uso 
+% nodi equispaziati e decresce (lentamente) se uso nodi
+% di Chebichev
+
+>> provanewton(@(x)1./(25+x.^2),-5,5,4)
+Errore di interpolazione con nodi equispaziati: 0.002334
+Errore di interpolazione con nodi di Chebichev: 0.002353
+>> provanewton(@(x)1./(1+25*x.^2),-5,5,5)
+Errore di interpolazione con nodi equispaziati: 0.830699
+Errore di interpolazione con nodi di Chebichev: 0.847852
+>> provanewton(@(x)1./(1+25*x.^2),-5,5,7)
+Errore di interpolazione con nodi equispaziati: 0.978529
+Errore di interpolazione con nodi di Chebichev: 0.790051
+>> provanewton(@(x)1./(1+25*x.^2),-5,5,9);
+Errore di interpolazione con nodi equispaziati: 2.233155
+Errore di interpolazione con nodi di Chebichev: 0.735413
+>> provanewton(@(x)1./(1+25*x.^2),-5,5,15);
+Errore di interpolazione con nodi equispaziati: 47.587677
+Errore di interpolazione con nodi di Chebichev: 0.588996
+>> provanewton(@(x)1./(1+25*x.^2),-5,5,21);
+Errore di interpolazione con nodi equispaziati: 1434.222090
+Errore di interpolazione con nodi di Chebichev: 0.466275
+
+% Per f(x)=sin(x) il fenomeno non si presenta: in entrambi i casi
+% l'errore di interpolazione decresce se uso più nodi. Comunque 
+% con i nodi di Chebichev, l'errore è minore
+
+>> provanewton(@(x)sin(x),0,2*pi,5);
+Errore di interpolazione con nodi equispaziati: 0.180757
+Errore di interpolazione con nodi di Chebichev: 0.115556
+>> provanewton(@(x)sin(x),0,2*pi,7);
+Errore di interpolazione con nodi equispaziati: 0.018894
+Errore di interpolazione con nodi di Chebichev: 0.007299
+>> provanewton(@(x)sin(x),0,2*pi,9);
+Errore di interpolazione con nodi equispaziati: 0.001206
+Errore di interpolazione con nodi di Chebichev: 0.000261
+>> provanewton(@(x)sin(x),0,2*pi,11);
+Errore di interpolazione con nodi equispaziati: 0.000052
+Errore di interpolazione con nodi di Chebichev: 0.000006
+
+% Introduciamo un po' di errore sui dati (1%)
+
+>> provanewton(@(x)sin(x),0,2*pi,11,0.01);
+Errore di interpolazione con nodi equispaziati: 0.056352
+Errore di interpolazione con nodi di Chebichev: 0.005435
+
+% Introduciamo un errore più grosso sui dati (10%)
+
+>> provanewton(@(x)sin(x),0,2*pi,11,0.1);
+Errore di interpolazione con nodi equispaziati: 0.246831
+Errore di interpolazione con nodi di Chebichev: 0.053417
+
+% Aumentiamo il numero dei punti e proviamo tante volte
+
+>> provanewton(@(x)sin(x),0,2*pi,15,0.1);
+Errore di interpolazione con nodi equispaziati: 1.253439
+Errore di interpolazione con nodi di Chebichev: 0.060817
+>> provanewton(@(x)sin(x),0,2*pi,15,0.1);
+Errore di interpolazione con nodi equispaziati: 1.856587
+Errore di interpolazione con nodi di Chebichev: 0.058871
+>> provanewton(@(x)sin(x),0,2*pi,15,0.1);
+Errore di interpolazione con nodi equispaziati: 1.381914
+Errore di interpolazione con nodi di Chebichev: 0.056299
+>> provanewton(@(x)sin(x),0,2*pi,15,0.1);
+Errore di interpolazione con nodi equispaziati: 1.705626
+Errore di interpolazione con nodi di Chebichev: 0.048502
+>> provanewton(@(x)sin(x),0,2*pi,15,0.1);
+Errore di interpolazione con nodi equispaziati: 0.730105
+Errore di interpolazione con nodi di Chebichev: 0.062928
+>> provanewton(@(x)sin(x),0,2*pi,15,0.1);
+Errore di interpolazione con nodi equispaziati: 0.765712
+Errore di interpolazione con nodi di Chebichev: 0.060804
+>> provanewton(@(x)sin(x),0,2*pi,15,0.1);
+Errore di interpolazione con nodi equispaziati: 3.204846
+Errore di interpolazione con nodi di Chebichev: 0.062046
+
+% Ogni run è diverso perché la perturbazione è diversa, ma 
+% in tutti i run l'uso dei nodi equispaziati amplifica 
+% l'errore introdotto in maniera più importante che se
+% si usano nodi di Chebichev

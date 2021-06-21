@@ -6,19 +6,15 @@ Per quanto riguarda le pull request in questa specifica sezione controllate semp
 condizioni garantite:
 
 * Ogni materia ha una cartella separata con un file README.md al suo interno
-* Ogni cartella ha il nome della materia nel formato ristretto (ovvero Agenti Intelligenti deve essere AI)
-* Ogni README.md contenuto nella cartella deve avere delle istruzioni su come contribuire, simili a queste 
-  e il contenuto della cartella diviso sezione per sezione
-* La cartella della materia X deve essere ordinata e simili a quelle esistenti.
-* Per quanto riguarda il contenuto, siete liberi di contribuire con appunti, PDF e contenuto, ricordandosi
-  sempre le regole già citate nel README della sezione principale
+* Ogni cartella ha il nome della materia nel formato ristretto (ovvero Agenti Intelligenti deve essere AI). Se non si è sicuri del nome nel formato ristretto, visitare la pagina dell'insegnamento o degli orari, dove sono indicati.
+* Ogni README.md contenuto nella cartella deve avere delle istruzioni su come contribuire, simili a queste e il contenuto della cartella diviso per tipologia dei file contenuti
+* Le cartelle delle materie devono essere ordinate e devono avere una struttura uniforme.
+* Per quanto riguarda il contenuto, siete liberi di contribuire con appunti, PDF e risorse varie, sempre tenendo a mente le regole indicate nel README della sezione principale.
 
-Per il resto, raccomandiamo sempre di evitare estensioni di files proprietari per condividere appunti
-ma non sono vietati, in ogni caso preferiamo appunti in formato markdown, pdf, latex rispetto agli
-appunti in docx o pages, ma certamente non rifiutiamo la vostra pull request per questa motivazione.
+Per il resto, raccomandiamo sempre di evitare estensioni di files proprietari per condividere appunti (non sono comunque vietati); in ogni caso sono preferibili appunti in formato markdown, pdf, LaTeX rispetto ad appunti docx o pages. Sicuramente non rifiuteremo le vostre contribuzioni per questa motivazione.
 
 ## Note a lato
 
-* Gli appunti/slides vanno bene sia in italiano che in inglese
-* Controllate sempre che ogni link che includete non sia temporaneo, ma una risorsa fissa
+* Gli appunti/slides vanno bene sia in italiano che in inglese.
+* Controllate sempre che ogni link che includete non sia temporaneo, ma una risorsa fissa. Alternativamente, indicare altre informazioni che permettano la reperibilità nel futuro e, se questa non fosse certa, archiviare i file online (archive.org ad esempio).
 * Se non potete disporre di un link fisso, chiedete ai mantainer del progetto per includere risorse pesanti al suo interno
