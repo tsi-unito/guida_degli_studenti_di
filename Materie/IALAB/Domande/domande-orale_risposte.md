@@ -92,36 +92,36 @@
 - **La risoluzione SLD è corretta e completa per tutta la logica o solo per alcuni tipi di clausole?**  
   _In generale_ **NON** è completa, ma con le clasuole di Horn SI.
 
-  - **Negazione per fallimento (Ragionamento Non-Monotono)**
+- **Negazione per fallimento (Ragionamento Non-Monotono)**
 
-  - **3 Possibili esiti con negazione per fallimento**  
-    1) Se la query negata è soddisfatta, la negazione fallisce
-    2) Se la query negata non è soddisfatta, la negazione ha successo
-    3) Se la query richiede delle informazioni che non sono presenti nella KB (in poche parole, non sappiamo/conosciamo qualche informazione), dato che Prolog si basa sulla Assunzione di Mondo Aperto, non possiamo decidere se un'informazione mancante sia mancante volontariamente o meno, per cui ha successo.
+- **3 Possibili esiti con negazione per fallimento**  
+  1) Se la query negata è soddisfatta, la negazione fallisce
+  2) Se la query negata non è soddisfatta, la negazione ha successo
+  3) Se la query richiede delle informazioni che non sono presenti nella KB (in poche parole, non sappiamo/conosciamo qualche informazione), dato che Prolog si basa sulla Assunzione di Mondo Aperto, non possiamo decidere se un'informazione mancante sia mancante volontariamente o meno, per cui ha successo.
 
-  - Risoluzione SLD con Prolog  
-    Una risoluzione in prolog **si basa sulla dimostrazione del goal mediante risoluzione SLD**.  
-    Per rendere la strategia deterministica:
-    - Si sceglie sempre il **sottogoal più a sinistra**
-    - Le clausole sono considerate **nell'ordine in cui sono scritte** nel programma
-    - La strategia di ricerca è **in profondità, con backtracking**.  
-      **Non è tuttavia completa**: se una computazione che porterebbe al successo della risoluzione si trova a destra di un ramo infinito, l'interprete non lo riuscirà mai a raggiungere perchè continuerà ad entrare nel ramo infinito.
+- Risoluzione SLD con Prolog  
+  Una risoluzione in prolog **si basa sulla dimostrazione del goal mediante risoluzione SLD**.  
+  Per rendere la strategia deterministica:
+  - Si sceglie sempre il **sottogoal più a sinistra**
+  - Le clausole sono considerate **nell'ordine in cui sono scritte** nel programma
+  - La strategia di ricerca è **in profondità, con backtracking**.  
+    **Non è tuttavia completa**: se una computazione che porterebbe al successo della risoluzione si trova a destra di un ramo infinito, l'interprete non lo riuscirà mai a raggiungere perchè continuerà ad entrare nel ramo infinito.
 
-  - **Il CUT**  
-    Consente di modificare e controllare l'esecuzione dell'interprete Prolog.  
-    Si tratta di un predicato che è **sempre vero**, che se eseguito blocca il backtracking.  
-    L'interprete Prolog utilizza due stack (in realtà uno, ma si alternano i due blocchi):  
-    1) **Stack di esecuzione**: contiene i predicati attualmente attivati e ancora in esecuzione
-    2) **Stack di backtracking**: contiene i punti di scelta (choice points) che sono in valutazione (o devono ancora essere valutati)
+- **Il CUT**  
+  Consente di modificare e controllare l'esecuzione dell'interprete Prolog.  
+  Si tratta di un predicato che è **sempre vero**, che se eseguito blocca il backtracking.  
+  L'interprete Prolog utilizza due stack (in realtà uno, ma si alternano i due blocchi):  
+  1) **Stack di esecuzione**: contiene i predicati attualmente attivati e ancora in esecuzione
+  2) **Stack di backtracking**: contiene i punti di scelta (choice points) che sono in valutazione (o devono ancora essere valutati)
 
-    Quando una valutazione fallisce, si effettua backtracking e si prova a valutare un altro ramo non ancora esplorato. Se non ci sono più punti di scelta, si ha il fallimento del predicato attualmente in fase di valutazione.
+  Quando una valutazione fallisce, si effettua backtracking e si prova a valutare un altro ramo non ancora esplorato. Se non ci sono più punti di scelta, si ha il fallimento del predicato attualmente in fase di valutazione.
 
-    In pratica, il CUT **rende definitive le scelte effettuate nel corso della valutazione** da parte dell'interprete: elimina i choice point dallo stack di backtracking, alterando quindi il controllo del programma. Perdiamo in dichiaratività
+  In pratica, il CUT **rende definitive le scelte effettuate nel corso della valutazione** da parte dell'interprete: elimina i choice point dallo stack di backtracking, alterando quindi il controllo del programma. Perdiamo in dichiaratività
 
-  - **La presenza del cut cosa va a mettere a rischio tra completezza e correttezza?**  
-    Andando a tagliare alcuni rami dell'albero SLD, rimuovendo alcuni punti di backtracking, non assicuriamo più la **COMPLETEZZA**.
+- **La presenza del cut cosa va a mettere a rischio tra completezza e correttezza?**  
+  Andando a tagliare alcuni rami dell'albero SLD, rimuovendo alcuni punti di backtracking, non assicuriamo più la **COMPLETEZZA**.
 
-  - Se prendo delle clausole che non sono di Horn, cosa si mette a rischio tra completezza e correttezza?
+- Se prendo delle clausole che non sono di Horn, cosa si mette a rischio tra completezza e correttezza?
   
 ### Ricerca nello spazio degli stati
 
