@@ -29,6 +29,13 @@
   Una sostituzione $\theta$ è **più generale** di una soluzione $\sigma$ se esiste una sostituzione $\lambda$ tale che $\sigma=\theta\lambda$.  
   Si può dimostrare che, se due termini sono unificabili, esiste sempre un **unificatore più generale**unico a meno di ridenominazione delle variabili.
 
+- **Algoritmo MGU**
+  L'algoritmo MGU Martelli ha il compito di trovare un *MGU* $\sigma$ più generale:
+  - Scegliere un'equazione della forma $t=x$ dove $t$ non è una variabile ma $x$ lo è, diventa $x=t$
+  - Cancellare tutte le equazioni della forma $x=x$
+  - Scegliere un'equazione della forma $t'=t''$, entrambi non variabili. Se sono diversi i simboli di funzione, fallisco, altrimenti facciamo la **Term Reduction**
+  - Scegliere un'equazione della forma $x=t$ dove $x$ è una variabile che occorre da qualche altra parte e $t\neq x$. Se *x* occorre in *t*, fallimento. Altrimenti, faccio **Variable Elimination**
+
 ### Prolog
 
 - **Definizione**  
@@ -182,7 +189,7 @@
   Inizialmente era stato ideato per dare una semantica alla negazione per fallimento di Prolog.  
   Non si cercano più le prove, ma i modelli che devono essere **stabili**; non si fa più inferenza con backward chaining. E' particolarmente utile per risolvere problemi combinatori (con vincoli, pianificazione).
 
-  Viene dichiarato un insieme finito di regole del tipo $$a \coloneq b_1,b_2,...,b_n, not\ c_1, not\ c_2,...,not\ c_m$$ Con $a, b_i, c_j$ letterali della forma $p$ o $\neg p$.
+  Viene dichiarato un insieme finito di regole del tipo $a \coloneq b_1,b_2,...,b_n, not\ c_1, not\ c_2,...,not\ c_m$ Con $a, b_i, c_j$ letterali della forma $p$ o $\neg p$.
 
   - $\neg$ coincide con la negazione classica.  
   - $not$ è la negazione per fallimento
@@ -237,8 +244,8 @@
   2) Il ridotto $P^{\{p,d\}}$ risulta essere $d.$ ma l'Answer Set risultante è $\{d\} \neq \{p,d\}$.
 
 - **Modello Minimale di Herbrand**
-
-- **Calcolare il Ridotto di un programma ASP**
+  Il modello minimale di ASP è minimo rispetto all'inclusione insiemistica verso il modello di Herbrand, che è un insieme di *atomi ground* tali che
+  tutte le clausole del programma sono **entailed**, ovvero, se ho il body vero, allora anche la mia testa è nel modello.
 
 - **Nel ridotto c'è un solo answer set?**  
   No, è possibile che da un ridotto risultino anche più answer set.  
@@ -254,6 +261,10 @@
   $$n\ \{p(X)\!:q(X)\}\ m.$$
   Esempio: _ogni variabile deve avere un solo tipo_:
   $$1\ \{ha\_tipo(V,T) \! : tipo(T)\}\ 1 \coloneq variabile(V).$$
+
+- **Risoluzione del problema ASP**
+  - Descrizione mediante regole degli answer set potenziali
+  - Introduzione di vincoli (regole senza testa) che invalidino gli answer set non accettabili
 
 ## Micalizio - Planning
 
