@@ -526,10 +526,10 @@
     Repeat until stack is empty
       ◦ If top of stack is a goal g satisfied in state, then pop stack
         (se in cima allo stack c'è un goal atomico/complesso soddisfatto, non devo fare nulla)
-      ◦ Else if top of stack is a conjunctive goal g , then
+      ◦ Else if top of stack is a conjunctive goal g, then
         (se in cima allo stack c'è un goal complesso, semplificalo [linearizzazione])
-          Select an ordering for the subgoals of g , and push them on stack 
-      ◦ Else if top of stack is a simple goal sg , then
+          Select an ordering for the subgoals of g, and push them on stack 
+      ◦ Else if top of stack is a simple goal sg, then
         (se in cima allo stack c'è un goal atomico, risolvilo [means-end])
           Choose an operator o whose effects + matches goal sg
           Replace goal sg with operator o
@@ -607,7 +607,8 @@ Formulare un problema di pianificazione come un problema di soddisfacimento di v
     Nella rappresentazione classica sono le relazioni fluenti che vengono aggiunte/tolte per effetto delle azioni (add e delete list).  
     Sono modellate come **variabili** a cui si può assegnare un valore.
 
-#### **State-Variable Representation** (Stato, Applicabilità, $\gamma(s,a)$)  
+#### **State-Variable Representation** (Stato, Applicabilità, $\gamma(s,a)$)
+
   FOL e State-Variable sono equivalenti: Stesso valore espressivo e riconducibili una all'altra.
 
 - **Stato**  
@@ -634,7 +635,7 @@ Formulare un problema di pianificazione come un problema di soddisfacimento di v
   - Ordinamenti (non ordinare se non necessario)
   - Bindings: non vincolare le variabili se non è necessario unificarle con costanti per conseguire i goal
 
-- **Perchè è un pianificatore particolare? In quale spazio cerca?**
+- **Perchè è un pianificatore particolare? In quale spazio cerca?**  
   E' particolare perchè fa scelte solo quando indispensabili per risolvere il problema (ritarda ordinamenti e bindings).  
   Cerca nello **SPAZIO DEI PIANI PARZIALI**. Ogni nodo della ricerca è un piano parzialmente ordinato con flaws, che ad ogni passo sono rimosse attraverso raffinamenti incrementali.  
   Se l'algoritmo termina con successo, il piano risultante è completamente istanziato (ma solo parzialmente ordinato).
@@ -663,9 +664,45 @@ Formulare un problema di pianificazione come un problema di soddisfacimento di v
     2) istanzia l'azione $a$ in modo che asserisca $p$ (istanziazione least commitment, solo lo stretto necessario)
     3) aggiungi un vincolo di precedenza $a \prec b$ in $O$
     4) aggiungi un causal link a $a \xrightarrow{p} b$ in $L$
-- Proprietà degli oggetti
-- Principio Least-Commitment
-- Correttezza e Completezza
+  - **Threats**  
+    Dato un link causale $l:a\xrightarrow{p}b$, un'azione $c$ minaccia il link $l$ se:
+    - $c$ può modificare il valore di verità di $p$ e può posizionarsi tra $a$ e $b$
+
+    oppure
+    - $c$ può produrre $p$: il link $l$ impone che sia $a$ a produrre $p$ per $b$ e non un'altra azione $c$.  
+    Se anche $c$ può produrre $p$ per $b$, si tratta di un'opportunità da investigare in un altro ramo dello spazio di ricerca.  
+    $c$ è anche detta **clobber**.
+
+    Situazione:
+    - $l:a\xrightarrow{p}b$, link causale in $L$
+    - $c$ azione in $A$ clobber per $l$
+
+    Soluzioni per risolvere le minacce:
+    - **Promotion**: imporre il vincolo $c \prec a$
+    - **Demotion**: imporre il vincolo $b \prec c$
+    - **Separation**: imporre un vincolo di _non-codesignation_ in modo tale che l'effetto di $c$ non unifichi con $p$.  
+    Esempio:  
+    $p: pos(Block_1) = Table$ ; l'effetto di $c$ potrebbe essere $pos(x) = Hand$, allora il vincolo $x \neq Block_1$ deve essere aggiunto a $B$.
+- **Correttezza e Completezza di PSP** (Plan-Space Planning)
+  Ritorna infatti un piano parzialmente ordinato $\pi$ tale che qualsiasi ordinamento totale delle sue azioni raggiunge il goal.  
+  Dove il dominio lo consenta, le azioni non strettamente sequenziali sono eseguibili in parallelo.
+
+- **Algoritmo PSP**:
+  $$
+  \text{PSP}(\Sigma, \pi) \\\ \\
+  Flaws(\pi) \leftarrow OpenGoals(\pi) \cup Threats(\pi) \\
+  \textbf{if}\ \ (Flaws(\pi) = \empty)\ \textbf{then return}\ \pi \\
+  \text{arbitrarily select} f \in Flaws(\pi) \\
+  R \leftarrow \{\text{all feasible resolvers for } f\} \\
+  \textbf{if}\ R = \empty \ \text{\textbf{then return} failure} \\
+  \text{nondeterministically select } \rho \in R \\
+  \pi' \leftarrow \rho(\pi) \\
+  \textbf{return } \text{PSP}(\Sigma, \pi')
+  $$
+
+  Con gli argomenti inizializzati a
+  - $\Sigma$ è l'STS che modella il dominio
+  - $\pi' = ({a_0,a_\infin}, {a_0 \prec a_\infin}, \empty, \empty)$
 
 - Graph Planning:
   - Grafo di Pianificazione. Cos'è? Com'è definito? A cosa serve?
