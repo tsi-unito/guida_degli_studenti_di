@@ -15,11 +15,6 @@
     - [Planning Classico](#planning-classico)
       - [**Problema di pianificazione $\mathcal{P}$** (+ Complessità PlanSAT, Bounded PlanSAT)](#problema-di-pianificazione-mathcalp--complessità-plansat-bounded-plansat)
     - [**STRIPS**](#strips)
-      - [Progression e Regression](#progression-e-regression)
-    - [CSP](#csp)
-      - [**State-Variable Representation** (Stato, Applicabilità, $\gamma(s,a)$)](#state-variable-representation-stato-applicabilità-gammasa)
-      - [**Least-Commitment Planning**](#least-commitment-planning)
-  - [Micalizio - Sistemi Esperti](#micalizio---sistemi-esperti)
   - [Torta](#torta)
 
 ## Pozzato
@@ -478,7 +473,7 @@
   Mondo dei blocchi:
   $$s=\{On(A,B),\\OnTable(C),\\OnTable(A),\\Block(A),\\Block(B),\\Block(C),\\Handempty\}$$
 
-- **Relazioni**
+- **Tipi di Relazioni**
   - **Fluenti**  
     Predicati che rappresentano relazioni il cui valore di verità può cambiare da uno stato al successivo ($On$, $OnTable$)
   - **Persistenti** (o state invariant)  
@@ -683,7 +678,7 @@ Formulare un problema di pianificazione come un problema di soddisfacimento di v
     - **Separation**: imporre un vincolo di _non-codesignation_ in modo tale che l'effetto di $c$ non unifichi con $p$.  
     Esempio:  
     $p: pos(Block_1) = Table$ ; l'effetto di $c$ potrebbe essere $pos(x) = Hand$, allora il vincolo $x \neq Block_1$ deve essere aggiunto a $B$.
-- **Correttezza e Completezza di PSP** (Plan-Space Planning)
+- **Correttezza e Completezza di PSP** (Plan-Space Planning)  
   Ritorna infatti un piano parzialmente ordinato $\pi$ tale che qualsiasi ordinamento totale delle sue azioni raggiunge il goal.  
   Dove il dominio lo consenta, le azioni non strettamente sequenziali sono eseguibili in parallelo.
 
@@ -704,39 +699,399 @@ Formulare un problema di pianificazione come un problema di soddisfacimento di v
   - $\Sigma$ è l'STS che modella il dominio
   - $\pi' = ({a_0,a_\infin}, {a_0 \prec a_\infin}, \empty, \empty)$
 
-- Graph Planning:
-  - Grafo di Pianificazione. Cos'è? Com'è definito? A cosa serve?
-  - Tempo di costruzione del grafo. Perchè è polinomiale?
-  - Quando si smette di costruire il grafo di pianificazione?
-  - Grafo dei piani (Livelli, Costruzione del grafo, Livella, Mutex, Complessità e Raggiungibilità del goal)
-  - Euristiche per stimare il costo della congiunzione di letterali
-  - graphplan (EXTRACT-SOLUTION, GP-SEARCH, EXPAND-GRAPH, tuple no-good, terminazione e dimostrazione)
-  - A cosa serve la struttura del grafo?
-  - Vincoli di mutua esclusione
-  - Vincoli di mutua esclusione tra le azioni
-- Euristiche nel Planning:
-  - Tecniche di rilassamento
-  - Euristiche non ammissibili per forward e backward search
-  - Se non volessimo un'euristica ammissibile, cosa faremmo?
-  - Euristiche ammissibili $h_1$, $h_2$ e $h_G$
-  - Euristica FAF per la selezione dei Flaws
-  - Come determinare la famiglia di euristiche
+#### Graph Planning
+
+- **Grafo di Pianificazione**. Cos'è? Com'è definito? A cosa serve?  
+  E' una struttura dati speciale, utile per
+  - Definire **euristiche domain-independent** (non dà garanzie sulla raggiungibilità di uno stato, ma fornisce una buona stima della distanza)
+  - Generare un piano (*graphplan*)
+
+  Il grafo astrae lo spazio di ricerca e può essere costruito con un algoritmo polinomiale.
+
+  E' un **grafo orientato, aciclico, organizzato a livelli**:
+  - Il livello iniziale $S_0$ contiene i letterali che valgono nello stato iniziale (**un nodo per ogni fluente**)
+  - Livello di azioni $A_0$ contiene le azioni ground che possono essere applicate ad $S_0$ (**un nodo per azione**)
+
+  In genere $S_i,A_i$ si alternano fino a che non si raggiunge una condizione di terminazione e sono tali che:
+  - $S_i$ contiene tutti i letterali che **potrebbero** valere al tempo $i$
+  - $A_i$ contiene tutte le azioni che **potrebbero** avere le precondizioni soddisfatte al tempo $i$
+
+  Il grafo di pianificazione (GP)
+  - traccia un solo sottoinsieme delle possibili interazioni negative, quindi un letterale che appare in uno stato $S_i$ per la prima volta potrebbe di fatto essere producibile solo in uno stato successivo ad $S_i$. $i$ è comunque una buona stima (ammissibile) per il letterale
+  - è costruito a partire da azioni ground, ma la proposizionalizzazione può generare un'esplosione di alternative. GP è comunque costruito in tempo polinomiale.
+  - ogni $S_i$ è un belief state: codifica più stati possibili e alternativi
+
+- **Grafo dei piani** (Livelli, Costruzione del grafo, Livella, Mutex, Complessità e Raggiungibilità del goal)
+  - **Letterali**  
+    Un letterale al tempo $i$ può essere inteso sia come precondizione di un'azione in $A_i$, sia come atomo persistente (non usato ad esempio); in questo secondo caso la persistenza è realizzata dall'operazione **no-op** (sempre eseguibile!)
+  - **Mutua esclusione**  
+    In ogni livello $S_i$ possono essere presenti link di mutua esclusione tra letterali ($P$ e $\neg P$, o $Have(Cake)$ e $Eaten(Cake)$).  
+    In ogni livello $A_i$ possono essere presenti link di mutua esclusione tra azioni.
+
+    - **Tra due azioni** in un dato livello $A_i$  
+      - Effetti inconsistenti: un'azione nega gli effetti dell'altra  
+        Ad esempio in $A_0$ l'azione $Eat(Cake)$ è inconsistente con l'azione $Have(Cake)$ in quanto gli effetti dell'una sono negati dall'altra.
+      - Interferenza: uno degli effetti di un'azione è la negazione della precondizione dell'altra.  
+        $Eat(Cake)$ interferisce con $Have(Cake)$ perchè l'effetto di Eat nega le precondizioni di Have
+      - Competizione delle Precondizioni: una delle precondizioni di un'azione è mutualmente esclusiva con le precondizioni dell'altra: $Bake(Cake)$ e $Eat(Cake)$ sono in mutex perchè competono entrambe per la precondizione $Have(Cake)$
+    - **Tra due letterali** in un dato livello $S_i$  
+      - Complementarity: se uno è la negazione dell'altro
+      - Inconsistent Support: se ogni possibile coppia di azioni al livello $A_{i-1}$ che producono i due letterali sono mutuamente esclusivi
+  - **Livella**  
+    Il Grafo dei Piani cresce monotonicamente, quindi prima o poi si livella: due stati consecutivi $S_i$ e $S_{i+1}$ sono identici
+    - Ogni livello $A_i$ contiene tutte le azioni che potrebbero essere applicate al tempo $i$
+    - Ogni livello $S_i$ contiene tutti i letterali che potrebbero valere al tempo $i$
+    - I vincoli di mutua esclusione indicano quali letterali o quali azioni non possono esistere simultaneamente.
+  
+- **Tempo di costruzione del grafo/Complessità**. Perchè è polinomiale?  
+  E' polinomiale nella dimensione del problema:  
+  $l$: numero letterali  
+  $a$: numero azioni  
+  Ogni livello $S_i$ ha non più di $l$ nodi e $l^2$ link di mutex tra letterali  
+  Ogni livello $A_i$ non ha più di $l+a$ nodi (inclusi i no-op) e $(a+l)^2$ link di mutex  
+  Un grafo con $n$ livelli ha dimensione $\mathcal{O}(n(a+l)^2)$ e la stessa complessità per costruirlo
+
+- **Euristiche per stimare il costo**  
+  Se un letterale del goal non compare in nessun livello, allora il goal non è raggiungibile.  
+  Ma, se anche tutti i letterali del goal compaiono in un qualche livello del GdP, non significa che esista una soluzione, ma che _forse_ il problema è risolvibile.
+
+  - **Costo di un singolo letterale**  
+    - Profondità del livello in cui il letterale compare per la prima volta (ammissibile, ma imprecisa)
+    - Lunghezza del piano serializzato estratto dal GdP
+  - **Costo di una congiunzione di letterali**  
+    - **max-level**: prendere il massimo livello tra quelli in cui un letterale del goal compare per la prima volta (cioè il primo livello in cui compaiono _tutti i letterali del goal_, anche con vincoli mutex)
+    - **somma dei livelli**: non è ammissibile perchè assume l'indipendenza dei letterali del goal
+    - **livello di insieme**: profondità del livello in cui tutti i letterali del goal compaiono senza che alcuna coppia di essi sia in mutua esclusione (ammissibile, funziona bene quando i goal non sono indipendenti tra di loro; ignora però le dipendenze tra tre o più letterali)
+
+- Quando si smette di costruire il grafo di pianificazione?
+- **graphplan** (EXTRACT-SOLUTION, GP-SEARCH, EXPAND-GRAPH, tuple no-good, terminazione e dimostrazione)
+  Con Graphplan si torna ad una rappresentazione classica del problema di planning.
+  $$\text{Se esiste un piano valido, allora questo è un sottografo del piano di pianificazione}$$
+  Come si estrae una soluzione da un Grafo di Pianificazione efficientemente?
+
+  1) Espandi il grafo un livello alla volta finchè tutti gli atomi del goal non compaiono nell'$i$-esimo stato **senza che vi siano vincoli di mutua esclusione tra loro**
+  2) Invoca `EXTRACT-SOLUTION` per cercare un piano all'interno del grafo
+      - Se `EXTRACT-SOLUTION` trova una soluzione termina con successo
+      - Altrimenti, se non c'è ragione per proseguire perchè la soluzione non esiste certamente, allora termina con fallimento
+      - Altrimenti `goto 3`
+  3) Espandi il grafo ancora di un livello e torna al passo 2
+
+  **Extract-Solution**  
+  `EXTRACT-SOLUTION`: è una ricerca backward search in un sottografo AND/OR del Grafo di Pianificazione:
+  - Rami OR: archi che dalle azioni ad un livello $A_{i-1}$ producono un letterale $p$ in un goal $g$ al livello $S_i$
+  - Rami AND: sono gli archi che dagli atomi ad un livello $S_i$ rappresentano le precondizioni per un'azione al livello $A_i$
+
+  **GP-Search**  
+  `EXTRACT-SOLUTION` sfrutta una funzione di supporto `GP-Search`, e si chiamano a vicenda ricorsivamente:
+  1) `EXTRACT-SOLUTION` invoca `GP-Search` su un livello di aizoni e su un sottogoal (regredito dal goal del problema)
+  2) `GP-Search` pianifica per il solo livello su cui è invocato (cerca azioni rilevanti per il sottogoal che non siano tra loro in mutua esclusione) e, se ha successo, invoca `EXTRACT-SOLUTION` sul livello di stato precedente.
+
+  Ci sono casi in cui questa ricerca potrebbe essere intrattabile, per cui si ricorre ad euristiche.  
+  Una possibile soluzione è un algoritmo greedy:
+  - Dato un insieme di letterali che compaiono nel goal
+  - Scegliere il letterale con il costo di livello più alto
+  - Soddisfare il letterale scegliendo l'azione con le precondizioni più "facili" (ad esempio la somma/massimo dei costi di livello delle precondizioni è minima)
+  
+  **No-good**  
+  Ogni volta che `EXTRACT-SOLUTION` applicata a certi letterali $L$ e ad un livello $lev$ fallisce, la coppia $(L,lev)$viene aggiunta nell'insieme **no-good**, in modo che qualunque ricerca successiva applicata alla stessa coppia fallisca immediatamente.
+
+  **Terminazione**  
+  Fino a quando bisogna espandere il grafo dopo che si è livellato?
+  - Se `EXTRACT-SOLUTION` non trova una soluzione, deve esistere un sottoinsieme di atomi ground del goal che non sono raggiungibili (e sono quindi stati marcati come no-good)
+  - Allora, se è possibile che vi siano **meno** no-good al livello successivo, continuiamo ad espandere
+  - Altrimenti, quando sia il grafo, sia i no-good si sono livellati senza che una soluzinoe sia stata trovata, si può concludere con fallimento.  
+  
+  **Dimostrazione**  
+  Bisogna dimostrare che:
+  - I no-goods devono livellarsi sempre
+  - Quando i no-good e il grafo sono livellati, allora si può concludere che la soluzione non esiste
+
+  Ci basiamo su proprietà monotone dei grafi di pianificazione:
+  - **i letterali crescono monotonicamente** (se compare in un livello un letterale, con i no-op sarà sempre presente)
+  - **le azioni crescono monotonicamente** (conseguenza della precedente proprietà)
+  - **le relazioni di mutex decrescono monotonicamente**: se due azioni (o letterali) sono in mutex in un livello, lo sono anche nei precedenti MA potrebbero non esserlo in un livello successivo
+  - **i no-goods decrescono monotonicamente**: se un sottoinsieme di atomi del goal non è raggiungibile in un dato livello di stato $S_i$, allora non lo è nemmeno in nessuno dei precedenti MA potrà diventarlo in un qualche livello futuro (conseguenza delle P precedenti)
+
+  1) Dato che le azioni e i letterali crescono monotonicamente, e dato che sono entrambi insiemi finiti, deve esistere un livello in cui l'insieme dei letterali è uguale a quello dei letterali del livello precedente
+  2) Poichè i mutex e no-good decrescono monotonicamente e poiché non possono esserci meno di zero mutex e no-good, deve esistere un livello con lo stesso numero di mutex e no-good del precedente
+  3) Una volta che il grafo ha raggiunto la situazione in cui sia i livelli che i no-good si sono livellati, se uno dei letterali del goal è mancante o in mutex con un altro letterale del goal, allora si può concludere che non esiste una soluzione
+
+  **Correttezza e completezza**  
+  Restituisce _fallimento_ sol oquando il problema di pianificazione non è risolubile, altrimenti restituisce una soluzione espressa come una **sequenza di insiemi di azioni**. L'algoritmo termina sempre, anche quando la soluzione non esiste.
+
+  **Partial-Order Planner**  
+  Azioni allo stesso livello (non legate da vincoli di mutua esclusione per costruzione) possono essere eseguite in parallelo.  
+  Qualunque linearizzazione delle azioni che rispetti i vincoli di ordinamento imposti dai livelli è una possibile soluzione "classica".
+
+#### Euristiche nel Planning
+
+- Info
+  Le euristiche cercano di focalizzare la ricerca sul goal guidando le scelte non deterministiche.  
+  Una funzione euristica stima la "bontà" di una scelta:
+  - **Progression**: la scelta è il "next state" $s$ stima come distanza da $s$ al goal $G$
+  - **Regression**: la scelta è il "next sub-goal" $sg$: stima come fistanza da $sg$ allo stato iniziale $l$
+
+  L'approccio è di definire un problema analogo all'originale, ma _rilassato_, cioè semplificato. Lo si risolve (ottimalmente se possibile) e si usa il costo della soluzione per il problema rilassato come euristica nel problema originale.  
+  Deve essere una funzione EFFICIENTE visto che verrà chiamata per ogni stato dello spazio di ricerca. Più la funzione è vicina a quella originale, più sarà affidabile.
+
+- **Tecniche di rilassamento**  
+  - **Delete relaxation**: cancellazione degli effetti negativi delle azioni
+  - **Astrazione**: considerare un problema più piccolo, ignorare alcune differenze tra stati in modo che collassino in un unico (riducendo lo spazio di ricerca)
+  - **Landmark**: un insieme di azioni; almeno una di esse deve essere presente in ogni soluzione. Utile per safe pruning.
+
+  Si può:
+  - Risolvere in modo OTTIMO il problema rilassato
+  - Risolverlo in modo SUBOTTIMO
+  - STIMARE il costo della soluzione del rilassamento, senza risolverlo.
+
+- **Euristiche non ammissibili**  
+  - **Forward Search**  
+    $\gamma*(s,a)=s\cup effects^+(a)$  
+    La distanza tra uno stato $s$ e una proposizione $p$ è data dalle seguenti relazioni:
+    - $\Delta_0(s,p)=0$ se $p \in s$
+    - $\Delta_0(s,p)=min_a\{1+\Delta_0(s, precond(a))|p \in effects^+(a)\}$
+    - $\Delta_0(s,p)=\infin$ se $\forall a\in A, p \not \in effects^+(a)$
+
+    La distanza tra uno stato $s$ e una congiunzione di proposizioni $g=p_1 \wedge...\wedge p_n$:
+    - $\Delta_0(s,g)=0$ se $g \subseteq s$
+    - $\Delta_0(s,g)=\sum_{p_i \in g} \Delta_0(s,p_i)$
+
+    La funzione euristica può essere definita come $$h_0(s)=\Delta_0(s,g)$$
+    La funzione $h_0$ non è ammissibile perchè è costosa, visto che richiede di risolvere un problema (seppur rilassato) per ogni stato visitato.
+
+  - **Backward Search**  
+    Regressione per mezzo della $\gamma^{-1}$.  
+    Dato il sottogoal $g$ attualmente in esame, esistono diverse azioni _rilevanti_  
+    Scegliere l'azione che porta al sottogoal più vicino allo stato iniziale
+    $$a_{best} \leftarrow argmin\{\Delta_0(s_0, \gamma^{-1}(g,a))\ |\ a\ \text{è rilevante (resolver) per } g\}$$
+    L'euristica è sempre basata sulla distanza $\Delta_0$, quindi non è ammissibile.  
+    Il vero vantaggio è che è possibile precompilare le distanze tra s_0 e ogni possibile proposizione, il calcolo a runtime è quindi semplificato
+- Se non volessimo un'euristica ammissibile, cosa faremmo?
+- **Euristiche ammissibili $h_1$, $h_2$ e $h_G$**  
+  Consentono di ottenere **soluzioni ottime**  
+  - **Safe Pruning**: so che una soluzione ha al più costo $k$, posso scartare un nodo qualsiasi $u$ tale che $h(u) > k$ senza correre il rischio di perdere le soluzioni.
+
+  - $h_1(s,g)=\Delta_1(s,g)$  
+    $\Delta_1(s,g)$ considera il costo di applicare un'azione $a$ per ottenere $p$, tale costo è dominato dal costo peggiore per soddisfare le precondizioni di $a$, il costo per $p$ con $a$ è quindi il costo di $a+1$.  
+    Tra tutte le azioni che producono $p$ scelgo la più economica.  
+    E' poco informativa: considera una sola proposizione $p$ del goal, e si può raffinare:
+  - $h_2(s,g)=\Delta_2(s,g)$  
+    Considera la massima distanza di una coppia di proposizioni $p,q$ del goal.  
+    $h_2$ è ammissibile e più informativa di $h_1$, ma è più costosa.
+  - $h_G$: si usa Graphplan come euristica  
+    Bisogna costruire un grafo di pianificazione senza considerare gli effetti negativi e la mutua esclusione  
+    Il costo di una proposizione $p$ è la profondità del livello in cui $p$ compare per la prima volta  
+    Il costo di un goal è la profondità del livello in cui tutti gli atomi del goal compaiono tutti insieme per la prima volta  
+    E' ancora ammissibile e:
+    - è più facile da calcolare e precompilare
+    - $h_G$ considera due livelli: due azioni allo stesso livello pesano 1
+
+- **Least Commitment Planning come ricerca AND/OR**, **Euristica FAF per la selezione dei Flaws**  
+  Abbiamo due scelte non deterministiche da effettuare: il prossimo flaw e resolver.  
+  Un flaw rappresenta rami in AND (da risolvere tutti dal planner)  
+  Un resolver rappresenta rami OR (sufficiente un solo resolver per flaw)  
+  L'ordine in cui si selezionano i flaw è irrilevante per la "forma" della soluzione finale, ma è indispensabile nel determinare il numero dei nodi (la scelta di un flaw o un altro può produrre un albero con molti più nodi rendendo meno efficiente il calcolo della soluzione).
+
+  **FAF (Fewer Alternatives First)**  
+  Si preferisce il flaw col minor numero di resolvers.  
+  In questo modo si esplorano prima nicchie dello spazio di ricerca e si limitano i costi di un eventuale backtracking.  
+  E' più facile scoprire che un flaw non è risolubile.
 
 ## Micalizio - Sistemi Esperti
 
-- Costruzione (Inference Engine, KB, WM, Facilities, UI)
-- Conoscenza di dominio / conoscenza di controllo
-- Quando non utilizzare un S.E.
-- CLIPS:
+Un sistema esperto basato sulla conoscenza è un sistema in grado di risolvere problemi in un dominio limitato ma con prestazioni simili a quelle di un esperto umano del dominio stesso.  
+Generalmente esamina un largo numero di possibilità e costruisce dinamicamente una soluzione.
+
+- **Proprietà**  
+  - Specificità (conoscenza di dominio)
+  - Rappresentazione esplicita della conoscenza
+  - Meccanismi di ragionamento
+  - Capacità di spiegazione
+  - Capacità di operare in domini poco strutturati
+
+- **Costruzione** (Inference Engine, KB, WM, Facilities, UI)
+  - Knowledge-Base: mantiene la conoscenza dell'esperto come regole del tipo condizione-azione
+  - Working Memory: mantiene i fatti iniziali e quelli generati dalle inferenze
+  - Inference Engine
+    - Pattern matching: confronta la parte if delle regole rispetto ai fatti della Working Memory.  
+      Le regole che hanno la parte if soddisfatta sono dette attivabili e sono poste nell'agenda.
+    - **Agenda**: elenco ordinato di regole attivabili, ordinate in base alla loro priorità o in base ad altre strategie di preferenza/conflict resolution
+    - Execution: la regola in cima all'agenda è selezionata ed eseguita (firing)
+  - Explanation Facility: fornisce una giustificazione delle soluzioni (sequenza di regole attivate, _reasoning chain_)
+  - Knowledge Acquisition Facility: aiuta a integrare nuove regole e mantenerle
+  - User Interface: consente all'utente di interagire con il sistema esperto
+
+- **Conoscenza di dominio / conoscenza di controllo**  
+  Ogni sistema basato sulla conoscenza deve riuscire ad esprimere due tipi di conoscenza in modo separato e modulare:
+  - Conoscenza sul dominio dell'applicazione ("COSA")
+  - Conoscenza su COME utilizzare la conoscenza sul dominio per risolvere problemi (CONTROLLO)
+  
+- Quando (non) utilizzare un S.E.
+  Utile per Interpretazione, diagnosi, monitoring, planning, scheduling, previsione, progettazione e configurazione.
+  
+  Non bisogna usarli quando:
+  - Esistono algoritmi "tradizionali" efficienti per risolvere il problema considerato
+  - L'aspetto principale è la computazione e non la conoscenza
+  - La conoscenza non può essere modellata in modo efficiente
+  - L'utente finale è riluttante ad usare un sistema esperto data la criticità del task
+
+  Un sistema a regole ha la stessa potenza espressiva di una macchina di Turing, ma non sempre è la scelta migliore.
+
+### CLIPS
+
+- Fatti (ordinati, non-ordinati, manipolazione)  
   - Fatti (ordinati, non-ordinati, manipolazione)
-  - Regole (LHS, RHS, Binding)
-  - Rifrazione
-  - Agenda (Definizione, Ordinamento Regole)
-  - Se abbiamo in agenda R1 e sotto R2 ed eseguiamo R1, R2 rimane in agenda?
-  - Strategie di Conflict Resolution
-  - Regole e connettivi logici
-  - Moduli. A cosa servono?
-  - Ciclo di funzionamento di CLIPS
+- Fatti (ordinati, non-ordinati, manipolazione)  
+  - "chunk of information" , elemento indivisibile di informazione
+  - Sono definiti da un nome di relazione
+  - Hanno zero o più "slot"
+  
+  **Fatti ordinati**
+  (no slot)
+
+  ```Lisp
+  (person-name Franco L Verdi)
+  (person-name Verdi Franco L)
+  ```
+
+  **Fatti non ordinati**
+    (template)
+  
+    ```Lisp
+    (deftemplate person "commento opzionale"
+      (slot name)
+      (slot age)
+      (slot eye-color)
+      (slot hair-color))
+    ```
+
+    (istanza)
+  
+    ```Lisp
+    (person (name "Franco L. Verdi")
+      (age 46)
+      (eye-color brown)
+      (hair-color brown))
+    ```
+
+  **Manipolazione di fatti**
+  Varie interazioni possibili con la WM
+  - Aggiungere: `(assert <fact>+)`
+  - Rimuovere: `(retract <fact-index>+)`
+  - Modificare: `(modify <fact-index> (<slot-name> <slot-value>)+ )`
+  - Duplicare: `(duplicate <fact-index> (<slot-name> <slot-value>)+ )`
+
+- **Regole** (LHS, RHS, Binding)
+
+  ```Lisp  
+  (defrule <rule name> ["comment"]
+    <patterns>* ; left-hand side (LHS)
+                ; or antecedent of the rule
+    =>
+    <actions>*) ; right-hand side (RHS)
+                ; or consequent of the rule
+  ```
+
+  Le variabili in un pattern (LHS) sono legate a valori di fatti nella WM. Il binding è locale ad ogni regola.
+
+  ```Lisp
+  (defrule find-blue-eyes
+    (person (name ?name)(eye-color blue))
+    =>
+    (printout t ?name " has blue eyes." crlf))
+  ```
+
+- **Rifrazione**
+  E' un meccanismo alla base del pattern-matching che impedisce di attivare due volte una regola sugli stessi fatti.  
+  (Ad esempio per la regola degli occhi blu, verrà attivata una sola volta per persona che la soddisfa)
+
+- **Agenda** (Definizione, Ordinamento Regole, Conflict resolution)  
+  E' la lista di tutte le regole che hanno la parte sinistra soddisfatta (e non sono ancora state eseguite.)  
+  Ogni modulo ha la sua agenda; si può pensare che sia simile ad uno stack di esecuzione.  
+  La regola in cima è la prima ad essere eseguita.
+
+  **Ordinamento**  
+  La posizione di una _regola attiva_ nell'agenda è determinata così:
+  1) in base alla _salience_ (priorità)  
+     Tutte le regole con salience più bassa sono sotto la regola corrente  
+     Tutte le regole con salience più alta sono sopra la regola corrente
+  2) A parità di salience, si usa la strategis di risoluzione del conflitto (conflict resolution strategy)
+  3) Se una regola è attivata dagli stessi fatti della WM e 1) e 2) non sono in grado di decidere l'ordine, allora ha priorità l'ordine con cui sono definite nel sorgente.
+- **Se abbiamo in agenda $R_1$ e sotto $R_2$ ed eseguiamo $R_1$, $R_2$ rimane in agenda?**  
+  Non per forza: se la Working Memory viene modificata da $R_1$ e le precondizioni di $R_2$ non sono più verificate, allora non rimarrà in agenda.
+
+- Strategie di Conflict Resolution
+
+  Si usa il comando `(set-strategy <nome-strategia> )` per decidere quale usare
+
+  - **Depth**: regole attive più recenti in cima alle altre regole di pari salience (sono preferite regole attivate dai **fatti più recenti**)
+  - **Breadth**: regole attive più recenti dopo regole di pari salience (sono preferite regole attivate dai **fatti meno recenti**)
+  - **Simplicity e Complexity**
+    - **Specificity**: è determinata dal numero di confronti e bindings effettuati nella parte sinistra della regola
+    - Simplicity: regole attive più recenti sopra a regole con uguale o più alta specificità
+    - Complexity: regole attive più recenti sopra a regole con uguale o più bassa specificità
+  - **LEX**: A parità di salience, le regole attivate sono ordinate così:
+    - Ogni fatto è etichettato con un time tag per indicarne la recentezza
+    - I pattern di ogni attivazione sono associati al time tag del fatto che li soddisfa
+    - Un'attivazione con un pattern più recente è sistemata prima di una attivazione con pattern meno recenti
+  
+      ```?
+      Ordine di definizione       Ordinamento con LEX
+      rule6: f-1, f-4             rule6: f-4, f-1,
+      rule5: f-1, f-2, f-3        rule5: f-3, f-2, f-1
+      rule1: f-1, f-2, f-3        rule1: f-3, f-2, f-1
+      rule2: f-3, f-1             rule2: f-3, f-1
+      rule4: f-1, f-2             rule4: f-2, f-1
+      rule3: f-2, f-1             rule3: f-2. f-1
+      ```
+  
+  - **MEA**: 
+    - Time tag come con LEX
+    - Il primo time tag del pattern associato col primo pattern è usato per determinare la posizione della regola e si ordina in base a quello
+    - In caso di conflitti, si passa al secondo time tag (non ordinato) e così via.
+  
+      ```?
+      Ordine di definizione       Ordinamento con MEA
+      rule6: f-1, f-4             rule2: f-3, f-1
+      rule5: f-1, f-2, f-3        rule3: f-2, f-1
+      rule1: f-1, f-2, f-3        rule6: f-1, f-4
+      rule2: f-3, f-1             rule5: f-1, f-2, f-3
+      rule4: f-1, f-2             rule1: f-1, f-2, f-3
+      rule3: f-2, f-1             rule4: f-1, f-2
+      ```
+  
+  - **Random**: si aggiunge alle regole un valore casuale con cui sono poi ordinate in agenda
+
+- **Regole e connettivi logici**  
+  Di default i pattern nell'antecedente delle regole sono considerati in congiunzione ($and$ impliciti), ma si può anche creare pattern più complessi
+
+  - **OR**: `(or (pattern1) (pattern2))`
+  - **NOT**: `(not (pattern))`
+  - **EXISTS**: `(exists (pattern))`
+  - **FORALL**: `(forall (pattern))`
+
+- **`Gensym` e `Gensym\*`**  
+  Restituisce un nuovo simbolo con forma $genX$ dove $X$ è un intero incrementato automaticamente ad ogni invocazione della funzione. Il primo simbolo generato è $gen1$. I simboli generati non sono necessariamente univoci
+
+  `(gensym*)`  
+  Simile a gensym ma con la garanzia che il simbolo generato è univoco.
+
+- Moduli. A cosa servono?  
+  Programmi che risolvono domini reali possono avere migliaia di regole.  
+  Non tutte codificano conoscenza di dominio (cioè modellano il problema che si vuole risolvere), ma alcune codificano **conoscenza di controllo** che regola il comportamento del programma.  
+  Può diventare problematico l'interleaving della conoscenza di controllo e di dominio durante la manutenzione della KB.
+
+  L'idea consiste nel separare la conoscenza di controllo da quella di dominio. Si assegna un control pattern ad ogni regola che indica in quale fase è applicabile. Si potrebbero usare metodi come la salience o sistemi introdotti artificialmente, ma potremmo voler passare da una fase all'altra in modo più flessibile: si usano i moduli.
+
+  `(defmodule <module-name> [<comment>])`
+
+  Le regole sono definite in un solo modulo, che quindi partizionano la KB e anche la WM (ognuno ha la propria), quindi di conseguenza anche l'agenda.
+
+  I moduli possono comunque scambiare informazioni tra di loro, quando cambia il focus (modulo attualmente attivo, gestito tramite stack).  
+  Un modulo ha il focus finchè
+  - ci sono regole da eseguire, dopodichè avviene una `pop` implicita
+  - una regola esegue il comando `(pop focus)`
+  - una regola aggiunge un ulteriore modulo in cima allo stack `(focus nuovo-modulo)`
 
 ## Torta
 
