@@ -1045,7 +1045,7 @@ Generalmente esamina un largo numero di possibilità e costruisce dinamicamente 
       rule3: f-2, f-1             rule3: f-2. f-1
       ```
   
-  - **MEA**: 
+  - **MEA**:
     - Time tag come con LEX
     - Il primo time tag del pattern associato col primo pattern è usato per determinare la posizione della regola e si ordina in base a quello
     - In caso di conflitti, si passa al secondo time tag (non ordinato) e così via.
@@ -1096,38 +1096,163 @@ Generalmente esamina un largo numero di possibilità e costruisce dinamicamente 
 ## Torta
 
 - Probabilità Condizionata
-- Inferenza per enumerazione
-- Normalizzazione
-- Paradosso di Monty-Hall
-- Indipendenza (e indipendenza condizionale)
-- Paradosso di Simpson
 - Regola di Bayes
-- Reti Bayesiane:
-  - Componenti
-  - Significato delle frecce nelle reti bayesiane
-  - Compattezza
+- Normalizzazione
+- Indipendenza (e indipendenza condizionale)
+- Paradosso di Monty-Hall (e BN)  
+- Paradosso di Simpson (e BN)  
+
+- **Reti Bayesiane**:
+  Notazione grafica per modellare delle asserzioni di (in)dipendenza condizionale. E' anche uno strumento utile a spiegare le distribuzioni congiunte complete
+  
+  - **Componenti**  
+    - DAG (Directed Acyclic Graph)
+    - CPT (uno per nodo, dove ogni nodo è una variabile aleatoria).  
+      Esprime $P(x_i | Parents(x_i))$
+  
+  - **Significato delle frecce nelle reti bayesiane**  
+    Esprimono rapporti causali nella rete.
+
+  - **Compattezza**  
+    Per un nodo $X_i$ con $k$ parents, abbiamo una cpt grande $2^k$  
+    La rete ha un limite superiore di $O(n \cdot 2^k)$ ($n$ nodi e $2^k$ cpt)
+
   - Semantica (Globale, Locale, Markov Blanket)
-  - Come si costruisce
+    - **Globale**: la distribuzione congiunta è il prodotto delle distribuzioni condizionali locali $P(X_1...X_n) = \prod^{n}_{i=1} P(X_i | Parents(X_i))$
+    - **Locale**: Equivalente a quella globale (per teorema): ogni nodo è condizionalmente indipendente dai discendenti, dati i $Parents$
+    - **Coperta di Markov**: ogni nodo è condizionalmente indipendente dai nodi che sono al di fuori della sua coperta di markov. La CdM sono tutti i nodi corrispondenti ai padri, i figli e padri dei figli.
+  
+  - **Come si costruisce**  
+    1) Scegliamo un ordine delle variabili (preferibilmente causale, per evitare reti "deboli", cioè meno compatte, con le quali è più difficile fare inferenza)
+    2) Per ogni variabile aleatoria aggiungiamo un nodo alla BN
+    3) Selezioniamo i suoi Parents, in modo che garantiscano la semantica globale.
+
   - Reti Bayesiane Ibride
-  - Rete Bayesiana Naive, calcolo delle probabilità della causa dati gli effetti
-  - Task di Inferenza (Simple/Conjunctive Queries, MPE, MAP)
+    Sono reti con variabili aleatorie nel continuo, oltre che nel discreto.  
+    Visto che non è possibile assegnare una CPT a variabili aleatorie nel continuo, e quindi fare in modo che i padri e i figli si influenzino a vicenda, bisogna trovare un modo:
+    1) Discretizzando: non va bene perchè perdiamo valori di probabilità
+    2) Se abbiamo dei padri continui, creiamo una funzione a scalino per approssimare l'infinità del continuo
+    3) Se abbiamo padri discreti, bisogna avere una distribuzione diversa per ogni valore nel discreto
+
+  - Rete Bayesiana Naive, calcolo delle probabilità della causa dati gli effetti  
+  - **Task di Inferenza** (Simple/Conjunctive Queries, MPE, MAP)  
+    - Simple queries: probabilità a posteriori di una variabile data l'evidenza
+    - Conjunctive Queries: probabilità a posteriori di più variabili data l'evidenza
+    - Most Probable Explanation: $MPE(e)=argmax_xP(x,e)$ (si cerca l'istanziazione più probabile di tutte le variabili $X$ data l'evidenza $e$)
+    - Maximum a Posteriori Probability: istanziazione più probabile di un sottoinsieme di variabili $M \subseteq X$ data l'evidenza $e$. $MAP(e)=argmax_mP(m,e) $
+
+  - **Inferenza Esatta**
+    Sono entrambi temporalmente esponenziali rispetto alla treewidth della BN (per ordinamenti non buoni)
+    - Per Enumerazione: è una sumout delle variabili hidden (che non fanno parte dell'evidenza fornita)
+    - Per Variable Elimination: è come l'enumerazione, ma con la programmazione dinamica salviamo i fattori durante la computazione (bottom-up).  
+      L'idea è che continuiamo ad eliminare variabili una alla volta finchè non giungiamo all'estrazione della soluzione. Per eliminare una variabile facciamo la sumout 
+    - Complessità e problemi (scelta dell'ordinamento, width, treewidth)
+      - Enumerazione
+        - Nel caso di una catena, $X_1 \rightarrow X_2 \rightarrow ... \rightarrow X_n$ e una simple query $\mathcal{P}(X_1|X_n)$, con l'enumerazione ho una complessità di $\mathcal{O}(2^n)$ (questo perchè dobbiamo ripetere la costruzione di fattori ogni volta che facciamo una somma)
+      - Variable Elimination
+        - Con una catena, O(n). La width è 2 per la catena e quindi rimaniamo lineari.
+        - Con una query del tipo $\mathcal{P}(X_1|Y_n)$ l'inferenza per enumerazione produce la $P(X_1)*\sum_{Y_1}*\sum_{Y_2}*...*\sum_{Y_{n-1}}*\phi$, dove $\phi$ è uin fattore con $n-1$ variabili, quindi anche qui abbiamo una complessità di $\mathcal{O}(2^n)$.
+      - Inferenza Esatta (Ordinamento)  
+        Scegliere un ordinamento migliore è un problema NP-Hard  
+        Le BN si dividono in
+        - Polytree: NP-Hard perchè Lineare in n ma esponenziale nel numero dei padri del nodo $\mathcal{O}(d^k*n)$. (Se a un polytree toglimo un arco non abbiamo cicli)
+        - Multiconnected: #P-Concrete, equivalente a contare modelli 3-Sat (problema al minimo NP-Hard e al massimo P-Concrete)
+      - Treewidth: minima width tra tutti gli ordinamenti di eliminazione (width del miglior ordinamento di eliminazione), dove la width è il numero di variabili nel fattore più grande.
+
   - Struttura (Chain, Divergent, Convergent, Path Bloccati)
-  - D-Separazione
-    - La variabile è d-separata dai discendenti nel momento in cui conosco i suoi padri? Ci sono altri cammini che collegano ai suoi discendenti?
+    - Chain: sequenza $X_1 \rightarrow X_2 \rightarrow ... \rightarrow X_n$
+    - Divergent: fork $X_1 \leftarrow X_2 \rightarrow X_3$
+    - Convergent: collider $X_1 \rightarrow X_2 \leftarrow X_3$
+    - Path Bloccato: tra X e Y sono bloccati se c'è una sottostruttura bloccata
+      - Chain: quando X2 è bloccato
+      - Fork: Quando X2 è bloccato
+      - Collider: $(X_2 \cup Descendants(X_2)) \cap \mathcal{Z} = \empty$. ($\mathcal{Z}$ è un insieme bloccato) Nel collider tutto tranne $X_2$ può essere bloccato.
+
+  - **D-Separazione**
+    $X$ e $Y$ sono D-Separati da $\mathcal{Z}$ sse tutti i path sono bloccati da $\mathcal{Z}$  
+    Se due variabili sono D-separate, allora sono condizionalmente indipendenti.
+  
   - Effetto Causale
-    - Operatore DO.
-      - Come differisce dalla probabilità condizionata?
-    - causal effect rule
-- Inferenza Esatta:
-  - per Enumerazione
-  - per Variable Elimination
-  - Complessità e problemi (scelta dell'ordinamento, width, treewidth)
-- Inferenza Approssimata:
-  - Idea: inferenza con stochastic sampling
+    Le BN sono molto utili per fare inferenza sulle varabili (indipendentemente dalla causalità); lo scopo di moltissime analisi statistiche è di tipo causale (ad esempio giustificare un intervento)  
+    - Operatore DO
+      Rivela l'effetto causale di $X$ su $Y$: togliamo tutti gli archi entranti in $X$ quando blocchiamo $do(X = x)$
+
+      - Come differisce dalla probabilità condizionata?  
+        La P condizionata rivela la correlazione, mentre la do rivela l'effetto causale
+    - Causal effect rule  
+      $P(Y=y|do(X=x)) = \sum_ZP(Y=y | X=x, PA = Z) * P(PA = Z)$ (PA = Padri)
+
+- **Inferenza Approssimata**:
+  Esiste perchè quella esatta è esponenziale rispetto alla treewidth della BN  
+  Si basa sullo stochastic sampling (metodo Montecarlo): simuliamo una serie di estrazioni casuali dalla distribuzione originale calcolando a forza bruta una stima di probabilità (basata sulla frequenza dei campioni estratti).  
+  L'obiettivo è dimostrare che questa stima tendendo all'infinito, converge a quella esatta.
+
   - Rejection Sampling (Algoritmo, Analisi e problemi)
+    L'idea è di eliminare i campioni generati che non sono consistenti con l'evidenza. Per farlo, abbiamo un prior sample (un assegnamento delle variabili della BN) e verifichiamo che questo sia consistente con l'evidenza.
     - Cosa vuol dire che è consistente?
-  - Likelihood Weighting (Algoritmo, Weighted-Sample, Analisi e problemi)
-  - Impatto dell'ordine delle variabili
-- Modelli Temporali
-  - Catene di Markov (first e second order, Sensor Markov Assumption)
+      Vuol dire che in una query del tipo $P(Rain | GrassWet = yes)$, i sample con $GrassWet = no$ verranno scartati.  
+      Precisazione: più sample estraiamo e più il calcolo diventa preciso.
+      $$
+      \hat{P}(X | e) = \alpha N_PS(X, e) = \frac{NPS(x,e)}{NPS(e)} \\
+      \simeq \frac{P(x,e)}{P(e)} \\
+      = P(X | e)
+      $$
+      NPS = numero degli elementi in accordo con $e$  
+      Notiamo anche un problema: diventa molto costoso fare questo rifiuto se $P(e)$ è molto piccolo (perchè con l'aumentare delle variabili di evidenza la sua probabilità diminuisce)
+  - **Likelihood Weighting** (Algoritmo, Weighted-Sample, Analisi e problemi)
+    E' un esempio di **Importance sampling**: genera solo eventi che sono consistenti con l'evidence $e$.  
+    Invece di generare tutti i campioni dalla distribuzione a priori, cerchiamo di generarli dalla distribuzione che è già vicina a quella da stimare.
+    Ad ogni iterazione chiamiamo WeightedSample, che ci restituirà il peso e l'evento, che aggiungeremo ad un vettore di conti pesati su X.  
+    Il peso ci dice quanto dobbiamo credere alla valutazione.
+    - **Weighted Sample**  
+      Il peso iniziale parte da 1 e
+      - Se è una variabile di evidenza, viene moltiplicato per la probabilità congiunta ($P(x_i | Parents(X_i))$)
+      - Se non è una variabile di evidenza, facciamo prior sampling (selezione random).
+  
+      Diamo quindi più importanza all'evidenza che ha un peso maggiore e automaticamente ignoreremo quello che invece ha un peso minore.
+
+      $$
+      S_{ws}(Z,e) = \prod^{l}_{i=1}P(z_i | Parents(Z_i))
+      $$
+
+      S_ws sono tutti i campioni della Likelyhood Weighting generati con la prior sampling  
+      Dove Z sono le variabili NON di evidenza (hidden)  
+      Mentre la weight è
+
+      $$
+      W(Z,e) = \prod^{m}_{i=1}P(e_i | Parents(E_i))
+      $$
+
+      W è il peso di tutte le variabili di evidenza  
+      Dove $E$ è l'insieme delle variabili di evidenza.  
+      Dunque, l'algoritmo totale produce
+
+      $$
+      S_{ws}(Z,e) \cdot W(Z,e) = P(Z,e)
+      $$
+
+      - **Problema**: la performance degrada (di meno della rejection sampling) all'aumentare dell'evidenza perchè pochi sample hanno tutto il peso
+      - **Problema 2**: l'ordine dell'evidenza impatta fortemente sulla significatività del risultato
+        - Se l'evidenza riguarda le prime variabili, allora i campioni saranno più probabili data l'evidenza (più significativi)
+        - Se l'evidenza riguarda le ultime variabili, allora i campioni sono generati secondo le Probabilità a priori (indesiderato), e quindi sono meno significativi
+
+      Se l'evidenza è in cima andiamo a tagliare tanti rami, altrimenti i campioni scendendo sono generati con la P a priori, ma è più complessa la ricerca. E' preferibile che l'evidenza riguardi le prime variabili e che la BN abbia una morfologia conveniente.
+
+- **Modelli Temporali**  
+  E' una BN a cui aggiungiamo l'indicatore del tempo (discreto), cioè che noi frazioniamo nel tempo. Un modello "standard" è quello basato sulle catene di markov
+  - **Catene di Markov** (first e second order, Sensor Markov Assumption)  
+    Nel costruire la BN assumiamo che la variabile X al tempo t dipenda soltanto dalla variabile $X_{t-1}$
+    - **First order**: $P(X_t | X_{0:t-1}) = P(X_t | X_{t-1})
+    - **Second order**: $P(X_t | X_{0:t-1}) = P(X_t | X_{t-1}, X_{t-2})$
+    - **Sensor Markov Assumpion**: I modelli temporali sono processi stazionari, ovvero assumiamo che le loro CPT non cambino nel tempo.  
+      $P(E_t | X_{0:t}, E_{0:t-1}) = P(E_t | X_t)$
+
+    Una catena di Markov di primo ordine spesso non rispetta la realtà (Sprinkler: non possiamo basarci solo sul comportamento dello sprinkler di alcuni giorni prima, o su informazioni non complete). Per risolvere questo problema possiamo:
+    1) Aumentare l'ordine della catena
+    2) Arricchire la rete di stati con informazioni (sprinkler -+-> temperatura e pressione)
+  
   - Task di Inferenza su Modelli Temporali (Filtering, Prediction, Smoothing e algoritmo forward backward)
+    - Filtering: $P(X_t | e_{1:t})$: la distribuzione a posteriori dello stato più recente. Calcoliamo il belief state data tutta l'evidenza ricavata
+    - Prediction: $P(X_{t+k} | e_{1:t})$: la distribuzione a posteriori dello stato futuro al tempo $t+k$ con $k > 0$
+    - Smoothing: $P(X_k | e_{1:t})$ con $0\leq k<t$: calcoliamo la distribuzione a posteriori di uno stato passato, date anche le osservazioni future (fino al presente)
+    - Most Likely Explanation: $argmax_{x_{1:t}}P(x_{1:t} | e_{1:t})$: vogliamo trovare la sequenza di stati che hanno generato più probabilmente queste osservazioni
