@@ -6,11 +6,11 @@
     - [**Most General Unifier**](#most-general-unifier)
       - [**Algoritmo MGU**](#algoritmo-mgu)
   - [**Prolog**](#prolog)
-    - [**Definizione**](#definizione-1)
+    - [**Info**](#info)
     - [**Applicabilità di una regola**](#applicabilità-di-una-regola)
     - [**Interprete Prolog**](#interprete-prolog)
     - [**Risoluzione SLD** (Albero SLD, Terminazione, Non-Determinismo)](#risoluzione-sld-albero-sld-terminazione-non-determinismo)
-      - [**Definizione**](#definizione-2)
+      - [**Intro**](#intro)
       - [**Terminazione**](#terminazione)
       - [**Non Determinismo**](#non-determinismo)
       - [**Regola di Calcolo**](#regola-di-calcolo)
@@ -38,7 +38,7 @@
       - [**A\***](#a)
       - [**IDA\***](#ida)
   - [**Answer Set Programming**](#answer-set-programming)
-    - [**Definizione**](#definizione-3)
+    - [**Definizione ASP**](#definizione-asp)
     - [**Prolog vs Clingo**](#prolog-vs-clingo)
     - [**Negazione classica vs. per fallimento**](#negazione-classica-vs-per-fallimento)
     - [**Answer Set**](#answer-set)
@@ -76,7 +76,7 @@ L'algoritmo MGU Martelli ha il compito di trovare un *MGU* $\sigma$ più general
 
 ## **Prolog**
 
-### **Definizione**
+### **Info**
 
 Prolog è un linguaggio di programmazione logica, cioè dove invece di programmare con uno dei normali paradigmi si enunciano clausole per un programma, che poi il motore di inferenza utilizzerà per cercare di dimostrare un goal.  
 La ricerca della soluzione avviene mediante backward chaining in profondità: si parte dal goal che si vuole derivare (scritto come una congiunzione di formule atomiche $G_1,G_2,...,G_n$) e si cerca di risolverlo, dimostrando o meno che il goal **segue logicamente** dal programma.
@@ -100,7 +100,7 @@ In caso di successo, l'interprete restituisce una sostituzione per le variabili 
 
 ### **Risoluzione SLD** (Albero SLD, Terminazione, Non-Determinismo)  
 
-#### **Definizione**
+#### **Intro**
 
 Per arrivare ad un linguaggio di programmazione ci serve una strategia efficiente per risolvere il problema.  
 Risoluzione SLD: **Linear resolution with Selection function for Definite clauses**  
@@ -261,7 +261,7 @@ Completezza, perchè nel caso non possiamo risolvere parte delle clausole
 
 ## **Answer Set Programming**
 
-### **Definizione**
+### **Definizione ASP**
 
 Inizialmente era stato ideato per dare una semantica alla negazione per fallimento di Prolog.  
 Non si cercano più le prove, ma i modelli che devono essere **stabili**; non si fa più inferenza con backward chaining. E' particolarmente utile per risolvere problemi combinatori (con vincoli, pianificazione).

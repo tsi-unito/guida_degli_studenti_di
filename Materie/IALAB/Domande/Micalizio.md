@@ -8,7 +8,7 @@
       - [**Razionalità**](#razionalità)
       - [**Tipi di agenti**](#tipi-di-agenti)
     - [**Planning Classico**](#planning-classico)
-      - [**Definizione**](#definizione-1)
+      - [**Definizione Planning**](#definizione-planning)
       - [**STS** (Definizione, STS-Grafo)](#sts-definizione-sts-grafo)
         - [**State Transition System**](#state-transition-system)
         - [**Componenti dell'STS**](#componenti-dellsts)
@@ -16,7 +16,7 @@
     - [**Planning e Plan Execution**](#planning-e-plan-execution)
     - [**Assunzioni e Rilassamenti**](#assunzioni-e-rilassamenti)
     - [**Problema di pianificazione $\mathcal{P}$** (+ Complessità PlanSAT, Bounded PlanSAT)](#problema-di-pianificazione-mathcalp--complessità-plansat-bounded-plansat)
-      - [**Definizione**](#definizione-2)
+      - [**Definizione Problema di Pianificazione**](#definizione-problema-di-pianificazione)
     - [**Proprietà di un buon algoritmo di pianificazione**](#proprietà-di-un-buon-algoritmo-di-pianificazione)
       - [**Soundness** (correttezza)](#soundness-correttezza)
       - [**Completeness** (completezza)](#completeness-completezza)
@@ -121,7 +121,7 @@ L'agente è razionale se **MASSIMIZZA** il risultato: se sceglie le azioni che m
   
 ### **Planning Classico**
 
-#### **Definizione**
+#### **Definizione Planning**
 
 E' un processo deliberativo che sceglie ed organizza le azioni in base all'effetto che ci si aspetta che queste producano. Abbiamo due tipi di planning, che spesso si completano a vicenda:
 
@@ -199,7 +199,7 @@ Un approccio più realistico è quello del **continual planning**: consente un l
 
 ### **Problema di pianificazione $\mathcal{P}$** (+ Complessità PlanSAT, Bounded PlanSAT)  
 
-#### **Definizione**
+#### **Definizione Problema di Pianificazione**
 
 Un problema di pianificazione classica $\mathcal{P}=(\Sigma,s_0,S_g)$ ha:
 

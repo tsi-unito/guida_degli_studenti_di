@@ -9,7 +9,7 @@
   - [**Probabilità Condizionata / a posteriori**](#probabilità-condizionata--a-posteriori)
   - [**Inferenza per enumerazione e Normalizzazione**](#inferenza-per-enumerazione-e-normalizzazione)
   - [**Indipendenza (e indipendenza condizionale)**](#indipendenza-e-indipendenza-condizionale)
-  - [Regola di Bayes](#regola-di-bayes)
+  - [**Regola di Bayes**](#regola-di-bayes)
   - [**Paradosso di Monty-Hall (e BN)**](#paradosso-di-monty-hall-e-bn)
   - [**Paradosso di Simpson (e BN)**](#paradosso-di-simpson-e-bn)
   - [**Reti Bayesiane**](#reti-bayesiane)
@@ -125,7 +125,7 @@ $$
 Così facendo abbiamo ridotto il numero di entry da 32 a 12.  
 Usare la **chain rule** per semplificare le dipendenze condizionali riduce la lunghezza della rappresentazione della distribuzione congiunta da esponenziale ($2^{n}-1$) a lineare (somma). L'indipendenza condizionale è **fondamentale** e **robusta**.
   
-## Regola di Bayes
+## **Regola di Bayes**
 
 Ricordiamo la Product rule
 $$
