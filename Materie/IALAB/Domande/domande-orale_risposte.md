@@ -97,7 +97,9 @@
 - **La risoluzione SLD è corretta e completa per tutta la logica o solo per alcuni tipi di clausole?**  
   _In generale_ **NON** è completa, ma con le clasuole di Horn SI.
 
-- **Negazione per fallimento (Ragionamento Non-Monotono)**
+- **Negazione per fallimento (Ragionamento Non-Monotono)**  
+  E' una regola usata nella programmazione logica per derivare $not\ p$ (nel senso che p non è vero), dal risultante fallimento nel derivare $p$.  
+  $not\ p$ è diverso da $\neg p$, cioè la negazione logica di $p$.
 
 - **3 Possibili esiti con negazione per fallimento**  
   1) Se la query negata è soddisfatta, la negazione fallisce
@@ -127,7 +129,8 @@
 - **La presenza del cut cosa va a mettere a rischio tra completezza e correttezza?**  
   Andando a tagliare alcuni rami dell'albero SLD, rimuovendo alcuni punti di backtracking, non assicuriamo più la **COMPLETEZZA**.
 
-- Se prendo delle clausole che non sono di Horn, cosa si mette a rischio tra completezza e correttezza?
+- **Se prendo delle clausole che non sono di Horn, cosa si mette a rischio tra completezza e correttezza?**  
+  Completezza, perchè nel caso non possiamo risolvere parte delle clausole
   
 ### Ricerca nello spazio degli stati
 
@@ -417,7 +420,7 @@
   Questo significa che trovare una soluzione è meno costoso che trovare una soluzione ottima.  
   Può quindi cercare euristiche (magari) domain independent che guidino il pianificatore nella formulazione di una soluzione.
 
-- Algoritmi di Pianificazione
+- **Algoritmi di Pianificazione**
   Inizialmente potremmo risolvere il planning con algoritmi di ricerca (BSF, DSF, A*...)  
   **MA** ci sono delle differenze!  
   lo spazio di ricerca $\not \equiv$ spazio degli stati:
@@ -927,7 +930,7 @@ Generalmente esamina un largo numero di possibilità e costruisce dinamicamente 
   - Conoscenza sul dominio dell'applicazione ("COSA")
   - Conoscenza su COME utilizzare la conoscenza sul dominio per risolvere problemi (CONTROLLO)
   
-- Quando (non) utilizzare un S.E.
+- **Quando (non) utilizzare un Sistema Esperto**
   Utile per Interpretazione, diagnosi, monitoring, planning, scheduling, previsione, progettazione e configurazione.
   
   Non bisogna usarli quando:
@@ -1203,8 +1206,7 @@ Generalmente esamina un largo numero di possibilità e costruisce dinamicamente 
 \ \\
   P(R=T|D=T) = 78\%\ \text{(come da tabella) ma NON è}\ P(R=T | do(D=T))=83,2\%\\
 \ \\
-  P(R=T|D=F) = 83\% \text{(come da tabella) ma NON è}\ P(R=T | do(D=F))=78,18\%
-  $$
+  P(R=T|D=F) = 83\% \text{(come da tabella) ma NON è}\ P(R=T | do(D=F))=78,18\%  $$
 
 - **Reti Bayesiane**:
   Notazione grafica per modellare delle asserzioni di (in)dipendenza condizionale. E' anche uno strumento utile a spiegare le distribuzioni congiunte complete
