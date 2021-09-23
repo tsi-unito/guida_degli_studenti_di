@@ -40,6 +40,7 @@
     - [**Modelli Temporali**](#modelli-temporali)
       - [**Catene di Markov** (first e second order, Sensor Markov Assumption)](#catene-di-markov-first-e-second-order-sensor-markov-assumption)
       - [**Task di Inferenza su Modelli Temporali** (Filtering, Prediction, Smoothing e algoritmo forward backward)](#task-di-inferenza-su-modelli-temporali-filtering-prediction-smoothing-e-algoritmo-forward-backward)
+      - [**Algoritmo Forward Backward**](#algoritmo-forward-backward)
 
 ## **Intro**
 
@@ -83,6 +84,8 @@ All'esterno il valore è 0. L'integrale della funzione varrà 1 se da $-\infty$ 
 La media ci dice in base a cosa è centrata. La STDDEV ci dice che + grande è la curva, tanto più è allargata.
 
 ## **Probabilità Condizionata / a posteriori**
+
+La P condizionata rivela la correlazione
 
 $P(cavity\ |\ toothache) = 0.8$ significa che dobbiamo andare a prendere in $\Omega$ solo i mondi possibili in cui $toothache$ è $true$.  
 Nel caso di una distribuzione condizionata, la notazione è $P(Cavity | Toothache)$ ed è una matrice 2x2.  
@@ -380,3 +383,27 @@ Una catena di Markov di primo ordine spesso non rispetta la realtà e risulta ap
 - **Smoothing**: $P(X_k | e_{1:t})$ con $0\leq k<t$: calcoliamo la distribuzione a posteriori di uno stato passato, date anche le osservazioni future (fino al presente). Ci fornisce un'approssimazione migliore perchè abbiamo potuto ottenere più evidenza.
 - **Most Likely Explanation**: $argmax_{x_{1:t}}P(x_{1:t} | e_{1:t})$: vogliamo trovare la sequenza di stati che hanno generato più probabilmente queste osservazioni
   > 3 ombrelli e 1 no: ha piovuto 3 giorni e uno no.
+
+#### **Algoritmo Forward Backward**
+
+L'algoritmo forward–backward è un algoritmo di inferenza per modelli di Markov che calcola la probabilità a posteriori di tutte le variabili di stato nascoste data una successione di osservazioni $o$ $o_{1:t}:=o_{1},\dots ,o_{t}$, cioè essa calcola, per tutte le variabili di stato nascoste $X_k \in \{X_1,\dots,X_t\ \}$ la distribuzione $P(X_{k}\ |\ o_{1:t})$.  
+Questo compito inferenziale è solitamente detto smoothing.
+
+L'algoritmo fa un uso del principio di programmazione dinamica in due passaggi per calcolare efficientemente i valori che sono richiesti per ottenere le distribuzioni marginali a posteriori.
+
+Il primo passaggio va in avanti nel tempo mentre il secondo va indietro; da qui il nome forward–backward, avanti-indietro, dell'algoritmo.
+
+Come primo passo, l'algoritmo forward–backward calcola un insieme di probabilità "in avanti" che fornisce, per tutti i $k \in \{1,\dots ,t\}$, la probabilità di finire in qualche stato particolare date le prime $k$ osservazioni nella successione, ossia $P(X_{k}\ |\ o_{1:k})$.
+
+Come secondo passo, l'algoritmo calcola un insieme di probabilità "all'indietro" che fornisce la probabilità di osservare le osservazioni rimanenti dato qualche punto di partenza $k$, ossia $P(o_{k+1:t}\ |\ X_{k})$.  
+Questi due insiemi di distribuzioni di probabilità possono allora essere combinati per ottenere la distribuzione sopra gli stati in corrispondenza di qualche specifico punto nel tempo data l'intera successione di osservazioni:
+
+$$\displaystyle P(X_{k}\ |\ o_{1:t})=P(X_{k}\ |\ o_{1:k},o_{k+1:t})\propto P(o_{k+1:t}\ |\ X_{k})P(X_{k}\ |\ o_{1:k})$$
+
+dove l'ultimo passaggio segue dall'applicazione della regola di Bayes e dall'indipendenza condizionale di $o_{k+1:t}$ e di $o_{1:k}$ dato $X_{k}$.
+
+Come sopra delineato, l'algoritmo implica tre passaggi:
+
+1) calcolo delle probabilità "in avanti"
+2) calcolo delle probabilità "all'indietro"
+3) calcolo dei valori essenziali, o smoothed values, ossia dei valori che riassumono l'andamento principale o generale dell'insieme dei valori o di una parte di esso.
