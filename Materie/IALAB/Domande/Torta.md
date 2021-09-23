@@ -140,10 +140,10 @@ $$
 
 ## **Paradosso di Monty-Hall (e BN)**
 
-  Nel gioco vengono mostrate al concorrente tre porte chiuse; dietro ad una si trova un'automobile, mentre ciascuna delle altre due nasconde una capra.  
-  Il giocatore può scegliere una delle tre porte, vincendo il premio corrispondente.  
-  Dopo che il giocatore ha selezionato una porta, ma non l'ha ancora aperta, il conduttore dello show – che conosce ciò che si trova dietro ogni porta – apre una delle altre due, rivelando una delle due capre, e offre al giocatore la possibilità di cambiare la propria scelta iniziale, passando all'unica porta restante; cambiare la porta migliora le chance del giocatore di vincere l'automobile, portandole da **1/3 a 2/3**.  
-  ![Monty Hall](montyHall.jpg)
+Nel gioco vengono mostrate al concorrente tre porte chiuse; dietro ad una si trova un'automobile, mentre ciascuna delle altre due nasconde una capra.  
+Il giocatore può scegliere una delle tre porte, vincendo il premio corrispondente.  
+Dopo che il giocatore ha selezionato una porta, ma non l'ha ancora aperta, il conduttore dello show – che conosce ciò che si trova dietro ogni porta – apre una delle altre due, rivelando una delle due capre, e offre al giocatore la possibilità di cambiare la propria scelta iniziale, passando all'unica porta restante; cambiare la porta migliora le chance del giocatore di vincere l'automobile, portandole da **1/3 a 2/3**.  
+![Monty Hall](montyHall.jpg)
 
 ## **Paradosso di Simpson (e BN)**  
 
@@ -165,7 +165,7 @@ $$
 
 ## **Reti Bayesiane**
 
-  Notazione grafica per modellare delle asserzioni di (in)dipendenza condizionale. E' anche uno strumento utile a spiegare le distribuzioni congiunte complete
+Notazione grafica per modellare delle asserzioni di (in)dipendenza condizionale. E' anche uno strumento utile a spiegare le distribuzioni congiunte complete
   
 ### **Componenti**
 
@@ -175,12 +175,12 @@ Esprime $P(x_i | Parents(x_i))$
   
 ### **Significato delle frecce nelle reti bayesiane**  
 
-    Esprimono rapporti causali nella rete.
+Esprimono rapporti causali nella rete.
 
 ### **Compattezza**  
 
-    Per un nodo $X_i$ con $k$ parents, abbiamo una cpt grande $2^k$  
-    La rete ha un limite superiore di $O(n \cdot 2^k)$ ($n$ nodi e $2^k$ cpt)
+Per un nodo $X_i$ con $k$ parents, abbiamo una cpt grande $2^k$  
+La rete ha un limite superiore di $O(n \cdot 2^k)$ ($n$ nodi e $2^k$ cpt)
 
 ### **Semantica** (Globale, Locale, Markov Blanket)
 
@@ -283,33 +283,33 @@ $P(Y=y|do(X=x)) = \sum_ZP(Y=y | X=x, PA = Z) * P(PA = Z)$ (PA = Padri)
 
 ### **Inferenza Approssimata**
 
-  Esiste perchè quella esatta è esponenziale da calcolare rispetto alla treewidth della BN, e in alcune reti non esistono ordinamenti con width piccole. L'inferenza esatta non è quindi sempre applicabile. Si vuole quindi scambiare un po' di precisione per più efficienza.  
-  Si basa sullo stochastic sampling (metodo Montecarlo): simuliamo una serie di estrazioni casuali dalla distribuzione originale calcolando a forza bruta una stima di probabilità (basata sulla frequenza dei campioni estratti).  
-  L'obiettivo è dimostrare che questa stima di $\hat{P} $ tendendo all'infinito, converge a quella esatta.  
-  Usiamo una rete Bayesiana come **generatore** di esempi (campioni) in avanti, cioè in modo stocastico.  
-  La vera probabilità a priori di $P(t,f,...) = \text{produttoria delle combinaizoni nelle CPT}$
+Esiste perchè quella esatta è esponenziale da calcolare rispetto alla treewidth della BN, e in alcune reti non esistono ordinamenti con width piccole. L'inferenza esatta non è quindi sempre applicabile. Si vuole quindi scambiare un po' di precisione per più efficienza.  
+Si basa sullo stochastic sampling (metodo Montecarlo): simuliamo una serie di estrazioni casuali dalla distribuzione originale calcolando a forza bruta una stima di probabilità (basata sulla frequenza dei campioni estratti).  
+L'obiettivo è dimostrare che questa stima di $\hat{P} $ tendendo all'infinito, converge a quella esatta.  
+Usiamo una rete Bayesiana come **generatore** di esempi (campioni) in avanti, cioè in modo stocastico.  
+La vera probabilità a priori di $P(t,f,...) = \text{produttoria delle combinaizoni nelle CPT}$
 
 #### **Rejection Sampling** (Algoritmo, Analisi e problemi)
 
-    L'idea è di eliminare i campioni generati che non sono consistenti con l'evidenza. Per farlo, abbiamo un prior sample (un assegnamento delle variabili della BN) e verifichiamo che questo sia consistente con l'evidenza.
+L'idea è di eliminare i campioni generati che non sono consistenti con l'evidenza. Per farlo, abbiamo un prior sample (un assegnamento delle variabili della BN) e verifichiamo che questo sia consistente con l'evidenza.
 
-    $$
-    \hat{P}(Rain\ |\ Sprinkler = true)\\
-    \text{100 campioni. 27 con}\ Sprinkler = true\\
-    \text{Di questi 27, 8 sono con}\ Rain = true \text{e i restanti 19 con}\ Rain = false\\
-    \hat{P}(Rain\ |\ Sprinkler=true)=N(\langle 8,19 \rangle)
-    $$
+$$
+\hat{P}(Rain\ |\ Sprinkler = true)\\
+\text{100 campioni. 27 con}\ Sprinkler = true\\
+\text{Di questi 27, 8 sono con}\ Rain = true \text{e i restanti 19 con}\ Rain = false\\
+\hat{P}(Rain\ |\ Sprinkler=true)=N(\langle 8,19 \rangle)
+$$
 
-    - Cosa vuol dire che è consistente?
-      Vuol dire che in una query del tipo $P(Rain | GrassWet = yes)$, i sample con $GrassWet = no$ verranno scartati.  
-      Precisazione: più sample estraiamo e più il calcolo diventa preciso.
-      $$
-      \hat{P}(X | e) = \alpha N_PS(X, e) = \frac{NPS(x,e)}{NPS(e)} \\
-      \simeq \frac{P(x,e)}{P(e)} \\
-      = P(X | e)
-      $$
-      NPS = numero degli elementi in accordo con $e$  
-      Notiamo anche un problema: diventa molto costoso fare questo rifiuto se $P(e)$ è molto piccolo (perchè con l'aumentare delle variabili di evidenza la sua probabilità diminuisce)
+- Cosa vuol dire che è consistente?
+  Vuol dire che in una query del tipo $P(Rain | GrassWet = yes)$, i sample con $GrassWet = no$ verranno scartati.  
+  Precisazione: più sample estraiamo e più il calcolo diventa preciso.
+  $$
+  \hat{P}(X | e) = \alpha N_PS(X, e) = \frac{NPS(x,e)}{NPS(e)} \\
+  \simeq \frac{P(x,e)}{P(e)} \\
+  = P(X | e)
+  $$
+  NPS = numero degli elementi in accordo con $e$  
+  Notiamo anche un problema: diventa molto costoso fare questo rifiuto se $P(e)$ è molto piccolo (perchè con l'aumentare delle variabili di evidenza la sua probabilità diminuisce)
 
 #### **Likelihood Weighting** (Algoritmo, Weighted-Sample, Analisi e problemi)
 
