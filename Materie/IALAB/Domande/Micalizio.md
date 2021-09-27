@@ -243,8 +243,8 @@ Per la pianificazione classica entrambi i problemi sono decidibili (la ricerca a
 
 - Lo spazio di ricerca diventa infinito
 - PlanSAT diventa **semidecidibile**:
-- Esiste un algoritmo che termina quando la soluzione esiste MA
-- Potrebbe non terminare quando la soluzione non esiste.
+  - Esiste un algoritmo che termina quando la soluzione esiste MA
+  - Potrebbe non terminare quando la soluzione non esiste.
 - Bounded PlanSAT **rimane decidibile**.
 
 PlanSAT e Bounded PlanSAT sono $PSPACE \supset NP$.  
