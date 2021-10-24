@@ -22,7 +22,7 @@ La struttura è da definire; al momento alcune idee/linee guida sarebbero:
 - Dare motivazioni, specialmente per le pull request o per spiegazioni; non lasciare nulla per scontato.
 - Dare sempre indicazioni delle fonti e delle sorgenti di quello che viene indicato qua sopra.
 
-Evitiamo di tenere materiale dei professori, è loro e spesso è coperto da licenze o copyright. Sarei più positivo per quanto riguarda domande degli esami passati, ma riscritte e **con risposta**. Se si tratta di immagini, sono da riscrivere. 
+Evitiamo di tenere materiale dei professori, è loro e spesso è coperto da licenze o copyright. Sarei più positivo per quanto riguarda domande degli esami passati, ma riscritte e **con risposta**. Se si tratta di immagini, sono da riscrivere.
 
 Per favore, qualunque suggerimento, issue o pull request che vi venga in mente fatela!!
 Nota: l'unico scopo del repo è essere una risorsa utile per la vita universitaria, NON un modo per copiare o condividere materiale che non è condivisibile. Mi riservo l'ultima parola sulle decisioni.
