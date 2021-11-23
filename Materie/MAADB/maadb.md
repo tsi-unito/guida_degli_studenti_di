@@ -26,6 +26,33 @@
   - [Recovery Manager](#recovery-manager)
   - [Transaction Manager](#transaction-manager)
   - [Lock Manager](#lock-manager)
+  - [Proprietà delle Transazioni - ACID](#proprietà-delle-transazioni---acid)
+  - [Moduli in relazione con l'Utente](#moduli-in-relazione-con-lutente)
+- [Dischi e File](#dischi-e-file)
+  - [Disco Magnetico](#disco-magnetico)
+  - [Tipi di File](#tipi-di-file)
+    - [Heap Files (panoramica)](#heap-files-panoramica)
+    - [Sorted Files (panoramica)](#sorted-files-panoramica)
+    - [Index Files (panoramica)](#index-files-panoramica)
+  - [Heap Files](#heap-files)
+    - [Record a lunghezza fissa e variabile](#record-a-lunghezza-fissa-e-variabile)
+    - [Organizzazione IntraPage](#organizzazione-intrapage)
+    - [Organizzazione InterPage](#organizzazione-interpage)
+  - [Sorted Files](#sorted-files)
+  - [Index Files](#index-files)
+    - [Struttura di un file indice](#struttura-di-un-file-indice)
+    - [ISAM](#isam)
+    - [B+Tree](#btree)
+    - [Prefix Key Compression](#prefix-key-compression)
+    - [Bulk Loading](#bulk-loading)
+    - [Indici Clustered e Unclustered](#indici-clustered-e-unclustered)
+    - [Indici con chiavi di ricerca composite](#indici-con-chiavi-di-ricerca-composite)
+  - [Indici basati su hash](#indici-basati-su-hash)
+    - [Static Hashing](#static-hashing)
+    - [Extendible Hashing](#extendible-hashing)
+    - [Linear Hashing](#linear-hashing)
+  - [Modello dei Costi](#modello-dei-costi)
+- [Buffer Management](#buffer-management)
 
 ## Concetti base
 
@@ -221,14 +248,218 @@ Naturalmente oggi si usa quello che più conviene, che sia a grafo, o relazional
 
 ## Moduli e Architettura di un DBMS
 
+Al livello più basso dell'organizzazione del database abbiamo i seguenti moduli:
+
 ### Disk Space Manager
+
+E' il modulo che gestisce lo spazio disco. Va a gestire la scrittura e la lettura dei dati sul disco stesso.
 
 ### File and Access Methods
 
+Direttamente sopra al Disk Space Manager c'è il modulo per la gestione dei file. Si occupa di gestire lo spazio del disco; lo fa in base alla tipologia dei dati che si stanno memorizzando. Dati diversi hanno metodi di memorizzazione diversi.
+
+Abbiamo tre tipi di file principali (ne esistono altri):
+
+1) **Data file**: i dati veri e propri, inseriti e interrogati dalla base di dati. Sono anche chiamati _Heap Files_
+2) **Indici**: sono definiti sui data files
+3) **Catalogo di sistema**: all'interno vengono mantenuti i dati che descrivono gli altri files. Serve per ottimizzare: aiuta per gli indici, a sapere quanti predicati sono presenti, a scoprire la presenza di ridondanze (tutte informazioni utili per l'ottimizzazione delle query).
+
 ### Buffer Manager
+
+Gestisce l'accesso ai file sul disco. Si passa attraverso questo manager: i dischi in genere sono molto grandi, mentre la memoria centrale è piccola a confronto.
+
+In più, l'applicazione non accede direttamente ai dati sul disco, ma si interfaccia ad esso con il Buffer Manager.
+
+Quando un'applicazione richiede una pagina di disco (in lettura/scrittura), non interagisce direttamente con esso, ma opera su una pagina caricata in memoria centrale/RAM (quindi è già nel buffer).
+
+Si lavora in questo modo perché in genere le operazioni più costose sono quelle di accesso al disco, e quindi vogliamo limitarle il più possibile.
+
+Esiste l'**ipotesi di località temporale**: ad un dato vi accederò un certo numero di volte: invece di fare quel numero di letture da disco, posso risparmiare tempo portando il dato nel buffer e poi leggendolo rapidamente da lì ogni volta che serve.
+
+In ogni caso, la testina che legge il disco non porta mai un singolo record, ma l'intera pagina, che verrà quindi salvata nel buffer.
+
+Abbiamo qualche complicazione aggiuntiva se per caso parliamo di scritture: quando una avviene, il dato è aggiornato nella memoria centrale, ma non sul disco. Abbiamo quindi un'inconsistenza che, nel caso in cui avvenga un crash/perdita di alimentazione, sarà persa.
+
+Per questo motivo serve il modulo di Recovery Management, essenziale per poter tornare in una situazione di consistenza. Potremmo evitare di usare il buffer, ma questo distruggerebbe i guadagni in prestazioni che avevamo prima.
 
 ### Recovery Manager
 
+Entra in azione quando si verifica un crash e bisogna ripristinare una situazione in cui ci sono dei dati inconsistenti. Un possibile esempio è quando viene persa l'alimentazione e i dati nel buffer della memoria centrale vengono persi.
+
+Quando si verifica un crash, per poter recuperare la consistenza, il Recovery Manager ha bisogno delle informazioni delle operazioni/transazioni, di cui tiene traccia il Transaction Manager.
+
 ### Transaction Manager
 
+E' sempre attivo: gestisce un file di log dove vengono salvate le informazioni necessarie per (eventualmente) disfare e rifare tutte le operazioni che sono state effettuate prima di un crash, per poter poi tornare ad una situazione di consistenza (dopo una fase di recovery).
+
+Deve essere efficiente: dove possiamo salvare le informazioni parziali (quelle esclusivamente necessarie per il recovery)?
+
+Anche il TM salva tutte le informazioni in memoria centrale, non rallentando il sistema, al prezzo di rischiare che tutto quello che si è fatto in caso di crash venga perso (davvero).
+
+Il TM agisce passo passo assieme al lock manager.
+
 ### Lock Manager
+
+Serve per gestire l'accesso concorrente ad uno stesso dato da due o più applicazioni. Quando più processi vogliono accedere ad uno stesso dato bisogna adempiere tecniche per far sì che il dato venga modificato atomicamente (interamente) prima da un processo e poi dall'altro.
+
+Questi sono accessi in scrittura esclusivi: la gestione dei lock è molto delicata visto che possiamo giungere a situazioni di deadlock (attese circolari di risorse bloccate da processi diversi).
+
+Lock molto rigidi possono rallentare il sistema e limitare la possibile parallelizzazione di attività che (in realtà) potenzialmente non generano deadlock.
+
+### Proprietà delle Transazioni - ACID
+
+- **Atomicità**: Tutte le operazioni di una transazione sono effettuate, oppure nessuna.
+- **Consistenza**: Tutte le transazioni che operano in una situazione consistente del DB devono lasciare il DB in uno stato consistente.
+- **Isolamento**: Ogni transazione deve essere eseguita in modo isolato e indipendente dalle altre transazioni. L'eventuale fallimento di una transazione non deve interferire con le altre transazioni in esecuzione.
+- **Durabilità**: Un'operazione completata deve essere persistente.
+
+In genere Atomicità e Durabilità sono affidate al Recovery Manager.
+
+Isolamento e Consistenza invece sono affidate al Concurrency Control Manager (Transaction e Lock Manager).
+
+### Moduli in relazione con l'Utente
+
+- **Modulo Parser**: parsifica le query degli utenti e le traduce in espressioni dell'algebra relazionale.
+- **Modulo Optimizer**: Sceglie tra le diverse espressioni dell'algebra relazionale quella che sembra essere la più opportuna (non si cerca l'ottimo perché complesso). Si usano anche delle euristiche.
+- **Modulo Operator Evaluator**: Implementa gli operatori scelti dal modulo precedente.
+- **Modulo Plan Executor**: Esegue il piano, cioè la sequenza di operazioni da svolgere in cascata, e a sua volta quindi la sequenza di singoli operatori scelti dall'operator evaluator.
+
+## Dischi e File
+
+Il DBMS immagazzina le informazioni in dischi che permettono la persistenza dei dati (è la cosiddetta "memoria secondaria"). I dati in RAM invece sono persi se si verifica un crash o si perde l'alimentazione.
+
+Le due principali operazioni da considerare per la progettazione di un DBMS sono:
+
+- Operazioni di **READ**, che trasferiscono i dati dal disco alla memoria principale/RAM;
+- Operazioni di **WRITE**, che trasferiscono i dati dalla RAM al disco.
+
+Entrambe le operazioni sono molto costose se confrontate con quelle che lavorano esclusivamente sulla memoria centrale: bisogna capire come risparmiare al massimo le interazioni col disco.
+
+Migliaia di operazioni in RAM costano molto meno di una scrittura su disco.
+
+### Disco Magnetico
+
+Mentre con la RAM il tempo di accesso è sempre costante, su disco varia. Questo perché i dati sono letti fisicamente.
+
+Bisognerà studiare l'ordinamento secondo cui posizionare le pagine sul disco: la loro posizione comporterà tempi di lettura diversi.
+
+Il disco è composto da una serie di piatti magnetizzati in rotazione continua; la superficie registra una sequenza di bit, divisa in multiple tracce disposte a forma di cerchio concentrico.
+
+Ogni parte del disco passa periodicamente sotto la testina di lettura, che ha un costo diviso in tre parti:
+
+- **Seek Time**: il tempo richiesto affinché la testina raggiunga la traccia contenente il dato che si vuole leggere (varia tra 1 e 20ms circa). E' la fase più costosa: si vorrà principalmente minimizzare questa.  
+  Il costo dipende da quanto si trova lontana la traccia target rispetto a quella che ho letto per ultima (e quindi dall'arco che la testina deve spazzare). Se la testina è sulla traccia target, il tempo di seek è nullo.
+- **Rotational Delay**: il disco ruota sempre; bisogna aspettare che la parte di traccia che vogliamo leggere si trovi sotto la testina. Varia da 0 a 10ms.
+- **Tempo di trasferimento**: è il tempo necessario all'effettivo trasferimento dei dati. In genere comporta la lettura di una "pagina" di dati intera (non di più, non di meno).
+
+Bisogna organizzarsi in anticipo per le letture in modo da renderle efficienti: allo stesso modo i dati devono essere piazzati sul disco in modo "intelligente".
+
+Questo è il concetto di "**Next Block**": idealmente se so che dopo una pagina me ne servirà un'altra, la vorrò posizionare subito consecutiva. E' preferibile che sia anche lo stesso cilindro.
+
+Un'altra mossa vincente è quella di portare in anticipo le pagine necessarie in memoria centrale (pre-fetching).
+
+### Tipi di File
+
+#### Heap Files (panoramica)
+
+Corrispondono a file in cui l'informazione è organizzata in modo non ordinato. Sono i più generali, generici e meno vincolati, semplici collezioni non ordinate di record.
+
+Dal punto di vista dell'immagazzinamento sono i più semplici (costi di gestione) ma non avendo vincoli non è possibile effettuare ricerche specifiche, ma solo sequenziali (costo di utilizzo).
+
+Supportano poco le operazioni di ricerca: per individuare qualcosa in un heap file bisognerebbe scansionarlo completamente.
+
+#### Sorted Files (panoramica)
+
+Sono file ordinati; soddisfano due proprietà:
+
+1) **Ordinamento**: sono ordinati in base a qualche tipo di criterio (alfabetico ad esempio).  
+  Per ogni relazione memorizzata su un file posso avere al massimo una versione sorted (averne di più significherebbe avere repliche del file, con problemi di allineamento).  
+  Il criterio di ordinamento è definito con un'analisi dei costi (basati sulle operazioni che si intendono effettuare sulla relazione, in modo da massimizzare i benefici dell'ordinamento) ed è deciso al momento della creazione della relazione.
+2) **Strategie di memorizzazione**: Quando dichiaro file _ordinato_ rispetto ad un certo criterio, le pagine consecutive sono memorizzate secondo il principio del _Next_.  
+  Esempio: 
+      Ordino le pagine in modo contiguo in base alla data di nascita.  
+      Giulio nato il 1° Marzo sarà vicino a Giovanni, nato lo stesso giorno.
+  Si memorizzano i file in modo contiguo perché ottengo un vantaggio in fase di interrogazione, sia se le query sono ad accesso diretto in maniera puntuale ("_Dimmi gli studenti iscritti all'esame X_"), sia se le query riguardano un range ("_Studenti iscritti dal 1° Gennaio al 5 Marzo_").  
+  Il costo del mantenimento dei file ordinati è dato dal mantenimento dell'ordinamento scelto in caso di aggiornamenti.  
+  Il costo può essere rischiosamente elevato se si aggiorna molto spesso!  
+
+  Quando inserisco un record in un file ordinato devo inserirlo nella posizione corretta in funzione degli attributi definiti per il criterio di ordinamento.
+
+Quindi i sorted files portano alcuni vantaggi in termini di query, ma di contro devo mantenere questa struttura ordinata (con i costi derivanti).
+
+#### Index Files (panoramica)
+
+Servono come sovrastruttura per i file non ordinati (o per i file ordinati).
+
+Si comunica all'indice il valore della chiave corrispondente ai valori di cui si è interessati e si accede all'indice (rispetto al quale i record sono organizzate in modo efficiente).
+
+Quando un indice individua la chiave ricercata, restituisce il puntatore specifico.
+
+La struttura ad indice più utilizzata è quella del bi-albero.
+
+Gli **Hash Files** sono un particolare tipo di index file. L'indicizzazione basata su hash è molto efficace per le query di uguaglianza, ma non per quelle di range: facilita solo il raggiungimento di un valore e non effettua alcun ordinamento.
+
+### Heap Files
+
+Sono una collezione di record non ordinati, memorizzati in pagine con totale libertà, senza alcun requisito di contiguità. Sono i più facili da gestire per le memorizzazioni.
+
+- **Organizzazione Intrapage**: vedere come i record sono organizzati all'interno della pagina
+- **Organizzazione InterPage**: Come devo organizzare tra loro le pagine diverse all'interno del file
+
+Il file sarà una collezione di pagine, ciascuna delle quali è una collezione di record della relazione che sto considerando.
+
+#### Record a lunghezza fissa e variabile
+
+L'organizzazione intrapage può essere di tipo diverso in base ai vincoli che si impongono sulla struttura del record.
+
+Posso avere record a lunghezza fissa o variabile:
+
+- **Record a lunghezza fissa**: Si sa fin dall'inizio quanti byte corrisponderanno al singolo record. La relazione è composta da un determinato numero di campi con dimensioni specifiche.  
+  E' molto utile nel modello relazionale: basterà sommare le lunghezze degli altri campi per individuare l'inizio di un specifico record.  
+  Abbiamo vantaggi in termini di prevedibilità, ma lo schema sarà molto rigido.  
+  Nota: le informazioni riguardanti la lunghezza fissa dei campi + specificata nel **catalogo di sistema**.
+- **Record a lunghezza variabile**: Non definisco a priori la lunghezza dei singoli record, ma la definisco per ciascun campo in maniera a sé stante. Esistono due approcci:
+  1) Un primo approccio prevede che si dedichi un campop all'inizio del record chiamato **field count**, per determinare il numero di campi informativi presenti nel record stesso.  
+    Quando si supera una sequenza speciale di bit, si capisce di aver superato la fine del precedente record.  
+    Il vantaggio è che non si spreca spazio a causa di una sovrastima delle lunghezze. Fra gli svantaggi è importante l'impossibilità di accedere direttamente ad un campo, oltre alla possibilità che il separatore sia molto lungo (riducendo quindi i guadagni!)
+  2) Il secondo approccio prevede la presenza di puntatori nella prima parte del record: se il record contiene n campi, i primi n+1 elementi saranno puntatori; ciascuno punterà all'inizio del campo corrispondente (l'ultimo puntatore punta alla fine del record complessivo).  
+    Vantaggio: potenzialmente spazio risparmiato.  
+    Svantaggio: una volta allocato il puntatore, si stabilisce anche il valore massimo che può assumere (rappresentazione variabile, ma con un limite).
+
+Nel caso di aggiornamenti, questi comportano sia variazioni sulle lunghezze dei campi e degli spostamenti (shifting) dei dati.
+
+Non è un problema particolarmente pesante, visto che sono operazioni in genere completamente svolte in RAM.
+
+#### Organizzazione IntraPage
+
+#### Organizzazione InterPage
+
+### Sorted Files
+
+### Index Files
+
+#### Struttura di un file indice
+
+#### ISAM
+
+#### B+Tree
+
+#### Prefix Key Compression
+
+#### Bulk Loading
+
+#### Indici Clustered e Unclustered
+
+#### Indici con chiavi di ricerca composite
+
+### Indici basati su hash
+
+#### Static Hashing
+
+#### Extendible Hashing
+
+#### Linear Hashing
+
+### Modello dei Costi
+
+## Buffer Management
