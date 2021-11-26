@@ -376,7 +376,7 @@ Sono file ordinati; soddisfano due proprietà:
   Per ogni relazione memorizzata su un file posso avere al massimo una versione sorted (averne di più significherebbe avere repliche del file, con problemi di allineamento).  
   Il criterio di ordinamento è definito con un'analisi dei costi (basati sulle operazioni che si intendono effettuare sulla relazione, in modo da massimizzare i benefici dell'ordinamento) ed è deciso al momento della creazione della relazione.
 2) **Strategie di memorizzazione**: Quando dichiaro file _ordinato_ rispetto ad un certo criterio, le pagine consecutive sono memorizzate secondo il principio del _Next_.  
-  Esempio: 
+  Esempio:
       Ordino le pagine in modo contiguo in base alla data di nascita.  
       Giulio nato il 1° Marzo sarà vicino a Giovanni, nato lo stesso giorno.
   Si memorizzano i file in modo contiguo perché ottengo un vantaggio in fase di interrogazione, sia se le query sono ad accesso diretto in maniera puntuale ("_Dimmi gli studenti iscritti all'esame X_"), sia se le query riguardano un range ("_Studenti iscritti dal 1° Gennaio al 5 Marzo_").  
@@ -432,13 +432,154 @@ Non è un problema particolarmente pesante, visto che sono operazioni in genere 
 
 #### Organizzazione IntraPage
 
+**Record ID (RID) = \<page_id, slot #\>**.
+
+Bisogna fare distinzione tra record a lunghezza fissa o variabile.
+
+Nel caso della lunghezza fissa, possiamo organizzarli in due modi:
+
+- **Packed**: La memorizzazione dei record è **contigua e compatta**: uno dopo l'altro sono archiviati.  
+  E' presente un **campo contatore** che tiene traccia di quanti record attivi sono presenti nella pagina.  
+  Posso calcolare la posizione del prossimo record moltiplicando il contatore per la lunghezza (fissa!) del tipo record. E' uno heap, per cui ogni nuovo elemento è salvato nel primo slot libero.  
+
+  **Svantaggio**: abbiamo problemi quando cancelliamo un record e dobbiamo tenere tutto compatto. Di per sé non è troppo costoso, visto che svolgo l'operazione di ricompattamento in RAM, ma altri costi potrebbero derivare dalla presenza di indici che devono anch'essi essere aggiornati.
+
+  L'operazione quindi è **poco costosa per lo shifting**, ma **molto costosa per l'aggiornamento degli indici** potenzialmente presenti (ogni spostamento potrebbe comportare l'aggiornamento di numerosi indici).
+- **Unpacked**: Non è presente un contatore: abbandono il requisito di mantenere i record compatti; utilizzo una sequenza di bit (bitmap) che dicono quale slot è occupato (1) o no (0).  
+  Quando uno slot è liberato per una cancellazione si mette a 0 il bit corrispondente allo slot. Se inserisco un record, lo slot viene marcato con un 1 nella bitmap.  
+
+  La pagina viene frammentata con le cancellazioni, ma eventuali indici presenti sulla relazione non risentono delle modifiche.
+
+La gestione dei record a lunghezza variabile aggiunge la complessità della lunghezza non fissa. Non si può dare per scontato che ciascun record che arrivi in scrittura possa essere scritto nello spazio di un record cancellato. Con i file heap ogni inserimento può essere fatto in uno spazio libero, purché lo spazio libero sia sufficiente per **contenere il record per intero**.
+
+La strategia è basata sul concetto di **directory**, che contiene i puntatori ai record di interesse. Quando dovrò trovare il terzo record della relazione presente nella pagina, accederò al terzo elemento della directory e seguo il puntatore che mi dirige all'inizio dell'elemento stesso.
+
+La directory non contiene informazioni sulla lunghezza del record, dal momento che è il record stesso a contenerla.
+
+Quando devo cancellare un record ho due opzioni con questa strategia:
+
+- Rimuovere semplicemente il record e lasciare lo spazio vuoto, frammentando le pagine (e rischiando che porzioni della frammentazione non vengano usate)
+- Compattare tutto (visto che lavoro in RAM). Non ho più il problema degli indici visto che lavoriamo solo su dati e non sulla struttura verso cui puntano gli indici, che contiene solo dei puntatori da aggiornare.
+
 #### Organizzazione InterPage
+
+Usiamo sempre la struttura più generica, cioè un file di heap, che ha il minor costo di mantenimento delle proprietà (non devo mantenere un ordinamento).
+
+Una prima soluzione per l'organizzazione delle pagine all'interno dei file potrebbe essere con un puntatore da uno slot al precedente e al successivo, ma saremmo limitati dall'accesso sequenziale (caso peggiore l'ultimo slot). In più, questa soluzione non ci fornisce informazioni sulla posizione dello spazio libero.
+
+Una seconda soluzione per gestire le aggiunte: ogni volta vado nell'ultima pagina. Se c'è spazio lo uso, altrimenti creo una nuova pagina.
+
+Ho il vantaggio che le operazioni di inserimento sono meno costose, ma rischio di rendere potenzialmente più numerose le pagine dedicate all'intero file (e anche portare ad uno spreco di spazio con la frammentazione dovuta alle cancellazioni).
+
+Avere tante pagine in un file vuol dire leggerne molte di più di quando si legge/scandisce un file, un'operazione costosa. Il costo risparmiato negli inserimenti è quindi perso durante le ricerche.
+
+Si usano due strategie:
+
+1) **Implemento i file come una lista**: usiamo due tipi di pagine:
+   - Pagine completamente piene
+   - Pagine in cui è presente dello spazio libero
+  
+    Il file ha un header che contiene le informazioni necessarie per poter accedere alla lista delle pagine completamente piene o a quella con pagine in parte libere.
+
+    Se una pagina viene saturata in seguito a degli inserimenti, allora viene spostata nell'altra lista.
+
+    Ogni pagina contiene due puntatori oltre ai dati.
+
+    Questa soluzione è comoda se abbiamo record a lunghezza fissa: non dobbiamo scandire tutta la lista per trovare uno spazio vuoto durante un inserimento.
+
+    Se i record sono a lunghezza variabile, potenzialmente una pagina può stare solo in alcune posizioni, per cui dobbiamo scansionare sequenzialmente la lista. Possiamo risolvere il problema creando un secondo livello di directory.
+2) **Utilizzare una directory**: Il file è visto come una sequenza di pagine alle quali si accede da una directory, che contiene due informazioni:
+    - Puntatore alla pagina
+    - Spazio libero nella pagina
+    Ciascuna pagina della directory contiene dati relativi ad un elevatissimo numero di pagine (dimensione della pagina / (dimensione del puntatore + numero con cui rappresento lo spazio libero))
+
+    Quando devo inserire un record di una certa dimensione, si cerca nella directory la prima pagina con spazio libero a sufficienza per contenere il nuovo record.
+
+    La directory fa risparmiare tempo quando dobbiamo inserire e anche quando dobbiamo leggere: (leggo sequenzialmente la directory invece di dover leggere tutte le pagine linkate tra di loro).
+
+    Gli accessi sono sempre due: (directory + pagina). Nel caso in cui serva una nuova pagina sono tre.
 
 ### Sorted Files
 
+I file di tipo Heap non sono ordinati e quindi non dobbiamo preoccuparci di dove inserire i nuovi elementi: appena troviamo spazio li inseriamo.
+
+Questo vantaggio organizzativo ha però un costo: qualsiasi operazione di ricerca di un'informazione (senza l'uso di indici) comporta l'intera scansione del file.
+
+Se il file è ordinato posso utilizzare delle strategie di ricerche più efficienti (in particolare se l'ordine è in funzione del dato che sto cercando).
+
+Un sorted file si può decidere che non abbia spazi intermedi. In questo caso possiamo considerarlo come un grande array su cui effettuiamo una ricerca binaria. Questo velocizza la ricerca, con un costo più elevato dovuto alla manutenzione dell'ordinamento.
+
+Ricordiamo che il tipo di file è dichiarato alla creazione di esso (e del DB).
+
+Un'altra osservazione sulla convenienza: se anche non dovessimo utilizzare la ricerca binaria, ma effettuarne una sequenziale, nel momento in cui troviamo un valore più grande di quello cercato possiamo fermarci in quanto siamo certi che non sarà presente. Di nuovo, risparmiamo in tempo di accesso.
+
+**Vantaggi: possibile ricerca binaria o sequenziale rapida.**
+
+E' costoso mantenere il file ordinato, specialmente se si sceglie di mantenere una memorizzazione contigua, dove l'inserimento di un nuovo record comporta lo shift in avanti di tutti gli elementi che lo seguono.
+
 ### Index Files
 
+Ne esistono due tipi:
+
+- Gerarchici (B-Tree), molto adatti sia a query di uguaglianza sia di range
+- Hash (Hash File), adatti solo alle query di uguaglianza.
+
+Distinzione: per **chiave di ricerca** si intende il valore dell'attributo rispetto a cui si effettua la ricerca. Non è da confondere con il concetto di "chiave primaria della relazione", un sottoinsieme di attributi della relazione che consente di identificare in modo univoco i record della relazione.
+
+Ogni relazione può avere più chiavi candidate e tra di esse se ne sceglie una come principale.
+
+Nel contesto delle query, la chiave di ricerca è l'attributo che deve assumere lo specifico valore (studenti con nome "Mario" -> la chiave è il nome). Può trattarsi di una ricerca per valore specifico, oppure per range. Si definiscono gli indici appositamente per accelerare gli accessi ai record che si usano più spesso (in genere).
+
+---
+
+Possiamo salvare tre tipi di informazioni negli indici:
+
+1) Il **record** della relazione con la chiave imposta.  
+   
+   Vantaggi: presuppone l'organizzazione ordinata di tutti i record di tutta la relazione. Visto che l'ordinamento della relazione può essere effettuato rispetto ad un singolo criterio, possiamo mantenere l'ordine solo per un indice.
+
+   Svantaggi: l'indice è molto appesantito dal contenimento dell'intero record.
+2) Nel file sono contenute esclusivamente le informazioni riguardo la chiave di ricerca dell'indice: si usa una coppia **\<Chiave, Indirizzo al record\>** per ciascun record presente nella relazione che si sta indicizzando.
+
+   Vantaggio: le informazioni hanno una lunghezza fissa e si possono gestire come i fixed records.
+
+   Svantaggio: abbiamo tante occorrenze delle chiavi.
+3) Invece di usare tante coppie \<Chiave, RID\>, si usa un'associazione **\<Chiave, lista di indirizzi\>**. Se si hanno N studenti con lo stesso cognome, con la precedente soluzione avremo N coppie, mentre con questa sarà presente una lista di RID. I record quindi hanno una lunghezza variabile.
+   
+   Vantaggio: risparmio spazio
+
+   Svantaggio: la lista degli indirizzi è a lunghezza variabile e bisogna gestirla.
+
 #### Struttura di un file indice
+
+L'idea è di creare una struttura dati ausiliaria grazie alla quale si riesca a trovare l'elemento che si vuole raggiungere con la ricerca in modo diretto/guidato, risparmiando rispetto alla scansione sequenziale.
+
+Un primo puntatore punta all'inizio del data file, mentre i successivi puntano ai record specifici.
+
+Perché dovremmo usare un file separato per l'indice?
+
+- L'indice può essere ordinato anche se il file che indicizza non lo è (con tutti i vantaggi che ne comporta)
+- Posso creare il file di indice in maniera contigua e mantenerlo tale, anche se l'originale non lo è
+- Posso effettuare ricerca binaria sull'indice
+- Gli indici sono più piccoli visto ceh riguardano solo le colonne che interessano: ho meno pagine da portare in memoria quando li uso.
+
+Svantaggi:
+
+- Spazio: per quanto piccolo, ne occupiamo di più
+- L'indice va mantenuto aggiornato quando si modificano i dati
+- Vi è un salto di lettura ulteriore quando devo passare dall'indice al dato.
+
+Il file costruito come struttura intermedia può però essere ancora potenzialmente lungo: se si suppone che la chiave di ricerca sia circa 1/10 (come ampiezza) rispetto al record globale, se si ha una relazione che occupa 1mln di pagine, l'indice ne occuperà 100k (comunque molte!)
+
+E' conveniente quindi costruire delle sovrastrutture che "inglobino" degli intervalli di chiavi. Questo procedimento può essere ripetuto a più livelli:
+
+- Al livello più basso ho le pagine del disco, con n chiavi non ordinate. Il tipo di organizzazione in cui non vi è ordinamento e contiguità del datafile è l'"unclustered".
+  
+  Non vi è alcun requisito di ordinamento/raggruppamento dei record logicamente vicini nelle pagine dei dati (mentre le chiavi nell'indice sono logicamente e fisicamente vicine).
+- Una prima struttura ausiliaria a n chiavi (stesso numero del livello base) ordinate e con un puntatore
+- Una struttura ausiliaria con una chiave per ogni range di valori.
+
+Questa tecnica è quella dell'ISAM: **Index Sequential Access Method**.
 
 #### ISAM
 
