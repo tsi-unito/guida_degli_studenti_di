@@ -583,19 +583,184 @@ Questa tecnica è quella dell'ISAM: **Index Sequential Access Method**.
 
 #### ISAM
 
+Questo genere di indice si basa su una ricerca ad albero.
+
+Si può concludere che un dato non è presente nel database alla fine del cammino di un ramo.
+
+**Il costo di accesso agli indici è logaritmico.**
+
+Dopo un inserimento per bilanciare l'albero si identifica la pagina in cui il dato dovrebbe essere inserito (primary page); se non ci sta si genera una pagina di overflow che estende quella precedentemente individuata (overflow page).  
+**Le pagine di overflow portano al deterioramento** della struttura dell'indice, per cui questo tipo di indice è molto efficace con realtà molto statiche (pochi inserimenti e cancellazioni), dove invece è semplice da gestire e molto efficace.
+
+Quante operazioni di I/O mi servono per raggiungere il dato che voglio? **Ne servono tante quante la profondità dell'albero + 1** (la pagina che contiene effettivamente il dato; gli altri sono "salti" di livello).
+
+Quindi, meno profondo è l'albero, e più efficiente è il suo uso.
+
+La profondità può essere stimata come $log_k(n)$, dove k è il massimo numero di puntatori che ogni nodo ha (**fattore di ramificazione**), mentre n è il numero delle foglie.
+
+In particolare, k è uguale al rapporto tra la dimensione di una pagina e la dimensione di una chiave di ricerca. Dunque è bene avere chiavi di ricerca piccole in modo da avere un k più grande.
+
+Ogni accesso al dato comporta il caricamento dell'intera pagina in memoria principale. Inserimenti e cancellazioni non vanno a modificare la struttura interna dell'indice:
+
+- Gli inserimenti si effettuano al livello delle foglie, nei file di dati, se c'è spazio.
+- Le cancellazioni cancellano dal file di dati ma la corrispondente chiave, se presente nell'indice, vi resta.
+
+Il file di indice è statico e può cambiare solo se si nota che la struttura sta degenerando e il costo sta diventando eccessivo (potenzialmente per la presenza di troppe pagine di overflow).
+
+Il file di index è sorted, contiguo e, per ogni relazione, ci può essere al massimo 1 ISAM: ogni relazione può essere ordinata rispetto ad un unico criterio di ordinamento (ma questo vincolo è meno stringente con i B+Tree)
+
 #### B+Tree
+
+E' più utilizzato rispetto ad ISAM perché più realistico. Continua ad avere i dati nelle foglie, ma non sono pià memorizzati in modo ordinato e contiguo: si usano dei puntatori (in avanti e indietro) per passare da una foglia all'altra. Viene meno il vincolo di avere un unico criterio di indicizzazione.
+
+I nodi interni non sono statici e soprattutto non sono completamente riempiti. La struttura dell'albero rimane bilanciata, ma viene aggiornata a fronte di aggiornamenti che rendono necessari degli aggiustamenti. **Non avremo quindi overflow.**
+
+I nodi sono tenuti pieni tra il 50 e il 100%; l'occupazione media delle pagine è del 70%. Questo comporta un minor sfruttamento dello spazio.
+
+Un minor riempimento comporta un minor fanout, e quindi una profondità dell'albero maggiore. Tuttavia, con questa organizzazione, possiamo passare dalla radice alle foglie con l'attraversamento dell'albero e una volta arrivati alla foglia si ha sicuramente il dato (data l'assenza di pagine di overflow).
+
+Gli algoritmi utilizzati per aggiornare l'indice cercano di avere l'albero sufficientemente alto in modo da aumentare il fanout, per rischiare il meno possibile di trovarsi in un nodo interno e avere poco margine per ridirigere il traffico e raggiungere l'informazione realmente cercata.
+
+Con un'occupazione di questo genere il parametro d (ordine dell'albero) va da 1d a 2d (con riempimento al 50% e 100%). L'ordine del B-albero è il numero minimo di chiavi contenute in un singolo nodo.
+
+Come l'ISAM, supporta le query di uguaglianza e range molto efficientemente. La dimensione del nodo è pari alla pagina di memoria.
+
+Il motivo per cui teniamo tanti spazi vuoti è per ridurre le operazioni di ristrutturazione (molto costose!) a discapito dello spazio.
+
+L'albero non sarà mai sbilanciato. Solo la radice potrà avere un riempimento < 50%.
+
+Quando avviene uno split di un nodo, si cercherà di suddividere il contenuto equamente tra la vecchia e la nuova pagina per:
+
+1) Ridurre il rischio di dover effettuare un altro split in cui vengano eseguiti nuovi elementi
+2) Per evitare fanout eccessivamente bassi che determinerebbero inefficienze durante la ricerca.
+
+Importante: i B+Tree contengono solo i puntatori ai dati, mentre i B-tree contengono anche i dati.  
+Il fanout è legato al numero massimo di coppie chiave-puntatore che si possono memorizzare all'interno della pagina.
+
+Il B+Tree non si aspetta che il file che indicizza sia ordinato, per cui è suo compito ordinarlo a livello delle foglie.
 
 #### Prefix Key Compression
 
+E' una soluzione di compromesso nel caso in cui si ha la necessità di avere chiavi molto grandi (ad esempio un indirizzo cittadino), dal momento che la natura del dominio giustifica delle interrogazioni su una chiave di quel genere.
+
+Si sarebbe potuto usare una funzione di hash ma, per risparmiare tempo dell'hashing, si usa la tecnica di compressione del prefisso.
+
+Questa tecnica prevede che, qualora le stringhe siano troppo lunghe, anziché inserire a livello di chiave l'intera stringa, si può inserire soltanto una porzione minima sufficiente per discriminare e dirigere il traffico.
+
+Queste compressioni potrebbero aumentare il fanout.
+
+Implicazioni:
+
+- Il fatto che il prefisso sia discriminante (e quindi sufficiente per rappresentare le chiavi) è vero in un certo momento, ma potrebbe non esserlo più se si aggiungono altre chiavi.
+- Il vantaggio dell'appiattimento dell'albero lo si paga con una gestione della variabilità del record a livello di singolo nodo (che non permette più il concetto di un determinato grado per i nodi).
+- Le procedure di inserimento e cancellazione sono pesanti: bisogna assicurarsi che le sotto-stringhe delle chiavi continuino a discriminare e, nel caso peggiore, bisogna aggiornare anch'esse (per evitare backtracking che renderebbe inutile l'indice).
+
 #### Bulk Loading
+
+Quando si crea da zero un indice su una relazione si effettua l'operazione di bulk-loading: si caricano in maniera completa, compatta ed efficiente le informazioni all'interno dell'albero.
+
+Se possiamo ordinare completamente la relazione (quindi quando non è stata ancora ordinata rispetto ad altri criteri da un ISAM ad esempio), la ordiniamo completamente in modo che le pagine ordinate corrispondano alle pagine delle foglie dell'indice.
+
+Se non lo si può fare (già presente un ISAM su un altro criterio), si effettua un ordinamento su una copia delle chiavi-puntatori su cui si sta costruendo l'indice.
+
+E' una tecnica costosa, ma esistono comunque delle tecniche efficienti.
+
+Quando i record ordinati vengono inseriti (una pagina alla volta) nella struttura, ciascun inserimento ha impatto solo sul sottoalbero più a destra che ho già inserito nella struttura che sta crescendo.
+
+Quindi, prima si effettua l'ordine delle foglie e poi si costruiscono i nodi interni, sempre con questo effetto solo a destra, con un costo contenuto (le operazioni avvengono solo a destra perché i dati sono stati ordinati in partenza).
+
+Con il bulk loading riusciamo a seguire i fattori di riempimento indicati inizialmente dal progettista.
+
+Le foglie possono essere memorizzate sequenzialmente o tramite link (se si hanno già altri ordinamenti vincolanti). Quando si lavora con record a lunghezza variabile è difficile tenere pagine contigue, e non si ha la garanzia sulla cardinalità delle chiavi.
+
+Vantaggi:
+
+- Non effettuo split e riorganizzazioni dell'albero
+- Posso controllare il fanout dei vari nodi.
 
 #### Indici Clustered e Unclustered
 
+Classificazione degli indici:
+
+- **Indice primario**: definito sulla chiave primaria
+- **Indice secondario**: definito su altre chiavi non primarie
+
+Clustered vs Unclustered index: ad esempio la struttura ISAM è clustered, cioè che impone l'ordinamento; le unclustered non lo impongono.
+
+In particolare:
+
+- Un indice è **clustered** se l'ordinamento presente al livello delle foglie dell'index file è coerente con l'ordinamento dei record dei dati nel file dei dati. Questo vuol dire che il file su cui l'indice è costruito è ordinato (o "quasi" ordinato, visto che l'ISAM ha le pagine di overflow).
+  
+  Tipicamente succede che i puntatori che si incontrano scandendo le foglie ordinatamente (per definizione sono ordinate) sono a loro volta ordinati: **facendo una scansione non torno mai a leggere quello che ho già letto**.
+- Con un indice **unclustered**, se si vuole effettuare una scansione sequenziale ed ordinata del file, lo si può fare partendo dall'indice, ma non si ha la garanzia di leggere ciascuna pagina del file di dati una volta sola (potrei dover tornare a leggere una pagina parzialmente letta per continuare con i record nell'ordine corretto).
+  
+  Questo può accadere perché potenzialmente l'ordinamento del file di partenza segue un'altro attributo (nome, cognome, indirizzo, cell, ecc): in pratica, **non vi è coerenza tra l'ordinamento delle chiavi e delle foglie**.
+
+Lo svantaggio della versione unclustered è proprio la lettura più volte di una pagina. Inoltre, il livello delle foglie deve contenere un puntatore per ogni record, mentre nella versione clustered si può avere un solo puntatore per pagina.
+
+Naturalmente, per la versione clustered uno degli svantaggi è che può funzionare solo per data file ordinati. 1 solo indice può essere clustered dal momento che un data file può avere un solo ordinamento: quindi tutti gli altri indici dovranno essere unclustered.
+
+Esiste un modo per avere due indici clustered: utilizzare due copie dei dati. Questo è estremamente dispendioso a livello di spazio e di tempo.
+
+E' buona norma quindi indicizzare con l'indice clustered la colonna che è più spesso usata per query di range.
+
 #### Indici con chiavi di ricerca composite
+
+Nel caso in cui effettuiamo ricerche con più attributi come criterio, possiamo creare degli **indici con chiavi di ricerca composite**.
+
+Ho alcune soluzioni:
+
+1) Uso prima un indice a chiave semplice e poi l'altro, effettuando intersezioni
+2) Filtro sul valore specifico o sul range e poi filtro di nuovo sui dati rimanenti (rischio che non funzioni se per caso tutti i valori soddisfano la prima query)
+3) Si rivela potenzialmente utile l'indicizzazione su chiave composta.  
+
+Quando si realizza una chiave composta, prima si ordina il primo attributo della chiave, e poi si ordina nuovamente sul secondo attributo.
 
 ### Indici basati su hash
 
+Una funzione di hashing è una funzione che ricevendo in input un qualche oggetto (ad esempio il valore dell'attributo che indicizziamo) lo mappa in un numero (spesso un intero) che corrisponderà all'indirizzo della pagina con tutti i record con quella specifica chiave.
+
+Esistono due approcci:
+
+1) Faccio hashing direttamente sui dati: quindi ottengo la posizione dell'oggetto nel disco (pagina)
+2) Uso un indice a directory: Calcolo l'hash; vado direttamente alla pagina dove sono memorizzati tutti i puntatori. Da lì verifico la chiave e salto all'indirizzo dove si trova il dato su disco.  
+  
+  In questa maniera riesco ad avere file di hashing che occupano meno spazio, ma dovendo fare almeno un salto in più.
+
+**Hash-based-indexes**: una struttura ad indice alternativa. L'indice è una collezione di bucket. Un **bucket** è una primary page più un certo numero di overflow pages.
+
+Vantaggio: le query di uguaglianza sono molto più veloci rispetto agli indici gerarchici
+
+Svantaggi:
+
+- Non è possibile fare query di range
+- Se ci sono collisioni si creano pagine di overflow quando le pagine si riempono
+
 #### Static Hashing
+
+Con l'hashing vogliamo avere la garanzia che chiavi distinte vengano mappate in valori di indice differenti.
+
+Quando avviene una **collisione** significa che due chiavi restituiscono lo stesso hash.
+
+Se n è il numero di elementi in cui si vogliono distribuire le chiavi, si ricorre all'operazione di modulo. Questo significa che otterremo sempre un valore nell'intervallo [0, n-1].
+
+Idealmente i valori sono ben distribuiti (preferibilmente grazie alla funzione di hash). Sfortunatamente questa ipotesi di buona distribuzione non è assicurata, specialmente nei casi in cui possono essere presenti duplicati. In quel caso si estende la pagina con una pagina di overflow (e ripetendo il processo se anche quella dovesse essere piena).
+
+Quando effettuo una query calcolo l'hash ed individuo il record. Spesso è un accesso rapido (1 solo), ma con catene di overflow lunghe questo non si verifica (e otteniamo un pesante costo di seek).
+
+L'utilizzazione delle pagine deve essere comunque abbastanza alta: non possiamo averle quasi tutte vuote per evitare l'overflow! Dovrei portare in memoria molte pagine per dei file che voglio leggere sequenzialmente.
+
+Serve un giusto bilanciamento tra:
+
+1) contenere la lunghezza delle catene di overflow
+2) buona utilizzazione delle pagine
+
+Quale può essere una dimensione opportuna per la tabella di hash da utilizzare per ottimizzare gli accessi dei record di file, data la dimensione dei file di dati?
+
+- Troppo larga: numero elevato di pagine sotto-utilizzate; scansione del file costosa
+- Troppo piccola: numero eccessivo di collisioni e lunghe catene di overflow.
+
+Si parte con un numero n di partizioni e si comincia a popolare i bucket relativi a questi n scelti. Quando il numero di collisioni diventa eccessivo, si raddoppia o triplica la dimensione dell'array.
 
 #### Extendible Hashing
 
