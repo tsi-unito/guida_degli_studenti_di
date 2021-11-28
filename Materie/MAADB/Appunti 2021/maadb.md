@@ -53,6 +53,14 @@
     - [Linear Hashing](#linear-hashing)
   - [Modello dei Costi](#modello-dei-costi)
 - [Buffer Management](#buffer-management)
+  - [Responsabilità del buffere manager](#responsabilità-del-buffere-manager)
+  - [Algoritmo del clock](#algoritmo-del-clock)
+  - [Separazione dei domini](#separazione-dei-domini)
+  - [Algoritmo del working set (new algo)](#algoritmo-del-working-set-new-algo)
+  - [Algoritmo basato su HotSet](#algoritmo-basato-su-hotset)
+  - [Query Locality Set Model](#query-locality-set-model)
+    - [pattern di accesso ai dati](#pattern-di-accesso-ai-dati)
+  - [Algoritmo DBmin](#algoritmo-dbmin)
 
 ## Concetti base
 
@@ -804,4 +812,99 @@ Svantaggio: se i dati occupano il 100% di un bucket senza aver raggiunto il riem
 
 ### Modello dei Costi
 
+![Costi delle operazioni](Costi%20delle%20operazioni.png)
+
+Ricordiamo:
+
+- **B**: il numero di data pages nel data file
+- **R**: Numero di record per pagina
+- **D**: tempo (medio) per leggere o scrivere una pagina su disco (ignorando il prefetching)
+
+Ulteriori assunzioni:
+
+Heap files: contengono i dati.  
+Si assume che per ogni chiave si abbia ESATTAMENTE un match.
+
+Per l'hash ignoriamo i problemi dell'overflow, considerando una situazione ottimale.  
+Se ci stanno 100 elementi, riempo la pagina solo all'80%. Questo vuol dire che la dimensione del file effettiva viene ad essere pari al 125% della dimensione dei dati effettivi.
+
+Per le scan:
+
+- Ci aspettiamo che tutte le foglie siano concatenate. Questo vuol dire che quando completo la lettura di una pagina ho il puntatore per la pagina successiva per accedere direttamente.
+- Si lavora con indici di tipo unclustered.
+
+- **Heap**
+  - **Scan**: Il file occupa B pagine: passo alla prima, poi alla seconda, poi alla terza: la scansione mi costa $B \cdot D$.  
+  
+    Non sto calcolando il costo delle operazioni in memoria centrale, ma per scandire un file devo portarlo in memoria centrale. Ricordiamo che la lettura diretta da disco non avviene, ma si passa per la memoria centrale.
+  - **Equality**: La sto effettuando su un file non ordinato. So che se c'è, la chiave è unica.  
+    Nel caso migliore, leggo solo la prima pagina (D) e trovo la chiave che cerco.  
+    Nel caso pessimo, trovo la chiave SOLO nell'ultima pagina.  
+    **Mediamente**, se le query sono distribuite su tutte le chiavi, dovrei metterci $0.5\ B \cdot D$.
+  - **Range**: $B \cdot D$, dal momento che per fare una query di range devo scansionare l'intero file per verificare se un record sta nel range.
+  - **Insert**: $2D$: una per la lettura ella pagina in cui c'è spazio (dal momento che HO informazioni a riguardo). Faccio la modifica e rendo la pagina persistente scrivendola su disco. Non mi interessa l'ordine visto che lo HEAP non è ordinato.
+  - **Delete**: Devo prima cercare il record: è il costo della ricerca $0.5\ B \cdot D$ più quello di una riscrittura della pagina modificata.
+- **Sorted**
+  - **Scan**: Stesso costo della heap ($B \cdot D$): se un file contiene P pagine, ordinate o meno, se devo leggerlo tutto, in ogni caso devo caricarle tutte.
+  - **Equality**: Essendo ordinato, posso dimezzare ad ogni lettura il numero delle pagine. Il costo diventa $log_2(B)$ pagine * D (il costo di ogni lettura)
+  - **Range**: $log_2(B)$ pagine per individuare la prima pagina del file con un valore che rientra nell'intervallo, più il numero di pagine che contengono record che rientrano nel range.
+  - **Insert**: Devo mantenere tutto **compatto ed ordinato**.  
+    Dovrò shiftare in avanti tutti i record che vanno dopo quelli che ho inserito. Tutte le pagine successive a quella che contiene la posizione in cui devo fare l'inserimento dovranno essere corrette: lette e riscritte.  
+    Avrò mediamente metà file da leggere ($0.5\ B \cdot D$) e lo stesso costo anche per riscrivere. Costo della ricerca + BD
+  - **Delete**: Devo trovare l'elemento da cancellare e poi devo di nuovo compattare per non lasciare buchi. Costo della ricerca + BD
+- **Clustered**: è una struttura per cui abbiamo una corrispondenza in termini delle relazioni di ordinamento tra i puntatori del livello delle foglie e gli indirizzi delle pagine stesse puntati dai puntatori.  
+  L'ordinamento dei puntatori corrisponde all'ordine delle pagine puntate.  
+  Si fonde il concetto di foglia dell'indice con quello di file indicizzato. Essendo il file ordinato non era necessario ripetere tutte le chiavi a livello di foglia dell'indice, ma era necessario semplicemente indicizzare l'inizio, sapendo che l'elenco delle chiavi esistenti era presente nel file ordinato.  
+  Con l'indice clustered potrebbe esserci ridondanza.  
+  Trattandosi di un indice gerarchico, si assume che l'occupazione dei dati sia maggiorato del 50%.
+  - **Scan**: Se la dimensione di un file heap/sorted ci richiedeva BD accessi, adesso è $1.5\ B \cdot D$: porto infatti in memoria pagine che sono per 1/3 vuote.
+  - **Equality**: $D \cdot log_F(1.5B)$: devo leggere tante foglie, quindi devo leggere diverse pagine per un quantitativo pari al fan-out * 1.5B. E' importante avere un fan-out il più ampio possibile: la profondità dell'albero sarà $log_F(1.5B)$, cioè il numero di pagine che dovrò leggere.
+  - **Range**: $D \cdot log_F(1.5B + #pagg con match)$: devi cercare l'inizio del range, e poi procedere sequenzialmente fino a quando non incontro il primo valore al di fuori del range di ricerca.
+  - **Insert**: Search + D: Richiede che mi posizioni sulla pagina su cui devo fare la modifica, quindi il costo di ricerca (Search).  
+    Dopo, il tutto si riduce a fare fisicamente la modifica e riportare su disco la pagina modificata (D). Il costo aumenta drasticamente quando la pagina era piena (e quindi bisogna fare degli aggiustamenti).
+  - **Delete**: Stesso discorso dell'insert.
+- **Unclustered Tree Index**: Nel caso peggiore ogni accesso ai dati individuati da una foglia comporta la scrittura di una pagina.
+  - **Scan**: Se voglio fare una scansione non ordinata, non devo sfruttare il fatto che ci sia un indice per il file: posso scandirlo come uno HEAP.  
+  
+    Se voglio sfruttare l'indice per fare una scansione ordinata, se non ho condizioni vantaggiose avendo un tree l'occupazione è del 67% (ipotesi). Quindi le pagine sono 1.5 volte quelle per i dati compatti (1.5B).  
+
+    Con un indice unclustered i dati memorizzati nel file sono data entries, che come ipotesi di lavoro si è detto che sono il 10% dei record. L'occupazione delle foglie dell'indice è quindi pari al 10% di quella che sarebbe l'occupazione delle stesse foglie se avessi il record completo. Quindi ho un costo pari a $0.15B \cdot D$.
+
+    0.15B è l'occupazione delle foglie del file che considero.
+
+    Visto che abbiamo solo i puntatori e voglio fare una scansione ordinata, ogni elemento presente nelle foglie è potenzialmente causa di una nuova lettura.
+
+    Per ciascuna chiave presente nelle foglie io devo potenzialmente fare un salto, e quindi devo leggere R volte per ciascuna pagina (BR) le pagine contenenti i dati.
+  - **Equality**: Devo arrivare dalla radice alla foglia che mi consente di dire se la chiave c'è o non c'è.  
+    Dato che però le foglie contengono solo 0.15B nodi, la profondità dell'albero sarà data da $log_F(0.15B)$.
+
+    Una volta che arrivo a posizionarmi sulla foglia dell'indice in cui è presente il puntatore alla chiave che sto cercando (se c'è), uso ancora il puntatore (ulteriore lettura) per accedere alla pagina che contiene effettivamente il dato che stavo cercando.
+
+    $$D\left(1+log_F\left(0.15B\right)\right)$$
+  - **Range**: Mi posiziono all'inizio ($log_F(0.15B)$ letture) e poi devo leggere un certo numero di pagine che effettivamente soddisfano i requisiti: 
+    $$D\left(1+log_F\left(0.15B\right)+ \text{ \#pagg che soddisfano i requisiti}\right)$$
+  - **Insert**: Nell'ipotesi di non dover modificare tutta la struttura, devo solo cercare il livello e devo modificare sia l'indice, sia la pagina (2D): Search + 2D.
+  - **Delete**: Il costo è lo stesso della insert, per le stesse ragioni.
+- **Unclustered Hash Index**
+  - **Scan**: Anche in questo caso se voglio farla ordinata devo accedere pagina per pagina e poi per ogni record accedo all'informazione specifica. 10% di 1.25 è 0.125: $B \cdot D (R+0.125)$. Leggo tutte le pagine dei bucket e poi da ciascun bucket accedo al corrispondente record.
+  - **Equality**: Applico l'hash a quello che cerco, accedo al puntatore, poi alla pagina puntata: 2D. Un accesso al bucket e uno al file
+  - **Range**: Scandisco il file. BD. L'hash non aiuta.
+  - **Insert e Delete**: Analoghi del precedente. Cerco, inserisco/tolgo la chiave e aggiorno il record dei puntatori. Search + 2D.
+
 ## Buffer Management
+
+### Responsabilità del buffere manager
+
+### Algoritmo del clock
+
+### Separazione dei domini
+
+### Algoritmo del working set (new algo)
+
+### Algoritmo basato su HotSet
+
+### Query Locality Set Model
+
+#### pattern di accesso ai dati
+
+### Algoritmo DBmin
