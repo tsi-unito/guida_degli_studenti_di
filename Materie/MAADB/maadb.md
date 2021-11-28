@@ -764,7 +764,43 @@ Si parte con un numero n di partizioni e si comincia a popolare i bucket relativ
 
 #### Extendible Hashing
 
+L'idea alla base è una directory in cui vado a mappare gli indirizzi delle chiavi su cui è applicato l'hashing. Quando una directory è troppo piena, devo applicare un **re-hashing localizzato**:
+
+Se si hanno due bucket, e uno è pieno e l'altro no, raddoppio la directory/bucket pieno e ri-assesto i dati.
+
+Cambia la funzione di hashing, che ora dovrà essere mod4, ma posso mappare entrambi gli hash che prima corrispondevano a 1 sempre al bucket già esistente e non toccato.
+
+Punti deboli:
+
+- Rischio che la directory cresca esponenzialmente solo per poche pagine andate in overflow
+- La directory sarà piccola e conterrà solo puntatori, ma raddoppia ogni volta e quindi cresce in modo esponenziale: ha comunque un suo costo.
+
 #### Linear Hashing
+
+Cerca di risolvere i problemi dell'extendible hashing, cercando di evitare il raddoppio dell'intera directory.
+
+Invece di concentrarci sui singoli bucket, ci poniamo in un problema di utilizzazione globale: quando raggiungo un certo riempimento (ad esempio l'80%) dell'intero indice, allora devo effettuare una ristrutturazione dell'indice.
+
+Questa ristrutturazione è effettuata con uno split su una delle pagine che è puntata da uno **split pointer**, che sequenzialmente si sposta.
+
+Definiamo più funzioni di hash:
+
+- $h_0(x) = x\ mod\ N$
+- $h_1(x) = x\ mod\ 2N$
+
+Quando effettuo lo split perché il riempimento raggiunge il limite stabilito, i bucket cambiano funzione di hash, e il puntatore procede in avanti.
+
+Se per caso un bucket si riempe completamente prima che il riempimento superi la soglia, dovrò utilizzare delle catene di overflow.
+
+Come si sceglie quale funzione di hash utilizzare?  
+Parto applicando $h_0$. Se mi restituisce un bucket successivo allo split pointer, questo è il bucket che cercavo.  
+Se invece $h_0$ restituisce un bucket precedente allo split, allora devo usare la funzione di hash $h_1$.
+
+Quando tutte le pagine sono state divise la prima funzione non è più necessaria: tratterò la seconda come se fosse la prima e ne creo una terza.
+
+Vantaggio: non raddoppio inutilmente la directory.
+
+Svantaggio: se i dati occupano il 100% di un bucket senza aver raggiunto il riempimento limite, allora si creeranno catene di overflow che verranno splittate se si raggiungerà il valore target.
 
 ### Modello dei Costi
 
