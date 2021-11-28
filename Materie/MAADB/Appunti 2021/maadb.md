@@ -61,6 +61,54 @@
   - [Query Locality Set Model](#query-locality-set-model)
     - [pattern di accesso ai dati](#pattern-di-accesso-ai-dati)
   - [Algoritmo DBmin](#algoritmo-dbmin)
+- [Operatori](#operatori)
+  - [Selezione semplice](#selezione-semplice)
+  - [Selezione complessa](#selezione-complessa)
+  - [Proiezione](#proiezione)
+    - [Note sulla proiezione](#note-sulla-proiezione)
+  - [Ordinamento](#ordinamento)
+    - [Merge Sort](#merge-sort)
+    - [Internal Sort](#internal-sort)
+  - [Join](#join)
+    - [Simple Nested Loop Join](#simple-nested-loop-join)
+    - [Page-oriented Nested Loops Join](#page-oriented-nested-loops-join)
+    - [Block Nested Loop Join](#block-nested-loop-join)
+    - [Index Nested Loop Join](#index-nested-loop-join)
+    - [Algoritmi Blocking e Sort Merge Join](#algoritmi-blocking-e-sort-merge-join)
+    - [Sort Merge Join e una sua ottimizzazione](#sort-merge-join-e-una-sua-ottimizzazione)
+    - [Hash-Join](#hash-join)
+- [Ottimizzazione delle query](#ottimizzazione-delle-query)
+  - [Query Optimization](#query-optimization)
+  - [Heuristic VS Cost based operation](#heuristic-vs-cost-based-operation)
+  - [Stima dei costi delle query](#stima-dei-costi-delle-query)
+  - [Assunzioni alla base del modello dei costi](#assunzioni-alla-base-del-modello-dei-costi)
+- [Gestione delle Transazioni](#gestione-delle-transazioni)
+  - [Anomalie e serializzabilità](#anomalie-e-serializzabilità)
+  - [Grafo delle dipendenze](#grafo-delle-dipendenze)
+  - [Algoritmi basati sul Locking](#algoritmi-basati-sul-locking)
+    - [Strict 2PL](#strict-2pl)
+    - [Protocollo 2PL](#protocollo-2pl)
+  - [Deadlock](#deadlock)
+  - [Multiple-Granularity Locks](#multiple-granularity-locks)
+    - [Intention Lock](#intention-lock)
+  - [Dynamic Databases](#dynamic-databases)
+  - [Locking su indici B+Tree](#locking-su-indici-btree)
+    - [Algoritmo di Bayer-Schlonick](#algoritmo-di-bayer-schlonick)
+    - [Even Better Algorithm](#even-better-algorithm)
+    - [Optimistic CC - Kung/Robinson](#optimistic-cc---kungrobinson)
+    - [Variante di KB, Validazione seriale](#variante-di-kb-validazione-seriale)
+  - [Optimistic 2PL](#optimistic-2pl)
+  - [Timestamp CC](#timestamp-cc)
+  - [Multiversion CC](#multiversion-cc)
+- [Crash Recovery](#crash-recovery)
+  - [Il File di Log](#il-file-di-log)
+  - [Checkpoint](#checkpoint)
+  - [Gestione del Commit](#gestione-del-commit)
+  - [Gestione dell'Abort](#gestione-dellabort)
+  - [Gestione del Crash](#gestione-del-crash)
+    - [Fase di Analisi](#fase-di-analisi)
+    - [Fase di REDO](#fase-di-redo)
+    - [Fase di UNDO](#fase-di-undo)
 
 ## Concetti base
 
@@ -908,3 +956,105 @@ Per le scan:
 #### pattern di accesso ai dati
 
 ### Algoritmo DBmin
+
+## Operatori
+
+---
+
+**Importante**:
+
+---
+
+### Selezione semplice
+
+### Selezione complessa
+
+### Proiezione
+
+#### Note sulla proiezione
+
+### Ordinamento
+
+#### Merge Sort
+
+#### Internal Sort
+
+### Join
+
+#### Simple Nested Loop Join
+
+#### Page-oriented Nested Loops Join
+
+#### Block Nested Loop Join
+
+#### Index Nested Loop Join
+
+#### Algoritmi Blocking e Sort Merge Join
+
+#### Sort Merge Join e una sua ottimizzazione
+
+#### Hash-Join
+
+## Ottimizzazione delle query
+
+### Query Optimization
+
+### Heuristic VS Cost based operation
+
+### Stima dei costi delle query
+
+### Assunzioni alla base del modello dei costi
+
+## Gestione delle Transazioni
+
+### Anomalie e serializzabilità
+
+### Grafo delle dipendenze
+
+### Algoritmi basati sul Locking
+
+#### Strict 2PL
+
+#### Protocollo 2PL
+
+### Deadlock
+
+### Multiple-Granularity Locks
+
+#### Intention Lock
+
+### Dynamic Databases
+
+### Locking su indici B+Tree
+
+#### Algoritmo di Bayer-Schlonick
+
+#### Even Better Algorithm
+
+#### Optimistic CC - Kung/Robinson
+
+#### Variante di KB, Validazione seriale
+
+### Optimistic 2PL
+
+### Timestamp CC
+
+### Multiversion CC
+
+## Crash Recovery
+
+### Il File di Log
+
+### Checkpoint
+
+### Gestione del Commit
+
+### Gestione dell'Abort
+
+### Gestione del Crash
+
+#### Fase di Analisi
+
+#### Fase di REDO
+
+#### Fase di UNDO
