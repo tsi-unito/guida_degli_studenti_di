@@ -53,13 +53,19 @@
     - [Linear Hashing](#linear-hashing)
   - [Modello dei Costi](#modello-dei-costi)
 - [Buffer Management](#buffer-management)
-  - [Responsabilità del buffere manager](#responsabilità-del-buffere-manager)
+  - [Politiche di rimpiazzamento del buffer](#politiche-di-rimpiazzamento-del-buffer)
+  - [Responsabilità del buffer manager](#responsabilità-del-buffer-manager)
+  - [Politiche di sostituzione](#politiche-di-sostituzione)
+    - [LRU - Least Recently Used](#lru---least-recently-used)
+    - [MRU - Most Recently Used](#mru---most-recently-used)
+    - [Clock - Approssimazione di LRU](#clock---approssimazione-di-lru)
+  - [Sequential Flooding](#sequential-flooding)
   - [Algoritmo del clock](#algoritmo-del-clock)
   - [Separazione dei domini](#separazione-dei-domini)
   - [Algoritmo del working set (new algo)](#algoritmo-del-working-set-new-algo)
   - [Algoritmo basato su HotSet](#algoritmo-basato-su-hotset)
   - [Query Locality Set Model](#query-locality-set-model)
-    - [pattern di accesso ai dati](#pattern-di-accesso-ai-dati)
+    - [Pattern di accesso ai dati](#pattern-di-accesso-ai-dati)
   - [Algoritmo DBmin](#algoritmo-dbmin)
 - [Operatori](#operatori)
   - [Selezione semplice](#selezione-semplice)
@@ -941,19 +947,275 @@ Per le scan:
 
 ## Buffer Management
 
-### Responsabilità del buffere manager
+Un'applicazione non riceve mai i dati che richiede dal DB direttamente con una lettura su disco. I dati invece vengono preventivamente portati in un'area della memoria centrale, un frame buffer.
+
+Quando il DB effettua una richiesta di accesso ad una pagina, la effettua verso il buffer manager, che risponderà con la pagina già presente nel buffer oppure con una pagina reperita dalla memoria secondaria e prontamente messa nel buffer in uno slot libero (o sostituendo un'altra pagina).
+
+E' molto frequente comunque la sostituzione di pagine nel buffer, in quanto la memoria centrale è nettamente più piccola della secondaria!
+
+E' necessario ottimizzare sia il numero di accessi al disco che l'uso delle strutture dati che aiutano ad ottimizzarli.
+
+### Politiche di rimpiazzamento del buffer
+
+Si deve scegliere la pagina "vittima" che verrà rimpiazzata dal momento che non c'è più spazio libero nel buffer.
+
+Potremmo optare per la **scelta randomica**: è la politica meno costosa. E' molto veloce, ma è poco efficiente: potremmo continuare a rimuovere pagine che ci servono. Non c'è alcuna stima/previsione dell'utilizzo futuro delle pagine.
+  
+Inoltre, se la pagina vittima è stata anche modificata, questo comporterebbe anche una scrittura su disco.
+
+Le scelte di rimpiazzamento impatteranno anche le politiche di controllo degli accessi e la gestione della concorrenza (certe pagine possono essere condivise da più query).
+
+Il numero di lock attualmente attivi su una pagina può essere un'informazione preziosa per decidere se una pagina deve essere sostituita o no.
+
+Anche il crash recovery è influenzato dal comportamento del buffer manager, che è quindi base per il funzionamento di molte altre componenti del DBMS.
+
+---
+
+**Pin Counter**: un contatore che conta il numero di transazioni che in un certo istante stanno utilizzando una specifica pagina contenuta in un preciso frame del buffer. E' gestito dal transaction manager (assieme al buffer manager) per mantenerlo sempre aggiornato e corretto.
+
+---
+
+**Frame vs pagine**: una pagina del disco ha la stessa dimensione di un frame del buffer.
+
+---
+
+**Dirty Bit**: per ogni frame del buffer c'è un bit che dice se la pagina è "sporca", ovvero diversa a causa di modifiche rispetto alla sua controparte su disco. Dà quindi un'indicazione sulla necessità di permanere le modifiche salvandole su disco.
+
+Se invece una pagina non è stata modificata, non ha senso scriverla nuovamente su disco.
+
+Quindi una pagina con dirty bit = 1, se deve essere rimpiazzata, dovrà essere salvata su disco prima di poter tornare ad essere disponibile.
+
+Se avviene un crash, una pagina doveva essere salvata su disco se la transazione su cui ci operava aveva effettuato _commit_: per la condizione di durabilità le operazioni che effettuano commit devono diventare persistenti.
+
+Se il commit non è stato raggiunto invece, a seguito di un crash tutte le operazioni rese durevoli su disco dovranno essere disfatte.
+
+### Responsabilità del buffer manager
+
+- Mantenere una tabella di associazione degli identificatori delle pagine sul disco e i frame buffer, ovvero mantenere correttamente il mapping tra l'indirizzo fisico delle pagine su disco (ID della pagina sul disco) e il frame buffer in cui è eventualmente memorizzata.
+  
+  Quando l'utente fa una query, questa farà riferimento ai dati in una certa pagina del disco. L'indice ha i puntatori rispetto all'indirizzo fisico di memorizzazione della relazione su disco: allora il buffer manager dovrà saper dire se la pagina N c'è o non c'è (e se c'è, in quale frame si trova).
+- Deve avere l'informazione su quali frame sono disponibili per nuove letture.
+  
+  Si cerca la pagina N. Non c'è nel buffer. Si identifica quindi un frame libero e si aggiorna correttamente la tabella del mapping che dice cosa si trova dove.
+
+  In assenza di frame liberi, serve una strategia di rimpiazzamento per scegliere chi liberare in caso di necessità.
+
+  In assenza di informazioni si usa in genere una politica LRU, o in alternativa MRU. Entrambe rispondono ad un **principio di località temporale**, ovvero si assume che in un certo intervallo di tempo ci sia una tipologia di pagine che viene utilizzata di più.
+
+### Politiche di sostituzione
+
+#### LRU - Least Recently Used
+
+Si sceglie la pagina meno usata di recente.
+
+Nel caso invece di **Least Frequently Used** si sceglie la pagina che viene usata più di rado (e che quindi ora non ha senso che si trovi in memoria centrale), sperando che non serva nell'immediato futuro.
+
+LRU e LFU sono politiche anche utilizzate nei SO, e corrispondono ad un principio di località temporale. Questo vuol dire che si assume che in un certo intervallo di tempo ci sia un certo gruppo di pagine più utilizzate: se una pagina è stata portata in RAM vuol dire che verrà utilizzata parecchio.  
+Una volta che l'uso è terminato, per un bel po' non servirà più, fino a quando un'altra query che la utilizza non verrà nuovamente avviata.
+
+Località temporale: utile per un arco di tempo, dopo il quale non sarà più utile e solo spazio sprecato perché non usata dalle transazioni successive.
+
+Se si ha ragione di ipotizzare che la valga la località temporale, sono politiche adeguate. Può presentarsi il problema del sequential flooding (ogni lettura corrisponde ad un page fault). LRU è popolare, ma non è adeguato per tutti i pattern di accesso.
+
+#### MRU - Most Recently Used
+
+E' l'approccio duale al LRU. Si basa su un principio di anti-località temporale: se è stata appena usata una pagina, allora per un po' non servirà più e quindi si privilegiano le pagine più vecchie che potrebbero tornare utili presto.
+
+E' utile quando si presenta un sequential looping (accesso sequenziale circolare alle pagine (1-2-3-4-5-1-2-3...)) come pattern di accesso. LRU comporterebbe invece sequential flooding.
+
+#### Clock - Approssimazione di LRU
+
+Pone rimedio ai problemi di LRU: per scegliere la pagina LRU bisogna tenere traccia degli accessi alle pagine, e quindi gestire una struttura dati (coda a priorità).
+
+Siccome le pagine sul buffer sono tante e l'attività sul buffer è frenetica (dal momento che tutte le operazioni avvengono lì sopra), la gestione di tutte le operazioni e il mantenimento aggiornato della coda di priorità è molto costoso.
+
+Per questo motivo, spesso quando si sceglie di usare LRU, la si emula con altri algoritmi, come quello del clock: cercherà di restituire e riconoscere pagine che non sono utilizzate da tanto tempo. In ogni caso visto che emula LRU, erediterà il problema del sequential flooding.
+
+### Sequential Flooding
+
+Supponiamo:
+
+- che io debba leggere tante volte la relazione interna
+- che il buffer sia di 3 pagine
+- la relazione che devo leggere ne richiede 4
+
+Una volta portate in memoria 3 pagine, la quarta dove la metto, non avendo frame liberi?
+
+Uso l'approccio LRU: la pagina che non uso da più tempo è la 1 e la sostituisco con la 4.
+
+Ora ho bisogno di leggere la 1. La sostituisco alla 2.
+
+Ora tocca alla 2, e la sostituisco alla 3.
+
+Se si sa che l'accesso alle informazioni è ciclico, allora MRU è più conveniente: la pagina che ho appena letto è quella che mi servirà più lontano nel tempo, quindi vado a sostituire subito l'ultima pagina appena letta.
+
 
 ### Algoritmo del clock
 
+Si chiama così perché itera in maniera ordinata e ciclica dal primo all'ultimo frame, come se fosse un orologio. Per scegliere la vittima si usa un puntatore che opera come la lancetta di un orologio che via via si posizionerà su tutti i frame del buffer.
+
+Si vuole scegliere come vittima quel frame che non è stato usato da molto tempo.
+
+Ci servono alcune informazioni:
+
+- **pincount**: Dice quante sono le transazioni attive sul buffer; se è > 0 vuol dire che quel frame del buffer è in uso. Più è elevato e più sono le transazioni che lo usano.
+- **referenced**: bit che si utilizza nel visitare le diverse pagine. A seconda delle versioni dell'algoritmo, è inizializzato a 0 o 1
+- **available**: Informazione sul fatto che la pagina sia dirty o no, per persistere eventualmente il contenuto della pagina qualora questa venga scelta come vittima.
+
+![Algoritmo del clock](Clock_algo.png)
+
+L'idea è quella di scegliere pagine che non sono state utilizzate almeno per la durata di un ciclo completo su tutte le pagine del buffer.
+
+La pagina è inizializzata con `referenced = 1`.
+
+Quando la pagina è "non pin" e quindi ha `pincount = 0` (nessun la sta usando) ma ha il `referenced = 1`, vuol dire che è candidabile ma non disponibile, quindi la si dichiara available ponendo `referenced = 0`.
+
+Al prossimo giro, dopo averle visitate tutte, se la pagina non è stat selezionata da nessuno e continua a rimanere "available", allora viene scelta come vittima perché è potenzialmente rimasta non utilizzata per un intero giro. L'idea è di scegliere le pagine che sono state vuote almeno il tempo di fare tutto il giro completo delle pagine nel buffer.
+
+La pagina scelta potrebbe non esser stata utilizzata oppure utilizzata in maniera talmente veloce che è di nuovo disponibile.
+
+In poche parole, l'algoritmo del clock cerca di approssimare un comportamento che gestisce la frequenza dell'utilizzo delle pagine senza confermare effettivamente l'informazione della frequenza d'uso delle stesse.
+
 ### Separazione dei domini
+
+Come possiamo migliorare le prestazioni del buffer manager sfruttando le conoscenze che si hanno in modo da impattare sull'efficienza ed efficacia della strategia di rimpiazzamento?
+
+Uno dei criteri è quello della separazione dei domini.
+
+Anziché trattare tutti i frame in modo equivalente, si trattano porzioni di buffer diverse con diverse tipologie di file e si adottano diverse strategie di rimpiazzamento/uso delle pagine che costituiscono i file adattandole allo specifico tipo di file che è contenuto nella specifica porzione del buffer.
+
+L'idea di separare in base ai domini ha il vantaggio di tenere conto della specificità del tipo di dati e del modo con cui questi vengono utilizzati data la natura dell'organizzazione gerarchica dei dati stessi.
+
+Questa scelta è una buona approssimazione. E' una strategia abbastanza utilizzata.
+
+Dato che ogni volta che si accede ad un albero il primo nodo che viene esplorato è la radice, questo è il nodo più visualizzato. Si può pensare di separare la porzione di buffer dedicata agli indici dalla porzione destinata agli altri tipi di file (heap, sorted...).
+
+Per quanto riguarda gli indici, si possono privilegiare (sostituire con minor probabilità) quelle pagine che si presume saranno usate di più. Un esempio sono le radici degli alberi, rispetto alle foglie.
+
+LRU sarebbe poco vantaggiosa come strategia sugli indici, mentre per il resto del buffer potrebbe essere migliore.
 
 ### Algoritmo del working set (new algo)
 
+Invece di dare una priorità alla pagina in base al dominio a cui appartiene (radici, foglie...), si dà importanza in base alla relazione a cui appartiene in funzione della frequenza di uso di essa.
+
+Il working set ordina tutte le relazioni in una coda con priorità.
+
+Usiamo un algoritmo di ordinamento che per LRU risultava costoso, ma in questo caso non lo è perché stiamo ordinando le relazioni, che in genere saranno poche (o comunque di sicuro di meno dei frame del buffer).
+
+Ogni volta che si accede ad una relazione si aumenta il contatore degli accessi ed eventualmente si riordina la coda.
+
+Se quando devo portare una pagina di memoria non c'è spazio nella porzione di buffer dedicata alla relazione in questione, si sceglie come frame vittima un frame appartenente alla relazione con minore priorità (cioè usata meno frequentemente).
+
+Una volta scelta la relazione vittima, all'interno del suo buffer il frame vittima è scelto con politica MRU (per prevenire sequential flooding, ricordiamo a causa delle repeated scans).
+
+**Problemi**:  
+Si usa MRU perché è quello che evita il sequential flooding, ma non è sempre la politica ottimale: si è visto che in alcuni casi è più opportuno LRU, in particolare quando vale il principio di località temporale.
+
+Il fatto di utilizzare per ciascuna relazione sempre la stessa politica può essere vantaggioso o meno. Per questa ragione, in alcuni casi la tecnica basata su working set non funziona bene. Si ricorda infine che l'algoritmo del working set prevede, a livello di singoli working set, l'applicazione sempre della stessa politica.
+
 ### Algoritmo basato su HotSet
+
+Si chiama così perché è basato sull'idea di "hot point", che è il più piccolo numero di frame che si può allocare alla query garantendo un drastico calo dei page fault (cioè quando non abbiamo la pagina in RAM e la stiamo cercando).
+
+Si calcolano i PF con 1, 2, 3... frame fino a quando non si trova un numero "piccolo" che consenta un calo drastico dei page fault (a volte un solo frame in più fa la differenza).
+
+Operatori diversi possono avere hotset diversi.
+
+Se bisogna fare una scansione sequenziale del file, ad esempio per fare un selezione su un campo non indicizzato, si leggono i record della prima pagina per verificare quali vengono richiesti dalla query e poi si sostituisce la pagina con la successiva (e così via).  
+Per questo tipo di implementazione l'hotset è 1 perché basta un solo frame di buffer per ridurre al minimo i page fault.
+
+Nel caso del Join i record vengono utilizzati più volte, quindi avere più frame può ridurre i page fault.
+
+L'algoritmo dell'hotset ricorda quello basato su working set, ma in questo caso il buffer non è allocato ai singoli file, ma la porzione del buffer è allocata per le singole query.
+
+La quantità di buffer e il modo in cui viene gestito per ogni query è determinato (a grandi linee) dal comportamento della query stessa per quanto concerne i cicli, quindi dal fatto che l'implementazione dell'operatore effettui dei cicli o no.
+
+Per ogni operatore esistono diverse implementazioni, quindi per ognuna sarà opportuno assegnare una quantità di buffer diverso.
+
+Nel momento in cui si conoscono l'operatore alla base della query e l'implementazione dell'operatore scelta, è relativamente facile stimare (almeno pessimisticamente) il numero di letture da disco necessarie e di conseguenza il numero di page fault che si verificheranno, data una assegnazione di un certo numero di frame di buffer.
+
+**Problemi e debolezze**:
+
+La stima avviene sulla base del caso peggiore senza conoscere in termini molto precisi le statistiche legate alla distribuzione dei valori degli attributi (sarebbe troppo costoso mantenerle).
+
+Per essere troppo cauti, spesso si va ad allocare un numero eccessivo di frame, sprecando quindi spazio.
+
+Esempio: durante un join tra due tabelle che hanno molti valori duplicati dall'attributo su cui si fa il join (3 valori distinti ad esempio, in entrambe le tabelle), quest'algoritmo non è molto efficace.
 
 ### Query Locality Set Model
 
-#### pattern di accesso ai dati
+Se il working set allocava lo spazio alle singole relazioni su cui le query operano, il **query locality set model** alloca lo spazio all'insieme delle relazioni locali che si stann oconsiderando.
+
+Tiene conto sia dell'aspetto legato al working set, sia dell'aspetto legato alle relazioni sulle quali la query sta lavorando.
+
+Identifica i piani di valutazione della query (**query plan**), cioè una formulazione procedurale del piano di valutazione della query stessa e quindi della sequenza di operatori da applicarsi con un'indicazione specifica della loro implementazione scelta.
+
+All'interno di un query plan, identifica un certo numero limitato di pattern di accesso diversi (la prevedibilità è il punto di forza: abbiamo un numero limitato di operatori, di implementazioni e di pattern di accesso).
+
+I pattern di accesso sono le strategie di visita delle pagine delle relazioni coinvolte dall'operatore: indicano l'ordine di lettura delle pagine su cui si sta andando ad operare.
+
+#### Pattern di accesso ai dati
+
+- **Straight Sequential** (**SS**): accesso "banalmente sequenziale".  
+  Apertura del file e scansione sequenziale pagina per pagina, una sola volta. Si legge una pagina, la si sostituisce con la successiva e così via.  
+  
+  **Requisiti**: Basta un solo frame.
+- **Clustered Sequential** (**CS**): apro il file, lo leggo tutto in una volta sola, ma ho la necessità in ogni momento di mantenere in memoria un certo gruppo di pagine lette (un cluster) ai fini dell'operatore che si sta implementando.
+
+  Ad esempio, il sorted merge join prevede che siano contemporaneamente presenti blocchi consecutivi di pagine del file (un solo frame non basta).
+
+  **Requisiti**: la dimensione del cluster determina il numero di frame da mantenere nel buffer: 5 pagine -> 5 frame.
+- **Looping Sequential** (**LS**): è il pattern che si utilizza nei meccanismi di join; è il pattern utilizzato nella relazione interna.
+  
+  E' come lo Straight Sequential, nel senso che si legge una pagina per volta in maniera sequenziale, MA al termine del file si inizia da capo e si cicla nuovamente.
+
+  Si può usare una sola pagina, al costo di doverla leggere di nuovo una volta per ciclo. LS è il pattern di accesso che si ha sulla relazione interna del join nell'implementazione naive.
+
+  **Requisiti**: se il file fosse sufficientemente piccolo da poterlo tenere tutto in memoria centrale, il numero ideale di frame sarebbe pari alla dimensione del file (politica greedy, fare comunque attenzione...).
+
+  Più pagine si riescono a dare alla query (massimo tante quante la dimensione della relazione; oltre è uno spreco) che deve eseguire un pattern LS, meno saranno i page fault che si verificheranno.
+
+  Si assegnano tanti frame alla query, poi gestiti con politica MRU.
+- **Independent Random** (**IR**): Apro un file, accedo ad una pagina il cui indirizzo è casuale rispetto alla struttura del file. Gli accessi successivi sono indipendenti l'uno dall'altro. Non so quindi stimare a quale pagina accederò successivamente.
+  
+  **Casi di esempio**: accedo alle pagine dei dati in un file attraverso un indice unclustered (le foglie dell'indice contenevano un puntatore alla pagina che contiene i dati; non c'è relazione tra l'ordinamento delle chiavi sulle foglie dell'indice e l'ordinamento delle pagine che contengono i dati)
+
+  A fronte di un accesso ai dati guidato da indice gerarchico, risulta questo il pattern di accesso ai dati. La politica da usare è LRU (clock per maggiore efficienza).
+
+  **Requisiti**: 1 frame
+- **Clustered Random** (**CR**): Simile al precedente perché è random, con la differenza che può capitare che nel momento in cui con accesso diretto si arriva ad una certa pagina, è possibile che bisogni portare in memoria un cluster di pagine per averle contemporaneamente presenti.
+  
+  E' la versione cluster di IR, che quindi ha bisogno dell'uso di più record simultaneamente.
+
+  Prevede che il punto di inizio dei dati a cui si è interessati sia individuato tramite accesso diretto, quindi in modo casuale e indipendentemente da quello che è stato fatto nel cluster precedente.
+
+  **Requisiti**: Il numero di frame che servono è pari alla dimensione del cluster, ovvero al numero di pagine che bisogna poter conservare simultaneamente in memoria.
+
+Fin qui abbiamo visto pattern di accesso che si possono avere sui normali file di dati, ma oltre a questi si opera anche sui file di indice, di cui vediamo adesso i pattern di accesso.
+
+- **Straight Hierarchical** (**SH**): (gerarchico in senso stretto) parte dalla radice e _sequenzialmente_ segue la gerarchia per arrivare alla foglia a cui si è interessati. Si legge il nodo/la pagina che corrisponde alla radice e, analizzando il contenuto della radice, si identifica la pagina successiva. Si procede fino ad arrivare alla foglia.
+
+  **Requisiti**: 1 frame (considerando come località una singola query e non query simultanee sullo stesso indice)
+- **Straight Hierarchical + Straight Sequential**: si combinano i due approcci. Lo si fa per esempio con le query di range.
+
+  Seguendo lo Straight Hierarchical si arriva al nodo che contiene l'inizio dell'intervallo interessato e poi, essendo l'indice ordinato, sequenzialmente si attraversano i "fratelli" del nodo per andare ad analizzare tutto il range specificato.
+
+  E' utile quando rispondiamo a index-only queries, casi di interrogazione in cui riesco a restituire l'intero range di valori di interesse per l'utente recuperandoli direttamente dall'indice, posizionandomi sul primo elemento di interesse, seguendo sequenzialmente le foglie fino a trovare il primo valore che esce dal range.
+
+  **Requisiti**: 1 frame (vado alla prima pagina, mi posiziono all'inizio del range e continuo sequenzialmente a leggere)
+- **Straight Hierarchical + Clustered Sequential**: E' simile al SH+SS. Prevede che gerarchicamente si arrivi fino all'inizio del range interessato, e poi si vada a recuperare un insieme di pagine da tenere simultaneamente presenti in memoria principale perché le operazioni che si vanno ad effettuare richiedono più pagine presenti in memoria allo stesso tempo.
+
+  **Requisiti**: Il numero di frame dipende dalla dimensione del cluster, ovvero dal numero di pagine.
+
+- **Looping Hierarchical** (**LH**): devo ciclare più volte sullo stesso indice: si cicla sull'attraversamento gerarchico (radice -> foglia->radice...) per individuare tutti gli elementi necessari per risolvere la query.
+
+  **Requisiti**: $prob(p\ in\ i^th\ level) = 1/f^i$. Prevede un comportamento che ricorda la domain separation. Se bisogna ciclare più volte sullo stesso indice, si può dire con certezza che a ogni iterazione del ciclo certamente si passa dalla radice e con probabilità 1/fanout si passerà ad uno degli altri figli (passo molte volte dalla radice, meglio conservarla...)
+
+  Il fatto di poter riutilizzare (e quindi non ricevere page fault) è funzione del fanout (numero di discendenti del nodo) e a volte può essere prevedibile se ci sono informazioni sulla distribuzione delle chiavi nel file e sulla probabilità che certi dati vengano cercati di più rispetto ad altri (e quindi la frequenza con cui certe query vengono fatte).
+
+  In questo caso le statistiche sulla distribuzione delle chiavi e sulle caratteristiche fisiche dell'indice possono essere utili. Si ha la certezza che la radice venga riutilizzata (da conservare) e poi via via le probabilità di riuso decrescono man mano che si discende l'indice perché aumentano il numero delle foglie ai diversi livelli.
+
+  In questo caso la tecnica ricorda il domain separation.
 
 ### Algoritmo DBmin
 
