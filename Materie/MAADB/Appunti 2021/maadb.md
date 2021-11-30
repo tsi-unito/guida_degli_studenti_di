@@ -67,6 +67,7 @@
   - [Query Locality Set Model](#query-locality-set-model)
     - [Pattern di accesso ai dati](#pattern-di-accesso-ai-dati)
   - [Algoritmo DBmin](#algoritmo-dbmin)
+    - [Index Based Query](#index-based-query)
 - [Operatori](#operatori)
   - [Selezione semplice](#selezione-semplice)
   - [Selezione complessa](#selezione-complessa)
@@ -913,7 +914,7 @@ Per le scan:
   Trattandosi di un indice gerarchico, si assume che l'occupazione dei dati sia maggiorato del 50%.
   - **Scan**: Se la dimensione di un file heap/sorted ci richiedeva BD accessi, adesso è $1.5\ B \cdot D$: porto infatti in memoria pagine che sono per 1/3 vuote.
   - **Equality**: $D \cdot log_F(1.5B)$: devo leggere tante foglie, quindi devo leggere diverse pagine per un quantitativo pari al fan-out * 1.5B. E' importante avere un fan-out il più ampio possibile: la profondità dell'albero sarà $log_F(1.5B)$, cioè il numero di pagine che dovrò leggere.
-  - **Range**: $D \cdot log_F(1.5B + #pagg con match)$: devi cercare l'inizio del range, e poi procedere sequenzialmente fino a quando non incontro il primo valore al di fuori del range di ricerca.
+  - **Range**: $D \cdot log_F(1.5B + \#pagg con match)$: devi cercare l'inizio del range, e poi procedere sequenzialmente fino a quando non incontro il primo valore al di fuori del range di ricerca.
   - **Insert**: Search + D: Richiede che mi posizioni sulla pagina su cui devo fare la modifica, quindi il costo di ricerca (Search).  
     Dopo, il tutto si riduce a fare fisicamente la modifica e riportare su disco la pagina modificata (D). Il costo aumenta drasticamente quando la pagina era piena (e quindi bisogna fare degli aggiustamenti).
   - **Delete**: Stesso discorso dell'insert.
@@ -1218,6 +1219,45 @@ Fin qui abbiamo visto pattern di accesso che si possono avere sui normali file d
   In questo caso la tecnica ricorda il domain separation.
 
 ### Algoritmo DBmin
+
+Cerca di ottimizzare l'uso del buffer considerando i diversi pattern di accesso ai dati decidendo, per ciascun pattern di accesso, un opportuno algoritmo di gestione del buffer.
+
+Si definiscono i locality set che abbinano l'informazione relativa alla query che si sta calcolando (e quindi al suo pattern di accesso) e al file su cui si sta operando.
+
+Si va verso un'operazione che è un ibrido tra il working set (la relazione) e l'hot set (la query).
+
+A ciascun locality set si associa un certo insieme di pagine di buffer e si procede così:
+
+Si lavora a livello di locality set, ovvero a livello di associazioni tra relazioni e query che operano sulle relazioni secondo uno specifico pattern di accesso gestendo ciascun locality set in modo individuale/indipendente dagli altri.
+
+Ciascun frame del buffer, ciascuna pagina presente in memoria centrale, appartiene ad un locality set (è una pagina che appartiene ad una relazione ed è in questo momento in memoria centrale per essere oggetto di valutazione da parte della query che è indicata in quel locality set).
+
+Quando la query richiede un dato che si trova all'interno di una pagina di una relazione:
+
+- Se la pagina di quella relazione è già presente in memoria (e appartiene al locality set della query stessa) la si legge e basta;
+- Se la pagina è già presente in memoria ma nel locality set di qualche altra query che usa sempre quella pagina, allora la pagina rimane dov'è, ma virtualmente andrà a far parte del locality set della query corrente.  
+  Farà parte del locality set della query che l'ha appena cercata e quindi sarà soggetta alle sue politiche di rimpiazzamento.
+
+  Il fatto di far parte del locality set di una query o dell'altra cambia perché ad ogni locality set (che corrisponde ad uno specifico pattern di accesso) corrisponde una politica di rimpiazzamento.
+- Se la pagina era già in memoria e non aveva alcun proprietario può essere successo che qualcuno l'abbia portata in memoria ma ormai ha finito di operare e non serve più (non essendoci alcuna query attiva sulla pagina).
+  
+  Avere un owner vuol dire che esiste una query che la sta usando o l'ha usata; non avere un owner vuol dire essere stata usata, ma in questo momento chi l'ha usata non è più attivo e non c'è più perché ha completato il suo compito.
+
+  In questo caso la pagina diventa proprietà del locality set della query che l'ha richiesta.
+- Se la pagina non era proprio in memoria/nel buffer, seguendo le politiche di rimpiazzamento porto questa pagina in memoria e su questa poi applicherò le politiche di rimpiazzamento del richiedente che l'ha portata in memoria.
+
+#### Index Based Query
+
+Sono query che si possono valutare completamente senza necessariamente dover accedere al file di dati.
+
+Ad esempio, se si ha un file di indice su cognomi e nomi e questo indice è unclustered, a livello di foglie si hanno tutte le coppie cognome-nome, ciascuna associata alla data entry relativa all'individuo.
+
+La risposta alla query avviene usando solo l'indice; lo si può fare solo nei file di tipo unclustered perché a livello di foglia si hanno tutte le chiavi indicizzate, mentre negli indici clustered si hanno solo degli intervalli che rimandano alla porzione di file ordinata (memorizzata in maniera contigua) che quindi contiene più informazioni di quelle presenti nel solo indice.
+
+"Restituisci il voto medio di tutti gli studenti il cui cognome comincia con E" richiede che ci posizioniamo dove si trova il primo studente e poi andare ad accedere tutti i record con gli studenti successivi.  
+Questa non è una index only query, perché richiede l'accesso ai dati.
+
+"Restituisci l'elenco dei cognomi degli studenti che iniziano per E" è effettuabile usando solo l'indice: gerarchicamente scendo fino al livello delle foglie fino a trovare il primo studente che inizia per 'E' e poi sequenzialmente sulle foglie dell'indice leggo e vado avanti fino a quando trovo un cognome che non inizia più per 'E'.
 
 ## Operatori
 
