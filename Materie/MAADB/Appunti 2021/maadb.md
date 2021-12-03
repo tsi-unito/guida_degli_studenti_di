@@ -1553,7 +1553,53 @@ Dando B/2 frame a R si riducono il numero di cicli su S; dando B/2 frame a S si 
 
 #### Index Nested Loop Join
 
+L'index nested loop join sfrutta il fatto di avere un indice definito sulla relazione. Si può quindi partire dalla relazione esterna e per ogni record della relazione esterna si può sfruttare il fatto che sulla relazione interna (sull'attributo interessato dal join) esista un indice.
+
+Ciascun record della relazione esterna comporta un accesso all'indice per andare a cercare il corrispondente elemento nella relazione interna, quindi il costo di questa operazione è fortemente condizionato dal numero di volte con cui bisogna accedere all'indice e dal costo dell'accesso all'indice stesso (clustered/unclustered non influisce)
+
+**Costo**: M + ((M \* pr)) \* costo di cercare il match con le tuple di S).
+
 #### Algoritmi Blocking e Sort Merge Join
+
+"**Bloccante**" vuol dire che non si può fare match con una relazione prima che la si "conosca" completamente.
+
+Ad esempio, nel caso del sort-merge join, se l'algoritmo deve essere preceduto da un'operazione di ordinamento, io sono bloccato e non posso cominciare perché l'ordinamento non è ancora terminato.
+
+In questo senso, questo tipo di implementazione è bloccante: non può cominciare se non si dispone già completamente dei suoi operandi, dal momento prima deve poterli ordinare.
+
+Esistono altri algoritmi, come il nested loop join, che può invece operare con risultati parziali.
+
+Naturalmente è evidente che il fatto di essere bloccabile è una debolezza. Per non essere limitati è quindi importante essere volti alle tuple (invece che alla pagina o al blocco). 
+Tutti gli operatori che si aspettano un input ordinato sono potenzialmente bloccanti.
+
+Nel caso dell'equi-join (un join con condizione di uguaglianza) si possono ottenere grossi vantaggi se si sfrutta l'informazione riguardo al fatto che R e S sono ordinate (o se non lo sono, potrebbe convenire ordinarle per poi sfruttarlo durante il join).
+
+Questa strategia potrebbe migliorare: in particolare migliora di molto se la condizione di join è molto selettiva (se si fa il join tra due chiavi per cui ciascun elemento della prima relazione corrisponde ad al più un elemento della seconda relazione, allora il miglioramento è notevole: possiamo effettuare il join con una sola lettura della prima e della seconda relazione ordinate).
+
+Se la condizione di join non è selettiva e nel caso peggiore tutti i record della prima fanno match con tutti i record della seconda, allora questa strategia diventa estremamente sconveniente a causa della complessità (pari a quella del prodotto cartesiano), e in più si aggiunge anche l'eventuale costo dell'ordinamento.
+
+Una possibile situazione con match completi è quando facciamo join sulla stessa relazione. E' un caso degenere e raro.
+
+Quando si scandiscono le relazioni da combinare (equi join) non si hanno relazioni ordinate per cui per ogni record della relazione esterna bisogna scandire tutta la relazione interna perché dopo aver trovato un eventuale match non si può concludere se ce ne saranno o meno altri.
+Per arrivare a questa conclusione (che non ci saranno altri record che faranno match con quello della relazione esterna selezionato) bisogna aver scandito tutta la relazione interna (questo perché non è ordinata e quindi gli elementi che fanno match epr uguaglianza non sono necessariamente contigui).
+
+Se io già sapessi che la relazione interna è ordinata e non sapessi niente della relazione esterna si avrebbe già un beneficio: si ridurrebbero le letture nella relazione interna. Tuttavia, l'ordinamento sarebbe utile alle chiavi che stanno all'inizio dell'ordinamento, ma non a quelle alla fine: comporterebbe comunque la lettura dell'intera relazione interna.
+
+Se fossero ordinate tutte e due, si potrebbe portare in memoria centrale la prima pagina della relazione interna e di quella esterna e avanzano con il puntatore esattamente come si fa col merge.
+
+Considero il valore che c'è sulla relazione esterna e quello sulla relazione interna.
+Se sono uguali si ha un **match** (che va in output); in caso contrario il minimo dei due avanza (perché sono ordinati) e se il minimo non fa match con quel che è presente nell'altra relazione vuol dire che quel minimo non ha più speranza di fare match andando avanti.
+
+Abbiamo parlato di relazioni interne/esterne, ma l'algoritmo non ha un ciclo annidato: è un solo ciclo in cui si fanno avanzare due puntatori uno per ogni relazione.
+
+I puntatori partono dal primo elemento di ogni relazione e si fanno i confronti tra gli elementi puntati.
+Se i due elementi puntati sono uguali vengono messi nel frame di output; se invece i due elementi sono diversi viene fatto avanzare il puntatore che puntava all'elemento minore tra i due.
+
+Nel caso ottimale vi è un'unica scansione di entrambe le relazioni.
+
+**Costo Ottimale**: $N \log(N)+ M \log(M) + N + M$: il costo di ordinare le due relazioni + costo di match. Ho un solo match per ogni record di R.
+
+**Costo Caso peggiore**: $N \log(N)+ M \log(M) + N \cdot M$: per ogni record di R ho un match con S.
 
 #### Sort Merge Join e una sua ottimizzazione
 
