@@ -4,5 +4,13 @@
 			"path": "."
 		}
 	],
-	"settings": {}
+	"settings": {
+		"cSpell.words": [
+			"ciclare",
+			"ciclerà",
+			"cicliamo",
+			"l'ottimizzatore",
+			"sull'hashing"
+		]
+	}
 }

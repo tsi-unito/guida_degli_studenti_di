@@ -1261,33 +1261,295 @@ Questa non è una index only query, perché richiede l'accesso ai dati.
 
 ## Operatori
 
+Uno dei punti di forza del modello relazionale è che la query viene espressa in modo dichiarativo, e poi tradotta in forma procedurale.
+Quest'ultima viene poi confermata dall'ottimizzatore associando uno specifico algoritmo di implementazione a ciascun operatore dell'algebra relazionale.
+
+Il join ad esempio ha tante implementazioni alternative.
+L'ottimizzatore, sulla base del caso specifico, individua il pattern.
+
+Considereremo:
+
+- **Selezione**: Presa una selezione e preso un criterio di selezione (una condizione che i record interessanti della relazione devono soddisfare), record per record si valuta se la condizione è soddisfatta o no per restituire i record positivi (è il WHERE)
+- **Proiezione**: Data una relazione definita su un certo insieme di attributi, restituisce la relazione composta solo da un sottoinsieme di attributi (SELECT)
+- **Join**: prese due relazioni e una condizione di join, restituisce i record delle due relazioni che soddisfano la condizione. Ha costo $n^2$ perché potenzialmente ciascun record della prima relazione potrebbe essere abbinabile a ciascun record della seconda relazione, quindi devo fare ogni volta i confronti e averli entrambi in memoria.
+- **Prodotto Cartesiano**: Operatore che crea un match tra tutti i record del primo e secondo operando. Corrisponde al fare un join con una condizione soddisfatta da tutti i record.
+- **Differenza Insiemistica**: Tuple nella relazione 1 meno quelle nella 2
+- **Unione**: Tuple delle relazioni 1 e 2
+- **Intersezione**: Tutti i record presenti contemporaneamente nella relazione 1, sia nella 2
+- **Aggregazione**: (SUM, MIN, GROUP BY...) Sono operatori che implicitamente richiedono un ordinamento della relazione su cui bisogna operare in alcuni casi
+- **Eliminazione dei duplicati**: Un operatore che non si applica mai da solo, ma è indirettamente richiamato quando si usa la clausola DISTINCT: laddove il risultato ha copie uguali dello stesso record, si eliminano i duplicati.
+  
+  Il costo dipende dall'implementazione.
+  Se la relazione è già ordinata, il costo è lineare, ma altrimenti è quadratico. Per ogni elemento bisogna controllare a seguire se ci sono dei duplicati (si può effettuare un ordinamento preventivo, ma questo sposta il costo sul sorting).
+
+  Un altro modo per eliminare i duplicati è mettere la relazione in join con sé stessa: ciascun record verrà associato a tutti gli altri in cui è presente la stessa chiave e quindi nel join risultante appariranno le occorrenze dei valori e da quelli si potrà facilmente eliminare i duplicati. Il join rimane tuttavia un'operazione costosa.
+- **Ordinamento**: Può essere conveniente avere degli algoritmi di ordinamento per query di range o simili.
+  
+  Il costo del sort è $n \log(n)$, dove n è il costo delle pagine che compongono la relazione da ordinare (non il numero di record!).
+  Ogni confronto interno che viene fatto a livell odi dati che sono già in memoria centrale ha un costo inferiore rispetto a quelli effettuati nel disco (costo 1!)
+
+  Un'operazione importante (costosa, richiede tempo) è portare una pagina in memoria centrale, quindi nonostante la complessità $n \log(n)$ l'ordinamento rimane particolarmente costoso.
+
 ---
 
-**Importante**:
+**Importante**: Non possiamo considerare nulla come in isolamento: l'effetto di una scelta a livello locale si ripercuote sulla continuazione e sul lavoro del resto dell'attività all'interno della quale la scelta è stata effettuata.
+
+Gli operatori più costosi sono tipicamente quelli che implicano un ordinamento.
+
+Dal punto di vista del database, il costo si esprime sempre in termini di operazioni di I/O su disco, cioè le più costose.
+
+Alcune volte l'ottimizzatore sceglie implementazioni più costose ma che restituiscono dati ordinati (in un piano di una query complessivo) per cui può valere la pena pagare un po' di più per un'operazione portando però ad un guadagno nelle operazioni successive!
 
 ---
+
+Tipicamente abbiamo 3 approcci comuni all'implementazione degli operatori. Quasi sempre si combinano le tre strategie:
+
+- **Indicizzazione**: Qualunque operatore che usa l'ordinamento può sfruttare gli indici. Ad esempio, si può fare una SELECT su un campo indice oppure si può fare un GROUP BY usando un indice se l'indice è ordinato rispetto all'oggetto del raggruppamento.
+- **Iterazione**: Alcune volte è più efficiente scansionare tutte le tuple che usare gli indici. Non è la più efficiente, ma è quella che ha meno prerequisiti.
+- **Partizionamento**: Con alcune operazioni si può partizionare la relazione in tante sotto-relazioni (frammenti della relazione iniziale) per operare sulle sotto-relazioni (risolvere un problema grande attraverso problemi più piccoli).
+  
+  Corrisponde a ridurre il problema più grande all'unione delle soluzioni di problemi parziali.
+
+  _Partizionare_: Supponiamo che bisogni fare un equi-join tra due relazioni; se si possiede già una tabella di hashing su questo attributo si può scandire tutta la relazione interna (invece di quelli esterni)
+
+  Ci si può basare sull'hashing e quindi su blocchi di record organizzati in modo tale che record uguali siano sullo stesso bucket e si possono limitare le operazioni di join al bucket che contiene il nome X nella prima relazione e al bucket che contiene il nome X nella seconda con la certezza che negli altri bucket non ci sia il nome e quindi non si presenti una perdita.
+
+  Se si è usata la stessa funzione di hash sullo stesso attributo nelle due relazioni, le chiavi che stanno nello stesso bucket di una relazione stanno anche nello stesso bucket dell'altra.
+
+  Riduce il confronto (previsto dai join) ai soli bucket che corrispondono alle stesse chiavi e quindi agli stessi insiemi di valori. Non sempre si può partizionare in modo ideale, ma ci può essere un partizionamento fatto in modo naturale come nel caso della bucketizzazione dell'hashing.
+
+  Ci sono casi in cui si sa per certo che gli argomenti interessati di una certa relazione assumono certi valori che sono raggruppati in una precisa zona di memoria per cui si può limitare l'attenzione a quelli.
+
+Implementazioni diverse, ma equivalenti dal punto di vista del risultato (l'insieme di record restituiti), hanno costi computazionali a volte anche significativamente diversi, riducendo drasticamente il costo sfruttando certe ipotesi, situazioni e contesti grazie all'output del risultato parziale fornito dagli operatori precedenti nel piano di valutazione della query che si sta valutando.
+
+Per scegliere le strategie applicabili ci si basa sulle strategie contenute nel **catalogo**, che contiene informazioni su:
+
+- dimensione delle relazioni
+- quanti record abbiamo a relazione
+- se esistono o meno degli indici
+- quanto sono discriminanti i valori degli attributi
+- qual è la stima della cardinalità dei join che si vanno a creare
+- ...
+
+Il catalogo contiene informazioni che in qualche modo intervengono quando l'ottimizzatore deve compiere una scelta tra le diverse strategie. 
+Alcune volte ci sono operazioni che sono logicamente commutative (join) ma, nonostante questo, l'ordine delle relazioni può implicare vantaggi differenti (ad esempio la scelta della relazione interna ed esterna del join)
 
 ### Selezione semplice
 
+- **Sequential Scanning**: Il modo più semplice è quello di aprire il file e scandire ogni pagina per volta. Ogni pagina viene portata in memoria e poi si considerano tutti i record nella pagina, andando a verificare se soddisfano le condizioni.
+  
+  Se le soddisfano, allora vengono aggiunti al risultato.
+
+  Per implementare questa scansione servono almeno 2 frame di buffer: Straight Sequential ne richiede 1, ma ci serve anche un frame per conservare il risultato.
+
+  Quando il frame di output si riempe, lo si scarica su disco e si continua da capo (non è necessario conservarlo in RAM!)
+- **Index Scan**: E' il metodo che sfrutta l'indice.
+  
+  Se la condizione è di uguaglianza, si fa un accesso Straight Hierarchical all'indice, si trova la pagina che contiene ciò che serve e la si porta nel frame di buffer per esaminarla, cercando i record che soddisfano la condizione per portare questi record nel frame di output (può servirne più di 1).
+
+  Per il tipo di operazione è sufficiente 1 frame di input e 1 di output.
+
+  Se la condizione è di range, allora verrà effettuata una scansione per cercare l'intero intervallo:
+
+  - Se l'indice è **clustered**, lo si segue con strategia Straight Hierarchical, si arriva all'inizio dell'intervallo e, seguendo il puntatore corrispondente, ci si posiziona sulla prima pagina del file ordinato dei dati (siamo con un indice clustered, per cui i dati sono ordinati) e a partire da lì verranno individuati i record all'interno del range che servono.
+  - Se l'indice è **unclustered**, si usa sempre SH, ma poi dovremo andare con Straight Sequential sulle foglie dell'indice perché le chiavi ordinate sono tutte lì (non dobbiamo accedere ai dati eccetto se ci vengono chieste informazioni non contenute sull'indice).
+
+    I valori dell'indice contengono tutte le chiavi degli attributi su cui si indicizza: se bastano questi valori allora non sarà necessario accedere alle pagine dei dati stessi e si parla di _index based query_.
+- **Hashing**: se la query ha una condizione solo per uguaglianza, si potrebbe sfruttare un'implementazione basata sull'hashing.
+
 ### Selezione complessa
+
+Per "selezione multipla" si intende una selezione che sia una congiunzione/disgiunzione di altre condizioni. Si parte dall'analisi di condizioni complesse congiuntive (AND).
+
+Supponiamo di avere una condizione C1 AND C2; con C1 cognome e C2 data di nascita:
+
+- Si può usare la condizione C1, sfruttare un indice se presente, fare uno scan, arrivare ai record che soddisfano C1 e man mano che si individuano i record potenzialmente in output, si applica la condizione C2 e si verifica se bisogna davvero mandarli in output.
+  
+  Risultato: nel frame di output ci saranno i record che soddisfano entrambe le relazioni.
+- Un altro approccio è quello completamente simmetrico: se abbiamo dei vantaggi in accesso alla seconda condizione, possiamo lavorare su quella e poi filtrare sulla prima.
+- Ipotizziamo di avere un indice sugli attributi di entrambe le condizioni:
+  
+  Può essere costosa la scansione: dovremmo saltare in giro (indice clustered) e dovremmo accedere alle pagine dei dati più volte.
+
+  Per entrambi gli indici andiamo a recuperare tutti i RID che soddisfano la condizione sull'attributo che l'indice gestisce, e poi andiamo a fare l'intersezione, individuando così i RID che soddisfano entrambe le condizioni.
+
+  Questa tecnica è applicabile solo se l'indice è unclustered: se fosse clustered non avremmo tutti i RID al livello delle foglie.
+
+Come facciamo a scegliere tra le 3 diverse implementazioni? Mi devo basare sicuramente sul costo delle diverse strategie, ma come lo determino?
+
+Devo basarmi sul numero di pagine che devo portare in memoria centrale. Per poterlo stimare, devo trovare il metodo che mi porta in memoria centrale meno pagine:
+
+1) Sapere se l'indice è clustered è unclustered: è importante perché potrei avere accessi sequenziali (se clustered) oppure potrei non averli e dovrei effettuare multipli salti.
+
+   La terza opzione è applicabile solo se l'indice è unclustered (altrimenti non avrei i RID nelle foglie).
+2) Effettuare stime sulla selettività del predicato: mi baso sul catalogo. Contiene statistiche su come sono distribuiti i valori all'interno degli attributi.
+
+   Se il catalogo mi dice che ho 5k attributi e che su un certo attributo ho 4 valori distinti, posso stimare che una query possa restituire 1250 valori. Più è alta la selettività e più è basso il numero di record che si ottengono. Scegliere da subito il criterio più selettivo limita ad un numero di record inferiore il fatto che debbano essere portati in memoria per andare a testare l'altro criterio.
+3) Se ho una richiesta di ordinamento dei risultati, avere un indice già ordinato può semplificare il lavoro che altrimenti dovrà essere effettuato manualmente (a costi maggiori). Stessa cosa se l'utente richiede delle clausole che implicitamente richiederebbero l'ordinamento (DISTINCT, GROUP BY)
 
 ### Proiezione
 
+La proiezione riceve in input una relazione con un certo insieme di attributi e restituisce per ciascun record della relazione un nuovo record che contiene solo i campi richiesti nella condizione di proiezione. Il numero degli elementi è lo stesso, a meno che non vi sia la clausola DISTINCT o WHERE.
+
+Implementazione: si prevede che venga aperto il file, si scandiscano tutte le pagine (leggendole una a una, Straight Sequential) e si identificano i campi da proiettare. Infine si inseriscono nel frame di output.
+
+Anche nella proiezione (basic/naive) sono sufficienti 2 frame di buffer (1 lettura, 1 scrittura)
+
 #### Note sulla proiezione
 
+- E' utile usare gli indici nei casi di index only query se gli indici definiti sulla relazione sono definiti sugli attributi da proiettare e sono di tipo non clustered.
+  
+  L'indice è utilizzabile solo se è un indice non clustered (quelli clustered nelle foglie hanno sottoinsieme che aiuta ad identificare l'inizio di un range nel file dei dati a cui dovremo accedere)
+- Se servono dati ordinati e si ha un indice a disposizione, è possibile di nuovo sfruttarlo: in questo caso l'ordinamento diventerebbe molto naturale.
+  
+  Si può fare anche con gli indici clustered: si vanno comunque a trovare le foglie divise per range e poi si possono leggere i file in maniera ordinata e quindi il risultato sarà ordinato (sarà naturalmente implicata la lettura di file).
+- Con la clausola DISTINCT può tornare utile sia un indice gerarchico sia hash: questo perché se si ha la clausola DISTINCT ma non una richiesta di ordinamento, si sa comunque che le eventuali coppie multiple di una stessa chiave sono nello stesso bucket nel caso dell'hashing, quindi si può accedere bucket per bucket ed eliminare le versioni diverse della stessa chiave accedendo alla singola pagina del singolo bucket dell'hashing (non è necessario scandire l'intero file per cercare la chiave, il costo è quadratico perché le chiavi saranno tutte nello stesso bucket).
+- L'eliminazione dei duplicati è costosa, quindi avviene solo quando è specificata la clausola DISTINCT.
+  
 ### Ordinamento
+
+Il QuickSort è un algoritmo molto efficiente, con complessità $n\log n$, ma lo si può applicare solo nei casi in cui la relazione è sufficientemente piccola da stare in memoria.
+
+Nel caso tipico, ad esempio quando facciamo bulk loading di un B+Tree, bisogna ordinare intere relazioni che sono ben più grandi dello spazio nel buffer: il Qsort (e altri algoritmi simili) diventano improponibili perché uno swap tra elementi in memoria costa pochissimo, ma se per farlo si causano molti page fault, le operazioni di I/O diventano troppo costose.
+
+Il Qsort lavora in-place: dato un array da ordinare, non è richiesto spazio aggiuntivo, ma si ordina ricorsivamente effettuando swap di elementi ordinando passo dopo passo l'array fino a raggiungere la condizione di terminazione quando è tutto ordinato.
+
+Localmente si fa un ordinamento e poi si scambiano via via gli elementi che devono essere scambiati fino al completo ordinamento.
+
+Ricorsivamente serve avere anche in memoria tutto l'array da ordinare; siccome l'ipotesi di lavoro è che no nci stia tutta la relazione ordinata in memoria, questo comporterebbe numerosi page fault.
+
+Il fatto di lavorare direttamente sui dati che deve ordinare porta a dover tornare più volte sulle stesse pagine e quindi fare troppe operazioni di I/O che appesantiscono in modo significativo il costo dell'algoritmo stesso.
+
+Altri algoritmi come il merge sort non sono in-place: si divide sempre la relazione a metà e via via si fondono porzioni ordinate di relazioni andando a generare porzioni di relazioni ordinate di dimensione doppia.
+
+La natura degli accessi che si fanno sui file di queste dimensioni è tale da rendere più conveniente lo sfruttamento dei dati.
+
+Il merge sort richiede dello spazio aggiuntivo ma con gli opportuni accorgimenti permette di sfruttare bene il buffer.
+
+L'external sort è l'ordinamento di una relazione non completamente interno in memoria, e può funzionare anche con 3 pagine del buffer.
+
+Vengono ordinate coppie di pagine contigue (due per l'output e una per l'input). Ad ogni iterazione raddoppia la lunghezza (il numero di pagine nelle run) e il file si presenta sempre più ordinato.
+
+Pagina per pagina, la si ordina al suo interno. Partire con run più lunghe di 3 frame comporta la riduzione del numero di livelli per arrivare alla soluzione ordinata.
 
 #### Merge Sort
 
+Alcuni accorgimenti consentono di utilizzare opportunamente il buffer a disposizione. Il two-way-sort è l'operazione di merge sort che permette l'implementazione dell'external sort.
+
+E' possibile implementare un external-sort basato su merge sort utilizzando solo 3 frame del buffer: 2 per i due flussi da fondere e 1 per contenere i risultati.
+
+Ad ogni iterazione si raddoppia la grandezza della porzione di file ordinata.
+
+Supponiamo di lavorare con un file da 5M di pagine.
+
+Inizialmente parto con le prime due, contigue. Le pagine all'interno sono ordinate e prendono il nome di "run". Ad ogni iterazione il file raddoppierà le porzioni ordinate, per un totale di $\log_2(n)$ volte prima di arrivare al file completamente ordinato, dove n è il numero delle pagine.
+
+5000 pagine: alla fine della prima run, 2500 pagine sono ordinate. Alla seconda run, avrò 1250 quadruple ordinate, e così via fino a quando non ottengo il file completamente ordinato.
+
+Se utilizzassi più frame per il sort potrei portare in memoria più pagine contemporaneamente, generando subito run più lunghe. Il vantaggio è che ridurremo il numero di passaggi necessari per ottenere il file ordinato.
+
+Se N è il numero di pagine del file da ordinare e se ciascun gruppo di file da ordinare contiene B pagine, si producono N/B run ordinate, ciascuna composta da B pagine. B è il numero di frame di buffer che si possono utilizzare per le operazioni; B-1 sono le run su cui si fa il merge e 1 per l'output.
+
+A differenza del quick sort che modifica le pagine in-place, il merge sort prevede una copia.
+
+**Costi**:
+
+Numero di iterazioni = $1 + \log_{B-1}(N/B)$
+
+Costo: 2N * (# di passi). N numero delle pagine del file completo, 2 perché ciascun passaggio richiede lettura e scrittura.
+
 #### Internal Sort
+
+E' un'ottimizzazione del Qsort. Prima leggevo una pagina alla volta, la ordinavo e salvavo le pagine ordinate su disco andando a creare run ordinati.
+
+La lunghezza massima dei run ordinati da cui potevo partire era data dal numero di frame del buffer che erano riservati a questo tipo di operazione. E' possibile migliorare ancora questa inizializzazione approfittando di una fase di sort interno ottimizzato.
+
+Invece di leggere i dati dal file che sto creando (il file iniziale), posso leggerli e inserirli in una heap: una coda con priorità dove si tengono i dati ordinati in modo tale che con costo costante riesco sempre ad estrarre il minimo.
+
+Che vantaggio ottengo con questa strategia? Man mano che si estrae un elemento da una heap si valuta se si può inserire un altro elemento al suo posto: se si può mantenere la heap piena, la teniamo della stessa lunghezza, con l'obiettivo di creare run più lunghi.
+
+1) Prendo il minimo (il più piccolo valore della sequenza ordinata che si vuole creare) elemento presente sulla heap e lo sposto nel buffer di output.
+2) Vado a considerare un nuovo record candidato ad essere inserito nello heap. Se questo elemento che sto cercando di inserire nello heap non è minore di quel che ho appena estratto sono a posto: lo inserisco nello heap e continuo nella mia iterazione.
+3) Continuo a prendere il minimo presente nello heap, a portarlo nel file di output e a cercare di aggiungere un altro elemento nello heap, cosa che faccio se l'elemento che sto cercando di mettere nella heap non è minore di quello che ho appena inserito. Perché?
+   
+   Effettuo questo test perché mantiene la proprietà per cui tutti gli elementi che ho inserito fino a questo punto in output sono minori di tutti gli elementi che sono nello heap. Se l'elemento che cerco di mettere nella heap è minore dell'ultimo elemento presente nella heap, non lo inserirei.
+
+Nel caso fortunato creo un run lungo N (succede però solo se il file di partenza è già ordinato)
+
+Nel caso medio, quest'approccio genera run di lunghezza 2B.
+
+Nel caso peggiore faccio tutto questo lavoro per avere solo delle run di lunghezza B (meglio il Qsort in questo caso...).
 
 ### Join
 
+Il join è un operatore derivato dal prodotto cartesiano (costoso) ed una selezione.
+
+Seleziona dal prodotto cartesiano di due relazioni solo le coppie di record che soddisfano la condizione di join. Non è un operatore kernel, ma è derivato.
+
+Il prodotto cartesiano è molto costoso; applicarci sopra una selezione di sicuro non riduce i costi.
+
+Dobbiamo gestire il join come un operatore non derivato, cioé che opportunamente combina la fase di abbinamento delle coppie di record e la fase di verifica del soddisfacimento della condizione in modo tale da sperare di ottenere un costo computazionale inferiore a quello che si avrebbe semplicemente applicando la selezione sul cartesiano.
+
+**Ipotesi di lavoro**: si hanno le due relazioni R ed S con cardinalità ipoteticamente diverse. Non ci sono requisiti riguardo la cardinalità della prima e della seconda; nemmeno requisiti che legano a priori il numero di record che stanno in una stessa pagina dell'una e dell'altra.
+
+Per valutare i costi è importante sapere quante sono le pagine e i record per pagina di un operando e dell'altro.
+
 #### Simple Nested Loop Join
+
+Il primo operando è la relazione esterna e il secondo è la relazione interna.
+
+Per ogni record della relazione esterna, bisogna andare a considerare tutti i record della relazione interna e verificare se il record che si sta considerando soddisfa la condizione di join e in questo caso lo si manda in output.
+
+E' ancora molto usato soprattutto per la sua generalità: non richiede ordinamenti e non ha alcun requisito sulla condizione di join che si sta testando. E' molto semplice e facile da implementare. Non è soggetto ad ipotesi di lavoro.
+
+**Costo**: ciascuna pagina della relazione esterna viene letta 1 volta sola. Se la relazione R contiene M pagine allora il costo della lettura di R è M.
+
+La relazione interna è costituita da N pagine viene letta tante volte quanti sono complessivamente i record della relazione esterna.
+
+Se ho $p_r$ (numero dei record della pagina della relazione esterna), allora la relazione esterna contiene $p_r \cdot M$ record, che è il numero di volte per cui il ciclo viene eseguito.
+
+Seppur R JOIN S sia un'operazione commutativa, il costo non lo è: la cardinalità della relazione esterna gioca come fattore additivo.
+
+Il costo complessivo è infatti $M+p_r\cdot M\cdot N$.
+
+Ci si baserà sulla cardinalità della relazione per scegliere quale dei due join utilizzare. Conviene in generale che la relazione interna sia la più piccola.
 
 #### Page-oriented Nested Loops Join
 
+E' possibile ottimizzare l'algoritmo visto che è presente della ridondanza:
+
+il fattore $p_r$ potrebbe essere eliminato considerando il fatto che, dal momento che devo fare R join S, so che tutti i record di R dovranno essere confrontati con tutti i record di S.
+
+Potrei dire: "dopo aver scandito completamente l'intera pagina, anziché riportare ciascuna pagina in memoria tante volte quante quanti sono i record della prima pagina, prima di passare alla seconda pagina potrei cominciare a fare il match tra tutti i record della prima pagina (R) e tutti i record della prima pagina dell'altra (S)". Con questa scelta riduco di questo fattore $p_r$ il numero di volte in cui devo leggere la relazione interna (tipicamente alto).
+
+**Nuovo costo**: M (lettura della relazione esterna) + M*N (leggerei le pagine della relazione interna tante volte quante sono le pagine della relazione esterna).
+
+Quale conviene come esterna? La più piccola: "M+..." deve essere più piccolo perché è l'unico fattore su cui possiamo andare ad agire.
+
 #### Block Nested Loop Join
+
+Si passa dall'agire a livello di record, poi a livello di pagine e ora ci si chiede se si può portare in memoria più pagine simultaneamente della relazione esterna, allora si può proporre il BNLJ.
+
+Invece che lavorare a livello di pagine, si lavora a livello di blocchi. Dato un numero di pagine del buffer B, si possono tenere un numero di pagine minore di B-1 per la relazione esterna.
+
+Le rimanenti pagine per quella interna e un frame per la pagina da mandare in output. Si estende quindi a livello di blocco un concetto che precedentemente è stato fatto a livello di singola pagina:
+
+Anziché portare in memoria una pagina per volta della relazione esterna e quindi ciclare completamente sulla relazione interna tante volte quante sono le pagine, si possono portare in memoria dei blocchi di B-2 pagine.
+
+Questo porta a ciclare sulla relazione interna un numero di volte decisamente inferiore, ossia un numero di volte pari al numero di blocchi della dimensione che si è riusciti a formare.
+
+Se si ha un file di 80 pagine e se ne riescono a portare in memoria simultaneamente 10, allora si ciclerà sulla relazione interna soltanto 8 volte: questo consente di ottimizzare ancora l'algoritmo e quindi la valutazione del join, proprio perché cicliamo molto di meno sulla relazione interna.
+
+- **Caso 1**: vengono caricate in memoria $k \lt B-1$ pagine di R e 1 di S (conserviamo anche un frame per l'output!).
+  
+  Il risultato è che il numero di volte in cui devo ciclare sulla relazione interna si riduce drasticamente di un fattore pari alla dimensione B-2: ciascuna pagina della relazione interna si riesce a confrontare con tutte quelle del blocco che si sta considerando.
+- **Caso 2**: vengono caricate in memoria $k \lt B-1$ pagine di S e 1 di R (conserviamo anche un frame per l'output!).
+  
+  In questo caso il vantaggio è che nonostante bisogni comunque fare tanti cicli, si riescono a ricaricare con politica MRU pagine già in memoria. E' vero che si cicla sulla pagina, ma quello che non succede è che ogni lettura su una pagina determina un caricamento da disco della pagina mancante: ciclare non diventa necessariamente un'operazione costosa perché si lavora direttamente in memoria centrale, limitando i page fault ai casi in cui la politica MRU porti a rimpiazzare delle pagine.
+
+Quello che si fa tipicamente è la ricerca di una soluzione di compromesso: si assegna metà del buffer espanso a R e metà ad S.
+
+Dando B/2 frame a R si riducono il numero di cicli su S; dando B/2 frame a S si riducono i page fault che verranno generati per ciascun ciclo.
 
 #### Index Nested Loop Join
 
