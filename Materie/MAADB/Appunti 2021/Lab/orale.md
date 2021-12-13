@@ -1,4 +1,47 @@
-# Appunti LAB
+# Appunti LAB <!-- omit in toc -->
+
+- [Si usa un database perché](#si-usa-un-database-perché)
+- [Problemi](#problemi)
+- [Application Database](#application-database)
+- [Cluster](#cluster)
+- [NoSQL](#nosql)
+- [Aggregate data model](#aggregate-data-model)
+- [Ridondanza nei NoSQL](#ridondanza-nei-nosql)
+- [Confronto tra DB relazionale e a documento](#confronto-tra-db-relazionale-e-a-documento)
+- [Data Store](#data-store)
+- [Database Colonnari (o a famiglie di colonne)](#database-colonnari-o-a-famiglie-di-colonne)
+- [Database a grafo](#database-a-grafo)
+- [DB Schemaless](#db-schemaless)
+  - [Vantaggi](#vantaggi)
+  - [Svantaggi](#svantaggi)
+  - [Soluzioni agli svantaggi](#soluzioni-agli-svantaggi)
+  - [Strategie per mantenere le viste materializzate](#strategie-per-mantenere-le-viste-materializzate)
+- [Modelli di distribuzione](#modelli-di-distribuzione)
+  - [Single Server Distribution](#single-server-distribution)
+  - [Multiple server sharding](#multiple-server-sharding)
+- [Load Balancing](#load-balancing)
+- [Peer to Peer replication](#peer-to-peer-replication)
+- [Garantire la consistenza](#garantire-la-consistenza)
+- [Consistenza e serializzazione con multipli server](#consistenza-e-serializzazione-con-multipli-server)
+- [Logical consistency](#logical-consistency)
+- [Inconsistency Window](#inconsistency-window)
+- [Consistenza di sessione / timestamps](#consistenza-di-sessione--timestamps)
+- [CAP Theroem](#cap-theroem)
+- [Rilassare la durabilità](#rilassare-la-durabilità)
+  - [Quorum](#quorum)
+    - [Read Quorum](#read-quorum)
+- [Version Stamps](#version-stamps)
+  - [Optimistic Offline Lock / Version Stamp](#optimistic-offline-lock--version-stamp)
+- [Vector Stamp](#vector-stamp)
+- [Map Reduce e Cluster di server](#map-reduce-e-cluster-di-server)
+- [Persistenza poliglotta](#persistenza-poliglotta)
+- [Riak](#riak)
+  - [Letture e scritture nei vnode](#letture-e-scritture-nei-vnode)
+  - [Riconciliazione di update in concorrenza](#riconciliazione-di-update-in-concorrenza)
+- [HBase](#hbase)
+  - [Summary HBase](#summary-hbase)
+- [Bloom Filters](#bloom-filters)
+- [Neo4J](#neo4j)
 
 ## Si usa un database perché
 
@@ -448,7 +491,7 @@ Se aprissimo una sessione prima che i dati ci arrivino, bloccheremmo l'accesso a
 
 La tecnica principale è quella della **concorrenza offline**.
 
-### Optimistic Offline Lock
+### Optimistic Offline Lock / Version Stamp
 
 E' un approccio ottimistico che utilizza una conditional update.
 
@@ -456,3 +499,188 @@ Farò una scrittura solo se il version stamp dei dati è rimasto invariato rispe
 
 ![vstamp1](vstamp1.png)
 ![vstamp1](vstamp2.png)
+
+CouchDB usa sia il counter, sia l'hash del contenuto. Questo permette di comparare la recentezza, anche con replicazione p2p.
+
+I version stamp sono utili anche per mantenere la consistenza tra sessioni (accedere agli stessi dati ed evitare di accedere a server senza le modifiche).
+
+Si può usare un master che genera numeri di versione, mentre gli slave cercheranno di inseguirlo per sincronizzarsi.  
+Se siamo in una situazione p2p, quindi senza un vero master, non abbiamo modo però di condividere un unico version stamp.
+
+Se si utilizzasse un metodo incrementale, chi legge può preferire un version stamp più recente (ipotizzando VS ordinati, anche se non unici).
+
+Se stiamo cercando di leggere un dato da più nodi in conflitto, potremmo scegliere la versione con la storia più lunga. Se però la storia non è inclusa completamente in un'altra, avremo problemi.
+
+## Vector Stamp
+
+Coi DB NoSQL si usano i Vector Stamp. Sono numeri interi e possono essere visti come timestamp associati al valore.
+
+![Vector Stamp 1](vecstamp1.png)
+
+Le modalità con cui i nodi si sincronizzano è variabile.
+
+Quando due nodi comunicano tra di loro, si scambiano e confrontano gli stamp. Se tutti i valori di un vector sono maggiori di quelli di un altro, allora abbiamo un vector stamp più recente.
+
+Se ci sono valori maggiori in entrambi, abbiamo un conflitto write-write.
+
+![Conflitto](vecstamp_conf.png)
+
+I Vector Stamp sono un metodo utile per **individuare** le inconsistenze, **ma non le risolvono**.
+
+La risoluzione dei conflitti è un problema specifico del dominio in cui si lavora. Questo problema è parte del tradeoff tra consistenza e latenza.
+
+O accettiamo il fatto che le partizioni del sistema lo rendano non disponibile, oppure dobbiamo individuare e gestire le inconsistenze.
+
+## Map Reduce e Cluster di server
+
+MapReduce è un framework algoritmico per l'esecuzione di job in parallelo su più nodi di un cluster.
+
+Map: Lista(A) -> Lista(B)
+
+Reduce: funzione accoppiata alla prima che va a "ridurre" il volume dei dati. Tipicamente si fanno statistiche sulle chiavi precedentemente mappate.
+
+Possiamo mappare una parola in un documento ad un numero. Chiave parola, valore numero.  
+La reduce fa statistiche sulle parole.
+
+La cosa positiva di questo paradigma di calcolo funzionale è che non necessita di un grande spazio di memoria per le variabili in quanto il programma non necessita di uno stato interno: la funzione prende i parametri in input e produce un risultato.
+
+È possibile anche verificare la correttezza di un programma funzionale: il risultato di una funzione è deterministico.
+
+![Esempio mapreduce](mapreduce1.png)
+
+In questo modo riduciamo il traffico di dati!
+
+![Esempio 2 Mapreduce](mapreduce2.png)
+![Esempio 3 Mapreduce](mapreduce3.png)
+![Esempio 3.2 Mapreduce](mapreduce4.png)
+![Esempio 4 Mapreduce](mapreduce5.png)
+![Esempio 4.2 Mapreduce](mapreduce5_2.png)
+
+![Recap](mapreduce_recap.png)
+
+## Persistenza poliglotta
+
+A seconda delle caratteristiche dell'attività dovremmo associare un DB adeguato.
+
+Dovremmo usare una varietà di linguaggi di query per i molteplici data model. Una possibile soluzione è la progettazione di un web service che fa da punto di accesso al backend.
+
+Svantaggi:
+
+- Abbiamo imposto l'apprendimento di questa tecnologia
+- Avremo molteplici server da gestire
+
+Vantaggi:
+
+Se ci sforziamo di usare i RDBMS dappertutto, dovremo poi far fronte ad un'elevata complessità nella gestione dei dati e quindi i costi di sviluppo incrementeranno. Dovremmo fare il contrario!
+
+![Best for](best_db_for.png)
+
+## Riak
+
+E' un DB key-value con richieste REST: bassa latenza e interfaccia utile per il web.
+
+I valori possono essere un qualunque oggetto testuale (JSON, XML, ecc.).
+
+Il DBMS è tollerante ai fallimenti e punta ad essere altamente disponibile. Supporta la concorrenza.
+
+Non è facile costruire collegamenti, visto che non è presente il concetto delle foreign keys.
+
+Riak va bene per essere eseguito su tanti nodi P2P: su passano le informazioni su un anello.
+
+I nodi virtuali sono chiamati Vnodes e servono per distribuire le chiavi degli oggetti che voglio memorizzare nel nodo del cluster in modo uniforme. Esistono comunque anche nodi fisici (cioè veri server).
+
+![Anello dei vnode](anello_vnodes.png)
+
+Sui vnodes quindi ci sono partizioni dell'insieme di chiavi gestito. Per avere la garanzia di consistenza si usa il quorum.
+
+### Letture e scritture nei vnode
+
+Un nodo che sta gestendo un'operazione di lettura o scrittura è il **coordinatore** di essa.
+
+Riak controlla le letture e le scritture nei nodi con tre valori:
+
+- N: numero dei nodi in cui un'operazione di scrittura deve replicarsi.  
+  In altri termini, il numero di copie di qualunque dato tenuto per sicurezza; di default è 3.
+- W: Il numero di nodi su cui un'operazione di scrittura deve avere successo per confermare l'avvenimento della scrittura.  
+  Quindi, se W \< N, un'operazione di scrittura è considerata accettabile anche se Riak non le ha ancora completate tutte (e questo avverrà in background)
+- R: numero di nodi che sono necessari per considerare un'operazione di lettura come completata con successo.  
+  La ridondanza è dovuta alla distribuzione e alla possibile, momentanea inconsistenza dei dati.  
+
+  Se R \> N, l'operazione fallisce.
+
+---
+
+Riak non per forza garantisce la consistenza forte per le scritture: sta al programmatore decidere i tre parametri W, N e R.
+
+Riassumendo:
+
+- N: numero di repliche per una certa operazione.
+- W deve essere < N per considerare l'operazione accettabile (e quindi termina anche prima della copia completa su tutti gli altri nodi).
+- R: numero di nodi che il sistema va a contattare per capire quale è il valore corretto.
+
+![wnr1](wnr_1.png)
+![wnr2](wnr_2.png)
+
+### Riconciliazione di update in concorrenza
+
+Riak permette multiple versioni dello stesso oggetto.
+
+In presenza di fallimenti, queste versioni potrebbero essere in conflitto e dovrebbero essere riconciliate.
+
+Ogni versione ha un _vector clock_: Object([Nodo_i, count_i], [Nodo_j, count_j],...)  
+Il contatore è il numero di sequenza della versione dell'oggetto in quel nodo.
+
+Quando un client desidera aggiornare un oggetto, deve specificare la versione. Questo è fatto passando il contesto ricevuto prima da un'operazione di lettura, che contiene il vector clock.
+
+Quando ci sono più rami, entrambe le versioni devono essere conservate. E' il client che effettua la riconciliazione.
+
+Quando il numero di coppie (nodo, counter) nel vector clock raggiunge un limite, la coppia più vecchia viene rimossa (**vector clock truncation**)
+
+## HBase
+
+E' un database colonnare, progettato per essere scalabile e per gestire multipli nodi. Fornisce garanzie forti sulla consistenza dei dati.
+
+Le tabelle non sono relazioni; le righe non sono record relazionali; le colonne sono completamente variabili e non vincolate da uno schema (che è importante, ma solo informativo).
+
+Ha anche funzionalità di versioning, compressione, garbage collection e tabelle in-memoria.
+
+E' adatto ad effettuare analisi e a scansionare grossi volumi di dati.
+
+Gestisce in maniera distribuita le scritture con operazioni write ahead: si restituisce ancora prima del completamento dell'operazione.
+
+### Summary HBase
+
+- Include una robusta architettura scale-out e ha funzionalità di versioning e compressione
+- Mantiene automaticamente una storia delle versioni
+- E' progettato per scalare
+
+Ma:
+- Non fa "scale-down"
+- Non offre alcuna funzionalità per l'ordinamento o l'indicizzazione, a parte per le chiavi di riga
+- Non esiste il concetto di datatype
+
+## Bloom Filters
+
+Si conserva un array di bit di una certa dimensione, con tutti i bit inizializzati a 0. Quando un nuovo blob di dati viene caricato, si applica una funzione di hashing che genera una sequenza di bit che verranno salvati nell'array nelle posizioni corrispondenti.
+
+Quando cerchiamo una chiave, applichiamo la funzione di hash: se qualche bit non corrisponde, allora la chiave **non è mai stata inserita**.
+
+Invece, se tutti i bit corrispondono, allora la chiave potrebbe essere stata inserita, oppure i bit sono a 1 come conseguenza di altre chiavi inserite. Possiamo infatti generare dei falsi positivi.
+
+![Esempio falso positivo](bloom.png)
+
+Abbiamo bisogno di cataloghi che indichino quale regione contiene quali range di chiavi. Quando una regione è piena, popoliamo la successiva e memorizziamo i range delle chiavi di riga memorizzate nelle varie regioni.
+
+## Neo4J
+
+- Salva i dati in un grado (nel senso matematico, collezione di vertici connessi da archi)
+- Dà particolare importanza alle relazioni tra i dati e non alle similarità tra insiemi di valori.
+- Può immagazzinare dati altamente variabili in modo "naturale": ogni attributo è opzionale
+- Utilizza Groovy per le query MapReduce e ha una interfaccia REST
+- Ha indici e algoritmi specifici per l'attraversamento di grossi grafi
+- E' scalabile
+- Gestisce le repliche con una topologia master-slave su più server
+- Ha transazioni che soddisfano le proprietà ACID
+- Assicura una High Availability  
+  Questo perché permette di scrivere anche sui nodi slave che poi si sincronizzeranno con il master.
+  
