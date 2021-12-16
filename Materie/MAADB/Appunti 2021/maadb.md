@@ -85,7 +85,9 @@
     - [Sort Merge Join e una sua ottimizzazione](#sort-merge-join-e-una-sua-ottimizzazione)
     - [Hash-Join](#hash-join)
 - [Ottimizzazione delle query](#ottimizzazione-delle-query)
+  - [Query Tree](#query-tree)
   - [Query Optimization](#query-optimization)
+  - [Valutazione dei join](#valutazione-dei-join)
   - [Heuristic VS Cost based operation](#heuristic-vs-cost-based-operation)
   - [Stima dei costi delle query](#stima-dei-costi-delle-query)
   - [Assunzioni alla base del modello dei costi](#assunzioni-alla-base-del-modello-dei-costi)
@@ -1603,13 +1605,152 @@ Nel caso ottimale vi è un'unica scansione di entrambe le relazioni.
 
 #### Sort Merge Join e una sua ottimizzazione
 
+L'obiettivo è integrare la fase di matching con quella di ordinamento.
+
+Si potrebbe scegliere di proseguire così: quando inizio a considerare R per ordinarla, mi fermo al primo passo dell'ordinamento (ossia il passo in cui nel merge-sort vengono generati tanti run ordinati, cioè tante sotto-sequenze di file ordinate).
+
+A questo punto, invece che fare il merge-sort per fonderli, posso pensare di far partire direttamente il join.
+
+Porterei in memoria principale una pagina per ciascuno dei run che è stato creato (serve più di un frame nel buffer).
+
+Se supponiamo di avere un file di 20 pagine e di essere riusciti, ordinando, a creare run lunghi 5 pagine ciascuno e abbiamo 5 frame di buffer a disposizione per ciascuna delle relazioni (lunghe 20, 5 pagine * (5 frame - 1 output)).
+
+Creo run che non sono più di 5 per ciascuna relazione: in questo modo il numero di run creato è tale per essere contenuto in memoria centrale nel buffer.
+
+A questo punto inizia il join esattamente nel modo in cui sarebbe iniziato il merge nella versione orientata ai blocchi: leggo in memoria una pagina per ciascuna run e comincio a fare le operazioni di join.
+
+Fino a questo punto ho fatto un passo di merge-sort, costato 2M (o 2N a seconda della pagina portata nel buffer e poi riscritta).
+
+Dopo si passa all'operazione di fusione, che si compie sfruttando l'esistenza di più pagine simultaneamente presenti nel buffer e ordinate. Prendo la prima pagina di una relazione e confronto tutti i record con i record presenti nelle prime pagine dell'altra.
+
+Quando ho completato l'analisi della prima pagina (facendo matching con tutte le pagine dell'altra), potrò sovrascriverla con la seconda pagina dello stesso run. Sfrutto l'ordinamento con la consapevolezza che quando supererò i limiti della chiave, la pagina è sovrascrivibile.
+
+Nel caso migliore, si riduce ad un'unica lettura dei frame; nel caso peggiore (bassa selettività del predicato di selezione) il costo sarà M*N.  
+Si riesce a risparmiare nei costi perché sono stati fatti dei run sufficientemente lunghi da poter operare in locale in memoria centrale.
+
+**Idea alla base**: tutti i valori più piccoli tra quelli presenti nelle relazioni saranno in testa ai rispettivi run creati; il fatto di avere in memoria centrale tutte le prime pagine dei diversi run creati massimizza la possibilità di avere match tra i valori più piccoli di una relazione e quelli dell'altra, dal momento che sono tutti finiti nelle prime pagine dei diversi run.
+
+Il matching ha la stessa logica dell'ordinamento: quella di scandire run ordinate alla ricerca di match.
+
+Quindi, invece che leggere i blocchi come si faceva nel merge-sort per creare una relazione ordinata in cui tutti sono contenuti, leggo i blocchi per creare una relazione di output in cui chi non ha un corrispondente tra gli altri va escluso, mentre si salvano in output solo quelli per cui trovo un valore corrispondente.
+
+**Costo medio**: 2M + 2N + M + N (costo lineare)
+**Costo peggiore**: 2M + 2N + M*N
+
 #### Hash-Join
+
+Cerco di essere più efficiente nella disposizione dei dati nel blocco. La funzione di hash partiziona i dati in bucket in base al risultato della stessa.
+
+Posso pensare di organizzare i dati in pagine diverse in funzione dell'hashing. Come sfrutto questa disposizione?
+
+Nell'hash join continuo a scandire entrambe le relazioni R ed S: nella prima passata creo le partizioni dei dati da portare su disco sulla base della funzione di hash.
+
+Le relazioni hanno un indice definito mediante hash; invece di usare il sort merge join faccio una passata e riscrivo in memoria riorganizzando in modo che i record che corrispondono allo stesso bucket siano nella stessa pagina su disco.
+
+A questo punto l'organizzazione su disco delle due relazioni riflette l'organizzazione delle chiavi nei bucket dell'indice di hash.
+
+Leggo in memoria ciascuna partizione della relazione esterna (ad esempio della relazione R).
+
+Nel block nested loop join, per ogni blocco della relazione esterna, dovevo scandire l'intera relazione interna: non c'era alcuna correlazione dei contenuti di una e dell'altra; ciascun valore della relazione esterna poteva avere corrispondenze in qualunque pagina della relazione interna.
+
+Adesso per la partizione esterna che corrisponde ad un certo valore di hash, se ho dei match nella relazione interna, saranno nella partizione che corrisponde allo stesso valore di hash.
+
+Se ho nella relazione esterna tutti i record per cui l'hash ha assegnato il bucket 1, gli eventuali valori che matchano saranno nella pagina della relazione interna su cui la stessa funzione di hashing ha assegnato il bucket 1: per matchare devono essere sempre uguali.
+
+Ho raggruppato nelle singole pagine i relativi record che possono matchare. 
+Non significa che sono per forza ordinati, ma so che tutti i numeri specifici sono in questo bucket e, se esistono gli stessi valori nell'altra relazione, saranno nella stessa pagina perché l'hashing ha mappato nella stessa pagina gli stessi valori, essendo la stessa funzione di hashing.
+
+Cosa risparmio?  
+Risparmio sulla lettura delle pagine interne, perché ho una guida/un criterio che uso per capire quali pagine della relazione interna portare a fronte delle pagine della relazione esterna in cui sto cercando il matching, e non ho la necessità di scandire più le pagine per ogni blocco della relazione esterna.
 
 ## Ottimizzazione delle query
 
+Il modulo di ottimizzazione delle query è molto utile: è a carico del DBMS tradurre uno statement dichiarativo nel linguaggio dell'algebra relazionale. 
+E' possibile che la stessa query dichiarativa corrisponda a diversi statement dell'algebra relazionale; inoltre ad ogni operatore corrispondono diverse implementazioni, ognuna con le sue particolarità.
+
+E' a carico del DBMS la scelta dell'implementazione ideale di un operatore, a seconda della situazione.
+
+Scegliere l'operazione ottima in uno specifico momento comporterebbe un costo superiore all'eventuale vantaggio che questa scelta comporterebbe, quindi si rinuncia alla possibilità di cercare l'ottimo e si lavora su euristiche per cercare almeno di evitare/escludere le scelte peggiori. Si valuta il compromesso tra il costo della scelta e il vantaggio che ne comporta.
+
+Il DBMS, dato uno statement di una query che l'utente ha formulato, deve trovare dei piani fisici pe r la query e quindi deve trovare una riscrittura procedurale della query, indicando per ciascun operatore l'implementazione fisica dello stesso che ha scelto.
+
+In linea di principio, si può pensare che ci si muova come un'ottimizzazione all'interno di uno spazio di ricerca che è costituito dalle diverse implementazioni dei diversi operatori che sono tra loro tutte equivalenti dal punto di vista logico e semantico (forniscono lo stesso risultato), ma non dal punto di vista fisico (quindi anche dell'elaborazione dei dati).
+
+Io cerco la soluzione col costo minimo nello spazio delle soluzioni. 
+Bisogna poter enumerare i diversi piani di valutazione della query (query plan), ossia le diverse procedure (sequenze di operazioni), ciascuna con una sua implementazione.
+
+Deve poter enumerare e quindi deve poter tradurre la rappresentazione dichiarativa in più equivalenti rappresentazioni procedurali della stessa query.
+
+Dopodiché è necessario un algoritmo di ricerca nello spazio che cerchi però di evitare una scelta esaustiva, proseguendo per "potature" grazie ad euristiche.
+Le scelte potate sono quelle che con altissima probabilità non sono promettenti.
+
+Per stimare il costo di una query e per enumerare i piani relativi alla query stessa ho bisogno di un modello rispetto a cui rappresentare il piano; più in generale ho bisogno di un modello mediante il quale rappresentare le query, cioè il Query Tree.
+
+### Query Tree
+
+E' una rappresentazione, sotto forma di un albero, del workflow (flusso di lavoro) della query, il flusso di trasformazione che i risultati parziali subiscono per arrivare al risultato finale.
+
+Le foglie sono sempre gli operandi di base (le relazioni) e i nodi interni sono gli operatori a cui corrispondono le diverse implementazioni.
+Possono essere relazioni, o il risultato di altre scansioni.
+
+Ciascuno statement dell'algebra relazionale corrisponde ad un query tree logico, quindi ciascuna procedura corrisponde ad un query tree logico.
+Uno stesso query tree logico può corrispondere a diversi query tree fisici, cioè diversi modi di implementare gli operatori citati nel query tree logico.
+
+Il goal è partire da uno statement SQL e arrivare ad un query plan fisico che consenta di restituire i risultati dichiarati dallo statement.
+
+---
+
+Se non si hanno informazioni specifiche per valutare la query, tipicamente ci si basa sull'aspetto dell'albero.
+In particolare, quando si valuta la combinazioni di più join, l'aspetto dell'albero è importante:
+
+- Se uso strutture profonde a sinistra, qualora sulle condizioni esistano degli indici, la struttura profonda a sinistra mi consente di usarli più pesantemente.
+- Left deep mi consente di avere implementazioni non-blocking: tipicamente gli algoritmi di join sono fatti che per ogni record/pagina/blocco della relazione di sinistra, ciclo completamente quella di destra. Quindi per partire devo avere completamente quella di destra e con il right deep non è possibile avere l'intero argomento di destra fino a quando la query non è interamente valutata.
+
 ### Query Optimization
 
+E' l'operazione che individua, tra le possibili alternative per l'implementazione di una query, un'alternativa di costo relativamente basso (idealmente la meno costosa, ma in genere quella di costo abbastanza contenuto).
+
+Bisogna passare da una query dichiarativa ad uno specifico query plan.
+Ci sono diversi piani logici che possono corrispondere alla stessa query.
+I piani logici sono sequenze di operatori la cui valutazione porta al risultato della query a prescindere dalle implementazioni scelte.
+
+Ci sono numerosi piani fisici; ciascuno corrisponde ad un piano logico, ma la corrispondenza non è 1:1. 
+Dato un piano logico possono corrispondere più piani fisici (più rappresentazioni fisiche) perché alla stessa sequenza di operatori logici possono corrispondere diverse implementazioni e quindi diversi piani fisici.
+
+Tra tutti i piani, l'obiettivo è trovare un piano ragionevolmente economico.
+Per farlo bisogna avere un modello dei costi e un algoritmo di ricerca nello spazio dei piani.
+Tipicamente per fare una scelta ci si basa su considerazioni di tipo euristico (in particolare si anticipano il più possibile le operazioni che riducono la dimensione dell'output come proiezione e selezione, piuttosto che join).
+
+### Valutazione dei join
+
+Ho un certo numero di strutture ad albero profonde a sinistra.
+Il numero è dato dal fattoriale del numero di relazioni coinvolte.
+
+Se ho un join con 8 relazioni, allora ho 8! alberi profondi a sinistra distinti che corrispondono allo stesso join.
+
+Dato che la quantità di scelte è alta, quello che in genere fanno gli ottimizzatori è limitare la propria attenzione ad una specifica struttura.
+
+Si genereranno solo left deep, che lasciano un maggior margine di ottimizzazione: laddove le relazioni argomento del join prevedono l'esistenza di un indice sull'attributo del join, le posso sfruttare soltanto se queste relazioni di partenza sono operandi diretti del join e sono posizionati a destra (ovvero, se ho un indice sulla relazione R lo posso sfruttare se sto facendo S $\bowtie$ R ma NON se sto facendo R $\bowtie$ S) perché l'algoritmo di Nested Loop Join prevede che si possa utilizzare l'indice eventualmente esistente solo sulla relazione interna (quella di destra).
+
+Se ho un albero profondo a sinistra, tranne la prima foglia a sinistra del livello più profondo, tutte le foglie sono a destra dell'operando.
+
+Non avviene la stessa cosa nell'albero profondo a destra perché gli argomenti di destra sono risultati parziali di dati già elaborati, quindi l'indice si può sfruttare solo nella foglia più profonda a destra dell'albero.
+
+Il right join è anche blocking per l'implementazione degli algoritmi: la relazione interna deve essere interamente disponibile durante il join bloccante e in questo caso a destra si hanno solo risultati parziali.
+Non posso infatti proseguire col join finché non è stato prodotto l'intero risultato di destra e non si possono usare gli indici per avere valutazioni simultanee di operatori diversi che sfruttano i risultati parziali.
+
 ### Heuristic VS Cost based operation
+
+Utilizzare queste euristiche, piuttosto che valutare tutte le soluzioni, che costo può avere?
+
+E' chiaro che escludendo a priori certe strutture si introducono degli errori.
+Quanto può essere grave e intollerabile introdurli?
+
+Potrebbe essere superfluo cercare la soluzione ottima quando alla fine ci si basa su un modello dei costi che è già lui stesso un'euristica ("grossolana").
+
+Anche le ipotesi sulla distribuzione dei valori, su cui ci si basa per implementare la selettività, restituire i costi, ecc., sono tutte approssimazioni/stime, quindi ha senso fare dei calcoli esatti (e costosi) solo quando si ha la consapevolezza di lavorare con dati precisi.
+
+Si tengono già le statistiche; tenere le statistiche aggiornate sarebbe molto costoso. Se un'analisi precisa si basa su statistiche grossolane, allora l'analisi non è più precisa e non ha senso sceglierla.
 
 ### Stima dei costi delle query
 
