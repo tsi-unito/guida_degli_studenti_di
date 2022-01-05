@@ -1,7 +1,7 @@
 # Materie
 
 | SIGLA    | Nome Completo                                                 |
-|----------|---------------------------------------------------------------|
+|----------|:-------------------------------------------------------------:|
 | AAUT     | Apprendimento Automatico                                      |
 | AINT     | Agenti Intelligenti                                           |
 | ALGCOMPL | Algoritmi e Complessita                                       |
