@@ -1,5 +1,28 @@
 # Materie
 
+| SIGLA    | Nome Completo                                                 |
+|----------|:-------------------------------------------------------------:|
+| AAUT     | Apprendimento Automatico                                      |
+| AINT     | Agenti Intelligenti                                           |
+| ALGCOMPL | Algoritmi e Complessita                                       |
+| BIOINF   | Bioinformatica                                                |
+| COMPL AP | Complementi Analisi e Probabilità                             |
+| DBM      | Basi di dati Multimediali                                     |
+| ELIVA    | Elaborazione di Immagini e Visione Artificiale                |
+| ESP      | Etica, società e privacy                                      |
+| IALAB    | Intelligenza articiale e laboratorio                          |
+| IUMTWEB  | Interazione Uomo Macchina e Tecnologie Web `                  |
+| MAADB    | Modelli Avanzati Basi di Dati                                 |
+| MCAD     | Modelli Concorrenti ed Algoritmi Distribuiti                  |
+| METNUM   | Metodi Numerici                                               |
+| MODSEM   | Modelli Semantici                                             |
+| OC       | Ottimizzazione Combinatorica                                  |
+| RNDL     | Reti Neurali e Deep Learning                                  |
+| SAS      | Sviluppo Applicazioni Software                                |
+| SRV      | Sistemi di Realtà Virtuale                                    |
+| TAAS     | Tecniche e architetture avanzate per lo sviluppo del software |
+| TLN      | Tecnologie Linguaggio Naturale                                |
+
 ## Come contribuire?
 
 Per quanto riguarda le pull request in questa specifica sezione controllate sempre che abbiano le seguenti
