@@ -2,13 +2,14 @@
 
 ## Appunti
 
-- Appunti di Paolo Alfano, annata 17-18, disponibili [qui](Appunti/Appunti%2017-18%20-%20Alfano.pdf)
-- Appunti di Cesare Iurlaro, annata 18-19, disponibili [qui](Appunti/Appunti%20Cesare%20Iurlaro.pdf)
-- Appunti di Davide Giosa, annata 19-20, disponibili [qui](Appunti/Appunti%20Davide%20Giosa.pdf)
-- Appunti di Enrico Mensa, annata anonima, disponibili [qui](Appunti/Appunti%20Enrico%20Mensa.pdf)
-- Appunti anonimi, annata anonima, disponibili [qui](Appunti/Appunti%20Francesco.pdf)
+- Appunti di Paolo Alfano, annata 17-18
+- Appunti di Cesare Iurlaro, annata 18-19
+- Appunti di Enrico Mensa, annata anonima
 - Appunti di Desislav Ivanov, annata 20-21, ristretti all'essenziale, disponibili [qui](https://desislav.dev/uni/rndl/)
+- Riassunti in formato DOCX vari
+- Appunti di Davide Giosa (aggiornati al 2021/2022)
+- Altri appunti anonimi vari
 
-## Schemi
+## Nota
 
-- Schema anonimo, annata anonima, disponibile [qui](Appunti/Schema-1819-Vlad.pdf)
+Si prega di fare attenzione all'aggiornamento di corso all'anno 2021/2022 in cui il programma della seconda parte è stato riportato alle annate pre-Esposito.
