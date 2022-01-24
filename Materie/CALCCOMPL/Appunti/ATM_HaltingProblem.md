@@ -27,13 +27,8 @@ Quando la macchina D esegue <D> (la sua descrizione) allora essa darà come risu
 Questo corrisponde alla negazione di tutte le entry della diagonale principale, quindi stiamo dicendo che non esiste una riga in questa tabella infinita in cui tutte le entry
 siano la negazione della diagonale, ma come tesi avevamo detto che H era un decisore per ATM.
 
-
-
-
-
-
-
-
+-----
+  
 SAT is NP-Complete: PROOF
 
 Ogni problema di classe NP si riduce polinomialmente a SAT
