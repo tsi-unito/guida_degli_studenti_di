@@ -7,7 +7,7 @@
 - Appunti di Enrico Mensa, annata anonima
 - Appunti di Desislav Ivanov, annata 20-21, ristretti all'essenziale, disponibili [qui](https://desislav.dev/uni/rndl/)
 - Riassunti in formato DOCX vari
-- Appunti di Davide Giosa (aggiornati al 2021/2022)
+- Appunti di Davide Giosa (aggiornati al 2020/2021 - Esposito)
 - Altri appunti anonimi vari
 
 ## Nota
