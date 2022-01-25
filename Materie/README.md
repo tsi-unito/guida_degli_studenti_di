@@ -6,6 +6,7 @@
 | AINT     | Agenti Intelligenti                                           |
 | ALGCOMPL | Algoritmi e Complessita                                       |
 | BIOINF   | Bioinformatica                                                |
+| CALCCOMPL| Calcolabilità & Complessità                                   |
 | COMPL AP | Complementi Analisi e Probabilità                             |
 | DBM      | Basi di dati Multimediali                                     |
 | ELIVA    | Elaborazione di Immagini e Visione Artificiale                |
