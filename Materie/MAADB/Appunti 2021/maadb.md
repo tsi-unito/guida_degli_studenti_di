@@ -90,8 +90,13 @@
   - [Valutazione dei join](#valutazione-dei-join)
   - [Heuristic VS Cost based operation](#heuristic-vs-cost-based-operation)
   - [Stima dei costi delle query](#stima-dei-costi-delle-query)
+  - [Stima dei costi (Locali)](#stima-dei-costi-locali)
+  - [Stima Scan](#stima-scan)
+  - [Stima Proiezione](#stima-proiezione)
+  - [Stima Selezione](#stima-selezione)
   - [Assunzioni alla base del modello dei costi](#assunzioni-alla-base-del-modello-dei-costi)
 - [Gestione delle Transazioni](#gestione-delle-transazioni)
+  - [Stato di un database](#stato-di-un-database)
   - [Anomalie e serializzabilità](#anomalie-e-serializzabilità)
   - [Grafo delle dipendenze](#grafo-delle-dipendenze)
   - [Algoritmi basati sul Locking](#algoritmi-basati-sul-locking)
@@ -1754,11 +1759,173 @@ Si tengono già le statistiche; tenere le statistiche aggiornate sarebbe molto c
 
 ### Stima dei costi delle query
 
+Stimare i costi significa stimare il volume di pagine che il risultato andrà ad occupare.
+Per ogni sotto-query devo stimare il costo (inteso come numero di accessi R/W su disco che comporta) e la dimensione del risultato prodotto.
+
+### Stima dei costi (Locali)
+
+E' la stima in termini di dimensione del risultato prodotto. E' importante sapere la quantità di record in modo da poter stimare l'input dell'operazione successiva.
+Per fare una stima del costo ho bisogno di sapere quanto è grande il risultato, il suo input e quanto è selettivo l'operatore che si sta valutando.
+
+Legenda:
+
+- V(R.a) => numero di valori distinti dell'attributo 'a' nella relazione 'R'.
+- T(R) => numero di tuple nella relazione
+- V(R.a) = T(R) se l'attributo 'a' è una chiave.
+- B(R) = numero di blocchi
+
+### Stima Scan
+
+Se devo scandire una relazione, la stima del costo dipende:
+
+- Dalla tipologia di file che sto leggendo
+- Dal fatto che io abbia a disposizione o meno un file di indice
+
+- **Scansione senza indice**: B(R): costo della sola lettura del file
+- **Scansione con indice cluster**: B(R) (lettura dell'intero file) + il numero delle foglie ordinate nell'indice
+- **Scansione con indice non cluster**: T(R) + numero di pagine di indice  
+  
+  Se uso un indice unclustered potrei dover tornare più volte su una stessa pagina perché i puntatori mi indirizzano verso quella pagina.
+
+### Stima Proiezione
+
+Devo leggere tutto il file e restituire un record per ciascun record presente, perciò la stima dei record in output è immediata.
+
+### Stima Selezione
+
+La stima della cardinalità dei risultati dipende dalla condizione di selezione.
+
+- **attributo = costante**: T(S) = T(R) / V(R.a)
+  
+  Numero di tuple / numero di valori distinti
+- $\bold{S=\sigma_{a\neq c}(R)}$: Attributo diverso da costante.  
+  Se i valori diversi dalla costante sono tanti, ciascuna specifica chiave corrisponde ad una percentuale abbastanza bassa di rappresentanza all'interno della relazione.  
+  Si può ragionevolmente assumere che la cardinalità del risultato sia pari alla cardinalità di partenza (**T(S) = T(R)**).
+
+  Diverso è il caso quando ciascun valore può incidere in modo significativo:  
+  **T(S) = T(R) / T(R.a)\[V(R.a) - 1\]**, dove il -1 corrisponde a 'c' che voglio escludere
+- $\bold{c_1\ or\ c_2}$ (disgiunzione)  
+  
+  Tipicamente si gestiscono i casi disgiuntivi con de-morgan. n/T(R) è la percentuale di record della relazione che soddisfano la prima relazione.
+
+  Se n è il numero di record che soddisfa la prima relazione, 1-n/T(R) è la probabilità di record che **NON** soddisfano la prima condizione e la si può vedere come la probabilità di un record della relazione R di non soddisfare $c_1$.
+
+  Se m è il numero di record che soddisfano $c_2$, 1-m/T(R) è la probabilità per un record della relazione R di NON soddisfare $c_2$. Vedendo le condizioni $c_1$ e $C-2$ come indipendenti (per ipotesi), il prodotto delle due probabilità di non soddisfare $c_1$ e non soddisfare $c_2$ dà la probabilità di non soddisfare nessuna delle due.
+
+  La stima del costo per due condizioni messe in OR tra loro è
+  $$
+  T(S) = T(R) \cdot \left(1-\frac{1-n}{T(R)}\cdot\frac{1-m}{T(R)}\right)
+  $$
+- **JOIN**: dipende da come sono legati gli attributi.
+  - $T(R \bowtie S) = 0$: è possibile che il risultato sia 0. Se devo fare un join tra gli studenti iscritti ad un corso del 4° anno e gli studenti iscritti al 1° anno, allora la tabella risultante sarà vuota.
+  - $T(R \bowtie S) = T(R)$: è possibile che il risultato sia la cardinalità di una delle due relazioni. Questo succede quando l'attributo di join è chiave.
+  - $T(R \bowtie S) = T(R) \cdot T(S)$: se ciascun record della priam corrisponde a ciascun record della seconda. Quando la condizione di join è tale che tutti i record soddisfano il requisito.
+  - $T(R \bowtie S) = T(R) \cdot T(S) / \max(V(R.y), V(S.y))$
+
+    Questo è un caso intermedio, pari a quello del cartesiano (tutti i valori come nel caso precedente), scalato rispetto al massimo di valori distinti che l'attributo di join ha in una delle due relazioni.
+
+Dobbiamo comunque accontentarci di stime "non pessime" perché l'ottimo non sarebbe comunque preciso, oltre che costoso.
+
 ### Assunzioni alla base del modello dei costi
+
+Il costo relativo al risultato, in termini di cardinalità dei risultati generati, prescinde dalla specifica implementazione della query che è stato utilizzato e quindi è funzione solo dello specifico operatore e della specifica semantica che è stata implementata.
+
+Se devo calcolare una selezione che ha come condizione la congiunzione tra due operatori $O_1$ e $O_2$ ($\sigma_{O_1 \vee O_2}(R)$), il numero di record restituiti applicando l'operatore rispetto alla prima condizione sul risultato della selezione sulla relazione applicando la seconda condizione di valutazione - è esattamente lo stesso che avrei se avessi applicato l'operatore rispetto alla seconda condizione sul risultato della selezione sulla relazione applicando la prima condizione di valutazione
+
+$$
+\sigma_{O_1}(\sigma_{O_2}(R)) = \sigma_{O_2}(\sigma_{O_1}(R))
+$$
+
+Potrebbe non essere lo stesso costo in termini di accesso alle pagine perché potrebbero far riferimento ad indici diversi e altre casistiche. E' sempre meglio anticipare l'operatore che restituisce risultati parziali con la cardinalità più bassa.
+
+---
+
+Il principio che regola il comportamento dell'ottimizzazione è il **principio di ottimalità delle sottoquery**: per ottimizzare a livello globale una query composta da un certo numero di sottoquery si possono considerare individualmente i costi delle diverse sottoquery; quando sommo questi costi sceglierò come piano globale quello che risulta da quelli locali che complessivamente hanno costi minori.
+
+Il piano ottimale per una query complessiva è quello costituito a partire da piani sub-ottimali per le sottoquery.
+Questo ci fornisce un criterio molto importante per l'ottimizzazione perché mi permette di decomporre i problemi in sottoproblemi.
+
+Ottimizzando individualmente le sottoquery si raggiunge un risultato globale.
+
+Per stimare il costo del join $R_1 \bowtie R_2 \bowtie R_3 \bowtie R_4$ bisogna calcolare il costo delle varie permutazioni del join.
+
+E' una procedura ricorsiva: dato un problema, posso risolvere tutti i sotto problemi per calcolarne i costi individuali. Sfrutto tecniche di programmazione dinamica per non ri-calcolare i costi di combinazioni già effettuate.
+
+Abbiamo due soluzioni:
+
+1) Si procede top-down. Genero i problemi in maniera ricorsiva: da un insieme più grande faccio uscire dei sotto-problemi.
+  
+  Successivamente genero uno stack coi risultati dei vari costi. Uso il valore dello stack quando ho un join già presente in esso. Uso prog. din. per evitare la creazione di sotto-problemi duplicati.
+2) Si procede bottom-up: sapendo quali sono le operazioni che sono coinvolte all'interno dell'operatore complesso il cui costo è oggetto d'analisi, io dal basso calcolo i costi ottimali per l'accesso alle singole relazioni.
+  
+  A partire dai costi ottimali, conoscendo i costi delle diverse implementazioni dell'operatore di join, combino in tutti i possibili modi i costi base per ottenere il costo del join di due operazioni.
+  In pratica, costruisco tutti i "mattoni", calcolando tutte le possibili soluzioni dei singoli operatori ($R_1 \bowtie R_2$, $R_2 \bowtie R_3$...) e successivamente, partendo da $R_1 \bowtie R_2$ e avendo anche $R_2 \bowtie R_3$, costruisco $R_1 \bowtie R_2 \bowtie R_3$.
+
+---
+
+Con la programmazione dinamica non risolvo comunque il problema del costo esponenziale associato al problema dell'utilizzazione, dal momento che è un problema esponenziale per la sua natura.
 
 ## Gestione delle Transazioni
 
+Una transazione è una sequenza di operazioni su un DB che vedo come "unità atomica".
+Sono operazioni per cui o tutte sono concluse e rese persistenti su disco, oppure tutte quante vengono annullate e si procede come se nulla fosse mai avvenuto.
+
+In poche parole, è una sequenza di operazioni che **non** può essere resa effettiva solo in parte.
+
+Una transazione inizia con BEGIN e termina con END.
+L'operazione COMMIT viene effettuata quando c'è certezza che le modifiche effettuate dalla transazione che è arrivata alla fine devono essere rese persistenti.
+
+Una transazione termina in due modi:
+
+- COMMIT: è andato tutto bene; i dati sono resi persistenti su disco (scaricandoli da memoria centrale; sarebbe troppo costoso scrivere ogni operazione)
+- ABORT: la transazione è terminata e si annullano le operazioni fatte fino a quel punto.
+  Può essere causato da:
+  - L'utente
+  - Un guasto
+  - Situazioni di deadlock
+
+### Stato di un database
+
+E' l'insieme dei fatti che sono memorizzati nel DB in un certo istante.
+Lo stato evolve per effetto delle operazioni di scrittura, mentre non subisce alcuna variazione per le operazioni di lettura.
+
+Possiamo quindi vedere le scritture come una catena di dati che si susseguono nel tempo; è il ciclo di vita del database.
+
+In un certo stato del DB si possono presentare senza problemi diverse operazioni di lettura.
+Si vuole che per ciascuna di esse vengano rispettati i vincoli di verità dei dati dello stato del DB, ovvero che siano consistenti (vincoli di integrità).
+
+Ciascuna scrittura deve preservare la consistenza, ovvero deve **restituire un nuovo stato del DB a sua volta ancora consistente**.
+
+Con l'operazione di ROLLBACK tutti gli stati temporanei (comunque consistenti) vengono disfatti in modo da riportare il DB sullo stato consistente su cui la transazione aveva provato ad operare.
+
 ### Anomalie e serializzabilità
+
+1) **Write/Read Conflicts**. E' un'anomalia che si presenta quando una transazione scrive un oggetto che viene successivamente letto da un altro. In questo caso si parla di **dirty read**.
+  
+  Non è necessariamente un problema se la prima transazione va a buon fine; se invece dovesse fare abort la seconda transazione ha letto un dato che non verrà salvato su DB perché l'altra transazione è stata abortita.
+2) **Read/Write**. Succede quando T1 legge un dato che T2 modificherà. Questo è un potenziale problema se T1 leggerà di nuovo lo stesso oggetto: la prima lettura non sarà uguale alla seconda e questo è un problema.
+3) **Write-Write Conflicts**. Una transazione scrive un oggetto ed è immediatamente sovrascritta da un'altra. In questo modo le prime scritture sono perse completamente.
+
+---
+
+- **Serial Schedule**: uno schedule si dice seriale se per ogni transazione tutte le loro operazioni sono eseguite consecutivamente, senza essere frammentate da altre (niente interleaving).
+  
+  Mantiene l'ipotesi che se una transazione parte da un DB consistente, lo lascia sempre consistente.
+  Uno schedule seriale è chiaramente serializzabile. Non ricorriamo sempre a esecuzioni seriali (che ci danno la massima garanzia) perché stiamo cercando di avere esecuzioni concorrenti.
+- **Equivalent Schedule**: due esecuzioni delle transazioni che, dato lo stesso stato del DB in input, restituiscono lo stesso stato in output.
+- **Serializable Schedule**: un'esecuzione che ha dell'interleaving, ma è equivalente a una qualche esecuzione seriale della stessa
+
+L'obiettivo è garantire la concorrenza, ma al tempo stesso garantire la serializzabilità delle transazioni.
+Questo è importante perché una volta che so che uno schedule seriale ricevendo un DB consistente lo lascia in una situazione consistente, se ho un'esecuzione concorrente che opera allo stesso modo e lascia il DB nello stesso stato di un'esecuzione seriale, allora il DB rimarrà consistente anche in questo caso.
+
+In genere riconoscere schedule serializzabili è complicato.
+Il beneficio che si ottiene dalla concorrenza viene parzialmente consumato dal tempo dedicato all'analisi della serializzabilità.
+
+Tipicamente non si cerca uno schedule serializzabile, ma ci si accontenta di una famiglia di **schedule serializzabili dal punto di vista dei conflitti**.
+
+La serializzabilità, dal punto di vista dei conflitti prevede che nelle transazioni i conflitti che si generano nello schedule concorrente appaiano nello stesso ordine in cui sarebbero apparsi in uno schedule seriale.
+
+Se uno schema è conflict-serializable, è anche serializable (il primo è un sottoinsieme del secondo). Hanno conflitti ma sono equivalenti ad un'esecuzione seriale delle transazioni coinvolte.
 
 ### Grafo delle dipendenze
 
