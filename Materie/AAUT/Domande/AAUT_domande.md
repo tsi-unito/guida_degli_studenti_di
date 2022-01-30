@@ -175,3 +175,27 @@ Esposito:
 - condizioni di Mercer
 
 29
+
+-------------
+
+Meo:
+- fammi vedere l'artificial inflation nel primo jupyter e commenta cosa hai fatto e cosa vuol dire inflazionare
+- parlami di expectation maximization
+- illustrami l'algoritmo dbscan
+
+Esposito:
+- parla di least square e illustrami come siamo arrivati a questa formula: (X^t * X)^-1 * X^t * y
+
+-------------
+
+Meo:
+- notebook knn e confronto con alberi
+- algoritmo em
+
+Esposito:
+- algoritmo adaboost (non mi ha chiesto la dimostrazione di correttezza però)
+
+-------------
+
+Meo:
+- notebook più p-value più modello multinomiale e variato
