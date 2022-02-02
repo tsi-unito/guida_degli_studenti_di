@@ -8,3 +8,7 @@
 - Appunti _completi_ (a mano) dell'annata 21-22 di Federico Torrielli, disponibili [qui](Appunti/riassunto_aaut.pdf)
 - Appunti _completi_ dell'annata 21-22, anonimi, disponibili [qui](Appunti/AAUT_2021.pdf)
 - Appunti _semi-completi_ dell'annata 17-18 di Paolo Alfano, disponibili [qui](Appunti/Alfano_2018.pdf)
+
+## Esercizi completati (Meo)
+
+- Esercizi (spero corretti), di Federico Torrielli, disponibili [qui](https://github.com/federicotorrielli/aaut)
