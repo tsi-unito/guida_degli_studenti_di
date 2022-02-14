@@ -5,10 +5,9 @@
 - Appunti di Paolo Alfano, annata 17-18
 - Appunti di Cesare Iurlaro, annata 18-19
 - Appunti di Enrico Mensa, annata anonima
-- Appunti di Desislav Ivanov, annata 20-21, ristretti all'essenziale, disponibili [qui](https://desislav.dev/uni/rndl/)
-- Riassunti in formato DOCX vari
-- Appunti di Davide Giosa (aggiornati al 2020/2021 - Esposito)
-- Altri appunti anonimi vari
+- Appunti di Desislav Ivanov, annata 20-21, disponibili [qui](https://desislav.dev/uni/rndl/)
+- Appunti di Davide Giosa (20-21)
+- Riassunto di Davide Zago (21-22), disponibile [qui](https://transno.com/doc/3y-nWb7O0Jl)
 
 ## Nota
 
