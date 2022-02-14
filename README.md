@@ -1,3 +1,4 @@
+![LICENSE](https://img.shields.io/badge/license-CC%20BY--SA%204.0-blue)![GitHub Repo stars](https://img.shields.io/github/stars/stefa168/guida_degli_studenti_di?style=social)![GitHub contributors](https://img.shields.io/github/contributors/stefa168/guida_degli_studenti_di?style=plastic)
 # La guida **degli** Studenti
 ## Dipartimento di Informatica, UNITO
 
