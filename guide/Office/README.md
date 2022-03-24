@@ -44,8 +44,7 @@ Una volta scaricato l'"installer", segui le indicazioni della pagina di download
 L'installazione è piuttosto banale:
 
 1. Aprire il command prompt
-2. Digitare il comando
-    `setup.exe /configure <percorso al file di configurazione>`
+2. Digitare il comando `setup.exe /configure <percorso al file di configurazione>`
 1. Attendere per la fine dell'installazione, che dovrebbe essere automatica
 
 ## Attivazione di Office
