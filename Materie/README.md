@@ -1,4 +1,7 @@
-# Materie
+# Materie 
+ Elenco completo degli insegnamenti laurea [triennale](http://laurea.educ.di.unito.it/index.php/offerta-formativa/insegnamenti/elenco-completo/elenco-completo/) e laurea [magistrale](http://magistrale.educ.di.unito.it/index.php/offerta-formativa/insegnamenti/elenco-completo/elenco-completo/)
+## Tabella di traduzione
+Tabella di traduzione (per le sole materie presenti in questa directory) da sigla a nome.
 
 | SIGLA    | Nome Completo                                                 |
 |----------|:-------------------------------------------------------------:|
@@ -6,6 +9,7 @@
 | AINT     | Agenti Intelligenti                                           |
 | ALGCOMPL | Algoritmi e Complessita                                       |
 | BIOINF   | Bioinformatica                                                |
+| AVRC     | Analisi e Visualizzazione di Reti Complesse                   |
 | CALCCOMPL| Calcolabilità & Complessità                                   |
 | COMPL AP | Complementi Analisi e Probabilità                             |
 | DBM      | Basi di dati Multimediali                                     |
