@@ -1,0 +1,100 @@
+\documentclass[a4paper]{report}
+\usepackage[utf8]{inputenc}
+\usepackage[italian]{babel}
+\usepackage{csquotes}
+
+% PACKAGES ---------------------------------------------------------------------
+
+% Indice
+\usepackage[hidelinks]{hyperref}
+
+% Intestazione delle pagine
+\usepackage{fancyhdr}
+\pagestyle{fancy}
+\fancyhf{}
+\lhead{\rightmark}
+\rhead{\thepage}
+
+% Immagini
+\usepackage{graphicx}
+\graphicspath{ {images} }
+
+% Bigliografia
+\usepackage{biblatex}
+\addbibresource{sources.bib}
+
+%Gestione dei TODO
+\usepackage{todonotes}
+
+% BEGIN DOCUMENT --------------------------------------------------------------
+
+\begin{document}
+    \begin{titlepage}
+        \begin{center}
+            {\large \uppercase{Università degli studi di Torino}}\\[0.6cm]
+            {\large \bf Dipartimento di Informatica}\\[0.6cm]
+            {Scuola di Scienze della Natura}\\[0.6cm]
+            {\large \bf Corso di laurea magistrale in Informatica}\\[0.5cm]
+            {Curricula "la tua curricola"}\\[0.5cm]
+            
+            \vspace{0.1cm}
+            \begin{center}
+                \includegraphics[width=0.4\textwidth]{logoUnito}
+            \end{center}
+            \vspace{0.3cm}
+            
+            {Tesi di laurea magistrale in informatica}\\[1cm]
+            {\huge \bf Titolo della tesi}\\[2.0cm]
+            
+           \begin{minipage}{0.4\textwidth}
+               \begin{flushleft} \large
+                   \textbf{Relatore:}\\
+                   {Prof. XYZ}
+               \end{flushleft}
+           \end{minipage}
+           ~
+           \begin{minipage}{0.4\textwidth}
+               \begin{flushright} \large
+                   \textbf{Candidato:} \\
+                   {Il tuo nome} \\
+               \end{flushright}
+           \end{minipage}\\[1cm]
+           {\bf Sessione Mese Anno}\\
+           {a.a. 20XX/20XX}
+           \clearpage
+        \end{center}
+    \end{titlepage}
+    
+    % DEDICA -------------------------------------------------------------------
+    
+    \thispagestyle{empty} % toglie l'heading
+    \begin{flushright}
+        \textit{Una dedica, se ti andrà di farla.}
+    \end{flushright}
+
+    % SOMMARIO -----------------------------------------------------------------
+
+	\begin{abstract}
+    Abstract della tesi
+    \end{abstract}
+
+    % INDICE -------------------------------------------------------------------
+    
+    \tableofcontents
+	
+	% CHAPTERS -------------------------------------------------------------------
+	
+	\input{chapters/introduzione}
+	
+	\input{chapters/obiettivi}
+	
+	\input{chapters/sviluppo}
+	
+	\input{chapters/conclusioni}
+	
+	% BIBLIOGRAPHY ----------------------------------------------------------------
+    \printbibliography[title=Bibliografia e Sitografia]
+    
+    % RINFGRAZIAMENTI ------------------------------------------------------------
+	
+\end{document}          
