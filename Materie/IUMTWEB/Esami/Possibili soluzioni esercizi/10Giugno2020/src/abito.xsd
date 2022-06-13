@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema">
+    <xs:element name="abito">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="modello" type="xs:string"/>
+                <xs:element name="colori" type="elencoColori"/>
+                <xs:element name="accessori" type="elencoAccessorio"/>
+                <xs:element name="sconto" minOccurs="0">
+                    <xs:simpleType>
+                        <xs:restriction base="xs:positiveInteger">
+                            <xs:maxInclusive value="100"/>
+                        </xs:restriction>
+                    </xs:simpleType>
+                </xs:element>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+
+    <xs:complexType name="elencoColori">
+        <xs:sequence>
+            <xs:element name="colore" maxOccurs="unbounded">
+                <xs:simpleType>
+                    <xs:restriction base="xs:string">
+                        <xs:enumeration value="blue"/>
+                        <xs:enumeration value="nero"/>
+                        <xs:enumeration value="bianco"/>
+                    </xs:restriction>
+                </xs:simpleType>
+            </xs:element>
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:complexType name="elencoAccessorio">
+        <xs:sequence>
+            <xs:element name="accessorio" maxOccurs="unbounded">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element name="tipo" type="xs:string"/>
+                        <xs:element name="modello" type="xs:string"/>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+        </xs:sequence>
+    </xs:complexType>
+</xs:schema>

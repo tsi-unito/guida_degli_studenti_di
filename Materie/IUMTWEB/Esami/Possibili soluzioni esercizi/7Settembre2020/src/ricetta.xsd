@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema">
+    <xs:element name="ricetta">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="titolo" type="xs:string"/>
+                <xs:element name="tempoDiEsecuzione" type="xs:positiveInteger"/>
+                <xs:element name="ingredienti" type="sequenzaIngredienti"/>
+                <xs:element name="testo" type="xs:string"/>
+                <xs:element name="vegan" type="xs:boolean" minOccurs="0"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+
+    <xs:complexType name="sequenzaIngredienti">
+        <xs:sequence>
+            <xs:element name="ingrediente" type="ingrediente" maxOccurs="unbounded"/>
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:complexType name="ingrediente">
+        <xs:sequence>
+            <xs:element name="sostanza" type="xs:string"/>
+            <xs:element name="quantità" type="xs:positiveInteger"/>
+        </xs:sequence>
+    </xs:complexType>
+</xs:schema>

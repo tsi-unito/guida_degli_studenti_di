@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema">
+    <xs:element name="playList">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="titoloPL" type="xs:string"/>
+                <xs:element name="brani" type="elencoBrani"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+
+    <xs:complexType name="elencoBrani">
+        <xs:sequence>
+            <xs:element name="brano" maxOccurs="unbounded">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element name="titolo" type="xs:string"/>
+                        <xs:element name="autori" type="tipoautore"/>
+                        <xs:element name="durata" type="xs:decimal"/>
+                        <xs:element name="testo" type="xs:string" minOccurs="0"/>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:complexType name="tipoautore">
+        <xs:sequence>
+            <xs:element name="autore" type="xs:string" maxOccurs="unbounded"/>
+        </xs:sequence>
+    </xs:complexType>
+</xs:schema>

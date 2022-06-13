@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema">
+    <xs:element name="palazzo">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="numeroPiani" type="xs:positiveInteger"/>
+                <xs:element name="numeroScale" type="xs:positiveInteger" default="1"/>
+                <xs:element name="ascensore" type="xs:boolean" minOccurs="0"/>
+                <xs:element name="indirizzo" type="tipoIndirizzo"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+
+    <xs:complexType name="tipoIndirizzo">
+        <xs:choice>
+            <xs:element name="indirizzoStandard">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element name="via" type="xs:string"/>
+                        <xs:element name="numeroCivico" type="xs:positiveInteger"/>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="PO-box" type="xs:string"/>
+        </xs:choice>
+    </xs:complexType>
+</xs:schema>

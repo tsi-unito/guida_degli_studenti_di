@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema">
+    <xs:element name="palazzo">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="numeroPiani" type="xs:positiveInteger"/>
+                <xs:element name="indirizzo" type="tipoIndirizzo"/>
+                <xs:element name="condomini" type="elencoCondomini" minOccurs="0"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+
+    <xs:complexType name="tipoIndirizzo">
+        <xs:sequence>
+            <xs:choice>
+                <xs:element name="via" type="xs:string"/>
+                <xs:element name="piatta" type="xs:string"/>
+            </xs:choice>
+            <xs:element name="numeroCivico" type="xs:string"/>
+            <xs:element name="città" type="xs:string"/>
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:complexType name="elencoCondomini">
+        <xs:sequence>
+            <xs:element name="condomino" maxOccurs="unbounded">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element name="nome" type="xs:string"/>
+                        <xs:element name="cognome" type="xs:string"/>
+                        <xs:element name="numAppartamento" type="xs:positiveInteger"/>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+        </xs:sequence>
+    </xs:complexType>
+</xs:schema>

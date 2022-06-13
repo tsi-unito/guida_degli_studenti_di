@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema">
+    <xs:element name="mobile">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="larghezza" type="xs:positiveInteger"/>
+                <xs:element name="colore" type="tipoColore"/>
+                <xs:element name="struttura" type="tipoStruttura"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+
+    <xs:simpleType name="tipoColore">
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="bianco"/>
+            <xs:enumeration value="nero"/>
+            <xs:enumeration value="mogano"/>
+        </xs:restriction>
+    </xs:simpleType>
+
+    <xs:complexType name="tipoStruttura">
+        <xs:choice>
+            <xs:element name="cassetti" maxOccurs="unbounded">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element name="colore" type="tipoColore"/>
+                        <xs:element name="spessore" type="xs:positiveInteger" minOccurs="0"/>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="ripiani" type="xs:positiveInteger"/>
+        </xs:choice>
+    </xs:complexType>
+</xs:schema>

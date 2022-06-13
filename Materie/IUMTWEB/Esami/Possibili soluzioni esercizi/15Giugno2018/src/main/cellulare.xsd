@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema">
+    <xs:element name="cellulare">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="PIN" type="xs:positiveInteger"/>
+                <xs:element name="SO" type="xs:string"/>
+                <xs:element name="applicazioni" type="elencoApplicazioni" />
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+
+    <xs:complexType name="elencoApplicazioni">
+        <xs:sequence>
+            <xs:element name="applicazione" maxOccurs="unbounded">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element name="nome" type="xs:string"/>
+                        <xs:element name="autore" type="xs:string" minOccurs="0"/>
+                        <xs:element name="stato">
+                            <xs:simpleType>
+                                <xs:restriction base="xs:string">
+                                    <xs:enumeration value="attiva"/>
+                                    <xs:enumeration value="disattivata"/>
+                                </xs:restriction>
+                            </xs:simpleType>
+                        </xs:element>
+                        <xs:element name="data" type="xs:date"/>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+        </xs:sequence>
+    </xs:complexType>
+
+</xs:schema>

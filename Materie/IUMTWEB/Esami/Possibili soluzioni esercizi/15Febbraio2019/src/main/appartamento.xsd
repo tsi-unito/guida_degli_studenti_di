@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema">
+    <xs:element name="appartamento">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="numeroCamere">
+                    <xs:simpleType>
+                        <xs:restriction base="xs:positiveInteger">
+                            <xs:minInclusive value="1"/>
+                            <xs:maxInclusive value="10"/>
+                        </xs:restriction>
+                    </xs:simpleType>
+                </xs:element>
+                <xs:element name="numeroBagni">
+                    <xs:simpleType>
+                        <xs:restriction base="xs:positiveInteger">
+                            <xs:minInclusive value="1"/>
+                            <xs:maxInclusive value="4"/>
+                        </xs:restriction>
+                    </xs:simpleType>
+                </xs:element>
+                <xs:element name="cucinaAbitabile" type="xs:boolean" default="true"/>
+                <xs:element name="parcheggio" type="tipoParcheggio"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+
+    <xs:complexType name="tipoParcheggio">
+        <xs:sequence>
+            <xs:choice>
+                <xs:element name="box" type="xs:string"/>
+                <xs:element name="postoAuto" type="xs:positiveInteger"/>
+            </xs:choice>
+            <xs:element name="identificativo" type="xs:integer"/>
+        </xs:sequence>
+    </xs:complexType>
+</xs:schema>
