@@ -24,6 +24,7 @@ Tabella di traduzione (per le sole materie presenti in questa directory) da sigl
 | OC       | Ottimizzazione Combinatorica                                  |
 | RNDL     | Reti Neurali e Deep Learning                                  |
 | SAS      | Sviluppo Applicazioni Software                                |
+| SIST-INT | Sistemi Intelligenti                                          |
 | SRV      | Sistemi di Realtà Virtuale                                    |
 | TAAS     | Tecniche e architetture avanzate per lo sviluppo del software |
 | TLN      | Tecnologie Linguaggio Naturale                                |
