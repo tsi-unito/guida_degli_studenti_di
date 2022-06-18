@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>kMDItemKeywords</key>
+	<array>
+		<string>location</string>
+		<string>belief</string>
+		<string>agente</string>
+		<string>agenti</string>
+		<string>Triggering</string>
+		<string>triggering</string>
+		<string>ambiente</string>
+		<string>funzione</string>
+		<string>intenzione</string>
+		<string>applica</string>
+	</array>
+	<key>kMDItemTextContent</key>
+	<string>AgentSpeakl
+Fa parte dei linguaggi per agenti BDI
+Risolve un problema: 
+
+- gli agenti BDI sono descritti da specifiche teoriche e implementazione in modo netto
+
+- ASL elimina questa gap dando linguaggio per programmare agenti BDI e architettura su cui far girare il tutto
+Permette di definire BDI usando ASL e non tramite formule in logica modale
+Sintassi
+Connettivi
+!: achievement goal
+?: test goal
+;: per costruire sequenze
+Belief
+Fatti in cui l'agente crede
+Ex: robot + strada
+Configurazione delle corsie
+Posizione del robot
+Posizione della spazzatura
+
+adjacent(a,b)
+location(robot,c)
+Goal
+Stato del sistema che l'agente vuole raggiungere
+Tipologie
+Achievement goal
+Test goal
+!g(t) = agente ha come goal quello di arrivare nello stato in cui il belief g(t) è vero
+?g(t) = agente vuole verificare che il belief g(t) sia vero o falso
+Triggering events
+Aggiunta(+)/rimozione(-) di goal/belief
+In base a come viene modificato ambiente decido cosa fare
+Azioni
+Agente osserva ambiente, ha goal, decide quali azioni fare
+move(X,Y) modifica ambiente
+Piano
+Modo in cui agente può raggiungere goal
++location (waste , X): location (robot ,X) &amp; location (bin ,Y) &lt;− pick(waste); !location(robot , Y); drop(waste).
+
+Triggering event: +location(waste,X) = se viene aggiunto il bellide location(waste,X) ovvero è presente waste in X
+Context = location (robot ,X) &amp; location (bin ,Y) = se I belief location(robot,X) e location(bin,Y) sono veri
+
+Body = pick(waste); !location(robot , Y); drop(waste) = allora applica in sequenza pick(waste), aggiungi achievement goal !location(robot,Y) e applica drop(waste)
+Triggering-event : context &lt;-- body
+Esecuzione
+Belief di base
+Piani
+Intenzioni
+Inizialmente nessun blocchetto
+Dopo in base ai piani si aggiungono pile di blocchetti
+Pile = insieme di goal
+Blocchetto = singolo goal
+Eventi
+Insieme di triggering-event (+-goal/belief)
+&lt;triggering-event, I&gt;
+i = True --&gt; Evento esterno
+i = puntatore a intenzione che ha generato modifica
+Se = funzione di selezione di un evento
+Si toglie evento E selezionato
+
+PIANO RILEVANTE = unifico triggering-event di E con belief
+
+PIANO APPLICABILE = prendo piano rilevante unificato e unifico contesto di E
+
+So = funzione che sceglie tra i piani quale applicare
+
+Si = funzione che esegue intenzione del piano selezionato</string>
+</dict>
+</plist>

@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>kMDItemKeywords</key>
+	<array>
+		<string>verificare</string>
+		<string>automa</string>
+		<string>formula</string>
+		<string>system</string>
+		<string>cammino</string>
+		<string>insieme</string>
+		<string>modello</string>
+		<string>allora</string>
+		<string>possibili</string>
+		<string>essere</string>
+	</array>
+	<key>kMDItemTextContent</key>
+	<string>Model checking
+Vogliamo usarlo per verificare proprietà di agenti
+MC basato su approccio semantico: 
+Dato modello M
+Data logica L (spesso temporali)
+Data formula FI in logica L
+
+Verificare che FI sia valida in M
+Transition system
+Mostra il comportamento di un agente, tutte le possibili computazioni
+Transition system = π = composto da: 
+
+- insieme di stati
+- insieme di transizioni fra stati
+- insieme di proposizioni vere per ogni stato
+Visto come una Kripke structure = modello in logica temporale
+Logiche LTL
+Obiettivo
+Dato transition system π
+Data formula FI in LTL
+
+Vogliamo verificare se FI è vera in π
+Primo modo per fare MC
+Dato che siamo in LTL
+sappiamo che un modello è sequenza infinita di stati
+FI vera se è vera per ogni esecuzione di π.
+
+Dobbiamo verificare FI per ogni cammino di π
+Impossibile, abbiamo cammini infiniti
+Ex: G(start --&gt; FHeat)
+
+Si vuole verificare che per ogni stato in cui vale start, allora prima o poi si raggiunge uno stato in cui vale Heat
+Prediamo tutti i cammini
+Vediamo che esiste un loop che non porta mai a Heat.
+
+Proprietà non verificata
+Secondo modo
+Si lavora per refutazione.
+
+Nego FI
+Cerco cammino in cui vale not FI = Controesempio
+
+Al posto di verificare che FI valga per ogni percorso
+Mi basta un percorso in cui vale notFI per dire che FI non è valida
+Automi di Büchi
+Automi che accettano stringhe infinite.
+Per questo vanno bene per proprietà in LTL
+Sono tipo automi a stati finiti
+Struttura
+(quintupla)
+Alfabeto
+Stati possibili
+Transizioni possibili
+Stati iniziali
+Stati di accettazione F
+Automa accetta una stringa infinita (RUN) se: 
+
+- è un cammino infinito nel grafo dell'automa
+- compare almeno uno stato in F in questa stringa
+Il transition system può essere tradotto in automa.
+I suoi stati sono tutti di accettazione
+
+La formula FI in LTL da verificare, può essere tradotta in automa
+
+Usare automi di Büchi permette di avere stessa rappresentazione per TS e formula
+Primo modo per fare MC
+Dato TS π
+Data formula FI
+
+Costruisco automa di Büchi: B(π), B(notFI)
+
+Costruisco automa dato da intersezione dei due
+
+Se intersezione è vuota allora FI vale per π
+Ogni run nell'intersezione è run sia per π che per notFI (controesempio)
+Dato grafo, se esiste path che fa loop allora controesempio
+Problema
+L'automa può essere esponenziale rispetto la dimensione di FI
+Possibile usarlo per fare pianificazione
+
+Una volta fatto il grafo, devo trovare path che arrivi in uno stato in cui vale qualcosa</string>
+</dict>
+</plist>

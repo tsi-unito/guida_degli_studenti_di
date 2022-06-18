@@ -1,0 +1,229 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>kMDItemKeywords</key>
+	<array>
+		<string>intenzione</string>
+		<string>intenzioni</string>
+		<string>agente</string>
+		<string>Versione</string>
+		<string>quando</string>
+		<string>pseudocodice</string>
+		<string>azioni</string>
+		<string>deliberato</string>
+		<string>Belief</string>
+		<string>Problema</string>
+	</array>
+	<key>kMDItemTextContent</key>
+	<string>Agenti razionali
+Sistemi intenzionali
+Psicologia popolare
+Attività umana basata su credenze, voleri, speranze
+
+Le azioni degli umani sono conseguenza di qualcosa di desiderato, voluto, sperato.
+Spiega il comportamento umano in termini di attitudini dette NOZIONI INTENZIONALI
+Filosofo Daniel Dennett
+Sistema intenzionale: 
+
+Sistema il cui comportamento può essere previsto dal metodo di attribuzione di credenze, desideri e pensiero razionale
+Dubbio
+Possibile associare a sistemi informatici il concetto di nozione intenzionale (desideri, voleri etc)?
+Nel parlato ha senso nel momento in cui vogliamo astrarre.
+
+Più l'agente è complesso più usiamo astrazioni per descriverne il comportamento.
+
+Per questo motivo associamo spesso capacità intenzionale
+Siri ha capito che voglio le luci accese: NO
+
+Ha percepito suono, tradotto, eseguito
+Nozioni intenzionali
+Sono astrazioni che permettono di descrivere in modo semplice il comportamento dei sistemi complessi
+Tipologie di astrazione
+Procedure/funzioni
+Tipi di dati astratti
+Oggetti
+Practical reasoning
+Meccanismo che permette di passare da intenzioni a fatti
+
+Ragiono sulle azioni necessarie per soddisfare le intenzioni
+Attività
+Deliberazione
+Pianificazione
+Decidere cosa raggiungere. 
+Queste prendono il nome di INTENZIONI
+Decidere come raggiungere ciò che è stato deliberato.
+
+Serve per creare un piano
+Le intenzioni favoriscono la PROATTIVITA
+Intenzioni
+Sono persistenti: 
+Il fatto di aver scelto di fare qualcosa, rimane tale anche se nel mentre faccio altro.
+
+Voglio andare in piscina
+Adesso devo lavorare per 8 ore
+Non mi dimentico di andare in piscina
+Vincolano il futuro del ragionamento.
+
+Delibero A
+Se nel mentre delibero B,C allora queste non possono andare in contrasto con B,C
+Proprietà
+1) Intenzioni = problemi, agente deve risolverli
+
+2) Intenzioni = filtro per altre intenzioni, non può averne altre che facciano conflitto
+
+3) Agenti, se falliscono, riprovano
+
+4) Agenti credono che le intenzioni siano possibili
+
+5) Se agente ha intenzione, crede
+
+6) Agente non deve per forza avere intenzioni su tutti gli effetti collaterali delle intenzioni
+Ex: ho intenzione di andare dal dentista, questo implica male, non significa che ho intenzione di avere male
+Agente con pratica reasoning
+Versione 1 (pseudocodice)
+Problemi
+NOTA: 
+t0 = agente comincia a deliberare
+t1 = agente comincia a pianificare
+t2 = agente applica il piano
+
+t_deliberate = t1-t0
+t_means-and-reasoning = t2-t1
+Calculative Rationality
+
+Supponendo che l'agente deliberi qualcosa di ottimale per il raggiungimento del goal.
+
+Si rischia che ciò che viene deliberato non sia più utile al tempo t1 in cui si pianifica.
+Al tempo t1 l'agente ha deliberato delle azioni che sarebbero state ottime se eseguite all'istante t0.
+
+Questo potrebbe valere solo se t_deliberato fosse molto piccolo
+Ciò che è stato deliberato viene poi eseguito al tempo t2.
+
+Quindi è necessario aspettare ancora
+Perfetto se valgono queste assunzioni: 
+
+1) t_deliberate e t_means-and-reasoning molto brevi
+
+2) mondo statico: non rischio che il mondo mi faccia cambiare deliberazione
+
+3) ciò che delibero sicuramente non cambia
+Versione 2
+(pseudocodice)
+Ho delle belief B iniziali
+
+In loop:
+- percepisco con sensori da ambiente
+- verifico con brf(B,percezioni)=Belief revision function I belief
+- trovo intenzione tramite deliberate(B)
+- in base alle intenzioni I e ai belief B revisionati, trovo un piano π
+- eseguo piano
+Problema
+Si nota distacco temporale da quando rivaluto i Belief con la brf e quando eseguo il piano.
+
+Nel mentre le credenze potrebbero essere cambiate.
+Versione 3 
+(pseudocodice)
+Belief iniziali B
+Intenzioni iniziali I
+
+
+In loop:
+- prendo percezioni p
+- rivaluto B tramite brf(B,p)
+- generazioni di insieme di possibili alternative con options(B,I)
+-filtro tra le opzioni trovate trovando dei commit. Lo si fa con funzione filter
+-genero piano e lo eseguo
+Base architettura BDI
+
+B = Belief = ciò che crede 
+D = desire = azioni a disposizione
+I = intention
+Problema
+Con filter trovo opzione che diventa intenzione dell'agente.
+
+Agente ha fatto commitment (impegno)
+Da questo crea piano e lo esegue.
+
+Quanto deve durare un'intenzione?
+Quali circostante mi cancellano l'intenzione?
+Soluzione
+Commitment Strategies
+Il meccanismo che una agente usa per determinare quando e come un’intenzione possa essere abbandonata è conosciuta come commitment strategies.
+Tipologie
+Blinded commitment
+Mantengo intenzione fino a quando non la raggiungo
+Open-minded commitment
+Mantengo intenzione fino a quando la credo (credenza) possibile
+Single-minded commitment
+Mantengo intenzione fino a quando non la raggiungo oppure non la reputo impossibile
+Versione 4 
+(pseudocodice)
+Dopo aver trovato il piano, non lo eseguo, faccio un altro loop:
+
+- eseguo la prima azione
+- prendo le restanti azioni
+- prende percezioni p
+- prendo belief B con brf
+-  se il piano NON è ancora corretto nonostante le nuove belief allora ri-pianifico
+If not sound --&gt; simula I passi del piano
+
+Ha complessità lineare
+Necessaria per evitare di fare sempre il plan che costa
+Overcommitted
+Troppo impegnato in:
+- mezzi = intenzioni(piano da usare per raggiungere obiettivi)
+- fini (desideri da realizzare)
+Problema
+Ancora overcommitted.
+
+Ora si sta pensando che il piano sia da cambiare solo a causa dei fini = desideri.
+
+Il cambiamento dell'ambiente potrebbe non far fare il piano
+Versione 5
+(pseudocodice)
+Cambia condizione del while:
+
+- piano vuoto = piano finito
+- successo con intenzione
+- impossibile raggiungere intenzione
+Problema
+Succeeded, Impossible sono difficili da realizzare se non con euristiche.
+
+Mi permettono di capire se ha senso continuare o meno con il piano
+Versione 6
+(pseudocodice)
+Ricerco serie di opzioni
+Applico filtro per trovare opzione migliore
+Problema/Rischio
+Agente potrebbe spendere più tempo a pensare che non ad agire
+Versione 7
+(pseudocidce)
+Si introduce la riconsider.
+
+Funzione che in base alla percezione e i Belief=rbf valuta se è il caso di riconsiderare o meno le intenzioni.
+
+Risolve il possibile problema della versione 6
+Tipologie di agenti
+Bold-agent (audaci)
+Non si fermano a riconsiderare intenzioni
+Cautious agent (cauti)
+Dopo ogni azione riconsiderano
+Utili per agenti immersi in ambienti poco dinamici, non cambiano spesso
+Utili per agenti immersi in ambienti che cambiano rapidamente
+PRS
+(Procedural Reasoning System)
+Prima architettura che include BDI
+In PRS gli agenti non pianificano (risparmio tempo)
+
+Decidono quale piano usare tra quelli presenti in una lista pre-compilata.
+
+La lista è fatta a mano in base all'agente e al dominio
+Ogni piano ha
+Goal
+Contesto
+Corpo
+Non è solo sequenza di azioni.
+Potrebbe essere più complesso con sotto-goal</string>
+</dict>
+</plist>

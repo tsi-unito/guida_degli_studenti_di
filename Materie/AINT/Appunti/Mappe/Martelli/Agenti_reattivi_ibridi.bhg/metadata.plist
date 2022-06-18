@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>kMDItemKeywords</key>
+	<array>
+		<string>simbolica</string>
+		<string>livello</string>
+		<string>ambiente</string>
+		<string>Livello</string>
+		<string>subsystem</string>
+		<string>livelli</string>
+		<string>Comportamento</string>
+		<string>percezioni</string>
+		<string>azione</string>
+		<string>generato</string>
+	</array>
+	<key>kMDItemTextContent</key>
+	<string>Agenti reattivi e ibridi
+Problema
+Molti problemi sono difficili da gestire con l'AI simbolica
+Soluzioni
+Architetture reattive
+Brooks
+(Massimo esponente)
+Le sue tesi
+Comportamento intelligente può essere generato senza RAGIONAMENTO ESPLICITO (AI simbolica)
+Intelligenza è una proprietà emergente
+Idee
+Collocazione e personificazione
+
+Intelligenza situata nel mondo
+Intelligenza e apparenza
+
+Comportamento intelligente è generato da interazione con ambiente
+Subsumption architecture
+Gerarchia di task che eseguono behaviours
+I livelli più bassi sono relativi a behaviour primitivi.
+Hanno precedenza su altri
+Ogni behavior è una struttura a regole
+I behavior sono in competizione
+Funzionamento su robot
+Robot percepisce con sensori
+
+In base a cosa si è percepito si decide in quale livello cercare il task/behavior da eseguire
+
+Con attuatori si applica il task verso ambiente
+Un behaviour è coppia (c,a)
+
+c=condizioini/percezioni
+a=azione
+
+Un behaviour scatta quando si percepisce percezione p e questa p appartiene alle condizioni c
+Relazione di Inhibition
+Può capitare che con la percezione p ci siano più behaviours disponibili.
+
+b1&lt;b2 significa che b1 è al livello più basso di b2, quindi ha la precedenza
+Vantaggi
+- semplici
+- economici
+- computazionalmente trattabili
+- robustezza a fallimenti
+- eleganza
+Svantaggi
+Non c'è regola generica per creare agenti fatti così
+Decisioni basate su ambiente locale (non hanno visione ampia)
+Numero di behaviours limitato
+Architetture ibride
+Agenti composti da: 
+
+parte deliberativa: contiene modello simbolico del mondo e sfrutta approcci dell'AI simbolica
+
+parte reattiva: reagisce senza ragionamenti complessi
+Architetture per far interagire i diversi modelli
+Horizontal layering
+Vertical layering
+Percezioni in input
+
+Tutte vengono mandate in tutti i livelli.
+
+Ogni livello gestito in modo autonomo, propone azioni da applicare.
+
+Esiste gestore che sceglie quale livello considerare.
+
+Si applica azione
+Percezione in input
+
+La percezione passa attraverso tutti i livelli
+
+Si presenta azione
+TouringMachines
+Perception subsystem
+Control subsystem
+Action subsystem
+Modelling layer
+Planning layer
+Reactive layer
+Si prendono percezioni e le si mandano a tutti i layer del control subsystem
+Insieme di regole
+
+Sfrutta la subsumption architecture
+Costruisce piani
+Sceglie azioni da eseguire
+
+Si ha goal da raggiungere
+Rappresentazione simbolica dell'ambiente dell'agente.
+InteRRaP
+Prende percezioni in input
+
+Livello per piani
+Livello per cooperazione
+Livello per modello del mondo
+Livello per knowledge generale
+Comportamento intelligente può essere generato anche senza RAPPRESENTAZIONE ESPLICITA (AI simbolica)</string>
+</dict>
+</plist>

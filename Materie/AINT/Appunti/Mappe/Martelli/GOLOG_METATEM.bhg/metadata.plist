@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>kMDItemKeywords</key>
+	<array>
+		<string>formule</string>
+		<string>predicati</string>
+		<string>possono</string>
+		<string>programma</string>
+		<string>istante</string>
+		<string>essere</string>
+		<string>assioma</string>
+		<string>sistemi</string>
+		<string>agenti</string>
+		<string>messaggi</string>
+	</array>
+	<key>kMDItemTextContent</key>
+	<string>Linguaggi
+GOLOG
+Sono utili per: 
+specificare sistemi
+verificare sistemi (model checking)
+programmare sistemi
+Usato per programmare
+Basato sul calcolo delle situazioni
+Si usano delle formule con: 
+Precondizioni, Postcondizioni
+Si usa SuccessorStateAxiom per gestione dei fluenti
+Permette di definire azioni complesse
+Primitive actions
+Test actions
+Sequence
+Nondeterministic choice
+Azione a possibile in stato s 
+
+AND 
+
+s' è frutto dell'applicazione di a in s
+Permette di controllare che un test sia vero in uno stato s=s'
+Come eseguire un programma
+Un programma è composto da formule antecedente, conseguente
+Eseguire un programma significa: 
+-prende assioma da verificare
+-trovare nel programma le formule che mi permettano di derivare l'assioma in input
+Output = seq azioni a1,a2..
+
+Azioni che eseguite in sequenza portano a stato s
+
+In stato s vale assioma in input
+METATEM
+Linguaggio basato su esecuzione diretta di formule temporali
+Si tratta di linguaggio concorrente (non sequenziale).
+
+Ha meccanismi di comunicazione tra agenti
+Gli agenti sono programmati tramite formule in logica temporale LTL estesa.
+LTL estesa
+Semplice LTL ma va anche nel passato
+Operatori
+Futuro
+FI sarà soddisfatta nel prossimo istante di tempo
+
+FI sarà vera fino a quando lo sarà PSI
+
+FI sarà vera in qualche istante del futuro
+
+FI sarà sempre vera nei prossimi istanti
+Passato
+FI è stata vera fino a quando lo è stata PSI
+
+FI era soddisfatta fino all'ultimo istante di tempo
+Da sapere (slide)
+Programa
+Esempi
+Come eseguirlo
+C'è interprete
+
+Prende tutte le regole che possono essere eseguite (quelle con antecedente vero)
+
+Mette tutti questi antecedenti in disgiunzione, sceglie quali eseguire
+
+Se trova contraddizioni allora fa backtracking
+Funzionamento concorrente
+Gli agenti possono mandare e ricevere messaggi=predicati per coordinarsi
+Tipologie di predicati
+Ambiente
+Componenti
+Messaggi che possono essere ricevuti
+Messaggi che possono essere mandati
+Interni
+I messaggi sono mandati in broadcast
+Ogni agente ha un'interfaccia così formata
+
+stack (pop,push) [popped, stack-full]
+Agent ID = "stack"
+Env predicates = predicati di ambiente =(pop,push)
+Comp predicate = predicati di componenti = [popped, stack-full]
+Oltre questa interfaccia l'agente è composto da regole</string>
+</dict>
+</plist>
