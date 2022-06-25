@@ -14,6 +14,7 @@ La struttura è da definire; al momento alcune idee/linee guida sarebbero:
  - Indicare per ogni risorsa link **ufficiali**, preferibilmente che non cadano.
  - Dare motivazioni, specialmente per le pull request o per spiegazioni; non lasciare nulla per scontato.
  - Dare sempre indicazioni delle fonti e delle sorgenti di quello che viene indicato qua sopra.
+ - All'upload degli appunti di una nuova materia, inserirli dentro una apposita cartella `Appunti` creata nella root.
 
 Evitiamo di tenere materiale dei professori, è loro e spesso è coperto da licenze o copyright. Sarei più positivo per quanto riguarda domande degli esami passati, ma riscritte e **con risposta**. Se si tratta di immagini, sono da riscrivere. 
 
