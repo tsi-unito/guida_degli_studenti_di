@@ -1,0 +1,181 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>kMDItemKeywords</key>
+	<array>
+		<string>action</string>
+		<string>agenti</string>
+		<string>agente</string>
+		<string>intenzioni</string>
+		<string>Agente</string>
+		<string>Linguaggio</string>
+		<string>sistemi</string>
+		<string>Interprete</string>
+		<string>logica</string>
+		<string>eventi</string>
+	</array>
+	<key>kMDItemTextContent</key>
+	<string>Modellazione agenti BDI
+Idea
+Si vuole usare la logica per descrivere aspetti dinamici degli agenti
+I metodi formali/logici permettono:
+
+Specificare sistemi
+Programmare sistemi
+Verificare sistemi (model checking)
+Approcci per specificare sistemi
+Cohen-Levesque
+Rao-Georgeff
+Il comportamento razionale dovrebbe essere analizzato in termini di: 
+Beliefs
+Desires
+Intentions
+Proprietà delle intenzioni
+Intenzioni propongono problemi agli agenti, loro devono risolverli
+Le intenzioni sono un filtro per non averne in conflitto
+Se il tentativo delle intenzioni fallisce, ci riprovano
+Agenti credono che le loro intenzioni siano possibili
+Gli agenti non credono che non riusciranno a terminare le intenzioni
+Agenti non si aspettano I side-effects delle intenzioni
+La logica
+Operatori modali
+Goal i FI
+Bel i FI
+Happens FI
+Done FI
+Agente i ha come desire/goal FI
+Agente i crede che FI sia vera
+FI accade al prossimo istante di tempo
+FI appena accaduto
+Derivati
+Semantica
+La semantica è data da mondi possibili contenenti una sequenza di eventi passato+presente+futuro.
+
+Ogni mondo è collegato da un link che rappresenta un operatore modale.
+
+Ogni singolo mondo è basato su logica LTL
+Sapendo che in un mondo la logica è LTL allora abbiamo le traduzioni per: 
+
+F = HAPPENS
+G deerivabile con il duale = not F not FI
+Achivement goal
+A-GOAL i FI
+Sono dei goal che l'agente crede falsi
+
+ma
+
+desidera che in futuro siano veri
+Goal persistenti
+Possibilità di rendere un achivèmènt-goal persistente.
+Fi è persistent-goal se:
+Agente i ha goal FI che ora crede falso ma prima  o poi sarà vero
+Prima di abbandonare il goal FI una delle condizioni dev'essere vera:
+Agente crede che goal FI sia stato soddisfatto
+Agente crede che goal FI non sarà mai soddisfatto
+Ogni mondo non sfrutta LTL ma: 
+
+Branching Time Temporal Structures = time trees
+Rami di un time-tree = scelte disponibili per l'agente in ogni monento
+Linguaggi e architetture per agenti BDI
+Architettura
+Linguaggio
+PRS
+Fa uso di approccio BDI
+Disegno archiettura
+Interprete esegue ciclo continuo
+Input
+
+Sono degli eventi.
+Eventi esterni: cosa accade nell'ambiente
+Interni: aggiunta/cancellazione di beliefs o goal
+Output
+
+Azioni interne o esterne fatte dall'interprete
+Belief
+
+Rappresentati come fatti in prolog
+Plan library
+
+L'agente non pianifica.
+Il programmatore, prima di avviare l'agente, scrive una libreria di piani che potrà usare l'agente.
+Componenti
+Nome
+Pre-condizione
+
+Condizioni che devono valere per avviare un piano
+Condizione di invocazione
+
+Un goal (Ex: ACHIEVE spegni-sete) = raggiungi goal di spegnere la sete
+Body
+Composto da azioni, sotto goal
+Control loop
+Interprete prende in input eventi da ambiente, presenti nella EVENT QUEUE
+
+Aggiorna belief e goal
+
+In base alle modifiche ci sono più piani applicabili.
+Interprete li mette nella INTENTION STRUCTURE
+
+Interprete sceglie un piano (task) nella INTENTION STRUCTURE
+
+Ne esegue un passo
+
+
+Si riavvia il ciclo
+Sistema di esecuzione interleaved: eseguiti piano piano passi di task diversi.
+
+Per ogni piano (task) viene associato uno stack-frame
+AgentSpeak(L)
+Linguaggio basato su clausole di Horn.
+
+Linguaggio per agenti BDI che usano architettura PRS
+Agent oriented programming
+(AOP)
+Paradigma di programmazione basato su strutture di agenti BDI
+Si promuove la visione sociale tra agenti
+Categorie mentali
+Belief
+Obbligation
+Altre non mentali
+Decision
+Capability
+Obbligation verso se stesso
+AGENT-0
+Linguaggio legato ad AOP
+Costrutti
+Facts
+Private action
+Comunicative action
+atom t = atom vale al tempo t
+(DO t p-action) = al tempo t applica p-action
+Ogni agente in AGENT-0 ha 4 componenti
+Capabilities
+Beliefs
+Commitments
+Commitment rules = insieme di commitments che spiega come l'agent agisce
+Struttura
+(COMMIT message-cond mental-cond (agent action)*)
+(COMMIT
+   (?agent REQUEST (DO ?time ?action))
+   (AND (B ?now (Friend ?agent))
+        (CAN myself ?action)
+        (NOT ((CMT ?anyone)
+(DO ?time ?any_action))))
+ (myself (DO ?time ?action))
+Se ricevo messaggio da agent di eseguire action al tempo t (message-cond)
+
+e io credo che: 
+-ora agent sia mio amico
+-so fare action
+-non ho commitments verso altri
+(mental cond)
+
+allora mi impegno a fare action al tempo time
+(commitment)
+Commitments
+Blind
+Single
+Open</string>
+</dict>
+</plist>

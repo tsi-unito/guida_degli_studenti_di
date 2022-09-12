@@ -1,0 +1,260 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>kMDItemKeywords</key>
+	<array>
+		<string>agenti</string>
+		<string>agente</string>
+		<string>commitment</string>
+		<string>comunicazione</string>
+		<string>azioni</string>
+		<string>sistemi</string>
+		<string>messaggi</string>
+		<string>protocollo</string>
+		<string>semantica</string>
+		<string>manager</string>
+	</array>
+	<key>kMDItemTextContent</key>
+	<string>MAS-Comunicazione
+Sistemi distribuiti di agenti
+Utilizzare più agenti per il raggiungimento di goal
+Caratteristiche degli agenti
+Alta coesione
+Basso accoppiamento
+Evitare che i vari agenti dipendano l'uno dall'altro
+Ogni agente persegue determinati obiettivi
+Compiti degli agenti in sistemi distribuiti
+- eseguono compiti in autonomia
+- competono tra agenti
+- cooperano tra agenti
+- coordinano tra agenti
+- negoziano tra agenti
+Comunicazione
+Con MAS, gli agenti, devono poter comunicare per:
+- raggiungere propri obiettivi
+- raggiungere obiettivi della società/sistema
+Ambiente
+Posto in cui si ospitano gli agenti
+Visto come il mezzo per la comunicazione.
+
+Se gli agenti non fossero in un ambiente non potrebbero comunicare
+Caratteristiche
+Danno infrastruttura utile per: 
+- trasporto messaggi
+- protocollo comunicazione
+Aperti/chiusi
+
+Permette di avere nell'ambiente sistemi eterogenei
+Protocolli
+Di comunicazione
+Di interazione
+Per comprendere i messaggi che gli agenti si scambiano
+Per instaurare dialogo, scambio di messagi
+Essendo sistemi eterogenei di agenti è necessario protocollo comune
+Spesso usate ontologie per conoscenza condivisa
+Percezione: ricevere messaggi
+Azione: inviare messaggi
+
+Il ciclo dell'agente: percepisci, agisci rimane intatto
+ACL
+(Agent Communication Languages)
+NOTA: 
+Sistema OO: non è realizzato da componenti autonomi
+Ex: 
+Dati oggetti O1, O2
+O1 richiama O2.m1()
+
+O2 esegue m1() ma è stato O1 a imporglielo, quindi O2 non ha decisione autonoma
+NOTA: 
+Sistema AO: è realizzati da componenti autonomi
+Ex: 
+Dati A1, A2
+A1 fa richiesta a A2 di eseguire a
+
+A2 decide in autonomia se farlo o meno
+Gli oggetti lo fanno gratis
+Gli agenti lo fanno perchè vogliono
+Utilità di un ACL
+Fornisce agli agenti mezzo per scambiare info e conoscenza
+Si trova ad un livello più alto rispetto mezzi di comunicazione
+Agisce su regole, azioni e non su oggetti
+Messaggio in ACL utile per descrivere uno stato desiderato
+Esempi
+KQML
+FIPA
+Linguaggio di interazione di alto livello
+Linguaggio indipendentemente e senza standard
+Sintassi
+Performativa + insieme di coppie parola valore
+
+Con performativa intendiamo una parola che indichi il volere del messaggio: 
+Ask-one, ask-all, achieve, sorry, tell
+Problema
+Non essendoci standard, si potrebbero usare performative personalizzate.
+
+Questo fa si che gli agenti potrebbero non capirsi se usano performative diverse
+Per mandare messaggio devo sapere ID/indirizzo del destinatario.
+
+Con sistemi aperti non posso sapere tutti gli ID a priori
+Soluzione
+Communication facilitators
+Si introducono degli agenti che fanno da tramite: i BROKER
+Agenti chiedono a Broker  per altri agenti con certe caratteristiche P.
+
+Altri agenti dichiarano ai broker che hanno certe caratteristiche.
+
+Broker chiedono ad altri agenti se qualcuno ha caratteristiche P, se così fosse si mettono in comunicazione
+Si introduce disaccoppiamento tra agenti
+
++
+
+Centralizzazione
+Semantica
+Prima
+Nessuna
+Dopo
+Si introduce semantica con: 
+
+-precondizioni: stato di agente necessario per inviare/accettare performativa
+-postcondizioni: stato di agente dopo aver eseguito(ricevuto performativa)
+-condizioni di completamento: stato finale al termine della performativa
+Descrivono lo stato degli agenti in un linguaggio basato su stati mentali
+Fondazione di centri ricerca, università, aziende etc
+Genera linguaggio per comunicazione di agenti eterogenei
+Introduce standard
+Introduce 22 atti comunicativi precisi
+Ha una semantica definita: sempre su stati mentali (difficile rispettarla per agenti non BDI)
+Non ci sono comunication facilitator: introdotto pagine gialle
+Semantic Language 
+(SL)
+Linguaggio utilizzato per definire semantica di FIPA ACL
+Usa logica multimodale
+Opeartori
+BiFI: agente i crede che FI sia vera
+
+UiFI: agente i crede che FI=Vero più probabile di Falso
+
+CiFI: agente i desidera che FI valga
+Generali
+Su azioni
+Feasible(a,FI): a può occorrere e se così fosse Fi venta vera
+
+Done(a,FI): a appena occorsa e FI diventata vera
+
+Agent(i,a):i agente unico che può eseguire a
+Utili per definire precondizioni e postcondizioni
+Test di conformità
+Utile per garantire che si sta seguendo lo standard
+Conformità sintattica
+Conformità semantica
+Difficile perchè non sempre un agente è traducibile in BDI.
+
+Un agente potrebbe essere in Java, quindi difficile capire intenzioni, desires etc
+Problema
+Soluzione
+Semantica sociale per la comunicazione
+Semantica basata su stati mentali
+Non va bene per sistemi eterogenei.
+Approccio sociale
+Si valutano le conseguenze di un atto comunicativo
+Ex: prof dice che esami il 10 Giugno, questo ha conseguenze.
+Caratteristiche buon ACL
+Formale: specifiche chiare per il progettista
+Dichiarativo: descrive cosa e non come
+Verificabile: con una semantica
+Meaningfull
+Semantica
+Si basa su commitments = impegni tra agenti
+Agente DEBTOR: si impegna a rendere vero un qualche fatto/azione verso un agente CREDITOR
+Gli atti illocutori / dialoghi sono visti come creazioni di commitments.
+
+Tutti sono pubblici
+Punti di vista relativi ai commitments
+Cohen e Levesque
+Intenzioni condivise sono la base dei commitment sociali.
+Ovvero prendo impegno e lo comunico
+Castelfranchi
+Commitment dev'essere basato su elementi osservabili/tangibili.
+
+Non penserà alla tua ragazza: NO
+Non chiederò più di uscire alla tua ragazza: OK
+Singh
+Sono sempre impegni ma introduce: 
+-contesto sociale: team in cui agente comunica
+-matacommitment: sono relazioni per catturare aspetti in un network (privilegi, diritti, poteri)
+Un commitment ha implicazioni su chi lo fa e chi lo ascolta/riceve
+Ex: 
+A fa la torta
+B decide di non comprarla
+Commitment = C(debtor, creditor, antecedent, consequence)
+
+C(A,B,12,Hp)
+A si impegna con B per
+Se B da 12
+Allora A da a B Hp
+Ciclo di vita dei commitment
+Introduce norme e ha visione collettiva
+Protocolli
+Comunicazione
+Interazione
+Utili per definire sintassi degli atti comunicativi
+Stabiliscono sequenze legali, come costruire un dialogo
+Un dialogo non è solo scambio di messaggi ACL.
+
+Esistono schemi e pattern da seguire.
+
+I protocolli definiscono il contenuto, non solo la forma
+Come rappresentarli
+Reti di Petri
+
+DCG
+
+AUML
+ContractNetProtocol
+(CNP)
+FIPA ha creato protocollo per agenti cooperanti, con task in condivisione
+Parti interessate
+Manager: desidera risoluzione di task
+Contractors: agente che potrebbe risolvere task
+Quali passi svolge: 
+
+- annuncia task da risolvere
+- riceve e valuta offerte da contractor
+- ne sceglie uno + reward
+- riceve risultato
+Quali passi svolge: 
+
+- riceve annunci di task dal manager
+- valuta il task
+- risponde rifiutando o facendo offerta
+- esegue task se accetta
+- riporta risultato
+Può diventare manager se richiede aiuto ad altri agenti, delega task
+Successioni di azioni (caso pratico):
+
+- uno o più manager pubblicano task
+- i contractors li valutano e decidono a chi fare offerta.
+- I manager valutano le offerte
+- decidono con chi stringere accordo e creano contratto
+Con commitment
+Proposti da Singh. 
+Protocolli visti come insieme di commitment, non come macchina stati finiti
+Le azioni hanno effetti in termini di modifiche di commitment.
+Ex: per il NetBill Protocol ci sono delle azioni come quote,accept...
+Per ogni azione, aggiungo o tolgo dei commitment
+Questo permette una rigidità minore rispetto altre strutture. 
+
+Ex: se devo rappresentare protocollo per comprare merce online, se voglio aggiungere dopo il concetto relativo al RESO, allora con il protocollo a commitment posso farlo
+Run
+Sequenza finita di azioni che portano tutti i commitment a fulfilled = no commitment pendenti
+Blackboard
+Sistema alternativo per far cooperare gli agenti
+Blackboard = base di conoscenza comune a tutti gli agenti.
+
+Viene continuamente aggiornata dagli agenti.
+
+Un agente può agire sulla blackboard quando il suo stato interno coincide con quello della KB
+La blackboard vista come l'ambiente se paragonata agli agenti</string>
+</dict>
+</plist>

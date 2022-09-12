@@ -22,6 +22,7 @@ Tabella di traduzione (per le sole materie presenti in questa directory) da sigl
 | METNUM   | Metodi Numerici                                               |
 | MODSEM   | Modelli Semantici                                             |
 | OC       | Ottimizzazione Combinatorica                                  |
+| PROGMOB  | Programmazione Mobile                                         |
 | RNDL     | Reti Neurali e Deep Learning                                  |
 | SAS      | Sviluppo Applicazioni Software                                |
 | SIST-INT | Sistemi Intelligenti                                          |

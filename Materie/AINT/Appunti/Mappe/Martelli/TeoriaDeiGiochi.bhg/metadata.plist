@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>kMDItemKeywords</key>
+	<array>
+		<string>strategia</string>
+		<string>profile</string>
+		<string>dominante</string>
+		<string>giocatori</string>
+		<string>agente</string>
+		<string>agenti</string>
+		<string>prigioniero</string>
+		<string>giocatore</string>
+		<string>Strategia</string>
+		<string>allora</string>
+	</array>
+	<key>kMDItemTextContent</key>
+	<string>TeoriaDeiGiochi
+Supponiamo: 
+
+Agenti egoisti = gli agenti hanno i propri obiettivi e non collaborano
+Decisioni razionali = agente deve prendere decisione razionale, l'ottimo per lui
+Giochi con singola mossa simultanea = usiamo giochi in cui gli agenti applicano una sola mossa e in parallelo
+Utilità
+Progettare agenti
+Progettare meccanismi
+Gestire decisioni agente per raggiungere obiettivo
+Descrivere protocolli con cui l'agente agisce.
+Quindi non programmo direttamente l'agente
+Proprietà dei giocatori
+Giochi con due giocatori
+Azioni/Strategie
+Insieme di azioni che gli agenti possono usare
+Tipologie
+Strategia pura
+Strategia mista
+Politica deterministica che specifica un'azione che l'agente applica in base alla situazione
+Strategy profile
+Specifica quale azione/strategia applica ogni giocatore.
+
+Dati due giocatori possiamo vederlo come una coppia di strategie. Ex: (Testify, Testify)
+Utility function
+Funzione che associa un valore ad ogni azione
+Una soluzione è detta strategy profile se ogni giocatore adotta una strategia razionale
+Dilemma del prigioniero
+Punto di vista di Alice
+Se B testimonia allora A conviene testimoniare
+Se B non testimonia allora ad A conviene testimoniare
+
+In entrambi i casi A dovrebbe testimoniare
+A ha una STRATEGIA DOMINANTE
+Strategia che domina su tutte le altre.
+
+Sarebbe irrazionale per A scegliere altre strategie
+Tipologie
+Strettamente dominante
+Debolmente dominante
+Fortemente dominante
+Giocatore A
+Strategia sA1, sA2
+sA1 da payoff migliore di sA2 indipendentemente dalle scelte del giocatore avversario
+sA1 da payoff maggiore di sA2 in almeno un caso
+sA1 domina qualsiasi altra strategia di A
+Pareto optimal
+Uno strategy profile è detto Pareto optimal se non esiste uno strategy profile migliore
+Con il dilemma del prigioniero è possibile arrivare al Pareto optimal (Refuse, Refuse) ma è poco probabile.
+
+Questo perchè non comunicano
+Equilibrio di Nash
+Dato profile strategy
+
+Si ha equilibrio di Nash quando i due giocatori farebbero peggio se cambiassero strategia e gli altri rimanessero fermi.
+Dilemma del prigioniero: (Testify, Testify) è equilibrio perchè:
+
+Supponiamo A fissa, quindi A testify.
+Se B testify allora -5.
+Se B non testify allora -10.
+Quindi B non è incentivato a cambiare strategia
+
+Stessa cosa vale per A
+Irrazionale
+Razionale
+Casistiche
+Non c'è strategia dominante
+Ci sono più equilibri di Nash
+Scelgo quello Pareto optimal
+Raro
+Non ci sono equilibri di Nash
+Scelgo strategie miste
+Ex: DVD-CD
+Ex: morra a due dita
+Se un giocatore K
+ha scelte di strategia: s1...sk
+
+La strategia mista ha la forma: 
+esegui s1 con probabilità p1
+..
+..
+esegui sn con probabilità pk
+p1+..+pk=1
+Nash dice: 
+
+OGNI GIOCO 
+IN CUI I GIOCATORI HANNO INSIEME FINITO DI STRATEGIA POSSIBILI 
+HA EQUILIBRIO CON STRATEGIE MISTE
+Come trovare queste strategia? Con quale complessità?
+Ombra del futuro
+Facendo riferimento al dilemma del prigioniero.
+
+Iterando più volte il gioco.
+
+Se gli agenti sapessero che prima o poi incontreranno nuovamente l'avversario, il desiderio di disertare scomparirebbe
+Problema
+Induzione all'indietro
+Date n iterazioni
+
+Se giocatori sanno di queste n iterazioni, alla n-1 diserteranno
+NB: se c'è strategia dominante, questo è equilibrio di Nash</string>
+</dict>
+</plist>

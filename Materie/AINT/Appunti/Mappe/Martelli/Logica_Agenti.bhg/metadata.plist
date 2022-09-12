@@ -1,0 +1,259 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>kMDItemKeywords</key>
+	<array>
+		<string>logica</string>
+		<string>agente</string>
+		<string>insieme</string>
+		<string>Assioma</string>
+		<string>allora</string>
+		<string>agenti</string>
+		<string>modello</string>
+		<string>Sintassi</string>
+		<string>Logica</string>
+		<string>proposizioni</string>
+	</array>
+	<key>kMDItemTextContent</key>
+	<string>Logica
+Utilità
+Rappresentazione della conoscenza
+Usiamo logica per rappresentare proprietà di agenti.
+
+La logica da linguaggio formale rigoroso per rappresentare conoscenza
+Ragionamento automatico
+Sfruttare la logica per fare del ragionamento su di essa
+Ragionare su comportamento agente
+Dato qualsiasi agente, uso logica per capire se sta facendo cosa gli è stato chiesto
+Tipologie
+Classica
+Modale
+Logica proposizionale
+Logica del prim'ordine
+Problemi della logica classi per agenti
+Sintattico
+Formule così format: Predicato(Term, Term, Term)
+
+In alcune circostanze si scrive Predicato(Term,.., Formula)
+La presenza della formula fa si che non si riesca a rispettare la sintassi della logica
+Semantico
+Opacità referenziale
+vola(Superman)
+Supponendo che Superman e Clark siano la stessa persona.
+
+Questa conoscenza genera un contesto chiuso.
+
+Questa uguaglianza è espressa come credenza in un agente, non è universalmente nota
+Mondi possibili
+La semantica basata su questi
+Tutto ciò che è vero in tutti i mondi è NECESSARIAMENTE vero.
+
+Se ciò che è vero lo è solo in qualche mondo allora è POSSIBILE
+Ex: agente gioca a carte
+
+Agente ha asso + altre
+
+Agente non conosce carte altrui
+
+I mondi possibili sono tutti quelli in cui ci sono configurazioni diverse di carte degli avversarsi.
+
+Agente ha asso di picche: fatto VERO
+Avere due di picche: fatto POSSIBILE, in qualche mondo è così
+Sintassi: formule formate da: 
+-proposizioni atomiche date da insieme P
+-connettivi logici
+Sintassi
+Semantica
+Modello: assegnamento di valori di verità per ogni simbolo proposizionale
+
+Semantica: calcolare valore di verità ad ogni modello
+Logica decidibile: dato N simboli proposizionali, ci possono essere al massimo 2^N mondi, quindi termina
+Spesso basata su concetto di SODDISFACIBILITA.
+
+Formula soddisfacibile se esiste almeno un modello che la soddisfa
+Logica modale proposizinale
+Sintassi
+Composta da: 
+-proposizioni atomiche
+-connettivi logici
+-box: NECESSARIO FI sia vero
+-rompoFI: POSSIBILE FI sia vero
+Box e Rombo sono duali.
+
+boxFI = !rombo!FI
+Necessario che FI sia vero = Non possibile che FI sia falsa
+
+romboFI = !box!FI
+Possibile che FI sia vera = Non necessario che Fi sia falsa
+Semantica
+Modello = insieme di mondi possibili = Kripke structures
+Mondo = insieme di proposizioni che sono vere in quel mondo
+Differenza da logica proposizionale classica: il modello era un'unica assegnazione ad ogni atomo.
+
+Ogni mondo della logica modale proposizionale 
+può essere visto come
+un modello della logica proposizionale classica
+Modello
+Tripla &lt;W,R,L&gt;:
+-W = insieme di mondi
+-R = insieme di relazioni binarie di accessibilità tra mondi
+-L = insieme di proposizioni vere in ogni modello
+Le relazioni sono usate ore definire la semantica
+La formula boxFI è vera in un mondo W quando è vera in tutti i mondi raggiungibili da W
+La formula romboFI è vera in mondo W quando è vera in qualche mondo accessibile da W
+Soddisfacibilità
+Formula FI soddisfacibile in un modello M se esiste un mondo in cui FI è vera
+Validità
+Formula FI valida se vera in tutti i mondi
+Kripke frame = &lt;W,R&gt;
+Si tratta di un normale grafo
+Proprietà
+Assioma K (assioma di Kripke)
+Necessitation (regola di inferenza)
+Box distribuitile su AND
+box(FI -&gt;PSI) -&gt; (boxFi -&gt; boxPSI)
+Se FI valida allora boxFI è valida
+Impatto sugli agenti
+Con operatori modali box e rombo gestiamo vari tipi di verità: NECESSARIO, POSSIBILE
+Per modellar agenti usiamo solo il box e il suo duale
+Il box esprime i BELIEF
+boxFI = agente crede che FI sia vera
+Sappiamo che per usare logica modale con agenti è necessario fare dei cambiamenti come:
+-box rappresenta I Belief
+
+Si potrebbero cambiare altre cose come:
+-aggiungere ulteriori assiomi oltre assioma K, necessita, distribuzione box su AND
+Logiche modali per agenti
+Epistemica
+Temporale
+Logica della conoscenza e credenza
+Operatori
+Ka
+Ba
+KaFI = agente a sa che FI è vera
+BaFI = agente a crede che FI sia vera
+Entrambe sono il corrispettivo del box.
+
+Il diamante lo si costruisce con il duale
+Proprietà
+Assioma K
+Necessitation
+Ka(FI-&gt;PSI) -&gt; (KaFI -&gt; Ka PSI)
+Se FI è vera allora KaFI è vera
+Problema
+Onniscienza logica
+L'agente dovrebbe conoscere tutte le tautologie.
+
+Sono infinte
+Assiomi
+Usiamo assiomi D,T,4,5 per descrivere le proprietà di knowledge e belief
+Assioma D (serialità)
+Conoscenza agente non è contraddittoria.
+
+Se agente CREDE/CONOSCE FI allora non CREDE/CONOSCE !Fi
+Assioma T (riflessività)
+Se agente CONOSCE Fi allora FI è vera.
+
+Questa non vale per i Belief perchè l'agente potrebbe credere che FI sia vera anche se nella realtà è falsa
+Assioma 4 (introspezione positiva)
+Se l'agente conosce FI allora sa di conoscere FI
+Assioma 5 (introspezione negaetiva)
+Se l'agente non conosce FI allora sa di non conoscerla
+Assioma K
+Necessitation
+Riflessiva, seriale, transitiva, Euclidea
+Riflessiva, seriale, transitiva, Euclidea
+Strumento per modellare tempo e azioni
+Definita come la logica modale del tempo
+Caratteristiche del tempo
+Discreto
+Ha istante iniziale
+Infinito nel futuro
+Tipologie
+Linear Temporal Logic (LTL)
+Semantica
+Modello M = &lt;S,x,L&gt; = struttura lineare
+S = insieme di stati = insieme di mondi
+x = sequenza infinta di stati (S-&gt;N), numeri naturali
+L = insieme di proposizioni vere in ogni stato
+Sintassi
+Proposizioni atomiche
+Connettivi logici
+Xa  = alpha sarà vera nel prossimo istante di tempo 
+aUb = alpha sarà vera all'istante t se beta sarà vera negli istanti di tempo futuri
+Altri operatori modali derivati
+Fa = prima o poi alpha vera = trueUalpha
+Ga = sempre vera alpha negli stati successivi
+Computation Tree Logic (CTL*)
+Struttura del tempo lineare
+Struttura del tempo ad albero.
+
+Ogni istante può avere più istanti successori
+Tipologie di formule
+Path formulas
+Parto da radice e seguo un percorso.
+
+Questo percorso equivale ad una LTL perchè il tempo è lineare
+State formulas
+Riguardano tutti i cammini uscenti da uno stato
+Sintassi
+Proposizioni atomiche
+Connettivi logici
+Aπ = per tutti i cammini uscenti da uno stato vale proprietà π
+Eπ = esiste un camino uscente da uno stato per cui vale proprietà π
+Stessi della logica LTL
+
+Proposizioni atomiche
+Connettivi logici
+Xπ
+πUp
+Sintassi
+Semantica
+Modello M = &lt;S,T,L&gt;
+S = logica LTL
+L = logica LTL
+T = albero infinito i cui nodi sono stati
+CTL* troppo complicata da usare nella realtà.
+
+Spesso si usa CTL che ha meno sintassi
+Altre formule
+G(p --&gt; Xq) = vera in tutte le sequenze in cui se p è vero allora è 
+seguito da uno stato in cui p è vero
+
+GFp = vera in tutte le sequenze in cui p vera
+
+Gp and F not p = non è soddisfatta da nessuna sequenza
+Operatori intenzionali creano contesti chiusi in cui non si possono sostituire formule equivalenti
+
+Bel(John, vola(Clark)) non sostituibile con
+Bel(John, vola(Superman))
+Corrispondenze
+Posso definire proprietà con: 
+- vincoli su frame
+- assiomi
+Esiste corrispondenza tra le due cose
+Riflessività
+Serialità
+Transitività
+Euclidea
+Ragionare sulle azioni
+Tutto legato al calcolo delle situazioni.
+Parti principali
+Situazioni
+Fluenti
+Azioni
+Stato del mondo in un certo istante
+Proposizioni il cui valore cambia da una situazione all'altra
+Ciò che provoca il cambio di situazioni
+Come sono descritte
+Assioma di possibilità
+Assioma di effetto
+Precondizioni: quando possibile eseguire azione
+Postcondizione: cosa cambia dopo aver applicazione azione
+Frame problem
+Successor state axioms
+Soluzione
+Si fa riferimento ad un fluente per volta</string>
+</dict>
+</plist>

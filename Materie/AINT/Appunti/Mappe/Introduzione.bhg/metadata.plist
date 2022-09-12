@@ -1,0 +1,170 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>kMDItemKeywords</key>
+	<array>
+		<string>ambiente</string>
+		<string>agente</string>
+		<string>agenti</string>
+		<string>computazione</string>
+		<string>sistema</string>
+		<string>Agente</string>
+		<string>processo</string>
+		<string>Triangolo</string>
+		<string>Agenti</string>
+		<string>obiettivi</string>
+	</array>
+	<key>kMDItemTextContent</key>
+	<string>Introduzione
+Trend storia computazione
+Ubiquità
+Interconnessione
+Intelligenza
+Delega
+Human orientation
+Capacità di elaborazione posti in device sempre più piccoli e accessibili
+Avvento di internet ha creato connessione tra sistemi.
+
+Informatica diventa un processo di interazione tra sistemi nella stessa rete
+Complessità dei compiti delegati ai computer aumenta sempre
+Delegare a sistemi intelligenti dei compiti.
+
+Ci fidiamo del loro giudizio
+Spostare dalla vista orientata alla programmazione verso un'esposizione del problema più di alto livello, a metafore
+Si vuole astrarre
+Agente
+É un sistema di computazione, un sistema informatico, 
+capace di agire in modo indipendente per conto di un utente o proprietario
+
+(capendo cosa deve essere fatto per soddisfare gli obiettivi di progettazione, piuttosto che essere costantemente informato)
+Sistema multi agente
+(MAS)
+Consiste in una serie di agenti, che interagiscono l’uno con l’altro. 
+
+Nel caso piu` generale, gli agenti agiscono per conto di utenti con differenti obiettivi e motivazioni.
+
+Per interagire con successo, richiedono la capacità di cooperare, coordinarsi e negoziare tra loro, in modo analogo a quanto fanno le persone.
+Più specifica
+Un agente è un sistema di computazione capace di agire autonomamente in un qualche ambiente con il fine di raggiungere gli obiettivi per cui è progettato.
+Paradigma agente-ambiente
+Disegno circolare: 
+Ambiente-input-Agente-output
+Agente autonomo
+Termostato
+Roomba
+Valutando l'ambiente (input) decidono cosa fare (output) per modificarlo
+Intelligenza
+Turing
+Test di Turing
+Se produce output attesi allora è intelligente
+Searl
+Test di Searl (Cinese)
+Se capisce allora è intelligente
+Refutazione
+Tipologie di AI
+Forte
+Riprodurre intelligenza umana
+Debole
+Modi automatici per risolvere problemi che ad un umano richiedono intelligenza
+Agente intelligente
+È un sistema di computazione capace di esibire azioni autonome in modo flessibile in un ambiente.
+"In modo flessibile"
+Reattivo
+Proattivo
+Sociale
+Gli agenti reagiscono ai cambiamenti di un ambiente dinamico.
+Agente reattivo
+È un sistema che mantiene una costante interazione con l’ambiente e risponde ai cambiamenti che occorrono su di esso (in tempo perchè la risposta sia utile).
+Disegno circolare: 
+Ambiente-(osserva-&gt;azione)-Ambiente
+Focus sulla rapidità di risposta.
+
+Potrebbe essere composto da if-then-else e senza nessun ragionamento interno
+Prendere iniziativa
+Agenti proattivi
+Mantengono uno stato dell'ambiente.
+
+Si valuta quale azione attuare in base a delle previsioni sul come cambierà l'ambiente.
+
+Viene poi scelta un'azione
+L'agente conosce:
+Info su ambiente che evolve
+Come le sue azioni impattano sull'ambiente
+L'agente deve avere un goal.
+
+L'agente cerca un piano per raggiungere il goal
+Ambienti spesso presentano più agenti.
+
+Spesso necessaria collaborazione
+Abilità sociale di un agente
+Per abilità sociale (social ability) di un agente intelligente si intende l’abilità di interagire con altri agenti (anche umani) attraverso un qualche tipo di linguaggio di comunicazione (agent-communication language, ACL) e cooperare con essi.
+Triangolo dela computazione
+Per avere software di qualità
+Correttezza
+Robustezza
+Estensionabilità
+Riusabilità
+Modularizzazione
+I 3 assi di Meyer
+Azioni/istruzioni
+Oggetto/dato
+Processore/Thread
+Mayer usa questi tre assi per valutare diversi approcci per creare del software di qualità.
+
+Un buon linguaggio di programmazione dovrebbe gestire bene queste due cose
+Triangolo della computazione a confronto con diversi approcci di programmazione
+Decomposizione funzionale
+Idea
+
+Supponendo di vedere la funzione come il processo
+
+L'idea è quella di scomporre in sotto funzioni.
+
+Divide et impera
+Pro
+Intuitivo
+Ottimo quando un goal di alto livello è specificato
+Contro
+Difficile da mantenere se ci sono aggiunte di goal
+Triangolo della computazione non in equilibrio: tutto verso processo
+Decomposizione OO
+Idea
+
+Ci si sofferma sui dati e su una loro astrazione ad oggetti.
+
+Porta distanti dall'algoritmo e quindi dal processo
+Pro
+Oggetti hanno vita indipendente
+Contro
+Gli oggetti sono passivi
+Triangolo della computazione non in equilibrio: gran parte verso angolo basso Object
+Business process
+Idea
+
+Rappresentare i processi di un'organizzazione
+Anche in questo caso non si ha equilibrio nel triangolo. Si mette enfasi sul processo.
+
+Stessi problemi della decomposizione funzionale
+Paradigma ad agenti
+Agenti: processi con obiettivi
+Ambiente: dati da elaborare
+Agente è il processo, cosa che non esiste nell'OO
+
+Gli oggetti dell'OO sono in questo caso l'ambiente
+Triangolo più equilibrato ma introduce più aspetti su ogni vertice e lato
+Come costruire agenti con le caratteristiche elencate prima?
+Agenti con ragionamento simbolico
+Agenti reattivi
+Architetture ibride
+Problemi
+Trasduzione
+Limiti di tempo nel fare traduzione simbolico accurate dell'ambiente che cambia
+Rappresentazione/ragionamento
+Quale rappresentazione usare per far si che gli agenti possano ragionare e rappresentare la reatlà
+Questi problemi danno rallentamenti computazionali, quindi necessario cambiare strategia
+Un agente autonomo è un sistema situato in un ambiente
+che può percepire ed agire su di esso nel tempo
+con il fine di perseguire una propria agenda e così facendo influire nelle successive percezioni.</string>
+</dict>
+</plist>
