@@ -21,7 +21,7 @@ Ma c'è una soluzione! Per le aziende, Microsoft permette di personalizzare l'in
 
 Non è necessario abilitare o effettuare alcuna iscrizione, le credenziali di Ateneo sono già abilitate con la licenza di Office.
 
-## Configurazione
+## 1. Configurazione
 
 Per la configurazione puoi utilizzare quella che ho realizzato, per chi ha bisogno giusto di:
 
@@ -36,18 +36,18 @@ La puoi trovare [qui](Configurazione.xml). Da github in alto a destra scegli "vi
 
 Se per caso desideri cambiare qualcosa o partire da zero, il sito ufficiale del configuratore Microsoft è [questo qui](https://config.office.com/deploymentsettings).
 
-## Installer
+## 2. Installer
 
 Per poter procedere con l'installazione dovremo usare lo _Strumento di distribuzione di Office_, reperibile seguendo i link nella [guida](https://docs.microsoft.com/it-it/deployoffice/overview-office-deployment-tool). Per comodità, [questo è il link diretto](https://www.microsoft.com/en-us/download/confirmation.aspx?id=49117).
 
 Una volta scaricato l'"installer", segui le indicazioni della pagina di download per ottenere lo _Strumento di distribuzione_ (da ora in avanti, _setup.exe_).
 
-## Installazione
+## 3. Installazione
 
 L'installazione è piuttosto banale:
 
 1. Aprire il command prompt
-2. Digitare il comando `setup.exe /configure <percorso al file di configurazione>`
+2. Digitare il comando `setup.exe /configure <percorso al file xml di configurazione>`
 3. Attendere per la fine dell'installazione, che dovrebbe essere automatica
 
 ## Attivazione di Office
