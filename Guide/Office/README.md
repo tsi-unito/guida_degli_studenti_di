@@ -1,6 +1,6 @@
 # Una breve guida all'installazione di office
 
-Lo sapevi che UniTO ha una convenzione con Microsoft per il pacchetto di office e onedrive? Ora sicuramente sì!
+Lo sapevi che UniTO ha una convenzione con Microsoft per il pacchetto di office e OneDrive? Ora sicuramente sì!
 
 Se però procedessi ad installarlo dal sito di Office 365 noteresti che ti vengono installate molti più software di quelli di cui potresti aver bisogno:
 
@@ -17,6 +17,9 @@ Ma c'è una soluzione! Per le aziende, Microsoft permette di personalizzare l'in
 - Saper leggere in Inglese
 - Saper scaricare dei file
 - Saper interagire con una linea di comando
+- Credenziali di Ateneo
+
+Non è necessario abilitare o effettuare alcuna iscrizione, le credenziali di Ateneo sono già abilitate con la licenza di Office.
 
 ## Configurazione
 
