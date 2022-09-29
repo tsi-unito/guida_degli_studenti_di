@@ -1,7 +1,7 @@
-# Come non morire di fame al dipartimento d'informatica
+# Come non morire di fame al Dipartimento di Informatica
 Nei pressi del dipartimento d'informatica ci sono due posti principali in cui è possibile sedersi e gustarsi un buon pranzo con calma:
-- [Doc Self Service](https://www.facebook.com/selfservicedoctorino): sulla via da cui si accede al dipartimento, si trova sulla sinistra arrivando da corso svizzera
-- [Dubai Coffe Lounge](https://www.facebook.com/Dubaicoffeelounge/): all'interno del Pier della Francesca, ci si accede girando a destra prima dei tornelli dei laboratori
+- [Doc Self Service](https://goo.gl/maps/mTabRSiVfAXWj3726): sulla via da cui si accede al dipartimento, si trova sulla sinistra arrivando da corso svizzera
+- [Dubai Coffe Lounge](https://g.page/Dubaicoffeelounge): all'interno del Pier della Francesca, ci si accede girando a destra prima dei tornelli dei laboratori
 
 Esistono due tipi di formule principali per il pasto:
 - ridotto, che comprende un primo e un contorno oppure un secondo e un contorno + acqua, pane e un frutto o yogurt
