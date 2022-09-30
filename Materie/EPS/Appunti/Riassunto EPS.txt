@@ -1,0 +1,230 @@
+Probabilità:
+E' lo studio di eventi casuali (casuale = esperimento con esito non prevedibile a priori). 
+Insiemi: possibili esiti degli elementi probabilistici.
+
+Modello probabilistico: descrizione matematica dell'esperimento che stiamo analizzando. Si compone di:
+ - Spazio campionario (anche detto omega): insieme con tutti i possibili esiti dell'esperimento.
+ - Legge di probabilità P: una funzione che assegna ad ogni esito (sottoinsieme di omega) un valore numerico [0:1](reali) detto probabilità.
+
+Questa funzione P ha due principali caratteristiche:
+ - Ad ogni sottoinsieme associa sempre un valore >= 0.
+ - La probabilità dello spazio campionario è SEMPRE = 1.
+ - Se A e B sono disgiunti: P(A U B) = P(A) + P(B) (Additività).
+
+Possiamo vedere P in due modi: 1) come frequenza relativa di occorrenza o 2) come area.
+1) P(A) = numero di volte in cui si é verificato A / numero di prove dell'esperimento (quest'ultimo "asintotico", ovvero molto grande).
+        = numero casi favorevoli (elementi di A) / numero casi possibili (elementi di omega).
+2) vere e propie aree dove il valore dell'area equivale alla probabilità dell'evento (area rettangolo omega = 1).
+
+Definiamo P come legge uniforme discreta (su omega finiti, eventi equiprobabili e P frequenza relativa di occorrenza).
+E se omega fosse continuo? Utilizziamo P come area.
+
+Proprietà della P (NB: inter è l'abbreviazione di intersecato):
+ - Se A sottoinsieme di B allora P(A) <= P(B)
+ - P(A U B) = P(A) + P(B) - P(A inter B)
+ - P(A U B) <= P(A) + P(B)
+ - P(A U B U C) = P(A) + P(B) + P(C) - P(A inter B) - P(B inter C) - P(A inter C) + P(A inter B inter C)
+
+Probabilità condizionata: calcolare la probabilità in condizioni di informazione parziale:
+	Sapendo B verificatosi, voglio calcolare la probabilità che si verifichi A. Si indica P(A|B) e si calcola: P(A inter B)/P(B) per P(B)!=0.
+Proprietà condizionata:
+ - Sempre >= 0
+ - P(omega|B) sempre = 1.
+ - P(A1 U A2 | B) = P(A1|B) + P(A2|B)
+ - Inoltre essendo una P valgono tutte le proprità di una P normale.
+
+Regola della moltiplicazione: P(A1 inter A2 inter ... An) = P(An| An-1 inter ...) * P(An-1 | An-2 inter...) * ... * P(A2|A1) * P(A1)
+	Es per n=3: P(A1 inter A2 inter A3) = P(A3 | A2 inter A1) * P(A2 | A1) * P(A1)
+
+Formula delle probabilità totali: Dati A1...An partizioni di omega (A due a due disgiunti e la loro unione restituisce omega) allora
+	P(B) = P(B|A1)*P(A1) + ... + P(B|An)*P(An)
+	Che equivale a P(B) = P(B inter A1) + ... + P(B inter An)
+
+Formula di bayes: P(A|B) = P(B|A)*P(A) / P(B)
+Si dicono indipendenti due eventi A e B se P(A|B) = P(A) (ovvero P(A inter B) = P(A) * P(B), questa è la maniera classica per verificare l'indipendenza)
+Vale anche P(B|A) = P(B). 
+
+Due eventi sono indipendenti CONDIZIONATAMENTE a c se: P(A inter B|C) = P(A|C) * P(B|C), oppure P(A|B inter C) = P(A|C)
+(come visto dagli es l'indip non implica l'indip condizionata e l'indip. condizionata non implica l'indip.)
+
+Indipendenza per collezione di eventi: collezione di eventi: A1, A2, ..., An. E' una collezione di eventi a due a due indipendenti se
+	P(Ai inter Aj) = P(Ai) * P(Aj) qualunque i, j con i != j. La collezioneè invece indipendente se questo è vero per qualunque insieme di indici diversi
+	es S={1,2,3}, {1,4,6,8,10}, P(Ai inter Aj inter ...) = P(Ai)*P(Aj)*... qualunque i,j,... appartenenti S.
+
+V.A. discrete:
+	Una v.a. è una funzione da omega in R. Per ora vedremo solo casi in cui il sottoinsieme di R che fa da immagine alla funzione(im(X)={x€R|esiste w, X(w)=x})
+	è discreto (finito oppure infinito numerabile). Per calcolare le probabilità usiamo la controimmagine della v.a. X.
+
+Come le trattiamo queste v.a: con la Funzione delle Massa di Probabilità (PMF): 
+	data una v.a. e una valore di x ci restituisce la probabilità che la v.a. generi quel valore. 
+	Data una x, restituisce la probabilità dei sottoinsiemi di omega che genera x. NB: data omega restituisce 1 (anche sommando i risultati per ogni x appartente a 	omega otteniamo 1, sono insiemi disgiunti!).
+Proprietà: i sottoinsiemi di omega sono disgiunti, quindi controimm(X({3,4})) = controimm(X({3})) + controimm(X({4}))
+
+alcune v.a. discrete note:
+ - Bernoulliana(p): l'esito dell'esperimento ha solo due etichette: sucesso o fallimento. X associa 1 al successo e 0 al fallimento.
+	La probabilità di successo è p, di fallimento 1-p.
+
+ - Binomiale(p, n): n prove di tipo bernoulliano. Restituisce un vettore di successi e fallimenti. Le prove sono indipendenti e identicamente distribuite. Ora la v.a. 	X conta il numero di successi della prova. La pmf che conta m successi = (n k) p^m * (1-p)^(n-m) ovvero calcoliamo il numero di stringhe con esattamente quel 	numero di successi e lo moltiplichiamo con la probabilità di avere quelle stringhe.
+
+ - Geometrica(p): prove di tipo bernoulliano finché non ottengo un successo. Px(n) = (1-p)^(n-1) * p.
+
+ - Poisson(lambda): processo di osservazione di un evento raro in una finestra di osservazione grossa. E' una binomiale più specifica.
+	Per calcolare la Px(k) = lambda^k/k! * e^(-lambda).
+	NB: se dilato la finestra di osservazione di k, devo moltiplicare lambda per k perché la frequenza degli eventi nella nuova finestra diminuisce o aumenta.
+
+ - Iper Geometrica(n,c): estraggo n oggetti senza reimbussolamento da una scatola che ne contiene N di cui C con una caratteristica.
+	Qua la v.a. X conta il numero di oggetti con la caratteristica estratta.
+
+Calcolare la media e la varianza: Se volessimo informazioni riassuntive della pmf possiamo usare la Media e la Varianza.
+ - Media (anche detta attesa, valor medio): sommatoria per x€Imm(X) di x*P(x).
+ - Varianza (o scarto quadratico medio): quanto oscilla la v.a. intorno alla media:
+		Var(x) = media( (x - media(x))^2 ). oss: (x - media(x))^2 è detta funzione di scarto quadratico.
+ - Deviazione standard: radice quadrata di Var(x).
+ - Prorprietà di media e varianza: media(ax + b) = a * media(x) + b
+				   Var(ax + b) = a^2 * Var(x) = media[(x - media(x))^2] = media(x^2) - media^2(x).
+Media e varianza di v.a. note:
+ - Bernoulli(p): media = p, varianza = p(1-p)
+ - Bonimiale(p,n): media = n*p, vairnza = n*p*(1-p)
+ - poisson(lambda): media = varianza = lambda
+ - geometrica(p): media = 1/p, varianza = (1-p)/p^2
+ - iper geometrica(N, C, n): media = n * (C/N)
+
+Funzioni di v.a. aleatorie: posso dichiare una v.a. Y come Y: g°X, ovvero dato un valore di omega w => Y = g(X(w)) dove X v.a. e g funzione R->R.
+	Possiamo ricavare la pmf di Y come: per l'immagine basta prendere l'immagine di X e applicarci g, la pmf di Y è uguale a:
+			PY(y) = sommatoria della probabilità(X = x) dove x valore a cui se applico g ottengo y.
+Se invece vogliamo la media di Y (dove Y: g°X g, funzione R->R) essa è uguale alla sommatoria per ogni x€Imm(X) di g(x) * P(x)
+
+Si possono avere funzioni composte da coppie di v.a, per trattarle usiamo la pmf congiunta.
+Conoscendo la Px,y abbiamo che Px(x) = sommatoria per y€Imm(Y) Px,y(x,y).
+Data una coppia X e Y le due v.a. sono indipendenti se qualunque x€Imm(X) e qualunque y€Imm(Y) gli eventi {X=x} e {Y=y} sono indipendenti.
+	Ovvero: Probabilità({X=x} inter {Y=y}) == Px,y(x,y).
+
+V.A. continue:
+Ora l'immagine di X è continua (un infinito più che numerabile).
+Non possiamo più usare le pmf, quindi introduciamo le funzioni Fx R->R dove qualunque A€R Probabilità(X€A) = integrale su A Fx(t) dt.
+Proprietà Fx: non è mai negativa, integrabile, integrale da -infinito a +infinito = 1, integrale da A a A (punti di R) = 0 (infinito troppo grande per singoli punti)
+
+V.a. continue note:
+ - Uniforme(a,b): vale 1/(b-a) se X€[a,b], 0 altrimenti.
+ - Esponenziale(lambda):  vale lambda*e^(-lambda*x) per x>=0, 0 per x<0.
+	Proprietà importante esponenziale: Prob(X>m | X>n) = Prob(X>m-n) se m>n
+ - Normale(mu, sigma^2): anche detta gaussiana, inutile sapere la funzione.
+	Proprietà importante: se X è una normale, anche Y (dove Y = aX + b) è una normale.
+		se abbiamo mu = 0 e sigma = 1 si dice che è una normale standardizzata.
+
+Media e varianza di v.a. continue: hanno lo stesso significato del caso delle v.a. discrete.
+Casi noti:
+ - Uniforme: media = (a+b)/2, varianza = (b-a)^2/12
+ - Esponenziale: media = 1/lambda, varianza = 1/(lambda^2)
+ - Normale: media = mu, varianza = sigma^2
+
+Ad una qualunque v.a. w posso sottrarre media(w) e dividere tutto per la radice della varianza => faccio la standardizzazione e ottengo k.
+Io so che media di k = 0 e varianza di k = 1.
+
+Funzione di distribuzione cumulata: Una funzione R->R che dato una x restituisce la probabilità che la v.a. sia compresa tra [-infinito, x].
+
+Statistica: si divide in due parti, descrittiva e inferenziale.
+
+Descrittiva: Si occupa di analizzare i dati ricevuti.
+	i dati sono univariati: analizziamo una varibile alla volta!
+
+Termini importanti: Popolazione di interesse (persone, animali, ecc), Campionamento (misurare una parte scelta a caso della popolazione di partenza).
+	NB: Popolazioine e Misurare sono delle Variabili di interesse! Rispettivamente rappresentano omega e la v.a.
+
+I dati che otteniamo si dividono in due macro-gruppi:
+ - Qualitativi (Fattoriali [codificano appartenenza ad un gruppo] e character data)
+ - Quantitativi (Dati discreti e dati continui)
+
+Per descrivere i dati quantitativi che abbiamo utilizziamo i seguenti indici:
+Indici di posizione:
+ - Media campionaria: sommatoria dei dati di una variabile/n dove n numero totale di misurazioni.
+	Avendo tutti i dati lo stesso peso la media é SENSIBILE ai dati estremi!
+
+ - Mediana: se ordino i dati dal più piccolo al più grande la mediana mi restituisce il valore t.c. il 50% dei miei dati sta a sinistra del valore ottenuto.
+	Proprietà: se mediana > media => la media è influenzata da valori estremali piccoli, se mediana < media la media è influenzata da valori estremali grandi.
+		Se media è circa uguale alla mediana => "Simmetria"
+
+ - Percentili: il p-esimo percentile campionario è il valore che lascia alla sua sinistra il p% delle osservazioni.
+	NB: il 25, 50 e 75 percentile vengono chiamati rispettivamente il primo, secondo e terzo quartile.
+
+Indici di dispersione:
+ - Varianza campionaria: 1/(n-1) * (sommatoria di (xi - media campionaria)^2) solito significato.
+	La deviazione standard (SD) = radice quadrata della varianza campionaria.
+
+ - z-scores: sono i valori xi standardizzati (ovvero sottraggo la media e divido per la deviazione standard).
+
+ - coefficenti di variazione (CV): SD/media campionaria (se > o < di 1 abbiamo una grande variabilità)
+
+ - Indice di forma (skewness): sommatoria di (Zi^3) a cui moltiplico per 1/n. se circa 0 i dati sono simmetrici, se > 0 assimetria verso destra (più valori più grandi) 
+	se < 0 assimetria verso sinistra.
+
+Per descrivere i dati qualitativi utilizziamo delle visualizzazioni:
+ - Dot chart
+ - bar chart
+
+Passiamo ora dalla statistica univariata alla bivariata, ovvero ora prendo in considerazione due variabili:
+ - Qual + Quan: se raggruppo i dati in base alla qualitativa, essi si distribuiscono nella stessa maniera?
+
+ - Quan + Quan: analizzo mediante un plot char, cerco di capire se esiste una relazione funzionale e lineare tra le due variabili.
+	Possiamo anche utilizzare gli Indici di Correlazione(di Pearson se circa = a 0 non vi è correlazione, se > o < di 0 c'è una correlazione lineare diretta o 		inversa. Se abbiamo valori molto grandi di segno opposto conviene utilizzare la correlazione di Spearlman).
+
+ - Qual + Qual: utilizziamo l'Indice di correlazione di Kendal, serve che i dati qualitativi siano ordinabili (es. dei voti).
+
+Passiamo ora dalla statistica descrittiva alla statistica inferenziale:
+(introduzione di questo capitolo spiegata bene nel pdf caricato dalla prof)
+Ora dalla v.a. X togliamo l'argomento, indichiamo Xi = X(wi) dove wi€omega. Xi sono tutte v.a, coppie identiche e indipendenti della v.a. X.
+Dai dati che abbiamo ora cerchiamo di ottenere informazioni sulla popolazione. Problema: i dati sono soggetti a variabilità.
+
+Nella statistica inferenziale conosco la v.a. (normale, exp ecc), i parametri della v.a. sono le incognite.
+
+Stimatore (o Statistica): qualunque funzione calcolabile sui parametri di Xi (es la media campionaria).
+
+Legge dei grandi numeri: sia X1,X2...Xn una collezione di v.a. indipendenti e identicamente distribuite:
+ - la media campionaria tende alla media di X1 per n che va a infinito. (NB: media di X1 è uguale per tutte le Xi e viene chiamata media della popolazione).
+	Proprietà: media(media campionaria) = media(X1), Varianza(media campionaria) = 1/n * Var(X1)
+ - la varianza campionaria tende alla varianza di X1 per n che tende a infinito.
+Quindi, se un campione è abbastanza grande, abbiamo dei valori vicini ai parametri.
+
+Ma quanto sono vicini questi numeri ai parametri?
+Teoremi dei limit centrali (TLC): non viene scritta la formula, convenzione: n >= 30. calcoliamo la media campionaria standardizzandola (Norm(0,1))
+
+Intervalli di confidenza (IC): Restituiamo due valori:
+ - Un intervallo [a,b]
+ - una confidenza 1 - alfa. (se grande è vicino ad uno).
+Leggiamo come: "La confidenza/probabilità che [a,b] contenga il valore vero del parametro incognito è pari a 1 - alfa".
+
+Se volessi calcolare la media?
+1) serve una quantità pivotale (nel caso della media è la media campionaria - media(X1) tutto diviso per Stdev/radice(n)).
+2) fissando la confidenza 1 - alfa troviamo z1 e z2 tali per cui Prob(z1 < pivotale < z2) = confidenza. Z1 e Z2 vengono visti come dei percentili.
+3) sposto i parametri della quantità pivotale per trovare l'incognita. (per la media Prob(a < mu < b)=confidenza, dove mu parametro incognito per la media).
+
+Se il parametro n fosse minore di 30? Ipotizzo di aver campionato una normale, altrimenti avverto che non posso dare un valore preciso.
+
+IC per le proporzioni: supponiamo di aver campionato da una v.a. bernoulliana.
+voglio trovare il parametro p della bernoulliana.
+1) quantità pivotale Q.
+2) trovo z1 e z2.
+3) calcoliamo. (NB: queste operazioni vengono sempre fatte su R con il comando t.test).
+
+IC per la differenza di medie: vanno sottolineati due casi:
+ - campioni indipendenti (le varibili vengono calcolate su gruppi diversi e indipendenti).
+ - campioni appaiati (calcolo le due v.a. sullo stesso individuo).
+Date due v.a. X e Y => X - Y I.C. per la media della differenza.
+
+Un altro modo per controllare la variabilità è mediante i testi di ipotesi:
+Faccio un proposizione riguardante i parametri e la chiamo H0 (es H0: media = 0). Anche chiamata ipotesi NULLA.
+Scelgo anche un'altra ipotesi detta H1, se i dati mi costringono ad abbandonare H0 adotterò H1.
+Le ipotesi di H1 posso essere:
+ - One-sided/unilaterali: media < o > di 0.
+ - Two-sided/bilaterali: media != 0.
+
+Come scelgo se abbandonare H0?
+Es test di ipotesi sulla media di una popolazione.
+H0: media = 10, H1: media > 10
+Ora prendo i dati che ho e li calcolo supponendo che H0 sia vera. Se ottengo qualcosa di inatteso => abbandono H0.
+Se calcolando sui dati ottengo un p-value < alfa decido di abbandonare H0. (NB: solitamente con un p-value >= 0.05 NON abbandono H0).
+
+Leggere output di t.test:
+ - t = valore numerico a destra della disuguaglianza.
+ - df = gradi di libertà.
+ - p-value = probabilità che vi siano dei valori estremi da t (troppo grandi o troppo piccoli).

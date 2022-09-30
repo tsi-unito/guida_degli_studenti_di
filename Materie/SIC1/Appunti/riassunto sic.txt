@@ -1,0 +1,611 @@
+Per formule matematiche vedere appunti jack,.
+ ● Introduzione:
+Studiamo ict security: sicurezza dell'informazione digitale, condita con qualche cenno alla cyber security.
+
+Sicurezza dei calcolatori: un calcolatore può essere attaccato sia a un livello fisico, che di rete.
+Sicurezza delle comunicazioni: ignoriamo le lan, messaggi che transitano su internet si trovano in un ambiente insicuro.
+	- intercettazione, modifica, creazione, interruzione.
+
+Sicurezza delle reti private: possono essere configurate in modo sicuro, ma essendovi dei dispositivi mobili questi possono essere infetti e creare dei problemi. Inoltre le LAN possono includere dei web server, che devono essere facilmente raggiungibili.
+
+ ● Strumenti crittografici:
+Senza la crittografia (lo studio dei cifrari) non si può parlare di sicurezza.
+Cifrario: programma che trasforma un'informazione in un messaggio incomprensibile mediante una chiave K. Deve essere possibile risalire al messaggio originale a patto di conoscere il messaggio incomprensibile e la chiave.
+
+Chiavi vanno generate e gestite.
+
+Tipi di cifrari:
+ - aperti e chiusi: nei primi algoritmi utilizzati si conoscono, nei secondi no.
+ - simmetrici e asimmetrici: nei primi si utilizza una chiave, nei secondi due.
+
+Simmetrici più veloci e efficenti degli asimmetrici.
+
+Chiave : informazione segreta, solitamente una sequenza fissa di bit.
+
+A volte si usa: messaggio in chiaro e messaggio cifrato.
+Cifrare : da chiaro a cifrato
+Decifrare: da cifrato a chiaro.
+
+ ● Vediamo dei cifrari simmetrici pre-informatici, orientati ai caratteri:
+
+Def. monoalfabetici a n car: sostituiscono un gruppo di n caratteri con la stessa sequenza.
+Def. polialfabetici a n car: sostituiscono un gruppo di n caratteri con sequenze diverse.
+
+Cifrario di cesare: monoalfabetico a un carettere, non lo spiego per banalità. Problema: brute force.
+
+Cifrari monoalfabetici ad una lettera: simile a cesare, ma sostituzioni sono arbitatrie (k diventa la funzione che sostituisce)
+Problema:
+ - 21! casi non sono troppi, brute force possibile
+ - analisi statistica (si studiamo la frequenza di apparizione di una lettera e si prova a supporre quale lettera ha sostituito).
+
+Testo lungo + parti di testo fisse = analisi statistica molto semplice.
+
+Cifrari monoalfabetici a n lettere: testo diviso in sequenze di n lettere, ogni sequenza viene sostituita da una stessa seq di n lettere.
+Chiavi molto lunghe, (21 * 21)!, ma analisi statistica ancora possibile.
+
+Cifrario di playfair: si crea una matrice 5x5 e si sostituiscono coppie di lettere in base a delle regole. Monoalfabetico a 2 lettere.
+analisi statistica ancora possibile, possibili chiavi k diminuite a 26!.
+
+Passiamo allora ai cifrari polialfabetici.
+Cifrario di vigenere: K diventa una lista di lunghezza n di chiavi k0, k1, k2, k3, ... , Kn-1
+Ad ogni lettere T in posizione i viene applicato il cifrario di cesare utilizzando la chiave K(i%n).
+Sostituzione avviene in base alla posizione!
+
+Data lunghezza n, posso generare 21^n liste K.
+Problema: se si conosce n, lettere in posizione (i, i + n, i + n + n, ecc) sono sostituisce utilizzando la stessa chiave. Si può fare analisis statistica conoscendo n.
+
+ ● Spostiamoci allora su dei cifrari bit-oriented:
+Utilizziamo l'or esclusivo.
+
+Cifrario di vernam: Come playfair ma su bit. Stesso problema di playfair.
+
+One time pad: come vernam, con lunghezza k = lunghezza testo. Viene cifrato/decifr UN SOLO messaggio.
+No crittoanalisi no bruteforce. Nella pratica inutile.
+
+ ● cifrari simmetrici moderni:
+Sfruttiamo i calcolatori per cifrare, più fasi e una combinazione di permutazioni e sostituzioni.
+
+Macchine a rotori: una sequenza di rotori, ogni rotore definisce una specifica sostituzione (a -> _, b -> _ ...), e ogni volta che si sostituisce un rotore viene fatto girare. Così facendo diventa una sostituzione polialfabetica. Chiave K diventa la disposizione iniziale dei rotori.
+
+Data Encryption Standard (DES):
+Cifrario del 77 ancora utilizzato oggi nelle varianti AES e triple-DES.
+Concetti: diffusione e confusione.
+
+Prima introduciamo un cifrario di Feistel: Dato un blocco di lunghezza fissa N, dividono in due parti Li e Ri uguali.
+La parte a destra diventa la parte a sinistra del messaggio cifrato, la parte a sinistra viene messa in XOR con il risultato della funzione F con input Ri e la chiave K, e viene messa a destra del messaggio. F funzione feistel, una qualunque funzione NON INVERTIBILE.
+Dato N ottengo <L0, R0>. Calcolo <L1, R1> come <R0, L0 XOR F(K, R0)>.
+L'idea è che questo processo posso applicarlo i volte, ogni applicazione detta round, arrivando ad ottenere C = <Li, Ri>
+Si decifra sfruttando il fatto che <L1, R1> = <R0, L0 XOR F(K, R0)> quindi L0 XOR F(K, R0) XOR F(K, R0) = L0. 
+
+Come funziona il DES? 
+Dato un testo a 64 bit e una chiave da 56 (ridotte nel algoritmo a 48), applico più volte il cifrario di Feistel per 16 round. Come chiave a partire da K genero 16 chiave diverse in maniera DETERMINISTICA.
+Chiavi generate facendo shift + permutazioni (dettagli negli appunti).
+
+E come funziona la funzione F da applicare a Li?
+F(Ri, Ki) =
+ - Ri viene espansa a 48 per avere la dimensione della chiave.
+ - Ki XOR (Ri espansa)
+ - Risultato viene ridotto da 48 a 32 bit (<- NON INVERTIBILE).
+ - Permuto il risultato.
+
+Riduzione mediante s-box: blocchi di 6 bit sono ridotti in blocchi di 4 bit in maniera fissata.
+Si decifra riapplicando l'algoritmo uguale ma invertendo l'ordine delle chiavi generate, stesso principio del cifrario di feistel.
+
+Effetto valanga: una modifica di un solo bit del messaggio produce un messaggio cifrato completamente diverso.
+
+Problema: chiavi da 56 bit non sono abbastanza lunghe.
+
+AES variante di DES che risolve il problema con chiavi da 128 bit.
+
+ ● Lunghezza chiavi e messaggi
+
+Potremmo pensare di risolvere il problema di DES applicandolo due volte con chiavi diverse. Effettivamente questo raddoppia il numero di possibili chiavi, essendo che una copia di chiavi k1 e k2 diventa 112!.
+
+Problema: attacco Meet in the Middle.
+Nota che ora abbiamo messaggio in chiaro, messaggio cifrato da c1 e messaggio cifrato da c2 (partendo da c1).
+
+Attacco Known Plain Text: attaccante possiede delle coppie <testo in chiaro, testo cifrato> cifrate con le chiavi che cerchiamo. Ipotesi abbastanza realistica. Bastano due coppie di questo tipo.
+
+Avviene un attacco di forza bruta in due direzioni: Dal testo in chiaro verso c1 e da c2 verso c1.
+Se troviamo una coppia di chiavi tali che C(m chiaro, k1) = E(c2, k2) andiamo a memorizzare la coppia.
+Per principio della piccionaia se la lunghezza dei messaggi è minore della lunghezza delle coppie delle chiavi ci sono più coppie che mi portano dal messaggio in chiaro a c2. Allora utilizzando la seconda coppia mi possono assicurare che abbiamo trovare la coppia che cerchiamo.
+La difficoltà dell'avversario è soltanto raddoppiata.
+
+Nuova idea: triple-DES. Ora attacco meet in the middle non si può più fare. Essendo che una tripla di chiavi può essere quasi troppa, a volte si usa K1 = K3.
+
+E se volessimo testi più lunghi? Notiamo che questi sono cifrari a blocchi: vengono cifrati blocchi di testo della stessa lunghezza. L'opposto sono cifrari a flusso, che cifrano sequenze di bit di lunghezza arbitraria (più utile nelle applicazioni moderne).
+
+Possiamo aumentare la lunghezza dei messaggi dividendo questi ultimi in dei blocchi M1, M2, ..., Mn  =  M originale.
+Nota che Mn potrebbe necessitare di un padding per essere della stessa lunghezza degli altri blocchi.
+E utilizzando sempre il DES come cifrario.
+
+ECB: cifro tutti i blocchi con DES con la stessa chiavi K.
+Problema: analisi statistica, sostituzione da blocco a blocco, facile nei testi molto lunghi.
+
+CBC: prima di cifrare il blocco Mi, lo si mette in XOR con il blocco cifr. Ci-1.
+Ci = DES(Mi XOR Ci-1, K).
+
+CFB: DES non viene applicato ai blocchi, ma ad un vettore di bit IV. Dal risultato prendiamo un blocco di i bit, con i lunghezza dei blocchi M.
+Il blocco cifrato C viene ottenuto mettendo in XOR M con il blocco i. Il risultato Ci viene utilizzato come input per il DES per cifrare il prossimo blocco Mi+1.
+Mettendo la lunghezza dei blocchi m e i = 1 creiamo un cifrario a flusso! Problema: output DES 64 bit, 63 di questi sono sprecati.
+
+OFB: come CFB, ma come input del DES non viene aggiungo Ci ma il blocco i bit. Perché? Così posso "prepare" tutti i blocchi di i bit, per poi cifrare tutti i blocchi M. Ottimo per applicazioni veloci, rimane lo spreco dei bit di output del DES.
+
+ ● Cifrari Asimmetrici.
+Utilizza due chiavi k1 e k2. I messaggi che sono stati cifrati con k1 possono essere decifrati con k2, NON con la stessa. NON è possibile ottenere una chiave a partire dall'altra. A livello di risorse sono cifrari più pesanti dei simmetrici.
+
+Chiave con cui cifro: pubblica. Chiave con cui decifro: privata.
+Posso combinare simmetrici e asimmetrici per alleviare il problema delle lentezza (es scambio K con cifrario asimmetrico e cifro con simmetrico).
+
+Vedremo prima non un cifrario, ma un metodo per scambiare chiavi asimmetrico.
+Scambio di Chiavi Diffie-Hellman (DH):
+Dato un numero primo q e una sua radice primitiva alfa:
+ - Ogni utente genera un segreto s, minore di q, in maniera random e imprevedibile.
+ - Calcola informazione pubblica p come alfa^s mod q e la condivide.
+ - Data P' informazione pubblica altro utente e s segreto nostro, K = P'^s mod q.
+
+Entrambi ottengono la stessa informazione, sostituendo P otteniamo che il calcolo usa la stessa base alfa e i due segreti in ordine inverso. Per proprietà di elevazione otteniamo lo stesso risultato.
+
+Definiamo una radice primitiva di un numero q un numero t.c. radice^k per dei dati k genera tutti i numeri < q in modulo q.
+NB: facile da s arrivare a p, difficile il contrario.
+
+Servono i seguenti algoritmi:
+1) calcolare a^b mod q.
+2) generare numero primitivo.
+3) generare radice primitiva di q.
+
+1) utilizziamo la proprietà che a^b mod q = (a mod q)^b mod q per evitare overflow. Inoltre per b pari abbiamo a^b mod 
+q = (a^(b/2) mod q)^2 mod q.
+Complessita O di n, con n numero di bit che compongono b.
+
+2) Serve un Q molto grande, non posso testare numero primo per i numeri da 2 a Q/2.
+Test probabilistico:
+ - Genero Q.
+ - per t volte
+	 - genero a < Q
+	 - test(a, Q)
+Utilizzando il test di millen rabbin la probabilità che M non sia primo ma test dia false < 1/4. Applicando il testo per T volte ho un probabilità di successo > 4^(-T). Con t = 10 abbiamo un'ottima certezza.
+
+Test utilizza due teoremi:
+ - fermat, se M primo e a < M allora a^(M - 1) mod M = 1. NB: utilizziamo algoritmo 1.
+ - se M primo e a^2 mod M = 1 allora a = 1 o a = M - 1. Questo richiede un caso specifico, la seconda ipotesi, primo si applica sempre.
+
+3) generare radice primitiva di q.
+Proprietà: se un numero n NON è una radice primitiva di q, troverò i != q - 1 tale che n^i mod q = 1.
+Algoritmo:
+ - generare a < Q. Essendo Q primo a e Q sono relativamente primi.
+ - fattorizzare q - 1 in f1, f2, ..., fn.
+ - se trovo fi tale che a ^ (q - 1)/fi mod q = 1 a non è radice primitiva.
+
+Ovviamente (q - 1)/fi != q - 1.
+NB: Dobbiamo scegliere il numero primo q in modo tale che sia semplice fattorizzare q - 1.
+
+Problema di DH: man in the middle: un attaccante si mette in mezzo e riesce ad intercettare q, alfa e i messaggi pubblici sa e sb. Inviando il suo messaggio sc ad a e b può spacciarsi per loro, leggendo tutte le loro conversazioni.
+
+ ● RSA
+Cifrario asimmetrico. Si posso cifr/decifr soltanto messaggi che sono MINORI di un modulo n.
+Algoritmo generazione chiavi:
+ - scegli p e q numeri primi.
+ - calcola il modulo n = p*q.
+ - scegli e < (p-1)(q-1) t.c. e e (p-1)(q-1) siano relativamente primi (non hanno divisori in comune).
+ - calcola d = e^-1 mod (p-1)(q-1) //d inverso di e in modulo (p-1)(q-1)
+ - Chiave pubblica = <e, n> chiave privata = <d, n>
+
+Cifratura di un messaggio m : C = m^e mod n
+Decifratura : m = C^d mod n
+
+E' corretto? partendo dalla decifratura, sostituendo C e portando fuori il modulo abbiamo m = (m^e)^d mod n.
+Per teorema eulero e def. di d otteniamo che questa eguaglianza vale. Anche se il teorema di eulero richiede m e n numeri primi, l'eguaglianza vale lo stesso.
+
+Notiamo che si potrebbe pensa di calcolare d dalla chiave pubblica, ma fattorizzare un numero n e ottenere p e q è un'operazione MOLTO complessa.
+
+Abbiamo già un algoritmo per calcolare a^b mod c e un algoritmo per generare numeri primi!
+
+Ci serve un algoritmo per calcolare d = e^-1 mod (p-1)(q-1), ovvero
+un algoritmo per calcolare inversi moltiplicativi:
+Sfruttiamo il seguente teorema: mcd(a, b) = a*x + b*y per opportuni x e y.
+Quindi per trovare l'inverso moltiplicativo di e in (p-1)(q-1) calcolo:
+ - mcd(e, (p-1)(q-1)) = 1 //questo sarà sempre vero in RSA, perché e e (p-1)(q-1) relativamente primi
+ - Da teorema esistono x e y t.c. e*x + (p-1)(q-1)*y = 1
+ - quindi e*x = -y*(p-1)(q-1) + 1
+ - per def di modulo: e*x mod (p-1)(q-1) = 1 //-y diventa il quoziente
+ - quindi x inverso moltiplicativo di e in (p-1)(q-1).
+
+ ● Funzioni di Hash
+In questa parte il nostro focus non sarà più cifrare un messaggio ma autenticarlo. Non ci interessa se altre persone possono leggere il nostro messaggio, l'importante è che questi non possano modificarlo.
+Definiamo le funzioni di Hash: una funzione che dati messaggi di lunghezza variabile produce dei codici di hash di lunghezza fissa.  H(m) = c.
+
+Idea: se io e un destinatario abbiamo una funzione H, io invio un messaggio e allego H(m). Destinatario riceve m' e il codice da me inviato c. Se H(m') = c allora il messaggio non è stato modificato.
+
+Problema: essendo che in generale la lunghezza dei messaggi sarà maggiore della lunghezza dei codici, alcuni messaggi m, m', m'' ecc produrranno lo stesso codice di hash!
+Questo fenomeno è detto collisione.
+
+Alcune proprietà desiderabili di una H:
+ - non invertibile: dato c non riesco a trovare m tale che H(m) = c.
+ - fortemente non invert: dato m1 è difficile trovare m2 t.c. h(m1) = h(m2)
+ - resistente alle collisioni: è difficile trovare m1 e m2 t.c. h(m1) = h(m2)
+
+Si noti che 3 implica 2 il quale implica 1.
+
+Inotroduciamo un tipo di attacco alle funzioni di Hash: L'attacco del compleanno
+In generale trovare una coppia <m1, m2> che genera una collisione per H richiede una complessità O grande di 2^n, con n numero di bit. Ottimo, difficoltà esponenziale.
+L'attacco del compleanno sfrutta il paradosso del compleanno: dato gruppo di n persone, prob. almeno due di loro compiono anni stesso giorno? Con 23 persone prob del 50%.
+Viene utilizzata una variante del paradosso, perché si devono utilizzare due insiemi da cui pescare i due messaggi.
+ - A invia a B un messaggio m, il quale viene bloccato dall'avversario.
+ - avversario genera insiemi M e M'. M messaggi varianti/equivalenti ad m, M' messaggi equivalenti al messaggio che vuole inviare a B.
+ - Per paradosso, non devo generare 2^c messaggi ma ne bastano 2^(c/2) per prob 50% trovare collisione. //per capirci con codici da 10 bit, non devo generare 1024 messaggi, me ne bastano 32!
+ - se trovo m in M e m' in M' mi basta far autenticare m da A, per poi inviare m' a B. m' essendo simile al messaggio originale non dovrebbe insospettire A.
+
+Attacco Chosen message attack: attaccante riesce a farsi autenticare dei messaggi dal mittente.
+
+Morale: per attacco compleanno, lunghezza bit dei codice è importante. Non deve essere bassa, altrimenti si può fare attacco compleanno. Oggi funzioni hash producono codici da 256 bit.
+
+Funzioni devono anche essere complicate (vedere esempio XOR), spesso si usa una funzione F tale che l'hash di un blocco mi farà da input per calcolare l'hash del blocco mi+1.
+
+ ● Autenticazione
+Vogliamo verificare l'integrità del messaggio e autenticare l'origine, ovvero che il messaggio sia arrivato da chi ci aspettiamo. Siamo in un contesto simmetrico, perché mittente e destinatario condividono un segreto.
+
+Come si implemente?
+ => Al messaggio viene aggiunto un codice detto MAC (message authentication code), ottenuto mischiando il segreto e il messsaggio originale.
+
+Come calcolare questo MAC?
+ 1) Cifro il messaggio con DES-CBC. Ultimo blocco Ci farà da MAC. Effetto valanga DES: se viene cambiato anche un solo bit in qualche parte di M, Ci completamente diverso.
+	Inoltre attacco del compleanno inefficente, avversario non conosce chiave K e non può trovare collisioni del MAC.
+ 2) Funzione Hash con chiave. Calcolo il MAC utilizzando la funzione Hash, con in input il messaggio M messo in XOR con la chiave K.
+	Di solito vengono calcolate k' e k'' e il mac viene calcolato come H(k' # H(k'' # M)) con # operazione di concatenazione.
+
+Negli algoritmi moderni (es ssl) viene utilizzato il secondo metodo, MAC viene chiamato HMAC.
+K' e K'' sono calcolate utilizzando due copie del segreto K e mettendole in XOR con due sequenze costanti di bit ipad e opad.
+Inoltre per opportune H, HMAC diventa resistente anche ad attacchi di tipo Chosen message.
+
+Anche qua attacco del compleanno inefficente, HMAC non si può calcolare senza conoscere la chiave K, e anche facendosi autenticare dei messaggi falsi non può calcolare HMAC del messaggio m'.
+
+ ● Firme elettroniche
+Stessa idea dell'autenticazione, ma utilizziamo un contesto asimmetrico. Viene fatto l'opposto dei cifrari asimmetrici, chi vuole inviare un messaggio utilizza la sua chiave
+privata, chi riceve utilizza la chiave pubblica del mittente.
+
+Passi:
+ - A crea un messaggio M per B. Calcola H(M) e cifra il codice utilizzando RSA con la sua chiave privata. Ottiene la sua firma.
+ - B riceve il messaggio M, la firma di A e la sua chiave pubblica.
+ - B calcola H(M) e decifra la firma di A. Se i due risultati coincidono abbiamo la certezza che il messaggio non è stato modificato e che sia stato A a inviare il messaggio.
+
+Se codice diversi o il messaggio non è stato inviato da A o è stato modificato da un avversario.
+Principio di non disconoscibilità.
+
+Notiamo che le comunicazioni dei nostri computer avvengono mediante cifratura + autenticazione.
+
+Distribuire le chiavi non è facile, possibile man in the middle!
+ => centri di distribuzione chiavi e certificati.
+
+ ● Sicurezza dei calcolatori nelle reti private
+Nuovo argomento, andremo a vedere come nella pratica si proteggono i calcolatori delle reti private da possibili attacchi.
+Ricordiamoci che una rete locale è sempre aperta alla rete globale (web server, traffico che entra ecc).
+
+Problemi:
+ - Intrusioni interne o esterne, vengono utilizzate risorse della lan senza permessi.
+	soluzione: sicurezza perimetrale (es firewall), logging, programmi rilevamento intrusioni.
+ - Malware, software dannoso. Soluzione: antivirus, togliere permessi di installazione.
+ - Sniffing: intercettare e leggere il traffico della rete. Molto difficile su rete globale, su rete locale è possibile.
+Senza considere casi di manomissioni a switch o router, vi sono tecniche che non richiedono il controllo fisico.
+
+ARP poisoning:
+arp protocollo per ottenere il MAC di un calcolatore a partire dal suo indirizzo ip. messaggi di arp request.
+ - Immaginiamo che venga inviata una arp request da un calcolatore a un router. Arp request al calcolatore con indirizzo IP x.
+ - Il calcolatore appena vede il messaggio risponde inviando il proprio indirizzo MAC.
+ - Anche l'avversario risponderà alla richiesta inviando il suo MAC.
+ - Sorgente riceverà due risposte alla richiesta, essendo che protocollo ARP non fa controlli, prenderà l'ultima richiesta per buona.
+ - ora nella arp table vi è una corrispondenza (indirizzo ip x, mac calcolatore avversario).
+ - Ora tutto il traffico verrà inviato all'avversario, il quale potrà fare sniffing.
+
+Inoltre utilizzare dispositivi economici come gli hub, i quali sono switch che fanno solo broadcast, porta a problemi di sniffing.
+
+ - Spoofing: falsificazione di indirizzi. Esempio metto il mio indirizzo ip nella sorgente di un messaggio al posto dell'originale.
+Posso fare spoofing su indirizzi MAC, IP, simbolici (vengono inviate richieste a server che controlliamo), URL (web simili alle originali).
+
+ - Denial of service (DOS): blocchiamo un servizio di un server. NON un problema di integrità, ma di affidabilità.
+Idea: server viene bombardato di richieste ip rallentando o bloccando i server, e di conseguenza il servizio.
+
+Tecniche:
+SYN flooding: invio richieste di connessioni tcp per poi non concluderle. Server tiene aperta una finestra di connessione per un tempo timeout prima di chiuderla.
+	così facendo server avrà tante finestre di connessione aperte e inutilizzate, rallentandolo.
+	Inoltre come ip sorgente possiamo mettere un indirizzo casuale, così non riceviamo i messaggi di risposta dal server al nostro calcolatore.
+
+DDOS: distributed-dos. L'avversario si avvale di intermediare.
+esempio: smurf attack. utilizziamo il comando echo di icmp: se a manda un echo messaggio a b, b risponde ad a con quel messaggio.
+Attaccante inviare tante richieste echo ad altri intermediare, detti reflector, mettendo come sorgente ip del server che voglio attaccare.
+I reflector andranno a rispondere al echo inviando risposta al server bombardandolo.
+Per fare meglio, posso inviare una sola echo con destinazione indirizzo di tipo B o C, sfruttando il broadcast un solo messaggio echo può generare centinaia di messaggi di risposta (2^16 con classe B).
+
+Si risolve questo attacco con firewall, blocchiamo richieste echo con indirizzi broadcast.
+
+Spamming con relay SMTP:
+Invio una mail ad un server che voglio bloccare, con (esempio) un milione di destinatari. L'invio di questa mail porta a rallentare il server.
+
+ ● Sicurezza del software
+Quando scriviamo del codice, dobbiamo assicurarci che sia privo di vulnerabilità, le quali potrebbero essere sfruttabili da un avversario.
+
+Ma come può un programma fare qualcosa di diverso da ciò che ci aspettiamo?
+ => modifichiamo la memoria da cui il software accede. Memory Corruption.
+
+Data un'architettura IA32 (little endian), ricordiamoci come funziona lo stack delle chiamate: ogni funzione ha uno stack frame, il quale contiene parametri, variabili locali e uno stack.
+
+Immaginiamo un programma che prende in input in un buffer uno user, e dentro una variabile int salva il risultato dall'autenticazione:
+	int authentication.
+	char buffer[1024];
+	//fa cose
+	if(auth != 0) //operazioni per chi è autenticato
+	else printf("errore auth");
+
+Ma cosa succede se inserissi nel buffer un nome così lungo da uscire dal buffer e entrare nella variabile authentication? Modificherei il valore di auth, rendendolo != 0.
+Così potrei saltare il controllo dell'autenticazione.
+Questo è un caso di buffer overflow.
+
+Altro attacco: EIP rewriting. Andiamo a sovrascrivere il program counter.
+L'idea è di sovrascrivere l'indirizzo pc in modo tale che salti l'istruzione if e entri direttamente nelle istruzioni per chi si è autenticato.
+
+Dopo aver compilato programma andiamo ad aprire il programma assembler. Essendo if una disequazione devo trovare un'istruzione JNE e li sarà segnato l'indirizzo a cui saltare se auth != 0.
+Quello è l'indirizzo che ci serve.
+
+Essendo architettura little endian, dopo aver inserito caratteri per saltare buffer e auth, sovrascriviamo pc mettendo indirizzo al contrario. Essendo program counter riscritto
+salterà direttamente al body del if.
+
+Ultimo attacco: dal programma aprire uno shell code, un codice che può essere autonomamente eseguito. Scriviamo un programma in assembler che utilizza una system call, per stampare you win.
+Caricando il codice in una variabile d'ambiente e mettendo l'indirizzo di quest'ultima nel pc, verrà stampato dal programma you win.
+{vedere da appunti jack come riscrivere questa parte}
+
+Posso modificare il codice assembler per fare altro, esempio aprire una vera finestra di shell.
+
+Ultimo attacco: priviliged escaletion: aprire una finestra di shell con i permessi di root.
+In UNIX oltre ai 9 bit dei permessi di un file (3 per owner, 3 gruppo e 3 altri) vi è un bit detto set user identity (o suid).
+se suid attivo, quando un processo lancia questo programma diventa temporaneamente il suo owner. Serve a dare permessi temporanei ad un utente.
+
+Questo attacco utilizza programmi il cui creatore possiede permessi root. Ora quando faccio attacco precedente apro finestra shell con permessi di root, se programma che ho attaccato è stato creato da chi possiede permessi di root.
+
+Qualche soluzione:
+ - canarino: variabile in mezzo ad altre il cui valore non deve mai cambiare, altrimenti ci troviamo davanti ad uno stack abuse.
+ - abilitare aslr, indirizzi di un programma randomizzati, non più sequenziali.
+
+ ● Firewall
+Dal capitolo precedente sappiamo che è molto probabile che in una LAN si trovi un computer infetto. E' molto difficile controllare che non vi siano dei problemi.
+Un computer infetto rende possibile a dei malintenzionati di prendere il controllo di quel computer e dell'intera LAN.
+
+Idea: rendiamo le vulnerabilità irrangiungibili dall'esterno mediante un firewall!
+Quello che fa un firewall è controllare e filtrare il traffico che passa. Per esempio può evitare richieste di connessione verso i computer aziendali per evitare attacchi.
+E' facile controllare un unico punto di accesso!
+
+Configurazioni:
+ - screening router: router viene programmato per fare anche da firewall, prima di instradare i pacchetti controlla che rispettino le regole.
+ - dual homed gateway: router e firewall separati, router direttamente collegato al firewall. Più costoso ma più ottimizzato.
+ - screened host gateway: router direttamente collegato allo switch, ma ogni pacchetto ricevuto sarà prima inoltrato al firewall.
+ - screened subnet: per grandi imprese, una sotto rete è una zona demilitarizzata (dmz) non controllata dal router. Vi risiedono web server. Sottorete contenente pc aziendali è controllata dal firewall.
+	Si può accedere a dmz senza passare per il firewall.
+ - firewall in cascata: sia per accedere alla dmz che alla lan vi è un primo firewall, poi un secondo all'interno della lan. Primo più liberale, secondo più conservativo.
+	vantaggio: in caso di vulnerabilità di uno dei due, l'altro rimane attivo.
+
+E se un firewall si bloccasse? Si bloccherebbe anche l'intera rete LAN!
+	=> high availability: NON è un load balancing. UN firewall filtra il traffico, se si dovesse bloccare si attiva un secondo e prende il suo posto e così via. tecnica di failover.
+
+Due tipi di firewall:
+ - packet filter: un router che filtra pacchetti. Può lavorare soltanto fino a livello 3 (vede solo indirizzi ip).
+Semplice e veloce ma molto limitato. Filtra in base a : direzione pacchetto e connessione, indirizzo ip sorg e dest, servizio (porta sorg e dest).
+
+Problema: nella frammentazione dei pacchetti ip si perdono delle informazioni (es porta tcp), come fare? Vengono buttati via i pacchetti piccoli.
+
+Come viene implementata? Mediante regole access control list (acl):
+ => lista di regole di un firewall. Ogni regole specifica se accettare o bloccare (allow/deny) un pacchetto in base ad alcuni parametri (porta, indirizzo, connessione ecc).
+    Se una regola non è riferita ad un pacchetto si passa alla successiva (ordine importante). Se non ci sono regole per un pacchetto vi è una regola di default.
+
+Limiti: vediamo la connessione ftp:
+ - client si collega a server e invia una richiesta get alla porta 21 (porta dei controllo).
+ - server per soddisfare richiesta deve aprire una connessione alla porta 20 (dati)
+Firewall o permette di aprire connessioni verso la porta 20 da esterno (problema di sicurezza) o le blocca (non si può utilizzare ftp).
+
+Il problema è che questi firewall sono stateless, non ricordano se in precedenza vi sono state fatte delle richieste di connessioni verso precisi ip.
+Con un firewall stateful posso dire "permetti di aprire connessioni verso una porta 20 se prima dalla lan è partita una richiesta get verso porta 21 dello stesso ip".
+
+Firewall possono anche essere utilizzati per limitare spoofing: se arrivano dei pacchetti con ip sorgente della LAN ma origine esterna, ci troviamo davanti ad un caso di spoofing.
+
+Una piccola digrassione sul tcp: 
+ - sappiamo che la sequenza per handshake è: client manda messaggio con numero seqnum, server risponde con seqnum e acknum, client conclude inviando acknum+1.
+ - Immaginiamo che un calcolatore con ip2 vuole che vi sia una connessione tcp tra ip1 (client) e ip3 (server).
+ - invia primo pacchetto a ip3 con sorgente ip1 (spoofing), inserisce un numero seqnum.
+ - pacchetto risposta ip3 andrà perso (ip1 non esiste o è spento o non ha iniziato connesione), probabilità che ip1 avesse iniziato una connessione con stesso seqnum è 1/(2^16)
+ - Ip2 non riesce a mandare il terzo segmento, deve conoscere acknum, che si trova nella risposta del server. Probabilità di azzeccarlo a caso è bassissima.
+ - Allora ip2 deve fare sniffing per poter vedere il pacchetto di risposta e memorizzarsi il valore del acknum.
+Questa sequenza di passi è detta tcp vedente.
+
+Si può evitare tcp vedente con firewall?
+ => bloccare source routing!
+source routing: mittente specifica nel pacchetto ip quale sarà il percorso che dovrà fare il pacchetto di risposta. Invece che utilizzare l'instradamento dinamico dei router, il
+pacchetto di risposta seguirà la strada specificata nel pacchetto inviato. Problema: ora ip2 ha un modo per far si che i pacchetti di risposta del server non vadano direttamente a ip1
+ma passino per ip2, così che lui possa leggerli.
+
+packet filter economico e trasparente (lo installo e basta, non devo fare altre modifiche) ma troppo limitato.
+
+ - firewall di livello applicativo:
+Firewall funziona come un proxy: non vi sono più connessioni dirette tra client e server. I client si connettono al proxy, il proxy si connetterà al server che vuole il client e i messaggi
+tra le connessioni vengono prima controllati dal proxy. Lo stesso avviene per un calcolatore della WAN che vuole connettersi alla LAN.
+
+Devo configurare il proxy per ogni protocolo che voglio utilizzare.
+
+Problema: NON è trasparente. Devo settare per tutti gli utenti di utilizzare il proxy. Soluzione molto sicura.
+Essendo di livello applicativo non solo legge ip, porta, protocollo ecc ma anche il payload.
+Inoltre è stateful.
+
+ ● NAPT (Network Address and Port Translation) (comunemente chiamato solamente nat)
+Quando un calcolatore vuole inviare un pacchetto a un destinatario esterno alla LAN, il suo indirizzo IP e la sua porta sono sostituiti da un indirizzo ip pubblico e da una porta.
+In una nat table viene salvata la corrispondenza <ip originale, porta originale> <=> <ip pubblico, porta pubblica>. A tutti i pacchetti che escono e che entrano sono sostituiti
+ip e porta.
+Ora nella LAN tutti gli indirizzi ip possono essere privati (eccetto web server) e lo spoofing risulta più difficile da esterno.
+
+Napt deve avere dei campi pre-compilati per le zone dmz, altrimenti da esterno avrei dei problemi a connettermi ai web server.
+
+Load balancing mediante napt: ad una stessa coppia ip pubblico, porta pubblica sono associati più calcolatori. napt smaltisce il traffico tra questi mediante round robin.
+
+ ● VPN (virtual private network)
+Sappiamo che la rete LAN è una rete sicura (quando viene supportata da strumenti periferici) mentre la WAN è una rete insicura.
+Problema: al giorno d'oggi la rete privata non è più una singola LAN, ma un insieme di LAN che comunicano tra di loro mediante internet (più uffici, smartworking, cloud ecc).
+Ma come facciamo a garantire la sicurezza delle comunicazioni che passanoa attraverso internet?
+ => vpn! "Il traffico che passa per l'internet viene comunque gestito come fosse traffico interno".
+
+Vogliamo uno strumento trasparente e che introduce il minor ritardo possibile.
+
+Protocollo ip security level (ipsec): protocollo che vive sopra il livello ip. pacchetto sarà composto da: head link, header ip, header ipsec, pdu.
+pdu: protocolo data unit. payload trasportato dal pacchetto ip. Si crifra/autentica mediante header ipsec.
+
+Notiamo che i router vedono solo header ip, non ipsec (siamo sopra al livello 3). Trasparenza per i router!
+L'autenticazione e la cifratura sono compito dei dispositivi end-to-end, non dei router!
+
+Ipsec lavora in due modalità:
+ - transport mode (cifratura e autenticazione vengono fatte sui calcolatori mittente e destinatario).
+ - tunnel    mode (cifratura e autenticazione vengono fatte su dei terminatori).
+Si definisce terminatore il router o firewall che ha il compito di cifr/aut in modalità tunnel.
+
+La transport mode protegge da spoofing e sniffing, ma lascia in chiaro indirizzi ip sorg e dest. NON è trasparente ed è necessario per dispositivi mobile.
+Tunnel mode non protegge da spoofing e sniffing e non funziona per mobile, ma maschera indirizzi ip sorg e dest, è trasparente ed è veloce e affidabile.
+
+ ● Servizi ipsec
+ipsec si compone di due servizi: encapsulating security payload (esp), per cifrare e autenticare, e authentication header (ah), per autenticare.
+Nel caso di ah anche il header ipsec prende il nome di ah.
+
+Nota: cosa succede se scopriamo che il pacchetto è stato modificato? A livello ip non ci preoccupiamo che i pacchetti arrivano o meno, quindi semplicemente lo buttiamo.
+
+Studiamo per primo authentication header:
+il campo ah si divide a sua volta in diversi campi. Campo fondamentale è il campo Data, il quale contiene il codice mac (lo stesso che avevo visto nel capitolo autenticazione).
+altri campi:
+ - next header: ereditato da ipv6, identifica il protocollo di livello superiore.
+ - length: indica la lunghezza del campo ah. campo Data ha lunghezza variabile (diversi algoritmi di autenticazione offrono mac di lunghezza diversa).
+ - security parameter index (spi): indice che permette lato ricevente di identificare l'algoritmo utilizzato e quali sono le chiavi crittografiche simmetriche. NON contiene le chiavi.
+	le chiavi sono prese da una tabella fornita con l'installazione di ipsec.
+
+Notiamo che Data contiene il mac di tutto il pacchetto (header ip + ah + pdu), i campi variabili (es ttl) sono cifrati con valore = 0.
+Non sono nascosti indirizzi ip sorgente e destinazone, vengono solo autenticati.
+
+Possiamo vedere l'altro servizio, encapsulating security payload:
+Ora vogliamo sia cifrare sia autenticare. Utilizzato principalmente per cifrare il traffico tra due lan.
+Viene creato un campo esp che nascoste pdu e header ipsec. pacchetto avrà la forma: header link, header ip, esp.
+
+campo esp diviso in due parti:
+ - campo isp: campo in chiaro da cui ottengo algoritmo e chiavi per decifrare.
+ - campi pdu, next header, auth ecc. Tutti cifrati.
+
+Cambiano i campi cifrati in base alla modalità:
+ - in transport mode dopo header ip esp contiene tutte le informazioni.
+ - in tunnel mode vi è contenuto oltre alle solite informazioni un campo header ip cifrato. Rappresenta header del pacchetto originale ip. Qua si trovano ip sorg e dest originali. NON sono visibili.
+
+Notiamo che ESP possiede un campo auth, utilizzato per autenticare il messaggio. Esso autentica SPI, SEQ e Payload ma NON header IP.
+
+Vi è un campo addizionale sia in ESP che in AH: campo sequence number. A cosa serve?
+ => anti-replay. NON vogliamo meccanismo di recupero/affidabilità dei pacchetti.
+
+Anti-replay: evitare che un pacchetto ip sia ritrasmesso da un router controllato da un avversario.
+
+Un avversario non può decifrare i pacchetti, ma può ritrasmetterli tale e quale. A cosa serve? Riceviamo più copie di uno stesso pacchetto senza saperlo. A livello applicativo
+leggeremo più pacchetti identici quando ce ne aspettiamo di ricevere uno solo. Possibili danni alla sicurezza.
+
+Si può evitare questo con un seq number, ma richiede l'introduzione di una finestra (stessa idea finestra tcp), un pò costoso.
+
+Come funziona?
+ - Definisco W size della finestra.
+ - Definisco N seq number ultimo pacchetto ricevuto.
+ - Se ricevo un pacchetto non ancora ricevuto e numero tra [N-W, N] allora lo segno come ricevuto.
+ - Se ricevo un pacchetto già ricevuto lo scarto.
+ - Se arriva pacchetto con seq < N-W ? non so dare una risposta, ci saranno delle policy a dirmi cosa fare. Posso accettarlo o meno.
+ - Se arriva pacchetto con seq > N-W ? Sposto la finestra impostando N = nuovo seq.
+
+Ultimo problema: spi fa riferimento a una tabella, come la ottengo?
+ - scambio sorgente e destinatario mediante cifratura asimmetrica.
+ - durante installazione ipsec.
+
+Se si utilizza vpn NON deve esserci un NAT. Nat cambia indirizzi ip e porte, l'autenticazione può produrre valori diversi e i pacchetti verrebbero tutti scartati.
+
+ ● Web Application Security
+Immaginiamo un web server in una dmz di una LAN. Supponiamo non ci siano problemi a livello di codice o a livello sistemistico.
+
+Sappiamo che web server è diviso tra front end e back end, e queste due parti si scambiano i dati mediante web gateway.
+Notiamo che a poter rappresentare un possibile attacco posso essere i dati, se back end non è stato strutturato in maniera corretta.
+
+Vedremo gli attacchi classificati dalla OWASP foundation, un ente che studia e classifica le principali vulnerabilità applicative.
+ - injection: i dati passati contengono del codice, il quale viene eseguito dal back end e che può portare a dei danni.
+	Esempio più classico sono le sql injection.
+
+ - broken authentication : autenticazione resa vana, un utente non autorizzato riesce comunque ad autenticarsi.
+	Esempio: la sessione di un utente si lega alla url. Se questa viene condivisa, altri utenti non autenticati potranno accedere mediante essa.
+
+ - session management: un utente non autorizzato riesce ad inserirsi in una sessione di un utente autorizzato.
+	Esempio: sessione viene gestita con cookie che non scadono mai. Se mi autentico in un computer pubblico e non cancello i cookie, altri utenti potranno
+	accedere alla mia sessione.
+
+ - xss cross-site scripting: idea è di passare del codice tra siti. molto diffusa ma poco pericolosa.
+	Esempio: utente U inserisce un input in un sito vulnerabile A, e quest'ultimo risponde con un output che si basa sul input fornito.
+	Un attaccante B cerca di fare in modo che U inserisce un input in A il quale contiene un codice script. Con quel codice l'output di A permetterà a B di ottenere informazioni di U.
+	Script può essere passato mediante sito malevolo.
+
+[
+Differenza fondamentale:
+ - nel injection codice sarà eseguito dal lato server.
+ - nel xss codice sarà eseguito lato client.
+]
+
+ - insecure direct object references: un oggetto è raggiungibile all'interno di una sessione dopo l'autenticazione.
+	Esempio: dara una url modifico i parametri e riesco ad accedere ad un account con id diversi.
+
+ - Cross-site request forgery (csrf): Un sito permette di fare azioni fraudolente previa l'autorizzazione.
+	Esempio un utente autenticato apre una pagina fraudolenta, la quale porta l'utente a fare una diversa operazione nel sito dove si era autenticato.
+	Se mi autentico sulla mia banca, sito fraudolento dallo stesso sito della mia banca fa partire un bonifico.
+
+ - Security misconfiguration: classe enorme con errori di configurazione di security.
+	Esempi: framework non aggiornati, non avviene un cambio password dopo tot tempo, non vi è lato server un index.html (di default si apre directory listing) ecc.
+
+ - Insecure cryptographic storage: Password deboli e memorizzate in chiaro su server o backup.
+
+ - Failer to restrict url access: url non sono protette, posso fare richieste di risorse che non potrei fare.
+
+ - Insufficent transport layer protection : quando i dati viaggiano a livello di trasporto (es client server), non sono stati protetti.
+
+ - Unvalid redirect and forward: modificando url di un sito vulnerabile, posso inviare ad un utente ingenuo e questo verrà ridiretto su siti fraudolenti.
+
+
+Come fa owasp a classificare le vulnerabilità:
+ - threat agent (chi è che fa partire l'attacco).
+ - attack vectors (quanto è facile mettere in piedi l'attacco).
+ - security weakness.
+ - Tech impact.
+ - business impact.
+
+ ● Risk Management
+Tecniche per gestire la sicurezza di un'organizzazione.
+Purtroppo la sicurezza è costosa, richiede tante risorse e spesso non è trasparente.
+
+Compliance: rispetto delle normative vigenti, incluse quelle in materia di sicurezza.
+
+Valutazione viene fatta in base a:
+ - perimetro (in quale ambito stiamo lavorando)
+ - probabilità
+ - impatto (quanto sarà grande la perdita economica e di immagine)
+
+perimetro si divide a sua volta in:
+ - fisico
+ - logico (di quali calcolatori dobbiamo preoccuparci)
+
+Certificazione iso 27001, gestione sicurezza delle informazioni. Definisce:
+ - rischio informatico : possibile verificarsi di eventi che possono avere un impatto negativo in un certo perimetro.
+ - gravità rischio : prob(evento) * peso(impatto)
+ - perimetro : solitamente intera organizzazione. Per struttura grosse si creano più perimetri. "oggetto rispetto al quale si svolgono analisi e gestione del rischio".
+
+Concetto importante del iso 27001: si basa sulla GESTIONE del rischio. Sicurezza va gestita nel tempo.
+
+Banalmente per possedere questa certificazione dobbiamo aver fatto ciò che lo standard richiede e un esperto deve aver certificato ciò.
+
+Dobbiamo creare un sistema di gestione della sicurezza delle informazioni. Introduciamo il ISMS (information security management system):
+ - Implemententa controlli adeguati all'organizzazione e al perimetro (firewall, serrature ecc)
+ - dati i requisiti di sicurezza, dice come ottenerli mediante processi e controlli.
+ - miglioramento continuo, principio pdca (plan, do, check, act).
+
+pdca o ciclo di deming:
+ - plan: pianifico.
+ - do: implemento ciò che ho pianificato.
+ - check: verifico se ciò che ho implementato funziona.
+ - act: correggo o aggiorno la sicurezza. In caso di aggiornamenti o nuovi attacchi va ripianificato il nostro isms.
+
+Statement of applicability: contiene una pianificazione delle misure di sicurezza da implementare.

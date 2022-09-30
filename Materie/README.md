@@ -17,18 +17,22 @@ Tabella di traduzione (per le sole materie presenti in questa directory) da sigl
 | COMPL AP  |               Complementi Analisi e Probabilità               |
 | DBM       |                   Basi di dati Multimediali                   |
 | ELIVA     |        Elaborazione di Immagini e Visione Artificiale         |
+| EPS       |             Elementi di probabilità e statistica              |
 | ESP       |                   Etica, società e privacy                    |
 | IALAB     |             Intelligenza articiale e laboratorio              |
 | IUMTWEB   |         Interazione Uomo Macchina e Tecnologie Web `          |
 | MAADB     |                 Modelli Avanzati Basi di Dati                 |
 | MCAD      |         Modelli Concorrenti ed Algoritmi Distribuiti          |
 | METNUM    |                        Metodi Numerici                        |
+| MFI       |               Metodi formali per l'informatica                |
 | MODSEM    |                       Modelli Semantici                       |
 | OC        |                 Ottimizzazione Combinatorica                  |
 | PROGMOB   |                     Programmazione Mobile                     |
 | RNDL      |                 Reti Neurali e Deep Learning                  |
 | SAS       |                Sviluppo Applicazioni Software                 |
+| SIC1/2    |                   Sicurezza 1, Sicurezza 2                    |
 | SIST-INT  |                     Sistemi Intelligenti                      |
+| SO        |                       Sistemi Operativi                       |
 | SRV       |                  Sistemi di Realtà Virtuale                   |
 | TAAS      | Tecniche e architetture avanzate per lo sviluppo del software |
 | TLN       |                Tecnologie Linguaggio Naturale                 |

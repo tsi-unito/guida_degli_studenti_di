@@ -1,0 +1,75 @@
+Cose utili:
+ - getwd() restituisce l'attuale working directory (utile se serve importare file .csv)
+ - c(x,y,z,...) crea un vettore con gli elemnti x, y, z ecc.
+ - i <- n:m crea una variabile i che è un vettore di elementi crescenti da n a m.
+ - sum(a[i]) fa la sommatoria di ogni elemnto di a usando la variabile i.
+ - exp(x) fa e^x.
+ - con l'operatore <- o -> si inizializza o si assegna ad una varibile (elemento indicato) un valore (elemento indicante) es a <- 5
+ - con hist(), plot() e plot(density()) posso fare dei disegni dei dati quantitativi che abbiamo.
+ - con barplot(table(variabile)) possiamo visualizzare i dati qualitativi, sopratutto i fattoriali.
+ - length() restituisce la lunghezza di un vettore.
+
+Funzioni di densità:
+ - dgeom(x,p): per la geometrica, con x numero di fallimenti prima del successo e p probabilità di successo.
+ - dbinom(x, size, p): per la binomiale, con x numero di successi, size numero di tentativi e p prob.
+ - dpois(x, lambda): per la poisson, con x numero di successi e lambda valore di lambda.
+ - dnorm(x, mean, sd) con x valore, mean media e sd derivazione standard.
+
+Funzione di distribuzione cumulata (voglio vedere se X < q, utile per le continue) (a tutte oltre ai soliti parametri passiamo q):
+ - pnorm
+ - pexp
+ - punif
+
+Quantile function: funzione che mi restituisce il valore tale che il parametro% dei valori della v.a. sia minore di quel valore.
+ - nomi uguali alla funzione precedente con q al posto di p.
+
+Parte di statistica:
+ - Obbligatori da installare
+	install.packages("UsingR")
+	library(UsingR)
+	library(HistData)
+ - Indici di forma:
+	skewness(x) (se circa 0 i dati sono simmetrici, se > 0 asimmetrica verso destra, opposto per < 0)
+ - Trovare i quantili:
+	quantile(x) con x vettore di elementi
+ - Per verificare gli outlier:
+	Disegnare con boxplot(x) e i pallini indicano gli outlier. (consigliato mettere horizontal = TRUE)
+ - Usare il db babyboom:
+	data("babyboom")
+	str(babyboom)
+	Cercare sul help le info del db
+ - Prendere dal db un parametro e utilizzarlo:
+	babyboom$wt
+	babyboom[,3] (perchè wt è la terza colonna)
+	babyboom$wt[c(5,7,12,3)] (elementi specifici della colonna wt)
+	babyboom$wt > 2000 -> indici (assegno ad indici tutti gli elementi di babyboom con wt maggiore di 2000)
+ - Fare calcoli su dei parametri:
+	mean(babyboom$wt)
+	median(babyboom$wt)
+	quantile(babyboom$wt,0.20)
+	quantile(babyboom$wt,0.50)
+	quantile(babyboom$wt) (mi restituisce i quantili per 0, 25, 50, 75 e 100)
+ - Impostare un num come fattoriale e lavorarci su:
+	Se un parametro è segnato come num ma deve venir visto come un fattoriale
+	con a <- factor() rendiamo questo vettore di num come un fattoriale
+	con level(a) <- c(qualcosa) ad ogni elemento del vettore a associamo un identificativo del fattore (es ora "0" sono i non fumatori, "1" qualche volta e "2" ex)
+	con table(a) possiamo visualizzare una tabella dei fattori, dividendo il risultato per length(x) otteniamo per ogni elemento la sua percentuale
+	con barchart(table(a),horizontal = FALSE) possiamo visualizzare con un grafico i valori dei fattori
+	con as.numeric vedo un fattoriale come un numerico (richiede qualche specifica prima di essere utilizzata)
+ - Con la funzione cor() calcolo gli indici di correlazione, impostando method gli indico come deve calcolarli.
+ - Per calcolare gli Intervalli di Confidenza (IC):
+	usiamo la funzione t.test(x, conf.level) con x vettore di elementi e conf.level la probabilità che il parametro sia nell'intervallo di confidenza.
+- Calcolare IC per le proporzioni:
+	per casi binomiali: binom.test(x, n, p, alternative, conf.level) con x vettore di elementi, n numero di successi o vettore con successi e fallimenti, n numero
+	di tentavi (ignorato se length(x) == 2), p probabilità di successo, alternative tipo di ipotesi alternativa, conf.level confidenza del intervallo.
+ - Calcolare IC per differenze di medie:
+	t.test(x, y, conf.level, paired) x e y vettori di elementi, conf.level confidenza del intervallo, paired = TRUE SE campioni appaiati.
+ - Calcolare i test di ipotesi:
+	t.test(x, alternative, mu, paired) con x vettore di elementi, alternative tipo di ipotesi alternativa, mu valore della media, paired = TRUE SE campioni
+	appaiati
+
+Es utili:
+ - Ad ogni x moltiplico la probailità e li sommo, uguale a sommatoria con i da 0 a 100 di Xi*Pi:
+	x <- c(-18, -6, 0, 2, 6, 9, 10, 11)
+	p <- c(1/12 ,1/12 ,1/12 ,2/12 ,1/12 ,2/12 ,1/12 ,3/12)
+	media <- sum(x*p) 

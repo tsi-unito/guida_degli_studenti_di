@@ -1,0 +1,280 @@
+ - Descrivere brevemente tre delle top ten vulnerabilities di una Web application secondo Owasp
+Injection: dal client viene inviato del codice arbitrario al server. Se la web application è vulnerabile alla injection, questo codice viene eseguito e possono avvenire dei danni. Esempio SQL injection mediante inputext in una pagina.
+Session management: Un utente non autorizzato riesce ad intromettersi nella sessione di un utente autorizzato e può causare dei danni. Esempio di SM è se i cookie non hanno una scadenza, se mi autentico da un computer pubblico altri possono utilizzare quei cookie.
+Cross site request forgery: un sito permette di fare azioni critiche ad utenti autenticati senza fare controlli. Un sito malevolo può sfruttare un utente autenticato per fare delle azioni pericolose. Esempio mi autentico sul sito della mia banca, un altro sito malevolo da quella sessione riesce a far partire un bonifico verso un conto corrente.
+
+ - Discutere i limiti di un firewall di tipo packet filter
+i firewall packet filter lavorano a livello di rete, quindi possono soltanto vedere gli indirizzi ip sorgente e destinatario, le porte, la direzione del pacchetto. Inoltre sono stateless, quindi non si ricordano di precedente azioni dell'utente. Immaginiamo il protocollo ftp: per come funziona un utente della lan apre una connessione verso la porta 21 e invia una richiesta get (tutto permesso dal firewall) ora il server deve aprire una connessione verso la porta 20. Abbiamo due scelte: o il firewall permette di aprire connessioni verso la porta 20 (possibile rischio di sicurezza) o non permettiamo ad esterni di aprire connessioni verso la lan (protocollo ftp inutilizzabile).
+
+ - spiegare perchè mcd(a, b) = ax + by serve a calcolare inverso moltiplicativo.
+Per come abbiamo scelto e in RSA sappiamo che è coprimo con (p-1)(q-1) quindi mcd(e, (p-1)(q-1)) = 1.
+Sfruttando il teorema sappiamo che esistono x e y per cui e*x + (p-1)(q-1)*y = 1.
+Spostando a sinistra del uguale otteniamo e*x = -y*(p-1)(q-1) + 1 che per definizione di modulo otteniamo
+e*x mod (p-1)(q-1) = 1. Quindi x sarà l'inverso moltiplicativo di e in (p-1)(q-1). Questo ci serve in RSA.
+
+ - Dimostrare che dati due interi a e b, esistono altri due interi x e y, tali che ax+by=MCD(a,b)
+Dimostriamo una versione generale del teorema: per qualunque ri esistono x e y tali che ax+by=ri. ri un resto ottenuto in un passaggio del calcolo di mcd.
+
+Facciamolo per induzione su i:
+i = 0: r0 = a per def. per x = 1 e y = 0.
+i = 1: r1 = b per def. per x = 0 e y = 1.
+
+Supponiamo che valgo per (0, 1, ..., n-1) e ciò implica per n
+sappiamo che rn-2 = rn-1 * qn-1 + rn
+Quindi 	rn = rn-2 - rn-1 * qn-1
+Sostituiamo rn = axn-2 + byn-2 - (axn-1 + byn-1)*qn-1
+	       = axn-2 + byn-2 - axn-1*qn-1 - byn-1*qn-1
+	       = a(xn-2 - xn-1*qn-1) + b (yn-2 - yn-1*qn-1)
+Abbiamo trovato dei valori per x e y. QED
+
+ - Come funziona un firewall ridondato (anche detto “HA” – high availability)
+Se decidiamo di introdurre un firewall nella nostra rete potrebbe capitare che questo si rompa o venga bloccato da una qualche vulnerabilità. Questo potrebbe mettere in pericolo la nostra rete. L'idea del high availability è di mettere più firewall e configurarli nella seguente maniera: se il primo firewall funziona, sarà lui a filtrare il traffico. Se ad un certo punto dovesse rompersi, il secondo firewall prenderà il suo posto e così via. Va sottolineato che high availability non utilizza il load balancing, tutto il traffico passerà dallo stesso firewall. Questa idea di avere più firewall per sostituire uno rotto viene anche detta eliminazione del single point of failure.
+
+ - Che tipo di cifrario implementa una macchina a rotori, e quali sono le sue debolezze
+Una macchina a rotori è un cifrario polialfabetico ad una lettera. Significa che una lettera viene sostituita da una lettera, quest'ultima differisce in base alla posizione dei rotori.
+(domanda vecchia, non abbiamo visto le debolezze dei rotori)
+
+ - Fare un esempio concreto di Cross-site Scripting (XSS)
+Immaginiamo un sito vulnerabile, il quale memorizza l'input di un utente nella url e da quel input restituisce una nuova pagina. Un esempio di url può essere www.sitovulnerabile.com?q=inputUtente. Un malintenzionato nota che se si inserisce come input un pezzo di codice, questo viene inserito nella pagina restituita dal server e eseguito nel client. Esempio www.sitovulnerabile.com?q=<script type='text/javascript'>alert('xss');</script> restituisce un nuovo sito il quale stampa a video xss. Ora il malintenzionato può creare una url del sitovulnerabile che porta ad aprire un sito malevolo, il quale può per esempio memorizzare i cookie della vittima. Crea l'url del sitovulnerabile che fa partire uno script per aprire il sito malevolo e lo manda alla vittima.
+
+ - Definizione di radice primitiva di un numero q e metodo per generarne una
+la radice primitiva di un numero q è un numero alfa tale che: per qualunque numero n tra 1 e q-1 esiste k tale che alfa^k mod q = n.
+L'algoritmo per generare una radice primitiva di q sfrutta la seguente proprietà: se alfa NON è una radice primitiva di q, allora esiste k < q-1 t.c. alfa^k mod q = 1.
+algoritmo:
+ - genera alfa < q in maniera randomica.
+ - fattorizza q-1. (f1 * f2 * ... * fn = q-1)
+ - se esiste fi t.c. alfa^(q-1/fi) mod q = 1 allora ritorna al passo 1, altrimenti restituisci alfa.
+Notiamo che (q-1/fi) < q-1, quindi ultimo punto sfrutta la proprietà sopra enunciata. Fattorizzare un qualunque numero non è semplice, conviene scegliere il numero primo q in modo tale che sia facile fattorizzare q-1.
+
+ - Dimostrare che ab mod M = (a mod M)(b mod M) mod M
+sia a = x*M+k e b = y*M + z. dove k e z < M
+Allora ab mod M = x*M*y*M + k*y*M + z*x*M + k*z = k*z mod M
+(a mod M)(b mod M) mod M = (k)(z) mod M = k*z mod M. QED
+
+ - Disegnare una topologia di rete locale con firewall in HA (high availability) non posso da blocco note
+
+ - Differenza tra modalità tunnel e transport in una VPN
+Nelle vpn in transport mode le operazioni di cifrare/decifrare e autenticare vengono fatte dal calcolatore sorgente e dal calcolatore destinatario del pacchetto. Nel tunnel mode vengono fatte da dei dispositivi intermedi detti terminatori. Differenze fondamentali sono: transport protegge da sniffing e spoofing, tunnel no. Tunnel nasconde ip sorgente e destinatario, transport no. Transport è trasparente, tunnel no. Per dispositivi mobile soltanto transport è utilizzabile.
+
+ - Test di primalità di Miller-Rabin
+Test che dato un numero M e un numero alfa < M, ci dice se M è primo o no con una probabilità di sbagliare < 1/4. Ripetendo il testo T volte con numeri diversi otteniamo una probabilità di errore < 1 - 4^-t.
+Sfrutta i seguenti teoremi:
+ - dati a < M e M primo : a ^(M-1) mod M = 1.
+ - dati a < M e M primo : se a^2 mod M = 1 allora o a = 1 o a = M-1.
+Il test primo verifica se a ^(M-1) mod M = 1, in caso negativo restituisce che M non è primo. Se invece ha sucesso e inoltre a^2 mod M = 1, allora testa anche se a = 1 o a = M-1. Se entrambi hanno successo (o il secondo non si può verificare) allora restituisce che M è primo.
+
+ - Dimostrare che, se M e’ primo e x^2 mod M = 1, allora x = 1 oppure x = M-1
+
+Dimostriamo il teorema fondamentale dell'aritmetica modulare: se esistono x e y tali che x^2 = y^2 mod M e x != +-y mod M allora M NON è primo.
+Dimostrazione mediante mcd(M, x-y) = n.
+se n = M allora M | x-y quindi x-y = 0 mod M. spostando a dx y ottengo x = y mod M, ma questo caso non è possibile per ipotesi.
+se n = 1, per ipotesi sappiamo che x^2 = y^2 mod M, spostando a sx y^2 ottengo x^2-y^2 mod M = 0, ovvero M | (x+y)(x-y).
+Sappiamo per proprietà che se X | ZY e mcd(X,Z)=1 allora X|Y.
+Quindi M|(x+y), da cui ottengo x=-y mod M, ma per ipotesi questo non è possibile.
+Quindi n è diverso da 1 e M ed è un divisore di M, quindi M NON è primo.
+
+Dalla logica sappiamo che se la tesi di un teorema è falsa, questo implica che anche le ipotesi sono false.
+Quindi se M è primo, allora qualunque x e y x^2 = y^2 mod M e x = y mod M.
+Prendendo i casi con y = 1 e y = M-1 ottengo:
+Se m è primo e x = 1 mod M, allora x = 1 o x = M-1.
+
+ - Perché su un packet filter vengono normalmente filtrati i pacchetti IP con l’opzione di source routing?
+Immaginiamo la seguente situazione: un avversario, chiamato eva, vuole far iniziare una connessione tcp tra un server e alice, una vittima. Manda il primo messaggio del handshake con ip spoofed, ma ha un problema. Infatti il server risponderà con un messaggio contenente un codice ack, il terzo messaggio deve contenere quel codice per iniziare la connessione. Eva non può pensare di generarlo a caso (ha 1/2^32 possibilità) allora deve fare in modo di vedere quel secondo messaggio. Con il source routing la scelta del percorso che sarà fatta da un pacchetto non è più scelta dai router, ma prestabilità. Eva con il source routing può fare in modo che il pacchetto del server giungerà a lei, non ad Alice. Così potrà far iniziare la connessione tcp tra il server ed alice.
+Per questo motivo i pacchetti con opzioni di source routing vengono scartati, permetterebbero di poter iniziare connessioni tcp tra dei server e delle vittime.
+
+ - Fare un esempio di Broken Authentication o Session Management (OWASP)
+BA: Sessione di un utente viene legata alla URL. Se riesco ad ottenere la URL di un utente autorizzato posso entrare nel sistema e causare dei danni.
+SM: Sessione di un utente viene memorizzata da dei cookie che non scadono mai. Se questo utente si autentica da un computer pubblico allora altri utenti potranno utilizzare la sua sessione sfruttando i cookie che non scadono mai.
+
+ - Descrivere il ciclo Plan-Do-Check-Act secondo lo standard ISO-27001
+Plan: non faccio nulla, ma pianifico. Si decide il perimetro, si analizzano i rischi e come risolverli e si definisce una politica del isms. Dobbiamo decidere come valutare il rischio (asset, vulnerabilità, impatto) e quali sono le strategie e i controlli da attuare. Dobbiamo anche ottenere l'approvazione dalla direzione prima di iniziare a fare.
+Do : Definiamo un piano di implementazione e implementiamo i controlli definiti nel isms. Dobbiamo anche preoccuparci della loro manutenzione aggiornamento.
+Check: monitoraggio per trovare eventuali problemi e fare degli esami proattivi (esempio se i dipendenti hanno capito come attuare le misure di sicurezza).
+Act: in base alle valutazioni del check e a cambiamenti come nuove minacce o nuovi controlli più efficenti. Dobbiamo ripianificare il nostro isms.
+
+ - Definire il metodo di scambio di chiavi di Diffie-Hellman
+Scambio chiavi di diffie hellman permette a due calcolatori di ottenere una chiave simmetrica utilizzando delle informazioni pubbliche e private.
+ Viene scelto un numero primo q e una radice primitiva di q detta alfa, questi sono conosciuti da entrambi i calcolatori.
+ Ogni calcolatore sceglie un numero S < q, questo sarà la sua informazione segreta.
+ In seguito calcola P = alfa^S mod q. Questa è l'informazione pubblica.
+ Ogni calcolatore dato P', informazione pubblica del altro, calcola K = P'^S mod Q.
+Notiamo che K = P'^S mod Q = (alfa^S')^S mod q. L'altro calcolatore avrà K = (alfa^S)^S' mod q, per proprietà del esponente questi corrispondono allo stesso risultato.
+
+ - Discutere, nel metodo di scambio di chiavi di Diffie-Hellman, la complessità computazionale di ciascun passo.
+ 1 la generazione di un numero primo è lineare rispetto a T, il numero di test di miller rabin.
+	Testi miller rabin ha complessità lineare rispetto a b, il numero di bit di M-1
+ 2 la generazione di una radice primitiva dipende da quanto sia complesso fattorizzare q-1.
+ 3 calcolare alfa^S mod q e K = P'^S mod Q è lineare per n, dove n è il numero di bit di S.
+
+ - Descrivere il protocollo ESP (encapsulating security payload) nelle reti private virtuali IPSEC
+ESP è uno dei due servizi di ipsec, questo permette di autenticare e di cifrare i pacchetti. Subito dopo l'header ip si trova un campo esp header, il quale contiene il payload e authentication cifrati, più i campi spi, seqnum in chiaro.
+
+Da spi trovo algoritmo utilizzato per cifrare e la chiave. Inoltre possiamo utilizzare il campo authentication per verificare se il pacchetto è stato modificato. Inoltre se siamo in tunnel mode nei campi cifrati si trova anche un header ip, che rappresenta l'header ip originale del pacchetto inviato dalla sorgente. Notiamo che esp nasconde indirizzi ip sorgente e destinazione! 
+Inoltre l'autenticazione autentica i campi contenenti il payload, il seq number e spi, ma NON header ip.
+
+Infine, il campo seq number serve per attuare un meccanismo di anti-replay. Vogliamo evitare che un avversario ci mandi più copie dello stesso pacchetto e noi li memorizziamo come fossero pacchetti diversi. Implementiamo una window come nel protocollo tcp, la quale memorizza i seq number dei pacchetti che abbiamo già ottenuto.
+
+ - Descrivere il concetto di DDOS (distributed denial of service)
+Negli attacchi deanial of service (dos) un attaccante vuole bloccare un servizio, per esempio di un web server, inondandolo di richieste fino a rallentarlo o bloccarlo. Nel caso di un attacco ddos l'attaccante non è da solo, ma viene aiutato da altri calcolatori. Un esempio di attacco ddos è lo smurf attack, dove un attaccante invia dei pacchetti echo a dei calcolatori mettendo come ip sorgente l'indirizzo ip del server. Così il server viene riempito di pacchetti echo e inizia a rallentarsi o bloccarsi. Per migliorare l'attacco si possono inviare pacchetti con ip sorgente di class B o C, così più calcolatori lo riceveranno.
+
+ - Spiegare il “bit s” nel controllo di accesso ai sistemi Unix, e perché può essere pericoloso in presenza di vulnerabilità di un eseguibile
+Quando viene impostato il bit s a 1, l'utente che avvia un eseguibile diventa temporaneamente il suo owner (se non lo era già) e ottiene i suoi permessi. In presenza di vulnerabilità posso fare un attacco priviliged escalation, modificando la memoria e di conseguenza il comportamento dell'eseguibile riesco ad ottenere i permessi del creatore. Se il creatore di questo file era un utente root, ora possiedo per tutto il tempo che mi serve i permessi di root.
+
+ - Algoritmo iterativo per calcolare in modo efficiente l’esponente modulare e sua complessità.
+d = 1
+for(i = k; i>=0; i--)
+	d = d*d mod q
+	if(bi == 1) d = d*a mod q
+return d
+
+E lineare per k, dove k numero di bit di b.
+
+ - Descrivere il metodo di generazione delle chiavi del cifrario RSA, e discuterne la complessità computazionale
+Per prima cosa si scelgono due primi p e q, e si calcola il modulo n = p*q.
+Si sceglie un numero e < (p-1)(q-1) tale che e e (p-1)(q-1) siano coprimi. LA chiave pubblica è la coppia <e, n>
+In seguito si calcola d tale che d*e mod (p-1)(q-1) = 1. La chiave privata è la coppia <d, n>.
+
+Calcolare due numeri primi ha una complessità = 2*n*t. T serve a migliorare la precisione, n numero di bit.
+Calcolo di d richiedere utilizzo del mcd.
+
+ - Perché una funzione Hash(M) definita come Xor dei blocchi di M non è collision resistant
+Immaginiamo una funzione di hash(m) definita nella seguente maniera: m viene diviso in i blocchi m0, m1, ..., mi. mi può avere un padding perchè i blocchi siano della stessa dimensione. H(m) = m1 xor m2 xor ... xor mi. Un avversario vuole modificare il messaggio m con m' e vuole che i due messaggi collidano, ovvero generino lo stesso codice di hash. Se immaginiamo m' diviso in blocchi, i blocchi da m'1 a m'i-1 sono arbitrai, mentre mi = m'1 xor m'2 xor ... xor m'i-1 xor h(m).
+Definendo così m' quando si calcola hash otteniamo h(m') = m'1 xor m'2 xor ... xor m'i.
+Sostituendo m'i otteniamo = m'1 xor m'2 xor ... xor m'1 xor m'2 xor ... xor h(m). Sappiamo che A xor A = 0, con 0 elemento neutro dello xor.
+H(m') = 0 xor 0 xor ... xor h(m) = h(m). Abbiamo ottenuto h(m') = h(m), e i blocchi da m'1 a m'i-1 possono essere arbitrariamente definiti.
+
+ - Effetti della frammentazione IP sul comportamento di un firewall di tipo packet filter
+Come sappiamo un pacchetto ip può essere frammentato in più pacchetti ip, lasciando al destinatario il compito di ricostruire il pacchetto ip.
+La frammentazione porta una perdita di informazioni, per esempio per pacchetti piccoli non è nemmeno incluso l'header tcp, quindi nemmeno la porta. Essendo che il packet filter filtra in base a porta, servizio e indirizzi ip esso non sarebbe in grado di decidere se accettare o meno la porta. Va notato che questo succede solo per pacchetti molto piccoli, ingiustificati per qualsiasi mtu. Essendo che si potrebbero nascondere dei pacchetti malevoli utilizzando questo meccanismo, i pachetti piccoli vengono scartati in automatico dai firewall.
+
+ - dato codice sbagliato, spiegare come funziona meccanismo per stampare "you win"
+La funzione gets, la quale prende un input e lo scrive in un buffer, possiede la seguente vulnerabilità: se l'input dovesse eccedere la dimensione del buffer allora verrebbero sovrascritte anche le variabili che seguono in memoria il buffer. Per come viene definito il programma e per l'architettura studiata la variabile cookie si trova subito sotto al buffer. Inserendo più di 80 caratteri andiamo oltre la sua dimensione e scriviamo dentro la variabile cookie. Se la variabile cookie ha il valore ABCD allora viene stampato you win. Utilizzando quindi un input formato da 80 'A' seguito da "DCBA" riusciamo a fare in modo che la condizione del if sia vera e viene stampato "you win". I caratteri sono invertiti perché siamo in una configurazione little endian.
+
+ - Descrivere il funzionamento di un attacco basato su “Buffer Overflow”
+L'idea del buffer overflow è di inserire un input che eccede la dimensione del buffer. Se non vengono fatti dei controlli l'input va a sovrascrivere anche le variabili che nella memoria sono posizionate vicino al buffer. Modificando la memoria di un programma in questo modo riusciamo a far fare al programma delle azioni non consentite, come autenticarci.
+
+ - Dimostrare che, se X|Y e X|Z, allora X|(iY+jZ) per ogni intero i,j.
+Dalle ipotesi sappiamo che Y = k*X e Z = q*X per un qualche k e q.
+Sostituendo Z e Y a (iY+jZ) otteniamo (ik*X + j*q*X). Raccogliendo per X otteniamo (ik+jq)X, il quale è chiaramente divisbile per X, qualunque siano i valori di i e j.
+
+ - Spiegare il funzionamento e lo scopo della “Anti-replay window” in una VPN con IPSEC
+Immaginiamo un avversario che vuole danneggiare uno scambio di messaggio. Utilizzando il servizio ESP di IPSEC non può modificare i messaggi e nemmeno leggere (aut + cifr) ma opta per un piano diverso: prende un pacchetto ip e lo spedisce diverse volte al destinatario. Non essendo stato modificato, il destinatario accetta i diversi pacchetti ip. Questo può comportare un problema alla connessione: abbiamo più copie dello stesso pacchetto quando ci aspettiamo che ce ne sia una sola. Il messaggio originale potrebbe essere stato compromessso.
+Il meccanismo di anti-replay serve proprio ad evitare una situazione simile: mediante un sequence number riusciamo a controllare che arrivi solo una copia di ogni pacchetto. Utilizza un meccanismo simile a tcp: abbiamo una finestra con una dimensione N che tiene traccia dei pacchetti da W-N+1 a W, con W sequence number dell'ultimo pacchetto ricevuto. Se riceviamo un pacchetto con seq < W-N+1 lo possiamo scartare, se arriva con seq > W spostiamo la finestra, se incluso marchiamo quel pacchetto come ricevuto. Siamo ad un livello intermedio, tra ip e trasporto, quindi non ci preoccupiamo se i pacchetti devono arrivare o meno. Saranno protocolli di livello superiore a scegliere se ritrasmettere i pacchetti mancanti o meno.
+
+ - descrivere sha-1
+
+ - Descrivere la vulnerabilità OWASP nota come “insecure direct object reference”
+Un oggetto è direttamente accessibile durante una sessione, ma non vengono fatti controlli sull'autenticazione o identificazione. Per esempio se il riferimento ad un oggetto è inserito all'interno di una url, posso provare a modificarla per accedere ad altri oggetti (per esempio parti di account) anche se non ne avrei i permessi.
+
+ - Consideriamo il cifrario RSA con modulo n=pq, esponente privato d ed esponente pubblico e. Sia il messaggio da cifrare m=iq<n. Cifrando m otteniamo c = m​^e ​mod n. Dimostrare che decifrando c otteniamo nuovamente m, ovvero che c​^d ​mod n = m
+
+Sostituendo c otteniamo m^(ed) mod n = m. Sappiamo che ed mod (p-1)(q-1) = 1. Quindi esiste k' t.c. ed = k'*(p-1)(q-1)+1.
+Possiamo ora sostituire ed ed ottenere m^(k'*(p-1)(q-1)+1) mod n = m.
+Sappiamo dal teorema di eulero generalizzato che qualunque k. m^(k*phi(n) + 1) mod n = m.
+Sappiamo che phi(n) = (p-1)(q-1). Sostituendo phi(n) otteniamo quindi m^(k*(p-1)(q-1) + 1) mod n = m. Utilizzando k = k' otteniamo che m^(k'*(p-1)(q-1)+1)=m vale.
+
+phi(n) = (p-1)(q-1). Dim : phi(n) = quanti numeri da 1 a n-1 sono coprimi con n.
+Sappiamo n = p*q. sarà quindi = (n-1) - {numeri non coprimi con n}
+(n-1)-({p,2p, ..., (q-1)p} U {q, 2q, ..., (p-1)q}). (n-1) - ( (q-1) + (p-1)) = n - 1 - q + 1 - p + 1 = n - q - p + 1 = p*q - q - p + 1 = (p-1)(q-1)
+
+Teorema di eulero: m^phi(n) mod n = 1. Se m e n coprimi
+Definiamo R = {x1, x2, xphi(n)} insieme di numeri che sono coprimi con n.
+S = moltiplico ogni el per m mod n. = {m*x1 mod n, m*x2 mod , ...}
+Essendo che essendo xi coprimo con n anche m*xi mod n è coprimo con n e in S non ci sono ripetizioni. Quindi R = S.
+Moltiplicando ogni el degli insiemi ottengo x1*x2*xphi(n) = m^(phi(n)) *x1*x2... mod n
+Semplificando m^(phi(n)) mod n = 1.
+
+ - Descrivere la metodologia di analisi dei rischi definita da OWASP
+Bisogna prendere in considerazione i seguenti fattori: threat agent, attack vectors (quanto sia facile mettere in piedi l'attacco), security weakness e impatto tecnologico e di business. Viene fatta uno studio di quanto sia possibile che avvenga un attacco e il suo impatto, maggiori sono questi fattori più è importante prevenire questo attacco. La probabilità che avvenga un attacco si può calcolare in base all'agente e alla weakness (agenti esperti con vulnerabilità sfruttabili portano ad una probabilità di attacco elevata). L'impatto del rischio dipende dall'impatto tecnologico e di business.
+
+ - Definire che cos’è una funzione di hash resistente alle collisioni
+Una funzione hash viene definita resiste alle collisioni quando è difficile trovare due messaggi m e m' tali che h(m) = h(m'). Per funzioni di hash definite mediante una funzione F, se F è resistente alle collisioni anche H lo è.
+
+ - Differenza tra un packet filter e un firewall applicativo
+Un packet filter lavora soltanto fino a livello ip, mentre un firewall applicativo lavora a livello applicativo. Inoltre quest'ultimo è stateful.
+Ciò comporta che un packet filter può filtrare il traffico soltanto in base all'indirizzo ip, il protocollo, le porte e la direzione del traffico. Applica delle regole in base ad una acl table. Essendo stateless non ricorda richieste di connessione precedenti, questo comporta dei problemi per protocolli come ftp.
+Invece il firewall applicativo lavora come un proxy. Client si connette al fw e fw verso server. Le richieste che invia il client sono ritrasmesse dal fw al server. LE risposte del server sono analizzate e filtrare dal proxy. Da qui capiamo che i firewall applicativi non sono trasparenti, richiedendo delle modifiche nelle abitudini di utilizzo di chi lavora con i nostri calcolatori. Invece i packet filter sono trasparenti.
+
+ - Algoritmo per calcolare l’inverso moltiplicativo in aritmetica modulo n
+Nel contensto di RSA, vogliamo calcolare l'inverso di e in modulo (p-1)(q-1).
+Ricordiamoci che abbiamo scelto e in modo tale che fosse coprimo con (p-1)(q-1). Quindi mcd(e, (p-1)(q-1)) = 1.
+Per teorema sappiamo che esistono x e y t.c. x*e + y*(p-1)(q-1) = mcd(e, (p-1)(q-1)).
+Abbiamo un algoritmo per ottenere x e y. (leggerlo)
+Notiamo che quindi x*e = -y*(p-1)(q-1) + 1. per definizione di modulo x*e mod (p-1)(q-1) = 1. Quindi x sarà l'inverso moltiplicato di e in modulo (p-1)(q-1).
+
+ - Calcolo efficiente di a^​b ​mod q mediante il metodo iterativo
+d=0
+for(k=i; k>=0; k--)
+	d = d*d mod q;
+	if(b[k] == 1) d = d*a mod q;
+return d
+con i numero di bit che compongono b.
+
+ - Definire la resistenza alle collisioni per le funzioni di hash, e discuterne le conseguenze per la sicurezza della firma elettronica
+Definiamo una funzione di hash come resistente alle collisioni quando è difficile trovare m e m' tali che H(m) = H(m').
+Sappiamo che le funzioni di hash sono utilizzate per autenticare, quindi essere sicuri che un messaggio non venga modificato da un eventuale avversario.
+Se una funzione H non fosse resiste alle collisioni, possiamo mettere in piedi un attacco del compleanno: dato un messaggio m creiamo due insieme M' e M''. M' contiene varianti del messaggio origianale m. M'' contiene varianti del nostro messaggio fraudolento. Se troviamo m' in M' e m'' in M'' tali che questi collidono, posso farmi autenticare da A m' e inviare m'' a B. Quando B riceverà m'' otterrà un digest uguale a quello inserito nel messaggio, e penserà di aver ricevuto il messaggio originale.
+
+ - Descrivere il NAT, il NAPT, e le loro implicazioni per la sicurezza
+NAT e NAPT sono servizi che si trovano tra una lan e il resto del internet. Quando un computer della LAN vuole inviare un pacchetto che deve uscirer dalla rete, questo viene ricevuto dal NAT. Il NAT sostituirà l'indirizzo ip del calcolatore con un indirizzo pubblico, ma lascerà invariata la porta. Il NAPT invece sostituisce sia la porta che l'indirizzo ip. Il NAT modifica un insieme di indirizzi ip con un altro insieme, mentre il NAPT sfruttando la porta può sostituire un insieme di indirizzi ip privati in un unico indirizzo ip pubblico. 
+Un vantaggio per la sicurezza di utilizzo del NAPT è rappresentato dal nascondere gli indirizzi ip dei calcolatori. Un avversario esterno alla LAN se leggesse i pacchetti in uscita vedrebbe lo stesso indirizzo ip come sorgente, non ha modo di capire gli indirizzi ip.
+Uno svantaggio dato dal utilizzo del NAPT è se abbinato ad una VPN. Nel caso di IPSEC con AUT viene autenticato anche il header IP. Essendo che viene fatto il controllo dell'autenticazione anche sui campi IP, un indirizzo ip diverso comporta che tutti i pacchetti ip saranno scartati anche se corretti, generando un MAC diverso a causa della differenza di indirizzo ip.
+
+ - Descrivere l’attacco di tipo DOS noto come "syn flooding”
+Quando vogliamo iniziare una connessione con un server mediante tcp dobbiamo fare la procedura di handshake. Questa implica che dopo il primo messaggio ricevuto, il server invii un messaggio di ACK e resta in attesa di una risposta. Se vogliamo fare un attacco DOS, bloccando quindi il server e i suoi servizi, possiamo riempire il server di richieste di connessione (syn flooding indica proprio il nome del primo messaggio del handshake, detto SYN message). Il server si ritroverà quindi con tante connessioni aperte inutilmente per un tempo di timeout. Questo rallenta il server e blocca delle richieste di connessioni che arrivano da utenti non malevoli.
+
+ - Descrivere il formato dello Authentication Header Ipsec (AH) e commentare il significato e l’utilizzo di ogni campo.
+Data: contiene il MAC del messaggio, campo fondamentale perché da qua capiamo se è stato modificato il messaggio.
+Next Header: identifica il protocollo di livello superiore.
+Length: essendo il length variabile, con questo campo conosciamo la lunghezza del header AH.
+SPI: indice di una tabella, serve a capire con quale algoritmo e con quale chiave è stato calcolato il campo MAC. Serve al destinatario per verificare l'autenticazione.
+
+ - Nello standard ISO 27001, che cosa sono i “controlli” e in base a quali criteri vengono selezionati?
+Nello standard ISO 27001 i controlli rappresentano l'insieme di mezzi (organizzativi e tecnici) per controllare e limitare il rischio informatico. Il rischio informatica rappresenta un insieme di aventi riguardanti la ict security che hanno un impatto negativo per il business.
+Il rischio informatico viene misurato da una gravità, maggiore è la probabilità del verificarsi di un rischio e maggiore è il suo impatto per il business, maggiore sarà la sua gravità.
+
+La decizione di quali controlli applicare e come viene selezionato durante la fase di plan del pdca. Si sceglieranno i controlli che mitigano i rischi con gravità maggiore.
+
+ - Per quale motivo il one-time pad è più sicuro di un cifrario di Vernam con una chiave di lunghezza fissa?
+NEl cifrario di vernam una chiave K si compone di n bit k0, k1, ..., kn-1. Un bit in posizione T viene messo in xor con il bit della chiave T%n.
+quindi C(bT) = b XOR (KT%N). Il problema di vernam è che conoscendo n si riesce a fare un'analisi statistica del messaggio cifrato.
+Utilizzando il one time pad la lunghezza della chiave è pari alla lunghezza del testo da cifrare. Di conseguenza un bit in posizione i viene messo in XOR con il bit K in posizione i. Ovviamente one time pad è più sicuro di vernam perché abbiamo risolto il problema dell'analisi statistica.
+
+ - Dimostrare (ab) mod M = [(a mod M)(b mod M)] mod M
+Supponiamo che a mod M = x e b mod M = y, con x e y < M. Quindi a = q*M + x e b = z*M + y.
+calcoliamo ab = q*M*z*M + x*z*M + z*M*y + x*y. Se calcoliamo ab mod M otteniamo quindi x*y mod M.
+calcolando [(a mod M)(b mod M)] mod M otteniamo [x*y]mod M. Ottenendo da entrambi lo stesso risultato abbiamo dimostrato che sono uguali.
+
+ - dimostrare (a​b​) mod M = (a mod M)​b​ mod M
+Supponiamo che a mod M = x e b mod M = y, con x e y < M. Quindi a = q*M + x e b = z*M + y.
+calcoliamo ab = q*M*z*M + x*z*M + z*M*y + x*y. Se calcoliamo ab mod M otteniamo quindi x*y mod M.
+calcoliamo (a mod M)b mod M. risolvendo a mod M otteniamo [x*z*M + x*y] mod M. Questo è uguale a x*y mod M.
+
+ - Descrivere l’attacco DOS basato su ICMP, noto come ‘smurf attack'
+ICMP è un rptocollo ci fornisce un insieme di messaggi per comunicare informazioni tra calcolatori. Uno di questi è rappresentato da echo. Se vogliamo verificare se esiste un calcolatore con un certo indirizzo ip, invio un echo a quel indirizzo ip e se ricevo un risposta so che il calcolatore è online.
+E se inserissi come sorgente del echo una vittima? Per ogni echo che mando questo riceverà un pacchetto. Utilizzando come destinatario dei miei echo indirizzi ip di classe B posso utilizzare più calcolatori ingenui che bombardano di pacchetti la mia vittima. I calcolatori che ci aiutano in questa operazione sono detti reflector. Essendo che utilizziamo più calcolatori per l'attacco, quindi lo andiamo a distribuire, viene detto attacco d-dos, o distributed dos.
+
+ - Nello standard ISO 27001, che cos’è lo “statement of applicability”
+E' un documento scritto durante la fase di plan del pdca, il processo mediante al quale si cerca di limitare o eliminare il rischio informatico di un certo perimetro.
+Nello statement si scrivono:
+ > i controlli esistenti.
+ > controlli aggiuntivi, selezionati in base al piano di riduzione del rischio.
+ > seleziona dei controlli che verranno attuati e le loro tempistiche. Queste scelte vanno giustificate dalla politica del isms.
+
+politica isms:definisce i principi strategici e definisce la valutazione del controllo dei rischi. Bisogna tenere a mente gli obblighi contrattuali e che si integri con il sistema di gestione dei rischi.
+
+ - Dimostrare che, se N=pq e p e q sono primi, allora Phi(N)=(p-1)(q-1), dove Phi è la funzione di Eulero
+Definiamo phi(n) come la funzione di eulero, la quale conta i numeri < n che sono coprimi con n.
+Possiamo anche calcolarla come il totale dei numeri < n - cardinalità insieme di numeri che non sono coprimi con n.
+phi(n) = (n-1) - |{p, 2p, 3p, ..., (q-1)p} U {q, 2q, ..., (p-1)q}|. Notiamo che essendo n composto da p*q non possono esserci numeri coprimi con n < minimo(p,q).
+       = (n-1) - ((q-1) + (p-1))
+       = n - 1 - 1 + 1 - p + 1 //sostituendo n con qp
+       = qp - p - q + 1 = (p-1)(q-1)
+QED
+
+ - Descrivere un metodo per calcolare la radice primitiva a di un primo q, dimostrarne la correttezza
+Dato q, fattorizziamo q-1 ottenendo una sequenza di numeri primi p1, p2, ..., pn
+Generiamo in maniera randomica alfa < q.
+se troviamo pi tale che alfa^(q-1/pi) mod q = 1 ricominciamo, altrimenti restituisci alfa.
+
+L'idea nasce dal fatto che un numero n NON è una radice primitiva di q se troviamo k < q-1 t.c. n^k mod q = 1.
