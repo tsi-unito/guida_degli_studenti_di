@@ -3,7 +3,7 @@
 Nei pressi del dipartimento d'informatica ci sono due posti principali in cui è possibile sedersi e gustarsi un buon pranzo con calma:
 
 - [Doc Self Service](https://goo.gl/maps/mTabRSiVfAXWj3726): sulla via da cui si accede al dipartimento, si trova sulla sinistra arrivando da corso svizzera
-- [Dubai Coffe Lounge](https://g.page/Dubaicoffeelounge): all'interno del Pier della Francesca, ci si accede girando a destra prima dei tornelli dei laboratori
+- [Dubai Coffee Lounge](https://g.page/Dubaicoffeelounge): all'interno del Pier della Francesca, ci si accede girando a destra prima dei tornelli dei laboratori
 
 Esistono due tipi di formule principali per il pasto:
 
