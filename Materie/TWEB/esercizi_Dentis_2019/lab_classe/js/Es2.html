@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script>
+        function pageLoad(){
+            var button = document.getElementById("click");
+            var input = document.getElementById("input");
+            var output = document.getElementById("output");
+            button.onclick = () => {
+                output.innerText = "i 10 anni bisestili dopo il " + input.value + " sono:";
+                let i=0;
+                let year = parseInt(input.value);
+                while (i<10){
+                    year++;
+                    if (year % 400 === 0 || (year % 100 !== 0 && year % 4 === 0)){
+                        output.innerText += " " + year;
+                        i++;
+                    }
+                }
+            };
+        }
+
+        window.onload = pageLoad;
+    </script>
+</head>
+<body>
+    <h1>Anni Bisestili</h1>
+    <p>Digita un anno:</p>
+    <input id="input" type="text"><button id="click">Click</button>
+    <p id="output"></p>
+</body>
+</html>

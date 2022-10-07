@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>simpson</title>
+    <script>
+        function pageLoad(){
+            homer = document.getElementById("homer");
+            var paragraph;
+            homer.onmouseover = ()=>{
+                console.log("duh, you are hovering");
+                paragraph = document.createElement("p");
+                paragraph.innerText = "duh, you are hovering";
+                document.getElementById("message").appendChild(paragraph);
+            };
+            homer.onmouseleave = () => {
+                document.getElementById("message").removeChild(paragraph);
+            }
+            for (let button of document.getElementsByTagName("button")) {
+                button.onclick = changeBackground;
+            }
+        }
+
+        function changeBackground(){
+            document.getElementsByTagName("body")[0].style.backgroundColor = this.innerText;
+        }
+
+        window.onload = pageLoad;
+    </script>
+    <style>
+        img{
+            margin: auto;
+            display: block;
+        }
+        div{
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <div id="message"></div>
+    <img id="homer" src="https://static.wikia.nocookie.net/simpsons/images/b/bd/Homer_Simpson.png" alt="homer">
+    <div>
+        <button>red</button>
+        <button>yellow</button>
+        <button>green</button>
+        <button>black</button>
+        <button>silver</button>
+    </div>
+
+
+</body>
+</html>

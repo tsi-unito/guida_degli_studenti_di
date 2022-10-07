@@ -1,0 +1,80 @@
+/* Chapter 4 case study: CSS styles for Ultimate frisbee page */
+
+.announcement {
+  background-color: #0000cc;
+  color: white;
+}
+
+#announcements {  /* text inside h2 headings */
+  margin-left: 8em;
+  padding-left: 1em;
+  padding-right: 1em;
+}
+
+#announcements h2 {
+  border-bottom: 2px solid black;
+  clear: right;
+}
+
+#announcements img {
+  float: right;
+  margin-left: 2em;
+}
+
+body {
+  background-color: white;
+  color: black;
+  font: 12pt "Tahoma", "Arial", sans-serif;
+}
+
+#calendar {
+  background-color: #00eeee;
+  border: 2px solid black;
+  line-height: 1.5em;
+  position: fixed;
+  right: 1em;
+  top: 1em;
+  width: 8em;
+}
+
+#calendar ul {
+  padding-left: 2em;
+}
+
+.firstword {
+  font-size: 32pt;
+}
+
+h1 {
+  margin: 0em 0em 0.5em 0em;
+  text-align: center;
+}
+
+#links ul {
+  list-style-type: none;
+}
+
+#main {
+  background-color: #ddffdd;
+  border: 2px solid black;
+  margin-right: 10em;
+}
+
+#news {
+  float: left;
+  font-size: smaller;
+  margin-left: 1em;
+  width: 8em;
+}
+
+#news ul {
+  list-style-type: none;
+  padding-left: 0em;
+}
+
+#news li {
+  background-color: #FFFFCC;
+  border: 3px solid #FFFF88;
+  margin-bottom: 1em;
+  padding: 1em, 0 ,0, 0;
+}

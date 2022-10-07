@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script>
+        function pageLoad(){
+            var button = document.getElementById("click");
+            var input = document.getElementById("input");
+            var output = document.getElementById("output");
+            button.onclick = () => {output.innerText = input.value;};
+        }
+
+        window.onload = pageLoad;
+    </script>
+</head>
+<body>
+    <button id="click">Click</button>
+    <input id="input" type="text">
+    <p id="output">un testo a piacete</p>
+</body>
+</html>

@@ -1,0 +1,106 @@
+/*
+MFN0634, Lab 04 (NerdLuv)
+You should link to this provided stylesheet from all of your pages.
+You should not need to modify this file.  Your pages should work with it as-is.
+*/
+
+* {
+	font-size: 12pt;
+	font-family: "Verdana", "Geneva", sans-serif;
+}
+
+a {
+	color: #F44;
+	text-decoration: none;
+}
+
+a:hover {
+	background-color: #FFA;
+}
+
+a img {
+	border: none;
+}
+
+#bannerarea {
+	margin-bottom: 2em;
+}
+
+body {
+	background-color: white;
+	padding-left: 1em;
+}
+
+body > div, form {
+	overflow: hidden;
+	width: 35em;
+}
+
+div {
+	overflow: hidden;
+}
+
+/* form styles */
+fieldset {
+	background-color: #E0E0FF;
+	border: 2px outset gray;
+	border-radius: 10px;
+}
+
+/* the bold text labels to the left of each form field */
+fieldset strong,
+ul strong,
+fieldset label.left,
+fieldset .column {
+	float: left;
+	width: 11em;
+}
+
+h1 {
+	margin-top: 0em;
+}
+
+input[type="submit"] {
+	background-color: #FAA;
+	font-size: 120%;
+	font-weight: bold;
+}
+
+legend {
+	background-color: white;
+	border: 2px outset gray;
+	padding: 0.2em;
+}
+
+.match {
+	margin-bottom: 1em;
+}
+
+.match img {
+	width: 150px;
+	float: left;
+	margin-right: 10px;
+	margin-bottom: 3em;
+}
+
+.match p {
+	background-color: #E0E0FF;
+	clear: left;
+}
+
+.match ul {
+	padding-left: 160px;
+}
+
+ul {
+	list-style-type: none;
+	padding-left: 0em;
+}
+
+ul li a img {
+	vertical-align: middle;
+}
+
+#w3c {
+	clear: both;
+}

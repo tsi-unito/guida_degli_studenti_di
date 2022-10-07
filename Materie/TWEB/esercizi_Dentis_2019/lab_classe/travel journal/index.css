@@ -1,0 +1,41 @@
+.centered{
+	text-align: center;
+}
+
+ul, ol {
+	background-color: #cccccc;
+}
+ul {
+	list-style-type: square;
+}
+body {
+	font-family: Verdana,Geneva,"sans-serif";
+}
+h1 {
+	background-color: black;
+	color: white;
+	text-align: center;
+}
+h2, h3{
+	background-color: #336699;
+	color: white;
+}
+
+a {
+	font-weight: bold;
+	text-decoration: none;
+	color: black;
+}
+
+#beer{
+	font-style: italic;
+}
+
+ol {
+	list-style-type: upper-roman;
+}
+
+p {
+  text-align: justify;
+  text-indent: 2em;
+}

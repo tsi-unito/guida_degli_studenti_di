@@ -36,6 +36,7 @@ Tabella di traduzione (per le sole materie presenti in questa directory) da sigl
 | SRV       |                  Sistemi di Realtà Virtuale                   |
 | TAAS      | Tecniche e architetture avanzate per lo sviluppo del software |
 | TLN       |                Tecnologie Linguaggio Naturale                 |
+| TWEB      |                        Tecnologie Web                         |
 | INFTHEORY |                   Teoria dell'Informazione                    |
 
 ## Come contribuire?

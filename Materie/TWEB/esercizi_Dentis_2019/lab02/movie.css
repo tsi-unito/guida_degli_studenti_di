@@ -1,0 +1,144 @@
+/* Lorenzo Dentis, matricola 914833, Reti e Sistemi Informatici
+docuemnto css per la formattazione di tmnt.html
+Esercitazione 2: creare i file per un finto sito di recensioni cinematografiche chiamato Rancid Tomatoes con la recensione del film TMNT.*/
+body{
+	background-image: url("https://courses.cs.washington.edu/courses/cse190m/11sp/homework/2/background.png");
+	font-size: 8pt;
+	font-family: Verdana, Tahoma, serif;
+	margin: 0px;
+}
+/*definition of the top banner*/
+#banner{
+	background-image: url(http://www.cs.washington.edu/education/courses/cse190m/11sp/homework/2/bannerbg.png);
+	background-repeat: repeat-x;
+}
+#banner img{
+	display: block;
+	margin-left: auto;
+	margin-right: auto;
+	height: 50px;
+}
+
+h1 {
+	text-align: center;
+	font-weight: bold;
+	font-size: 24pt;
+	font-family: Tahoma, Verdana, serif;
+	text-shadow: 3px 3px #999999;
+}
+
+
+#mainBox{
+    border: 4px solid #999999;
+    border-radius: 25px;
+	width: 800px;
+	margin-left: auto;
+	margin-right: auto;
+}
+
+/* first bar with evaluation percentage,.*/
+#evaluation img{
+	border-radius: 25px 0px 0px 0px;
+	vertical-align: middle;
+	height: 83px;
+	float: left;
+}
+#evaluation{
+	margin-left: -2px;
+	margin-top: -1px;
+	overflow: hidden;
+	width: 554px; /*beacause of the negative value of margins i had to change from 550px to 554px*/
+	float: left;
+	font-weight: bold;
+	font-size: 48pt;
+	color: red;
+	border-radius: 25px 0px 0px 0px;
+	background-image: url("https://courses.cs.washington.edu/courses/cse190m/11sp/homework/2/rbg.png");
+	background-repeat: repeat-x;
+	height: 83px;
+}
+
+/* column on the right with cover photo and info */
+#infoColumn{
+	float: right;
+	margin-top: -1px;
+	margin-right: -2px;
+	width: 250px;
+	border-radius: 0px 25px 0px 0px;
+	background-color: #A2B964;
+	font-size:8pt;
+	font-family: Arial , serif;
+}
+#infoColumn img{
+	border-radius: 0px 25px 0px 0px;
+}
+#info dt{
+	padding-left: 10pt;
+	padding-top: 10pt;
+	font-weight: bold;
+}
+#info dd ul{
+	list-style-type: none;
+  	margin: 0;
+ 	padding: 0;
+}
+
+/*reviews: there is a div (#allReviews) that works as a parent for two columns, setting the correct width
+The two columns contain some reviewBox (review + info of the reviewer) that are organized according
+to the request.*/
+#allReviews{
+	float: left;
+	width: 550px;
+}
+#firstReviews{
+	padding-left: 2%;
+	width: 47%
+}
+#secondReviews{
+	width: 47%;
+}
+#firstReviews, #secondReviews {
+	float: left;
+    padding-right: 2%;
+}
+.reviewBox{
+	margin-bottom: 20pt;
+}
+.review{
+	padding: 8px;
+	font-weight: bold; 
+	background-color: #E8DC9B;
+	border-radius: 10px;
+	border: 2px solid #999999;
+	overflow: hidden;
+}
+.review img{
+	float: left;
+	margin-right: 5px ;	
+}
+.reviewer span{
+	font-style: italic;
+}
+.reviewer img{
+	float: left;
+	margin-right: 5px ;	
+	vertical-align: middle;
+}
+
+
+#footer{
+	clear: both;
+	background-color: #A2B964;
+	text-align: center;
+	border-radius: 0 0 25px 25px;
+	margin-bottom: -1px;
+}
+
+
+#validators {
+	position: fixed;
+	right: 5px;
+	bottom: 5px;
+	opacity: 0.5;
+}
+

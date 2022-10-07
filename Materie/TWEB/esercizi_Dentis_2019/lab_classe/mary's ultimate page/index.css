@@ -1,0 +1,73 @@
+#ultimate{
+	float: right;
+}
+h1{
+	text-align: center;
+	margin: 0em;
+}
+h2{
+	color: white;
+	font-weight: bold;
+	font-size: 1.5em;
+	border-bottom: 2px solid black; 
+
+}
+h2 span{
+	background-color: #0000cc;
+}
+body{
+	font: "Tahoma", "Arial", sans-serif;
+	font-size: 12pt;
+}
+.firstWord{
+	font-size: 32pt;
+}
+#news{
+	float: left;
+}
+#central {
+	clear: right;
+	border: 2px solid black;
+	overflow: hidden;
+	margin-right: 10em;
+	background-color: #ddffdd;
+}
+
+#revolution{
+	float: right;
+}
+.clearImage{
+	clear: right;
+}
+#announcements{
+	clear: right;
+	margin-left: 8em;
+	line-height: 1.5em;
+	padding: 0em, 1em,0em,1em;
+  	padding-left: 1em;
+ 	padding-right: 1em;
+}
+#events{
+	border: 2px solid black;
+	position: fixed;
+	padding-top: 0px;
+	top: 1em;
+	right: 1em;
+	width: 8em; 
+	background-color: #00eeee;
+}
+#news{
+	padding-top: 0;
+	width: 8em;
+}
+#news ul{
+	list-style-type: none;
+	padding-left: 1em;
+}
+#news li{
+	margin-bottom:  1em;
+	padding: 1em;
+	font-size: smaller;
+	background-color: #FFFFCC;
+
+}

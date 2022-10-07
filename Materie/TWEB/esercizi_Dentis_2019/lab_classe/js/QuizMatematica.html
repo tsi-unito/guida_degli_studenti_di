@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="https://code.jquery.com/jquery-3.4.1.js"></script>
+    <script>
+        var TIME = 5; QUIZNUM = 10;
+        var interval, timer;
+        $(document).ready( function (){
+            newQuestion();
+            startTimer();
+            $("#answer").on("change",check);
+        });
+        function tick(){
+            $("#timer").html(parseInt($("#timer").html(TIME)) - 1 );
+        }
+        function startTimer(){
+            $("#timer").html(TIME);
+            timer = setTimeout(newQuestion,5000);
+            interval = setInterval(tick,1000);
+        }
+        function newQuestion(){
+            clearInterval(interval);
+            clearTimeout(timer);
+            $("#total").html(parseInt($("#total").html()) + 1);
+            $("#num1").html(parseInt(Math.random() * 11));
+            $("#num2").html(parseInt(Math.random() * 11));
+            $("#answer").val("");
+            startTimer();
+
+        }
+        function check(){
+            let result= parseInt($("#num2").html()) * parseInt($("#num1").html());
+            if (result === parseInt($("#answer").val()))
+                $("#score").html(parseInt($("#score").html()) + 1);
+            newQuestion();
+        }
+
+    </script>
+</head>
+<body>
+    <h1>Multiplication quiz</h1>
+    <p>timer: <span id="timer"></span> secondi </p>
+    <p><span id="num1"></span> * <span id="num2"></span> = <input id="answer" size="6"></p>
+    <p><span id="score">0</span>/<span id="total">0</span></p>
+</body>
+</html>
