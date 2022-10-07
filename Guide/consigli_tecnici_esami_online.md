@@ -7,4 +7,4 @@
 
 ## Webex
 
-- concedere i permessi per usare microfono e videocamera
+- Concedere i permessi per usare microfono e videocamera
