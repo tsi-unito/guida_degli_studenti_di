@@ -1,0 +1,70 @@
+#main{
+    text-align: center;
+    margin-bottom: 1em;
+}
+
+#frame{
+    width: 90%;
+    background-color: white;
+    margin: 0 auto;
+}
+
+#banner{
+    margin-top: 10px;
+    background-color: #404040;
+    color: #dad9d4;
+    font-size: 20pt;
+}
+
+/* MyMDB image */
+#banner > a > img{
+    margin: 10px 10px 0 10px;
+}
+
+#w3c{
+    background-color: #404040;
+
+    margin-bottom: 2em;
+    padding: 10px;
+}
+
+#logout{
+    float: right;
+    margin-right: 30px;
+    font-size: 25pt;
+}
+
+#errMsg{
+    color: darkred;
+    margin: 10px;
+}
+form{
+    text-align: center;
+    margin: auto;
+    width: 50%;
+}
+
+body{
+    margin: auto;
+    font-family: "Verdana", sans-serif;
+    background-color: #dad9d4;
+}
+
+table{
+    text-align: center;
+    margin: auto;
+    margin-bottom: 1em;
+    border-collapse: collapse;
+    border: 1px solid #dad9d4;
+    width: 90%;
+}
+
+/*to give the striped looks to the table*/
+body tr:nth-child(odd) {
+   background-color: #dad9d4;
+}
+
+#outside{
+    text-align: center;
+    width: 10%;
+}

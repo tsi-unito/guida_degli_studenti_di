@@ -1,0 +1,57 @@
+#main_header{
+    font-weight: bold;
+    text-align: center;
+    font-size: 22pt;
+}
+
+#profilePicture{
+    float: right;
+    width: 240px;
+    height: 240px;
+}
+
+
+h1, h2{
+    color: #A4A400;
+    font-family: "Lucida Sans Console", "Helvetica", "Arial", sans-serif;
+    letter-spacing: 0.25em;
+    text-decoration: underline;
+    font-size: 18pt;
+    
+}
+
+body {
+    background-color: white;
+    color: #404040;
+    font-size: 11pt;
+    font-family: "Georgia", "Garamond", sans-serif;
+    width: 1024px; /* non ho capito dalla consegna se questa dimensione deve essere una dimensione fissa o una dimensione minima*/
+}
+dd{
+    margin-left: 40px;
+    margin-right: 40px;
+}
+
+.onlyColour{
+    background-color: #F0F0F0;
+
+}
+
+a{
+    color: #A4A400;
+}
+
+
+.competenze{
+    margin-top: 1em;
+    margin-bottom: 1em;
+    padding-left: 70px;
+}
+
+.bold{
+    font-weight: bold;
+}
+
+dt {
+    font-weight: bold;
+}

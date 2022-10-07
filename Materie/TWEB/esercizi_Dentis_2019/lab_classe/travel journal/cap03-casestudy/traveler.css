@@ -1,0 +1,49 @@
+/* Traveler Times style sheet, by Jessica Miller */
+
+a {
+  color: #151B54;
+  font-weight: bold;
+  text-decoration: none;
+}
+
+body {
+  background-color: white;
+  color: #000000;
+  font-family: "Verdana", "Geneva", sans-serif;
+  font-size: 12pt;
+}
+
+/* a particular paragraph with information about beer prices */
+#dublinbeer {
+  font-style: italic;
+}
+
+/* paragraphs that contain figure images in them */
+.figure {
+  text-align: center;
+}
+
+h1 {
+  background-color: black;
+  color: white;
+  font-size: 2em;
+  text-align: center;
+}
+
+h2, h3 {
+  background-color: #336699;
+  color: white;
+}
+
+ol, ul {
+  background-color: #cccccc;
+}
+
+ol {
+  list-style-type: upper-roman;
+}
+
+p {
+  text-align: justify;
+  text-indent: 2em;
+}

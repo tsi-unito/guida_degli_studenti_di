@@ -1,0 +1,136 @@
+<!-- Lorenzo Dentis, requisiti addizionali:
+        2 - Aggiunta di una favicon a piacimento.
+        4 - Aggiunta si uno spazio orizzontale tra i caratteri di  0.25em in tutte le intestazioni della pagina. 
+        5 - Fatto in modo che lo sfondo grigio associato alle intestazioni rimanga solo dove c'è il testo e che non sia presente anche dietro le parti vuote dell'elemento.
+-->
+
+<!DOCTYPE html>
+<html lang="it">
+    <head>
+        <title>Biografia</title>
+        <meta name="Biografia" content="Profilo di Lorenzo Dentis.">
+        <link href="bio.css" type="text/css" rel="stylesheet">
+        <meta charset="UTF-8">
+    	<link rel="shortcut icon" href="logoCrop.ico" />
+    </head>
+    
+    <body>
+        <div id="top"></div>
+        <h1 id="main_header"><span class="onlyColour">Profilo di Lorenzo Dentis</span></h1>       
+        <div id="info">
+            <!--align=right width=240px height=240px -->
+            <img title="Foto Profilo" src="fotoProfilo.jpeg" id="profilePicture" alt="Foto profilo"/>
+            <h2><span class="onlyColour">Dati personali</span></h2>
+                <dl> 
+                    <dt>Nome</dt>
+                    <dd>Lorenzo</dd>
+                    <dt>Cognome</dt>
+                    <dd>Dentis</dd>
+                    <dt>Sesso</dt>
+                    <dd>Maschio</dd>
+                    <dt>Indirizzo</dt>
+                    <dd>Via Roma 1, Torino</dd>
+                    <dt>Numero di Telefono</dt>
+                    <dd>327327327</dd>
+                    <dt>Email</dt>
+                    <dd>lorenzo.dentis@edu.unito.it</dd>
+                </dl>
+        </div>
+        
+        <hr>
+
+        <div>
+            <h2><span class="onlyColour">Competenze informatiche</span></h2>
+            <p></p>
+            <strong>Programmazione</strong>
+            <ul class="competenze">
+                <li>Java</li>
+                <li>C</li>
+                <li>Python</li>
+                <li><abbr title="PHP: Hypertext Prepocessor">PHP</abbr></li>
+                <li><abbr title="HyperText Markup Language v5">HTML5</abbr> and <abbr title="Cascading Style Sheets v3">CSS3</abbr></li>                
+            </ul>
+        
+            <strong>Sistemi ed amministrazione</strong>
+            <ul class="competenze">
+                <li>Ubuntu</li>
+                <li>Arch</li>
+                <li>Docker</li>
+                <li>Raspbian</li>
+                <li>Windows</li>      
+            </ul>
+
+            <strong>Altro</strong>
+            <ul class="competenze">
+                <li>Information security & Pentesting</li>
+                <li>Microcontroller</li>
+                <li>Network administration</li>  
+            </ul>
+
+        </div>
+        
+        <hr>
+        
+        <div>
+            <h2><span class="onlyColour">Esperienze Professionali</span></h2>
+            <ol>
+                <li><span class="bold">Magazziniere (2016-2018)</span>
+                    <ul>
+                        <li>Impegno estivo tra giugno e settembre. anni 2016-2018</li>
+                        <li>Presso la ditta <abbr title="Magazini e Magazini">M&M</abbr></li>
+                    </ul>
+                </li>
+                <li><span class="bold">Viaggio all'estero (2019)</span>
+                    <ul>
+                        <li>Trascorso l'anno 2019 in <a href = "https://it.wikipedia.org/wiki/Estasia_(1984)">Estasia</a> come studente</li>
+                        <li>A causa del visto di studio non mi era permesso lavorare</li>
+                    </ul>
+                </li>
+                <li><span class="bold">Creatore della ditta <abbr title="BeerYourself">BY</abbr> (2020)</span>                    
+                	<ul>
+                        <li>2020-in corso.</li>
+                    </ul>    
+                </li>
+            </ol>
+        </div>
+        
+        <hr>
+        
+        <div>
+            <h2><span class="onlyColour">Interessi personali</span></h2>
+            <dl>
+                <dt>Arrampicata</dt>
+                    <dd><a href="https://it.wikipedia.org/wiki/Arrampicata">L'arrampicata</a> (in inglese, climbing) può essere definita come la salita di un ostacolo, sia esso una parete rocciosa, naturale espressione e terreno preferito su cui l'arrampicata si è sviluppata in tutte le sue forme, sia esso un sasso, un pannello artificiale o una qualsiasi struttura urbana</dd>
+            
+                <dt>Trekking</dt>
+                    <dd>L'escursionismo è un'attività motoria e sportiva basata sul camminare nel territorio a scopo di studio o svago, lungo percorsi poco agevoli che tipicamente non possono essere percorsi con i mezzi di trasporto convenzionali (sentieri, sentieri a lunga percorrenza, alte vie, mulattiere, ippovie ecc.); spesso, derivando il termine dalla lingua inglese, viene indicato anche come trekking o hiking con il primo termine che deriva dal verbo inglese to trek, che significa camminare lentamente o anche fare un lungo viaggio, mentre il secondo deriva dal verbo inglese to hike, che significa camminare.</dd>
+
+                <dt>Birra</dt>
+                    <dd>La birra è una bevanda alcolica ottenuta tipicamente dalla fermentazione di mosto a base di malto d'orzo, aromatizzata e amaricata con luppolo. Tra le più diffuse e più antiche bevande alcoliche del mondo, viene prodotta attraverso la fermentazione alcolica (con ceppi di lievito di Saccharomyces cerevisiae o Saccharomyces carlsbergensis) di zuccheri derivanti da fonti amidacee, la più usata delle quali è il malto d'orzo, ovvero l'orzo germinato ed essiccato, chiamato spesso semplicemente malto.</dd>
+            </dl>
+        </div>
+        
+        <hr>
+        
+        <div>
+            <h2><span class="onlyColour">Links</span></h2>
+            <a href="index.html">Torna alla Homepage</a>
+            <a href="#top">Torna ad inizio pagina</a>
+        </div>
+
+        <hr>
+        
+        <div id="footer">
+            <p>
+				<a href="http://validator.w3.org/check/referer"> 
+				<img src="https://www.w3.org/html/logo/downloads/HTML5_Logo_64.png" alt="HTML5 Logo">
+				</a>
+                <a href="http://jigsaw.w3.org/css-validator/check/referer">
+                <img src="http://jigsaw.w3.org/css-validator/images/vcss" alt="Valid CSS!"></a>
+            </p>
+        </div>
+        
+        
+    </body>
+    
+</html>

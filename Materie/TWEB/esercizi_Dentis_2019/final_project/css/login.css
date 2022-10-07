@@ -1,0 +1,54 @@
+#loginBox{
+    width: 200px;
+    margin: 30px auto 30px auto;
+    font-family: inherit;
+}
+
+input{
+    font-size: inherit;
+    font-family: inherit;
+    margin: 2px;
+}
+
+#loginBox > input{
+    display: block;
+    width: 100%;
+}
+
+#loginBox > input[name=submitLogin]{
+    width: 100px;
+    margin: 20px auto;
+}
+
+#signUpBox > input[name=submitSign]{
+    width: 100px;
+    margin: 20px auto;
+}
+
+.frames{
+    font-size: 20px;
+    margin: auto;
+    width: 80%;
+    text-align: center;
+}
+
+.frames img{
+    width: 20%;
+}
+
+#signUpBox{
+    border: 4px solid #999999;
+    border-radius: 25px;
+    margin-top: 20px;}
+
+ul {
+    list-style-type: none;
+    padding-left: 0;
+    width: 30%;
+    margin: auto;
+    text-align: right;
+}
+
+.descriptor{
+    float: left;
+}

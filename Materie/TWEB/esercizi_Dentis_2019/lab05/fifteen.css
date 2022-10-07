@@ -1,0 +1,38 @@
+body{
+    text-align: center;
+}
+
+p{
+    font-size: 14pt;
+    font-style: italic;
+}
+
+#puzzlearea{
+    height: 400px;
+    width: 400px;
+    margin: auto;
+    position: relative;
+}
+
+#puzzlearea div{
+    height: 90px;
+    width: 90px;
+    border: #000000 solid 5px;
+    display: inline-block;
+    position: absolute;
+    text-align: center;
+    font-style: normal;
+    font-size: 40pt;
+}
+
+.movable:hover {
+    border: red solid 5px !important;
+    color: red;
+}
+
+#winner{
+    font-size: 20pt;
+    font-style: normal;
+    font-weight: bold;
+    color: #b30505;
+}

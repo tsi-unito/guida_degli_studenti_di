@@ -1,0 +1,21 @@
+body{
+	background-color: rgba(236,150,5,0.7);
+	width: 1024px;
+}
+h1{
+    color: #b30505;
+}
+
+dt{
+	display: block;
+    font-size: 1.17em;
+    margin-block-start: 1em;
+    margin-block-end: 1em;
+    margin-inline-start: 0px;
+    margin-inline-end: 0px;
+    font-weight: bold;
+}
+
+.centered {
+	text-align: center;
+}

@@ -1,0 +1,36 @@
+.order{
+    clear: both;
+    border-bottom: #89aa77 dotted 5px;
+    overflow: hidden;
+}
+body{
+    font-size: 20px;
+}
+
+.order > button{
+    border: none;
+    background-color: inherit;
+    float: right;
+    font-size: 25px;
+    margin-right: 100px;
+}
+
+.order > button > img{
+    width : 25px;
+}
+table{
+    margin : 10px 100px;
+    width: 50%;
+    border: 3px solid #dad9d4;
+    border-radius: 10px;
+}
+
+th, td {
+    width: 33%;
+    padding: 0 0;
+    text-align: left;
+}
+
+tr:nth-child(odd) {
+    background-color: #dad9d4;
+}

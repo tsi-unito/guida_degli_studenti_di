@@ -1,0 +1,128 @@
+/* navbar start*/
+nav li{
+    float: left;
+    display: inline-block;
+    padding: 20px 5px;
+    user-select: none;
+    cursor: pointer;
+    height: 100%;
+}
+.dropdown:hover{
+    background-color: #999999;
+}
+
+#logo{
+    padding: 0;
+    margin-right: 30px;
+}
+nav li:last-child{ /*logout button*/
+    padding-top: 7px;
+    float: right;
+}
+nav{
+    padding-bottom: 0;
+    padding-top: 0;
+}
+nav ul{
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+    color: #495057;
+    font-family:  Roboto,Arial,sans-serif;
+    overflow: hidden;
+    height: 100%;
+}
+
+/*dropdown menu start */
+
+.dropdown{
+    text-align: center;
+    padding-right: 2%;
+    padding-left: 2%;
+}
+
+.dropdown-content {
+    display: none;
+    top: 10px;
+    position: absolute;
+    background-color: #f9f9f9;
+    z-index: 1;
+}
+
+.dropdown-content a {
+    padding: 12px 16px;
+    display: block;
+    text-align: left;
+}
+
+.dropdown-content a:hover{background-color: #f1f1f1;}
+
+.dropdown:hover .dropdown-content {
+    display: block;
+}
+/*dropdown menu end*/
+/*navbar end*/
+body{
+    min-width: 720px;
+}
+#mainBox{
+    margin-right: auto;
+    margin-left: auto;
+    width: 60%;
+    border-radius: 25px;
+    text-align: center;
+    overflow: hidden;
+}
+#orderAction{
+    float: right;
+    clear: right;
+    margin-right: 8%;
+    text-align: center;
+    margin-top: 30px;
+    width: 30%;
+}
+.orderAction:first-child{
+    background-color: #008000;
+    float: left;
+}
+.orderAction:last-child{
+    background-color: #cc0000;
+    float: right;
+}
+.orderAction{
+    float: left;
+    color: white;
+    height: 40px;
+    width: 30%;
+    font-size: 15px;
+}
+
+#orderDiv{
+    float: right;
+    height: 550px;
+    width: 35%;
+    margin-right: 5%;
+    border: #495057 solid 2px;
+    border-radius: 3px;
+    overflow: scroll;
+}
+
+#tableDiv{
+    float: left;
+    height: 100%;
+    width: 35%;
+    margin-left: 5%;
+    border: #495057 solid 2px;
+    border-radius: 3px;
+    overflow: scroll;
+}
+
+#mainBox ul{
+    list-style-type: none;
+    font-family:  Roboto,Arial,sans-serif;
+    padding: 3%;
+}
+
+#mainBox li{
+    margin-top: 4px;
+}
