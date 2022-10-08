@@ -16,32 +16,43 @@ Tabella di traduzione (per le sole materie presenti in questa directory) da sigl
 | AINT      |                      Agenti Intelligenti                      |
 | ALGCOMPL  |                    Algoritmi e Complessità                    |
 | BIOINF    |                        Bioinformatica                         |
+| ARCH2     |               Architetture degli Elaboratori 2                |
+| ASD       |                  Algoritmi e Strutture Dati                   |
 | AVRC      |          Analisi e Visualizzazione di Reti Complesse          |
+| BD        |                         Basi di Dati                          |
+| BIOINF    |                        Bioinformatica                         |
 | CALCCOMPL |                  Calcolabilità & Complessità                  |
 | COMPLAP   |             Complementi di Analisi e Probabilità              |
 | DBM       |                   Basi di Dati Multimediali                   |
+| DIRITTO   |                            Diritto                            |
+| EGINB     |          Economia e Gestione delle Imprese Net-Based          |
 | ELIVA     |        Elaborazione di Immagini e Visione Artificiale         |
 | EPS       |             Elementi di Probabilità e Statistica              |
 | ESP       |                   Etica, Società e Privacy                    |
+| GR        |                      Gestione delle Reti                      |
 | IALAB     |            Intelligenza Artificiale e Laboratorio             |
+| INFTHEORY |                   Teoria dell'Informazione                    |
 | IUMTWEB   |          Interazione Uomo Macchina e Tecnologie Web           |
 | MAADB     |        Modelli e Architetture Avanzate di Basi di Dati        |
 | MCAD      |         Modelli Concorrenti ed Algoritmi Distribuiti          |
+| MDPA      |           Modellazione di Dati e Processi Aziendali           |
 | METNUM    |                        Metodi Numerici                        |
 | MFI       |               Metodi Formali per l'Informatica                |
 | MODSEM    |         Modellazione Concettuale per il Web Semantico         |
 | OC        |                  Ottimizzazione Combinatoria                  |
 | PROGMOB   |                     Programmazione Mobile                     |
+| RETI2     |                            Reti 2                             |
 | RNDL      |                 Reti Neurali e Deep Learning                  |
 | SAS       |                Sviluppo Applicazioni Software                 |
 | SIC1/2    |                   Sicurezza 1, Sicurezza 2                    |
-| SIST-INT  |                     Sistemi Intelligenti                      |
+| SISINT    |                     Sistemi Intelligenti                      |
+| SISRV     |                  Sistemi di Realtà Virtuale                   |
 | SO        |                       Sistemi Operativi                       |
-| SRV       |                  Sistemi di Realtà Virtuale                   |
-| TAAS      | Tecniche e Architetture Avanzate per lo Sviluppo del Software |
+| STORIA    |                    Storia dell'Informatica                    |
+| TAASS     | Tecniche e Architetture Avanzate per lo Sviluppo del Software |
 | TLN       |              Tecnologie del Linguaggio Naturale               |
 | TWEB      |                        Tecnologie Web                         |
-| INFTHEORY |                   Teoria dell'Informazione                    |
+| VPC       |              Verifica dei Programmi Concorrenti               |
 
 ## Come contribuire?
 
@@ -62,8 +73,7 @@ Quando effettui una PR in una di queste sezioni, per favore assicurati che i seg
 
 Raccomandiamo sempre di evitare files in formati proprietari per condividere appunti (non sono comunque vietati); in
 ogni caso sono preferibili appunti in formato Markdown, PDF, LaTeX (per varie motivazioni, tra cui la versionabilità)
-rispetto ad appunti docx o pages.
-Sicuramente non rifiuteremo le vostre contribuzioni per questa motivazione.
+rispetto ad appunti docx o pages. Se possibile, includete anche il sorgente oltre al file in PDF!
 
 ## Note
 
