@@ -61,18 +61,19 @@ Tabella di traduzione (per le sole materie presenti in questa directory) da sigl
 
 Quando effettui una PR in una di queste sezioni, per favore assicurati che i seguenti requisiti siano soddisfatti:
 
-- Se stai aggiungendo una cartella per un nuovo corso, deve contenere un file README.md al suo interno.
-- Ogni README.md contenuto nella cartella deve avere delle istruzioni su come contribuire, simili a queste e il
-  contenuto della cartella diviso per tipologia dei file contenuti
+- Se stai aggiungendo una cartella per un nuovo corso, deve contenere un file README.md al suo interno. Deve avere uno stile simile al [template](TEMPLATE.md).
 - Ogni cartella ha il nome della materia nel formato ristretto (ovvero Sistemi Operativi deve essere SO). Se non si è
   sicuri del nome nel formato ristretto, visitare la pagina dell'insegnamento o degli orari, dove sono indicati.
 - Per quanto riguarda il contenuto, siete liberi di contribuire con appunti, PDF e risorse varie, sempre tenendo a mente
   le regole indicate nel README della sezione principale.
+- Il materiale caricato nella cartella di un corso deve essere suddiviso in funzione del tipo (Appunti, Domande, Prove d'esame, Esercizi). Creare sottocartelle se è strettamente necessario.
+- Ogni risorsa deve essere descritta nel README del corso.
 - Se volete contribuire con progetti d'esame, è consigliato linkarli nel README della materia, in una tabella apposita,
   indicando l'anno accademico. In alternativa è accettata anche una push del progetto (NON compresso) in una
   sottocartella apposita, caricando ESCLUSIVAMENTE il sorgente (e annesse relazioni), evitando file di output o
   materiale compilato. Se scegliete questa via per aggiungere il vostro progetto, per favore limitatevi a un solo
   commit per l'intero lavoro, se possibile.
+- Il README deve contenere testo in italiano, con punteggiatura e grammatica consone.
 
 Raccomandiamo sempre di evitare files in formati proprietari per condividere appunti (non sono comunque vietati); in
 ogni caso sono preferibili appunti in formato Markdown, PDF, LaTeX (per varie motivazioni, tra cui la versionabilità)
