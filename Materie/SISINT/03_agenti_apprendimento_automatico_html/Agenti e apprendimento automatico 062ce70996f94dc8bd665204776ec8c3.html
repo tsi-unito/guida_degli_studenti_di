@@ -1,0 +1,669 @@
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"/><title>Agenti e apprendimento automatico</title><style>
+/* cspell:disable-file */
+/* webkit printing magic: print all background colors */
+html {
+	-webkit-print-color-adjust: exact;
+}
+* {
+	box-sizing: border-box;
+	-webkit-print-color-adjust: exact;
+}
+
+html,
+body {
+	margin: 0;
+	padding: 0;
+}
+@media only screen {
+	body {
+		margin: 2em auto;
+		max-width: 900px;
+		color: rgb(55, 53, 47);
+	}
+}
+
+body {
+	line-height: 1.5;
+	white-space: pre-wrap;
+}
+
+a,
+a.visited {
+	color: inherit;
+	text-decoration: underline;
+}
+
+.pdf-relative-link-path {
+	font-size: 80%;
+	color: #444;
+}
+
+h1,
+h2,
+h3 {
+	letter-spacing: -0.01em;
+	line-height: 1.2;
+	font-weight: 600;
+	margin-bottom: 0;
+}
+
+.page-title {
+	font-size: 2.5rem;
+	font-weight: 700;
+	margin-top: 0;
+	margin-bottom: 0.75em;
+}
+
+h1 {
+	font-size: 1.875rem;
+	margin-top: 1.875rem;
+}
+
+h2 {
+	font-size: 1.5rem;
+	margin-top: 1.5rem;
+}
+
+h3 {
+	font-size: 1.25rem;
+	margin-top: 1.25rem;
+}
+
+.source {
+	border: 1px solid #ddd;
+	border-radius: 3px;
+	padding: 1.5em;
+	word-break: break-all;
+}
+
+.callout {
+	border-radius: 3px;
+	padding: 1rem;
+}
+
+figure {
+	margin: 1.25em 0;
+	page-break-inside: avoid;
+}
+
+figcaption {
+	opacity: 0.5;
+	font-size: 85%;
+	margin-top: 0.5em;
+}
+
+mark {
+	background-color: transparent;
+}
+
+.indented {
+	padding-left: 1.5em;
+}
+
+hr {
+	background: transparent;
+	display: block;
+	width: 100%;
+	height: 1px;
+	visibility: visible;
+	border: none;
+	border-bottom: 1px solid rgba(55, 53, 47, 0.09);
+}
+
+img {
+	max-width: 100%;
+}
+
+@media only print {
+	img {
+		max-height: 100vh;
+		object-fit: contain;
+	}
+}
+
+@page {
+	margin: 1in;
+}
+
+.collection-content {
+	font-size: 0.875rem;
+}
+
+.column-list {
+	display: flex;
+	justify-content: space-between;
+}
+
+.column {
+	padding: 0 1em;
+}
+
+.column:first-child {
+	padding-left: 0;
+}
+
+.column:last-child {
+	padding-right: 0;
+}
+
+.table_of_contents-item {
+	display: block;
+	font-size: 0.875rem;
+	line-height: 1.3;
+	padding: 0.125rem;
+}
+
+.table_of_contents-indent-1 {
+	margin-left: 1.5rem;
+}
+
+.table_of_contents-indent-2 {
+	margin-left: 3rem;
+}
+
+.table_of_contents-indent-3 {
+	margin-left: 4.5rem;
+}
+
+.table_of_contents-link {
+	text-decoration: none;
+	opacity: 0.7;
+	border-bottom: 1px solid rgba(55, 53, 47, 0.18);
+}
+
+table,
+th,
+td {
+	border: 1px solid rgba(55, 53, 47, 0.09);
+	border-collapse: collapse;
+}
+
+table {
+	border-left: none;
+	border-right: none;
+}
+
+th,
+td {
+	font-weight: normal;
+	padding: 0.25em 0.5em;
+	line-height: 1.5;
+	min-height: 1.5em;
+	text-align: left;
+}
+
+th {
+	color: rgba(55, 53, 47, 0.6);
+}
+
+ol,
+ul {
+	margin: 0;
+	margin-block-start: 0.6em;
+	margin-block-end: 0.6em;
+}
+
+li > ol:first-child,
+li > ul:first-child {
+	margin-block-start: 0.6em;
+}
+
+ul > li {
+	list-style: disc;
+}
+
+ul.to-do-list {
+	text-indent: -1.7em;
+}
+
+ul.to-do-list > li {
+	list-style: none;
+}
+
+.to-do-children-checked {
+	text-decoration: line-through;
+	opacity: 0.375;
+}
+
+ul.toggle > li {
+	list-style: none;
+}
+
+ul {
+	padding-inline-start: 1.7em;
+}
+
+ul > li {
+	padding-left: 0.1em;
+}
+
+ol {
+	padding-inline-start: 1.6em;
+}
+
+ol > li {
+	padding-left: 0.2em;
+}
+
+.mono ol {
+	padding-inline-start: 2em;
+}
+
+.mono ol > li {
+	text-indent: -0.4em;
+}
+
+.toggle {
+	padding-inline-start: 0em;
+	list-style-type: none;
+}
+
+/* Indent toggle children */
+.toggle > li > details {
+	padding-left: 1.7em;
+}
+
+.toggle > li > details > summary {
+	margin-left: -1.1em;
+}
+
+.selected-value {
+	display: inline-block;
+	padding: 0 0.5em;
+	background: rgba(206, 205, 202, 0.5);
+	border-radius: 3px;
+	margin-right: 0.5em;
+	margin-top: 0.3em;
+	margin-bottom: 0.3em;
+	white-space: nowrap;
+}
+
+.collection-title {
+	display: inline-block;
+	margin-right: 1em;
+}
+
+.simple-table {
+	margin-top: 1em;
+	font-size: 0.875rem;
+	empty-cells: show;
+}
+.simple-table td {
+	height: 29px;
+	min-width: 120px;
+}
+
+.simple-table th {
+	height: 29px;
+	min-width: 120px;
+}
+
+.simple-table-header-color {
+	background: rgb(247, 246, 243);
+	color: black;
+}
+.simple-table-header {
+	font-weight: 500;
+}
+
+time {
+	opacity: 0.5;
+}
+
+.icon {
+	display: inline-block;
+	max-width: 1.2em;
+	max-height: 1.2em;
+	text-decoration: none;
+	vertical-align: text-bottom;
+	margin-right: 0.5em;
+}
+
+img.icon {
+	border-radius: 3px;
+}
+
+.user-icon {
+	width: 1.5em;
+	height: 1.5em;
+	border-radius: 100%;
+	margin-right: 0.5rem;
+}
+
+.user-icon-inner {
+	font-size: 0.8em;
+}
+
+.text-icon {
+	border: 1px solid #000;
+	text-align: center;
+}
+
+.page-cover-image {
+	display: block;
+	object-fit: cover;
+	width: 100%;
+	max-height: 30vh;
+}
+
+.page-header-icon {
+	font-size: 3rem;
+	margin-bottom: 1rem;
+}
+
+.page-header-icon-with-cover {
+	margin-top: -0.72em;
+	margin-left: 0.07em;
+}
+
+.page-header-icon img {
+	border-radius: 3px;
+}
+
+.link-to-page {
+	margin: 1em 0;
+	padding: 0;
+	border: none;
+	font-weight: 500;
+}
+
+p > .user {
+	opacity: 0.5;
+}
+
+td > .user,
+td > time {
+	white-space: nowrap;
+}
+
+input[type="checkbox"] {
+	transform: scale(1.5);
+	margin-right: 0.6em;
+	vertical-align: middle;
+}
+
+p {
+	margin-top: 0.5em;
+	margin-bottom: 0.5em;
+}
+
+.image {
+	border: none;
+	margin: 1.5em 0;
+	padding: 0;
+	border-radius: 0;
+	text-align: center;
+}
+
+.code,
+code {
+	background: rgba(135, 131, 120, 0.15);
+	border-radius: 3px;
+	padding: 0.2em 0.4em;
+	border-radius: 3px;
+	font-size: 85%;
+	tab-size: 2;
+}
+
+code {
+	color: #eb5757;
+}
+
+.code {
+	padding: 1.5em 1em;
+}
+
+.code-wrap {
+	white-space: pre-wrap;
+	word-break: break-all;
+}
+
+.code > code {
+	background: none;
+	padding: 0;
+	font-size: 100%;
+	color: inherit;
+}
+
+blockquote {
+	font-size: 1.25em;
+	margin: 1em 0;
+	padding-left: 1em;
+	border-left: 3px solid rgb(55, 53, 47);
+}
+
+.bookmark {
+	text-decoration: none;
+	max-height: 8em;
+	padding: 0;
+	display: flex;
+	width: 100%;
+	align-items: stretch;
+}
+
+.bookmark-title {
+	font-size: 0.85em;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	height: 1.75em;
+	white-space: nowrap;
+}
+
+.bookmark-text {
+	display: flex;
+	flex-direction: column;
+}
+
+.bookmark-info {
+	flex: 4 1 180px;
+	padding: 12px 14px 14px;
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between;
+}
+
+.bookmark-image {
+	width: 33%;
+	flex: 1 1 180px;
+	display: block;
+	position: relative;
+	object-fit: cover;
+	border-radius: 1px;
+}
+
+.bookmark-description {
+	color: rgba(55, 53, 47, 0.6);
+	font-size: 0.75em;
+	overflow: hidden;
+	max-height: 4.5em;
+	word-break: break-word;
+}
+
+.bookmark-href {
+	font-size: 0.75em;
+	margin-top: 0.25em;
+}
+
+.sans { font-family: ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol"; }
+.code { font-family: "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace; }
+.serif { font-family: Lyon-Text, Georgia, ui-serif, serif; }
+.mono { font-family: iawriter-mono, Nitti, Menlo, Courier, monospace; }
+.pdf .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK JP'; }
+.pdf:lang(zh-CN) .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK SC'; }
+.pdf:lang(zh-TW) .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK TC'; }
+.pdf:lang(ko-KR) .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK KR'; }
+.pdf .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK JP'; }
+.pdf:lang(zh-CN) .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK SC'; }
+.pdf:lang(zh-TW) .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK TC'; }
+.pdf:lang(ko-KR) .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK KR'; }
+.pdf .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK JP'; }
+.pdf:lang(zh-CN) .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK SC'; }
+.pdf:lang(zh-TW) .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK TC'; }
+.pdf:lang(ko-KR) .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK KR'; }
+.pdf .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK JP'; }
+.pdf:lang(zh-CN) .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK SC'; }
+.pdf:lang(zh-TW) .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK TC'; }
+.pdf:lang(ko-KR) .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK KR'; }
+.highlight-default {
+	color: rgba(55, 53, 47, 1);
+}
+.highlight-gray {
+	color: rgba(120, 119, 116, 1);
+	fill: rgba(120, 119, 116, 1);
+}
+.highlight-brown {
+	color: rgba(159, 107, 83, 1);
+	fill: rgba(159, 107, 83, 1);
+}
+.highlight-orange {
+	color: rgba(217, 115, 13, 1);
+	fill: rgba(217, 115, 13, 1);
+}
+.highlight-yellow {
+	color: rgba(203, 145, 47, 1);
+	fill: rgba(203, 145, 47, 1);
+}
+.highlight-teal {
+	color: rgba(68, 131, 97, 1);
+	fill: rgba(68, 131, 97, 1);
+}
+.highlight-blue {
+	color: rgba(51, 126, 169, 1);
+	fill: rgba(51, 126, 169, 1);
+}
+.highlight-purple {
+	color: rgba(144, 101, 176, 1);
+	fill: rgba(144, 101, 176, 1);
+}
+.highlight-pink {
+	color: rgba(193, 76, 138, 1);
+	fill: rgba(193, 76, 138, 1);
+}
+.highlight-red {
+	color: rgba(212, 76, 71, 1);
+	fill: rgba(212, 76, 71, 1);
+}
+.highlight-gray_background {
+	background: rgba(241, 241, 239, 1);
+}
+.highlight-brown_background {
+	background: rgba(244, 238, 238, 1);
+}
+.highlight-orange_background {
+	background: rgba(251, 236, 221, 1);
+}
+.highlight-yellow_background {
+	background: rgba(251, 243, 219, 1);
+}
+.highlight-teal_background {
+	background: rgba(237, 243, 236, 1);
+}
+.highlight-blue_background {
+	background: rgba(231, 243, 248, 1);
+}
+.highlight-purple_background {
+	background: rgba(244, 240, 247, 0.8);
+}
+.highlight-pink_background {
+	background: rgba(249, 238, 243, 0.8);
+}
+.highlight-red_background {
+	background: rgba(253, 235, 236, 1);
+}
+.block-color-default {
+	color: inherit;
+	fill: inherit;
+}
+.block-color-gray {
+	color: rgba(120, 119, 116, 1);
+	fill: rgba(120, 119, 116, 1);
+}
+.block-color-brown {
+	color: rgba(159, 107, 83, 1);
+	fill: rgba(159, 107, 83, 1);
+}
+.block-color-orange {
+	color: rgba(217, 115, 13, 1);
+	fill: rgba(217, 115, 13, 1);
+}
+.block-color-yellow {
+	color: rgba(203, 145, 47, 1);
+	fill: rgba(203, 145, 47, 1);
+}
+.block-color-teal {
+	color: rgba(68, 131, 97, 1);
+	fill: rgba(68, 131, 97, 1);
+}
+.block-color-blue {
+	color: rgba(51, 126, 169, 1);
+	fill: rgba(51, 126, 169, 1);
+}
+.block-color-purple {
+	color: rgba(144, 101, 176, 1);
+	fill: rgba(144, 101, 176, 1);
+}
+.block-color-pink {
+	color: rgba(193, 76, 138, 1);
+	fill: rgba(193, 76, 138, 1);
+}
+.block-color-red {
+	color: rgba(212, 76, 71, 1);
+	fill: rgba(212, 76, 71, 1);
+}
+.block-color-gray_background {
+	background: rgba(241, 241, 239, 1);
+}
+.block-color-brown_background {
+	background: rgba(244, 238, 238, 1);
+}
+.block-color-orange_background {
+	background: rgba(251, 236, 221, 1);
+}
+.block-color-yellow_background {
+	background: rgba(251, 243, 219, 1);
+}
+.block-color-teal_background {
+	background: rgba(237, 243, 236, 1);
+}
+.block-color-blue_background {
+	background: rgba(231, 243, 248, 1);
+}
+.block-color-purple_background {
+	background: rgba(244, 240, 247, 0.8);
+}
+.block-color-pink_background {
+	background: rgba(249, 238, 243, 0.8);
+}
+.block-color-red_background {
+	background: rgba(253, 235, 236, 1);
+}
+.select-value-color-pink { background-color: rgba(245, 224, 233, 1); }
+.select-value-color-purple { background-color: rgba(232, 222, 238, 1); }
+.select-value-color-green { background-color: rgba(219, 237, 219, 1); }
+.select-value-color-gray { background-color: rgba(227, 226, 224, 1); }
+.select-value-color-opaquegray { background-color: rgba(255, 255, 255, 0.0375); }
+.select-value-color-orange { background-color: rgba(250, 222, 201, 1); }
+.select-value-color-brown { background-color: rgba(238, 224, 218, 1); }
+.select-value-color-red { background-color: rgba(255, 226, 221, 1); }
+.select-value-color-yellow { background-color: rgba(253, 236, 200, 1); }
+.select-value-color-blue { background-color: rgba(211, 229, 239, 1); }
+
+.checkbox {
+	display: inline-flex;
+	vertical-align: text-bottom;
+	width: 16;
+	height: 16;
+	background-size: 16px;
+	margin-left: 2px;
+	margin-right: 5px;
+}
+
+.checkbox-on {
+	background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg%20width%3D%2216%22%20height%3D%2216%22%20viewBox%3D%220%200%2016%2016%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Crect%20width%3D%2216%22%20height%3D%2216%22%20fill%3D%22%2358A9D7%22%2F%3E%0A%3Cpath%20d%3D%22M6.71429%2012.2852L14%204.9995L12.7143%203.71436L6.71429%209.71378L3.28571%206.2831L2%207.57092L6.71429%2012.2852Z%22%20fill%3D%22white%22%2F%3E%0A%3C%2Fsvg%3E");
+}
+
+.checkbox-off {
+	background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg%20width%3D%2216%22%20height%3D%2216%22%20viewBox%3D%220%200%2016%2016%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Crect%20x%3D%220.75%22%20y%3D%220.75%22%20width%3D%2214.5%22%20height%3D%2214.5%22%20fill%3D%22white%22%20stroke%3D%22%2336352F%22%20stroke-width%3D%221.5%22%2F%3E%0A%3C%2Fsvg%3E");
+}
+	
+</style></head><body><article id="9b4b62fa-03ec-47cb-939c-ddd87b396fe8" class="page sans"><header><div class="page-header-icon undefined"><span class="icon">🤖</span></div><h1 class="page-title">Agenti e apprendimento automatico</h1><table class="properties"><tbody><tr class="property-row property-row-date"><th><span class="icon property-icon"><svg viewBox="0 0 14 14" style="width:14px;height:14px;display:block;fill:rgba(55, 53, 47, 0.45);flex-shrink:0;-webkit-backface-visibility:hidden" class="typesDate"><path d="M10.8889,5.5 L3.11111,5.5 L3.11111,7.05556 L10.8889,7.05556 L10.8889,5.5 Z M12.4444,1.05556 L11.6667,1.05556 L11.6667,0 L10.1111,0 L10.1111,1.05556 L3.88889,1.05556 L3.88889,0 L2.33333,0 L2.33333,1.05556 L1.55556,1.05556 C0.692222,1.05556 0.00777777,1.75556 0.00777777,2.61111 L0,12.5 C0,13.3556 0.692222,14 1.55556,14 L12.4444,14 C13.3,14 14,13.3556 14,12.5 L14,2.61111 C14,1.75556 13.3,1.05556 12.4444,1.05556 Z M12.4444,12.5 L1.55556,12.5 L1.55556,3.94444 L12.4444,3.94444 L12.4444,12.5 Z M8.55556,8.61111 L3.11111,8.61111 L3.11111,10.1667 L8.55556,10.1667 L8.55556,8.61111 Z"></path></svg></span>Date</th><td><time>@June 8, 2022 → June 10, 2022</time></td></tr></tbody></table></header><div class="page-body"><nav id="2fe5375e-6780-423e-a163-57e5202e4594" class="block-color-gray table_of_contents"><div class="table_of_contents-item table_of_contents-indent-0"><a class="table_of_contents-link" href="#54920896-d689-4c71-9b10-3342d8539265">Agenti</a></div><div class="table_of_contents-item table_of_contents-indent-1"><a class="table_of_contents-link" href="#d88c1e8a-0441-4b21-9928-073c3d3b0516">Caratteristiche dell’ambiente</a></div><div class="table_of_contents-item table_of_contents-indent-1"><a class="table_of_contents-link" href="#fb5a11e7-279d-4f71-9f7e-6ede6e251148">Funzione agente ≠ programma agente</a></div><div class="table_of_contents-item table_of_contents-indent-1"><a class="table_of_contents-link" href="#fb8a30c2-7477-4482-87f3-e66cec645688">Diversi tipi di agente</a></div><div class="table_of_contents-item table_of_contents-indent-1"><a class="table_of_contents-link" href="#c3fce117-b1cc-499b-8183-46fa46f58a5c">Agenti reattivi</a></div><div class="table_of_contents-item table_of_contents-indent-1"><a class="table_of_contents-link" href="#277056d9-e05c-468f-9da2-cb4af0158ca7">Agenti reattivi basati su modello</a></div><div class="table_of_contents-item table_of_contents-indent-1"><a class="table_of_contents-link" href="#6565eb6f-f36e-40ce-b891-bf5d61c68dc4">Agenti guidati dagli obiettivi e dall’utilità</a></div><div class="table_of_contents-item table_of_contents-indent-1"><a class="table_of_contents-link" href="#2d9af015-2df0-4f63-93c8-f6062e609b1c">Agenti che apprendono</a></div><div class="table_of_contents-item table_of_contents-indent-0"><a class="table_of_contents-link" href="#f90c88ed-ad12-493b-a333-c651b8500ad7">Classificazione</a></div><div class="table_of_contents-item table_of_contents-indent-1"><a class="table_of_contents-link" href="#414206aa-1e3e-47d5-9eb1-7b9b28dae96c">Cosa farci coi modelli appresi</a></div><div class="table_of_contents-item table_of_contents-indent-1"><a class="table_of_contents-link" href="#a2ccd59e-a1c6-4473-825f-9c183a77b56a">Il modello risultante è buono?</a></div><div class="table_of_contents-item table_of_contents-indent-2"><a class="table_of_contents-link" href="#63bb7b2f-1195-4cca-8232-311661157451">Accuratezza</a></div><div class="table_of_contents-item table_of_contents-indent-2"><a class="table_of_contents-link" href="#c40797c3-3736-483c-ac9e-0f1999243005">Error rate</a></div><div class="table_of_contents-item table_of_contents-indent-1"><a class="table_of_contents-link" href="#587af0a4-2f92-42a9-a8ca-b45ced27f2a4">Alberi di decisione</a></div><div class="table_of_contents-item table_of_contents-indent-1"><a class="table_of_contents-link" href="#1b559882-3edc-48a0-9800-8da5e76ecc23">Algoritmo di Hunt</a></div><div class="table_of_contents-item table_of_contents-indent-2"><a class="table_of_contents-link" href="#85a4dc9e-24ed-46b8-87d4-e1246adc8cd5">Varie tipologie di split di un DT</a></div><div class="table_of_contents-item table_of_contents-indent-1"><a class="table_of_contents-link" href="#cfb7db6e-e35b-4fef-9cb2-35711c0beafb">Quale split scegliere prima per un DT</a></div><div class="table_of_contents-item table_of_contents-indent-2"><a class="table_of_contents-link" href="#90451df0-7459-4b85-b172-e678fbb8328b">Entropia</a></div><div class="table_of_contents-item table_of_contents-indent-1"><a class="table_of_contents-link" href="#93c61e61-f1bf-404b-a8b6-eff56c964e33">Come gestire l’overfitting di un modello</a></div><div class="table_of_contents-item table_of_contents-indent-1"><a class="table_of_contents-link" href="#ac5918ec-98ad-4cff-b94d-c226b82bc14f">Valutare la bontà dei modelli</a></div><div class="table_of_contents-item table_of_contents-indent-2"><a class="table_of_contents-link" href="#a52d37e1-a658-4d6b-a544-aba20c36e0a9">Metodi per valutare i test test</a></div><div class="table_of_contents-item table_of_contents-indent-2"><a class="table_of_contents-link" href="#f4fb71d0-95db-4d5b-8797-cb021927aac9">Intervallo e livello di confidenza</a></div><div class="table_of_contents-item table_of_contents-indent-0"><a class="table_of_contents-link" href="#1e1699a5-442c-497e-97cf-17752a2485f7">Classificatori a regole </a></div><div class="table_of_contents-item table_of_contents-indent-1"><a class="table_of_contents-link" href="#ee87ea47-0baf-4796-9c51-7e0c39a5a7a3">Due misure per stabilire la qualità di una regola</a></div><div class="table_of_contents-item table_of_contents-indent-2"><a class="table_of_contents-link" href="#c35a71f3-16fc-4424-ac9f-21d04498f1bb"><strong>Copertura</strong></a></div><div class="table_of_contents-item table_of_contents-indent-2"><a class="table_of_contents-link" href="#3b2c3049-6ecd-4da8-87bc-399956d8a4fc"><strong>Accuratezza </strong></a></div><div class="table_of_contents-item table_of_contents-indent-1"><a class="table_of_contents-link" href="#8627debc-ba57-456d-a832-aaf212a589d9">Produrre le regole</a></div><div class="table_of_contents-item table_of_contents-indent-1"><a class="table_of_contents-link" href="#b413bc97-d2e8-44cb-a983-9bfd9cd18708">Learn one rule: un esempio di sequential covering</a></div><div class="table_of_contents-item table_of_contents-indent-1"><a class="table_of_contents-link" href="#fa760a23-6524-4681-be31-1635e98ddc85">Strategie di raffinamento</a></div><div class="table_of_contents-item table_of_contents-indent-2"><a class="table_of_contents-link" href="#77067ca7-bbd9-46d0-a775-33e0c4c584d5">General to specific</a></div><div class="table_of_contents-item table_of_contents-indent-2"><a class="table_of_contents-link" href="#345ff4e1-746b-49af-a891-2d8e59dda901">Specific to general</a></div><div class="table_of_contents-item table_of_contents-indent-1"><a class="table_of_contents-link" href="#a4b7ac33-e33a-4c8f-8ed9-0f6927831b5d">Eager vs lazy learners</a></div><div class="table_of_contents-item table_of_contents-indent-2"><a class="table_of_contents-link" href="#cfecd283-7abc-424a-adee-3a9438f08d48">Eager</a></div><div class="table_of_contents-item table_of_contents-indent-2"><a class="table_of_contents-link" href="#ead37991-d163-4065-8e49-13b543e1cba9">Lazy</a></div><div class="table_of_contents-item table_of_contents-indent-1"><a class="table_of_contents-link" href="#1259df06-3c69-4a16-a48c-bcd6f3ab7d32">K-nearest neighbour</a></div><div class="table_of_contents-item table_of_contents-indent-0"><a class="table_of_contents-link" href="#16502062-efc0-48f9-b2e6-6ae286b42e2f">Reti neurali</a></div><div class="table_of_contents-item table_of_contents-indent-1"><a class="table_of_contents-link" href="#69333a76-06c4-47df-99fd-2fc841234ada">A cosa serve un perceptron?</a></div><div class="table_of_contents-item table_of_contents-indent-0"><a class="table_of_contents-link" href="#a5cd187f-5d9d-43be-ab65-80baf8bdaad6">Definizioni</a></div></nav><hr id="21e91771-c269-41ae-ae61-cbb977058b36"/><h1 id="54920896-d689-4c71-9b10-3342d8539265" class="">Agenti</h1><figure class="block-color-gray_background callout" style="white-space:pre-wrap;display:flex" id="a2a9f1a1-2130-4d84-b912-9ee128fd2793"><div style="font-size:1.5em"><span class="icon">📌</span></div><div style="width:100%">agente = software + architettura</div></figure><figure id="062ce709-96f9-4dc8-bd66-5204776ec8c3" class="image"><a href="Agenti%20e%20apprendimento%20automatico%20062ce70996f94dc8bd665204776ec8c3/Untitled.png"><img style="width:1391px" src="Agenti%20e%20apprendimento%20automatico%20062ce70996f94dc8bd665204776ec8c3/Untitled.png"/></a><figcaption>Un agente cerca di agire razionalmente</figcaption></figure><p id="048a6070-0a6d-44a6-a750-43dfd44af262" class="">La razionalità dipende dalla <strong>sequenza percettiva</strong> e può influenzare la sequenza percettiva.</p><h2 id="d88c1e8a-0441-4b21-9928-073c3d3b0516" class="">Caratteristiche dell’ambiente</h2><figure id="b8c157f1-07a7-436e-948b-cf8d14a1e92f" class="image"><a href="Agenti%20e%20apprendimento%20automatico%20062ce70996f94dc8bd665204776ec8c3/Untitled%201.png"><img style="width:1361px" src="Agenti%20e%20apprendimento%20automatico%20062ce70996f94dc8bd665204776ec8c3/Untitled%201.png"/></a></figure><figure id="a78880e3-0cc9-485c-bb48-8a4734d9a957" class="image"><a href="Agenti%20e%20apprendimento%20automatico%20062ce70996f94dc8bd665204776ec8c3/Untitled%202.png"><img style="width:1368px" src="Agenti%20e%20apprendimento%20automatico%20062ce70996f94dc8bd665204776ec8c3/Untitled%202.png"/></a></figure><hr id="54ef4aed-a784-48c5-8803-49fbdaac346a"/><h2 id="fb5a11e7-279d-4f71-9f7e-6ede6e251148" class="">Funzione agente ≠ programma agente</h2><div id="bc52aa27-50a0-4c26-8b1c-7edb584b1c00" class="column-list"><div id="572b5976-eefb-4197-a964-547317236012" style="width:50%" class="column"><p id="6933a420-4690-471d-9144-b2e8c4848d2a" class=""><strong>Funzione agente</strong>: ha come input la <em>sequenza percettiva</em></p></div><div id="e567d232-0a3e-4376-bb6c-469195c5eb61" style="width:50%" class="column"><p id="cc9bfad1-e9a4-49b5-ae62-9ede7d38bcb8" class=""><strong>Programma agente</strong>: ha come input la <em>percezione corrente</em></p></div></div><hr id="128d372d-ab41-41b5-a4ab-5c60c83114e7"/><h2 id="fb8a30c2-7477-4482-87f3-e66cec645688" class="">Diversi tipi di agente</h2><ul id="cb86ca69-ead2-447d-a652-d0f3b7ac9676" class="bulleted-list"><li style="list-style-type:disc">agenti <strong>reattivi</strong></li></ul><ul id="69dd538c-3edd-4dd7-b3b2-a7f26f89d003" class="bulleted-list"><li style="list-style-type:disc">agenti <strong>reattivi basati su modello</strong></li></ul><ul id="9c279dea-2a9e-4324-8e70-fcb3c52f0ed9" class="bulleted-list"><li style="list-style-type:disc">agenti <strong>guidati dagli obiettivi</strong></li></ul><ul id="ac6dfd9e-2474-4acc-ba0e-d0aeb9dbc095" class="bulleted-list"><li style="list-style-type:disc">agenti <strong>guidati dall’utilità</strong></li></ul><ul id="ebfd4417-f50f-492e-97bb-f3aacf11ad9f" class="bulleted-list"><li style="list-style-type:disc">agenti <strong>capaci di apprendere</strong></li></ul><h2 id="c3fce117-b1cc-499b-8183-46fa46f58a5c" class="">Agenti reattivi</h2><figure id="863605ef-8ca4-41c3-a56b-24c6e2cbf19d" class="image"><a href="Agenti%20e%20apprendimento%20automatico%20062ce70996f94dc8bd665204776ec8c3/Untitled%203.png"><img style="width:384px" src="Agenti%20e%20apprendimento%20automatico%20062ce70996f94dc8bd665204776ec8c3/Untitled%203.png"/></a></figure><p id="09c0a515-1ceb-4f73-a703-8ad7d47bd488" class="">basano la scelta dell’azione sulla sola percezione</p><h2 id="277056d9-e05c-468f-9da2-cb4af0158ca7" class="">Agenti reattivi basati su modello</h2><figure id="1a56cae9-1861-4f50-af5c-97e9e6b0319c" class="image"><a href="Agenti%20e%20apprendimento%20automatico%20062ce70996f94dc8bd665204776ec8c3/Untitled%204.png"><img style="width:384px" src="Agenti%20e%20apprendimento%20automatico%20062ce70996f94dc8bd665204776ec8c3/Untitled%204.png"/></a></figure><ul id="be64d246-83db-41c3-abe7-292fda7faaf5" class="bulleted-list"><li style="list-style-type:disc">hanno conoscenza su come il mondo evolve e sugli effetti delle azioni</li></ul><ul id="118768f2-c321-4e5a-b320-9d8f60933fe7" class="bulleted-list"><li style="list-style-type:disc">avere un modello permette di <strong>prevedere</strong> <strong>gli effetti delle azioni</strong> e di scegliere l’azione da eseguire anche sulla base di questa informazione</li></ul><h2 id="6565eb6f-f36e-40ce-b891-bf5d61c68dc4" class="">Agenti guidati dagli obiettivi e dall’utilità</h2><figure id="2ac20dda-0007-437b-bc1b-fe09ca56695d" class="image"><a href="Agenti%20e%20apprendimento%20automatico%20062ce70996f94dc8bd665204776ec8c3/Untitled%204.png"><img style="width:384px" src="Agenti%20e%20apprendimento%20automatico%20062ce70996f94dc8bd665204776ec8c3/Untitled%204.png"/></a></figure><ul id="a8f7064f-fb88-4f0a-a765-000e0a56f53c" class="bulleted-list"><li style="list-style-type:disc">l’agente <em>simula</em> nella propria <em>mente</em> l’effetto delle azioni per capire se e <strong>quanto l’avvicinano all’obiettivo</strong></li></ul><ul id="20e4df90-b87b-444a-beb0-5548901b832b" class="bulleted-list"><li style="list-style-type:disc">si può aggiungere una <strong>misura della prestazione</strong>, cioè della bontà delle possibili scelte calcolata da una funzione metrica</li></ul><h2 id="2d9af015-2df0-4f63-93c8-f6062e609b1c" class="">Agenti che apprendono</h2><figure id="964878ca-ab09-424f-bb55-ea924e60df53" class="image"><a href="Agenti%20e%20apprendimento%20automatico%20062ce70996f94dc8bd665204776ec8c3/Untitled%205.png"><img style="width:384px" src="Agenti%20e%20apprendimento%20automatico%20062ce70996f94dc8bd665204776ec8c3/Untitled%205.png"/></a></figure><p id="3e7387e2-3d7c-4c19-9509-707f6d7510cb" class="">La parte di sinistra (che si aggiunge ai modelli visti sopra) è quella deputata al <strong>learning </strong>ed è costituita da:</p><ul id="fb6942e9-6bd1-4bcf-b8dd-b39f5e751293" class="bulleted-list"><li style="list-style-type:disc">un <strong>critico </strong>⇒ decide se è il caso di attivare l’apprendimento</li></ul><ul id="e6873cb7-2159-4881-a8d0-0e7254d40328" class="bulleted-list"><li style="list-style-type:disc">un <strong>modulo di apprendimento </strong>⇒ che modifica la conoscenza dell’agente</li></ul><ul id="ba9367d5-e6bc-497e-b3ee-7207a80b9eab" class="bulleted-list"><li style="list-style-type:disc">un <strong>generatore di problemi </strong>⇒ che espone l’agente a nuove esperienze</li></ul><h1 id="f90c88ed-ad12-493b-a333-c651b8500ad7" class="">Classificazione</h1><p id="abc5e5cd-7bfd-452d-a818-efdf3e4872f9" class="">L’idea è che si vuole costruire una rappresentazione astratta (<strong>modello</strong>) che permetta di associare in modo corretto nuove istanze alla <strong>classe</strong> (o alle classi) <strong>di appartenenza.</strong></p><figure id="67aa48d3-f3a2-4158-91e2-690a7d0dd214" class="image"><a href="Agenti%20e%20apprendimento%20automatico%20062ce70996f94dc8bd665204776ec8c3/Untitled%206.png"><img style="width:1378px" src="Agenti%20e%20apprendimento%20automatico%20062ce70996f94dc8bd665204776ec8c3/Untitled%206.png"/></a><figcaption>Esempio di <strong>learning set</strong> formato da un insieme di tuple <em>(</em><em><strong>x</strong></em><em>,y)</em>, dove <strong>x</strong> è a sua volta un’altra tupla contenente i valori descrittivi dell’istanza e <em>y </em>è la classe di appartenenza dell’istanza</figcaption></figure><h2 id="414206aa-1e3e-47d5-9eb1-7b9b28dae96c" class="">Cosa farci coi modelli appresi</h2><figure id="532cce65-8534-4c02-a96c-abbc64bed0be" class="image"><a href="Agenti%20e%20apprendimento%20automatico%20062ce70996f94dc8bd665204776ec8c3/Untitled%207.png"><img style="width:672px" src="Agenti%20e%20apprendimento%20automatico%20062ce70996f94dc8bd665204776ec8c3/Untitled%207.png"/></a><figcaption>Due possibili usi differenti di un modello estratto da un learning set</figcaption></figure><h2 id="a2ccd59e-a1c6-4473-825f-9c183a77b56a" class="">Il modello risultante è buono?</h2><p id="067d9a15-df9a-4d8e-8e71-739dececd0db" class="">Per valutare la bontà di un modello ottenuto si prova a far classificare al modello un insieme di dati chiamato <strong>test set</strong>.</p><p id="ffa8f275-094b-4e9a-bf95-b2e19ba81be6" class="">Da questa classificazione si produce la <strong>matrice di confusione</strong>:</p><figure id="bef86801-847a-486c-a328-c812a91f7db9" class="image"><a href="Agenti%20e%20apprendimento%20automatico%20062ce70996f94dc8bd665204776ec8c3/Untitled%208.png"><img style="width:1225px" src="Agenti%20e%20apprendimento%20automatico%20062ce70996f94dc8bd665204776ec8c3/Untitled%208.png"/></a><figcaption>Matrice quadrata che ha numero di righe/colonne pari a quello delle classi che stiamo considerando.</figcaption></figure><p id="e7b10f55-7220-4c8f-9560-3de63991d05e" class="">I valori all&#x27;interno della matrice rappresentano il numero delle istanze che appartengono alla classe reale <style>@import url('https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.13.2/katex.min.css')</style><span data-token-index="0" contenteditable="false" class="notion-text-equation-token" style="user-select:all;-webkit-user-select:all;-moz-user-select:all"><span></span><span><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>c</mi><mi>i</mi></msub></mrow><annotation encoding="application/x-tex">c_i</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.58056em;vertical-align:-0.15em;"></span><span class="mord"><span class="mord mathnormal">c</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.31166399999999994em;"><span style="top:-2.5500000000000003em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight">i</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span></span></span></span></span><span>﻿</span></span> e che il modello ha detto appartenere a <style>@import url('https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.13.2/katex.min.css')</style><span data-token-index="0" contenteditable="false" class="notion-text-equation-token" style="user-select:all;-webkit-user-select:all;-moz-user-select:all"><span></span><span><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>c</mi><mi>j</mi></msub></mrow><annotation encoding="application/x-tex">c_j</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.716668em;vertical-align:-0.286108em;"></span><span class="mord"><span class="mord mathnormal">c</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.311664em;"><span style="top:-2.5500000000000003em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight" style="margin-right:0.05724em;">j</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.286108em;"><span></span></span></span></span></span></span></span></span></span></span><span>﻿</span></span>. Si cerca dunque di <strong>massimizzare i valori nella diagonale.</strong></p><p id="362ff9f6-15fc-41ac-b2bb-f3c827dab2ff" class="">Da questa matrice si estraggono due formule complementari:</p><h3 id="63bb7b2f-1195-4cca-8232-311661157451" class="">Accuratezza</h3><figure id="71067176-5894-4bf1-870f-408405be5030" class="equation"><style>@import url('https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.13.2/katex.min.css')</style><div class="equation-container"><span class="katex-display"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><semantics><mrow><mi>a</mi><mi>c</mi><mi>c</mi><mo>=</mo><mfrac><mrow><mi>v</mi><mi>a</mi><mi>l</mi><mi>o</mi><mi>r</mi><mi>i</mi><mi>D</mi><mi>i</mi><mi>a</mi><mi>g</mi><mi>o</mi><mi>n</mi><mi>a</mi><mi>l</mi><mi>e</mi></mrow><mrow><mi>p</mi><mi>r</mi><mi>e</mi><mi>d</mi><mi>i</mi><mi>z</mi><mi>i</mi><mi>o</mi><mi>n</mi><mi>i</mi><mi>T</mi><mi>o</mi><mi>t</mi><mi>a</mi><mi>l</mi><mi>i</mi></mrow></mfrac></mrow><annotation encoding="application/x-tex">acc = \frac{valoriDiagonale}{predizioniTotali}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.43056em;vertical-align:0em;"></span><span class="mord mathnormal">a</span><span class="mord mathnormal">cc</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span></span><span class="base"><span class="strut" style="height:2.25188em;vertical-align:-0.8804400000000001em;"></span><span class="mord"><span class="mopen nulldelimiter"></span><span class="mfrac"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:1.3714399999999998em;"><span style="top:-2.314em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord mathnormal">p</span><span class="mord mathnormal">re</span><span class="mord mathnormal">d</span><span class="mord mathnormal">i</span><span class="mord mathnormal" style="margin-right:0.04398em;">z</span><span class="mord mathnormal">i</span><span class="mord mathnormal">o</span><span class="mord mathnormal">ni</span><span class="mord mathnormal" style="margin-right:0.13889em;">T</span><span class="mord mathnormal">o</span><span class="mord mathnormal">t</span><span class="mord mathnormal">a</span><span class="mord mathnormal" style="margin-right:0.01968em;">l</span><span class="mord mathnormal">i</span></span></span><span style="top:-3.23em;"><span class="pstrut" style="height:3em;"></span><span class="frac-line" style="border-bottom-width:0.04em;"></span></span><span style="top:-3.677em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.03588em;">v</span><span class="mord mathnormal">a</span><span class="mord mathnormal" style="margin-right:0.01968em;">l</span><span class="mord mathnormal" style="margin-right:0.02778em;">or</span><span class="mord mathnormal">i</span><span class="mord mathnormal" style="margin-right:0.02778em;">D</span><span class="mord mathnormal">ia</span><span class="mord mathnormal" style="margin-right:0.03588em;">g</span><span class="mord mathnormal">o</span><span class="mord mathnormal">na</span><span class="mord mathnormal" style="margin-right:0.01968em;">l</span><span class="mord mathnormal">e</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.8804400000000001em;"><span></span></span></span></span></span><span class="mclose nulldelimiter"></span></span></span></span></span></span></div></figure><p id="23deabfd-4085-454a-b244-b74d8a610076" class="">dove i <style>@import url('https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.13.2/katex.min.css')</style><span data-token-index="0" contenteditable="false" class="notion-text-equation-token" style="user-select:all;-webkit-user-select:all;-moz-user-select:all"><span></span><span><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>v</mi><mi>a</mi><mi>l</mi><mi>o</mi><mi>r</mi><mi>i</mi><mi>D</mi><mi>i</mi><mi>a</mi><mi>g</mi><mi>o</mi><mi>n</mi><mi>a</mi><mi>l</mi><mi>e</mi></mrow><annotation encoding="application/x-tex">valoriDiagonale</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8888799999999999em;vertical-align:-0.19444em;"></span><span class="mord mathnormal" style="margin-right:0.03588em;">v</span><span class="mord mathnormal">a</span><span class="mord mathnormal" style="margin-right:0.01968em;">l</span><span class="mord mathnormal" style="margin-right:0.02778em;">or</span><span class="mord mathnormal">i</span><span class="mord mathnormal" style="margin-right:0.02778em;">D</span><span class="mord mathnormal">ia</span><span class="mord mathnormal" style="margin-right:0.03588em;">g</span><span class="mord mathnormal">o</span><span class="mord mathnormal">na</span><span class="mord mathnormal" style="margin-right:0.01968em;">l</span><span class="mord mathnormal">e</span></span></span></span></span><span>﻿</span></span> rappresentano il numero di <strong>predizioni corrette.</strong></p><hr id="994e6bde-82a1-416c-a43c-3d3f92d6c0f2"/><h3 id="c40797c3-3736-483c-ac9e-0f1999243005" class="">Error rate</h3><figure id="e29967ec-f837-48bc-99bc-8bd1cb3b5a47" class="equation"><style>@import url('https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.13.2/katex.min.css')</style><div class="equation-container"><span class="katex-display"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><semantics><mrow><mi>e</mi><mi>r</mi><mi>r</mi><mo>=</mo><mfrac><mrow><mi>p</mi><mi>r</mi><mi>e</mi><mi>d</mi><mi>i</mi><mi>z</mi><mi>i</mi><mi>o</mi><mi>n</mi><mi>i</mi><mi>S</mi><mi>b</mi><mi>a</mi><mi>g</mi><mi>l</mi><mi>i</mi><mi>a</mi><mi>t</mi><mi>e</mi></mrow><mrow><mi>p</mi><mi>r</mi><mi>e</mi><mi>d</mi><mi>i</mi><mi>z</mi><mi>i</mi><mi>o</mi><mi>n</mi><mi>i</mi><mi>T</mi><mi>o</mi><mi>t</mi><mi>a</mi><mi>l</mi><mi>i</mi></mrow></mfrac></mrow><annotation encoding="application/x-tex">err = \frac{predizioniSbagliate}{predizioniTotali}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.43056em;vertical-align:0em;"></span><span class="mord mathnormal" style="margin-right:0.02778em;">err</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span></span><span class="base"><span class="strut" style="height:2.25188em;vertical-align:-0.8804400000000001em;"></span><span class="mord"><span class="mopen nulldelimiter"></span><span class="mfrac"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:1.3714399999999998em;"><span style="top:-2.314em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord mathnormal">p</span><span class="mord mathnormal">re</span><span class="mord mathnormal">d</span><span class="mord mathnormal">i</span><span class="mord mathnormal" style="margin-right:0.04398em;">z</span><span class="mord mathnormal">i</span><span class="mord mathnormal">o</span><span class="mord mathnormal">ni</span><span class="mord mathnormal" style="margin-right:0.13889em;">T</span><span class="mord mathnormal">o</span><span class="mord mathnormal">t</span><span class="mord mathnormal">a</span><span class="mord mathnormal" style="margin-right:0.01968em;">l</span><span class="mord mathnormal">i</span></span></span><span style="top:-3.23em;"><span class="pstrut" style="height:3em;"></span><span class="frac-line" style="border-bottom-width:0.04em;"></span></span><span style="top:-3.677em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord mathnormal">p</span><span class="mord mathnormal">re</span><span class="mord mathnormal">d</span><span class="mord mathnormal">i</span><span class="mord mathnormal" style="margin-right:0.04398em;">z</span><span class="mord mathnormal">i</span><span class="mord mathnormal">o</span><span class="mord mathnormal">ni</span><span class="mord mathnormal" style="margin-right:0.05764em;">S</span><span class="mord mathnormal">ba</span><span class="mord mathnormal" style="margin-right:0.03588em;">g</span><span class="mord mathnormal" style="margin-right:0.01968em;">l</span><span class="mord mathnormal">ia</span><span class="mord mathnormal">t</span><span class="mord mathnormal">e</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.8804400000000001em;"><span></span></span></span></span></span><span class="mclose nulldelimiter"></span></span></span></span></span></span></div></figure><p id="8fdb8c64-91b9-455e-b5d1-3506e5ad58a4" class="">dove <style>@import url('https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.13.2/katex.min.css')</style><span data-token-index="0" contenteditable="false" class="notion-text-equation-token" style="user-select:all;-webkit-user-select:all;-moz-user-select:all"><span></span><span><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>p</mi><mi>r</mi><mi>e</mi><mi>d</mi><mi>i</mi><mi>z</mi><mi>i</mi><mi>o</mi><mi>n</mi><mi>i</mi><mi>S</mi><mi>b</mi><mi>a</mi><mi>g</mi><mi>l</mi><mi>i</mi><mi>a</mi><mi>t</mi><mi>e</mi></mrow><annotation encoding="application/x-tex">predizioniSbagliate</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8888799999999999em;vertical-align:-0.19444em;"></span><span class="mord mathnormal">p</span><span class="mord mathnormal">re</span><span class="mord mathnormal">d</span><span class="mord mathnormal">i</span><span class="mord mathnormal" style="margin-right:0.04398em;">z</span><span class="mord mathnormal">i</span><span class="mord mathnormal">o</span><span class="mord mathnormal">ni</span><span class="mord mathnormal" style="margin-right:0.05764em;">S</span><span class="mord mathnormal">ba</span><span class="mord mathnormal" style="margin-right:0.03588em;">g</span><span class="mord mathnormal" style="margin-right:0.01968em;">l</span><span class="mord mathnormal">ia</span><span class="mord mathnormal">t</span><span class="mord mathnormal">e</span></span></span></span></span><span>﻿</span></span> indica il numero di valori <strong>non in diagonale</strong> nella matrice.</p><hr id="3264b2ba-be67-4757-8cb6-dd00032778f2"/><figure id="08171409-eb1a-453f-a4f2-712d085c6e37" class="image"><a href="Agenti%20e%20apprendimento%20automatico%20062ce70996f94dc8bd665204776ec8c3/Untitled%209.png"><img style="width:384px" src="Agenti%20e%20apprendimento%20automatico%20062ce70996f94dc8bd665204776ec8c3/Untitled%209.png"/></a><figcaption>Esempio di modello che riconosce varie istanze di lattine</figcaption></figure><p id="947e115e-4312-4e79-98db-aa1aa0ea2299" class="">da notare che <style>@import url('https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.13.2/katex.min.css')</style><span data-token-index="0" contenteditable="false" class="notion-text-equation-token" style="user-select:all;-webkit-user-select:all;-moz-user-select:all"><span></span><span><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>e</mi><mi>r</mi><mi>r</mi></mrow><annotation encoding="application/x-tex">err</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.43056em;vertical-align:0em;"></span><span class="mord mathnormal" style="margin-right:0.02778em;">err</span></span></span></span></span><span>﻿</span></span> si può ottenere anche come <style>@import url('https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.13.2/katex.min.css')</style><span data-token-index="0" contenteditable="false" class="notion-text-equation-token" style="user-select:all;-webkit-user-select:all;-moz-user-select:all"><span></span><span><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>1</mn><mo>−</mo><mi>a</mi><mi>c</mi><mi>c</mi></mrow><annotation encoding="application/x-tex">1 - acc</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.72777em;vertical-align:-0.08333em;"></span><span class="mord">1</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">−</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span></span><span class="base"><span class="strut" style="height:0.43056em;vertical-align:0em;"></span><span class="mord mathnormal">a</span><span class="mord mathnormal">cc</span></span></span></span></span><span>﻿</span></span>.</p><p id="0d3ab8bf-47ef-48e5-b1a1-b01038c14c8c" class="">Per differenziare i tipi di errori che un modello può compiere si associa alla matrice di confusione una matrice dei costi.</p><figure id="c9080de2-60e9-4f31-911d-15732050f88d" class="image"><a href="Agenti%20e%20apprendimento%20automatico%20062ce70996f94dc8bd665204776ec8c3/Untitled%2010.png"><img style="width:528px" src="Agenti%20e%20apprendimento%20automatico%20062ce70996f94dc8bd665204776ec8c3/Untitled%2010.png"/></a><figcaption>Esempio di matrice dei costi, dove ogni istanza di classe 1 correttamente classificata riduce il costo complessivo e dove sbagliare a classificare gli oggetti di classe 1 è molto più costoso che sbagliare quelli di classe 2.</figcaption></figure><h2 id="587af0a4-2f92-42a9-a8ca-b45ced27f2a4" class="">Alberi di decisione</h2><p id="a3f05a7c-dc45-4dfb-99cf-43d5cb9f4122" class="">Usati in molti ambiti, noi li vediamo come strumenti <strong>indotti da dei learning set</strong> al fine di classificare in maniera più chiara nuove istanze ignote. Svolgono quindi il ruolo di <strong>modelli</strong>. </p><figure id="8807f368-9d59-461b-9321-e52d47cefa63" class="image"><a href="Agenti%20e%20apprendimento%20automatico%20062ce70996f94dc8bd665204776ec8c3/Untitled%2011.png"><img style="width:528px" src="Agenti%20e%20apprendimento%20automatico%20062ce70996f94dc8bd665204776ec8c3/Untitled%2011.png"/></a><figcaption>Struttura di un albero di decisione, dove le foglie indicano la classe dell’istanza</figcaption></figure><figure id="229eb640-b986-4788-9c56-f8898d3fcbd5" class="image"><a href="Agenti%20e%20apprendimento%20automatico%20062ce70996f94dc8bd665204776ec8c3/Untitled%2012.png"><img style="width:1376px" src="Agenti%20e%20apprendimento%20automatico%20062ce70996f94dc8bd665204776ec8c3/Untitled%2012.png"/></a><figcaption>Esempio di come da un learning set si possa estrarre un DT (decision tree), sulla base delle istanze coinvolte nel learning set (un’istanza è rappresentata da una tupla). In rosso la classificazione che ci interessa conoscere delle nuove istanze.</figcaption></figure><figure class="block-color-gray_background callout" style="white-space:pre-wrap;display:flex" id="6a8d425f-c453-4494-828a-ee0009a0c53a"><div style="font-size:1.5em"><span class="icon">📌</span></div><div style="width:100%">Da un learning set si possono ricavare molti DT</div></figure><h2 id="1b559882-3edc-48a0-9800-8da5e76ecc23" class="">Algoritmo di Hunt</h2><ul id="67fe56d9-5c54-4ece-a4f0-a7e8df5816d5" class="bulleted-list"><li style="list-style-type:disc">è un esempio di <strong>algoritmo di apprendimento</strong></li></ul><blockquote id="df42916d-88d0-4e12-b1f9-75d127a3bff9" class="">L’algoritmo di Hunt è un algoritmo ricorsivo che permette di <strong>costruire un albero di decisione </strong>partizionando i record di allenamento in sottoinsiemi sempre piu omogenei, con il fine di far si che ognuno di essi contenga record aventi la medesima classe.</blockquote><h3 id="85a4dc9e-24ed-46b8-87d4-e1246adc8cd5" class="">Varie tipologie di split di un DT</h3><ul id="d93d3613-5e2a-46ca-81da-837c57cf7ea4" class="bulleted-list"><li style="list-style-type:disc">split su <strong>attributi binari</strong></li></ul><ul id="55c74741-5379-448e-a735-4462889d3b48" class="bulleted-list"><li style="list-style-type:disc">split su <strong>attributi nominali </strong>(il nodo avrà tanti figli quanti sono i possibili valori dell&#x27;attributo)</li></ul><ul id="b5d4dd2b-5947-4bf2-8fd2-c63e5335666a" class="bulleted-list"><li style="list-style-type:disc">split su <strong>attributi ordinali </strong>(il raggruppamento dei valori deve rispettare l&#x27;ordinamento)</li></ul><ul id="02706575-05cb-4ff9-827e-f8d02d0d9d67" class="bulleted-list"><li style="list-style-type:disc">split su <strong>attributi continui</strong></li></ul><h2 id="cfb7db6e-e35b-4fef-9cb2-35711c0beafb" class="">Quale split scegliere prima per un DT</h2><p id="5b3ef7e0-022a-4297-ab98-eaea54d77815" class="">Alberi compatti sono preferiti ad alberi che consentono di raggiungere lo stesso grado di accuratezza (e di error rate) usando un maggior numero di test.</p><figure class="block-color-gray_background callout" style="white-space:pre-wrap;display:flex" id="f487f163-61e3-4b28-ab2b-aecd17649fd6"><div style="font-size:1.5em"><span class="icon">📌</span></div><div style="width:100%">Sono preferiti gli split che producono nodi figli la cui estensione prevede <strong>minore confusione</strong> (il cui grado di purezza è maggiore).</div></figure><h3 id="90451df0-7459-4b85-b172-e678fbb8328b" class="">Entropia</h3><figure id="7445bcac-2ece-4ad0-875a-d543efcb7de1" class="equation"><style>@import url('https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.13.2/katex.min.css')</style><div class="equation-container"><span class="katex-display"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><semantics><mrow><mi>e</mi><mi>n</mi><mi>t</mi><mi>r</mi><mi>o</mi><mi>p</mi><mi>i</mi><mi>a</mi><mo stretchy="false">(</mo><mi>t</mi><mo stretchy="false">)</mo><mo>=</mo><mo>−</mo><munderover><mo>∑</mo><mrow><mi>i</mi><mo>=</mo><mn>0</mn></mrow><mrow><mi>c</mi><mo>−</mo><mn>1</mn></mrow></munderover><mi>p</mi><mo stretchy="false">(</mo><mi>i</mi><mi mathvariant="normal">∣</mi><mi>t</mi><mo stretchy="false">)</mo><mo>∗</mo><msub><mrow><mi>log</mi><mo>⁡</mo></mrow><mn>2</mn></msub><mi>p</mi><mo stretchy="false">(</mo><mi>i</mi><mi mathvariant="normal">∣</mi><mi>t</mi><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">entropia(t)= -\sum_{i=0}^{c-1}p(i|t)* \log_{2} p(i|t)</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathnormal">e</span><span class="mord mathnormal">n</span><span class="mord mathnormal">t</span><span class="mord mathnormal">ro</span><span class="mord mathnormal">p</span><span class="mord mathnormal">ia</span><span class="mopen">(</span><span class="mord mathnormal">t</span><span class="mclose">)</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span></span><span class="base"><span class="strut" style="height:3.0787820000000004em;vertical-align:-1.277669em;"></span><span class="mord">−</span><span class="mspace" style="margin-right:0.16666666666666666em;"></span><span class="mop op-limits"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:1.8011130000000004em;"><span style="top:-1.872331em;margin-left:0em;"><span class="pstrut" style="height:3.05em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathnormal mtight">i</span><span class="mrel mtight">=</span><span class="mord mtight">0</span></span></span></span><span style="top:-3.050005em;"><span class="pstrut" style="height:3.05em;"></span><span><span class="mop op-symbol large-op">∑</span></span></span><span style="top:-4.300005em;margin-left:0em;"><span class="pstrut" style="height:3.05em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathnormal mtight">c</span><span class="mbin mtight">−</span><span class="mord mtight">1</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:1.277669em;"><span></span></span></span></span></span><span class="mspace" style="margin-right:0.16666666666666666em;"></span><span class="mord mathnormal">p</span><span class="mopen">(</span><span class="mord mathnormal">i</span><span class="mord">∣</span><span class="mord mathnormal">t</span><span class="mclose">)</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">∗</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mop"><span class="mop">lo<span style="margin-right:0.01389em;">g</span></span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.20696799999999996em;"><span style="top:-2.4558600000000004em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mtight">2</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.24414em;"><span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.16666666666666666em;"></span><span class="mord mathnormal">p</span><span class="mopen">(</span><span class="mord mathnormal">i</span><span class="mord">∣</span><span class="mord mathnormal">t</span><span class="mclose">)</span></span></span></span></span></div></figure><p id="fbc94a63-3dd2-47c0-b2bc-945323ec748d" class="">dove si assume <style>@import url('https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.13.2/katex.min.css')</style><span data-token-index="0" contenteditable="false" class="notion-text-equation-token" style="user-select:all;-webkit-user-select:all;-moz-user-select:all"><span></span><span><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>0</mn><mo>∗</mo><msub><mrow><mi>log</mi><mo>⁡</mo></mrow><mn>2</mn></msub><mn>0</mn><mo>=</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">0*\log_20 = 0 </annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.64444em;vertical-align:0em;"></span><span class="mord">0</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">∗</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span></span><span class="base"><span class="strut" style="height:0.93858em;vertical-align:-0.24414em;"></span><span class="mop"><span class="mop">lo<span style="margin-right:0.01389em;">g</span></span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.20696799999999996em;"><span style="top:-2.4558600000000004em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">2</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.24414em;"><span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.16666666666666666em;"></span><span class="mord">0</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span></span><span class="base"><span class="strut" style="height:0.64444em;vertical-align:0em;"></span><span class="mord">0</span></span></span></span></span><span>﻿</span></span> e dove <style>@import url('https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.13.2/katex.min.css')</style><span data-token-index="0" contenteditable="false" class="notion-text-equation-token" style="user-select:all;-webkit-user-select:all;-moz-user-select:all"><span></span><span><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>p</mi><mo stretchy="false">(</mo><mi>i</mi><mi mathvariant="normal">∣</mi><mi>t</mi><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">p(i|t) </annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathnormal">p</span><span class="mopen">(</span><span class="mord mathnormal">i</span><span class="mord">∣</span><span class="mord mathnormal">t</span><span class="mclose">)</span></span></span></span></span><span>﻿</span></span> indica la probabilità che l’elemento appartenga alla classe i</p><p id="00a71fea-ed8f-41df-83eb-a10db89c10ac" class="block-color-yellow_background">Le distribuzioni (0, 1) e (1, 0) sono le migliori, <strong>purezza massima</strong> dell&#x27;insieme, nessuna confusione.</p><p id="2be4b44a-e9c6-4f02-a148-1f3cf9e4a062" class="block-color-yellow_background">La distribuzione (0.5, 0.5) è la peggiore, <strong>massimo grado di confusione</strong> (entropia pari a 1).</p><p id="ac151f0a-2046-4a9d-af6b-9e2ea5d558e2" class="">Il calcolo dell’entropia ci serve per poter ottenere un valore confrontabile per ciascuno split, l’<strong>information gain </strong>(usata come misura per valutare il guadagno)<strong>.</strong></p><figure id="14647a9a-ec15-4d0f-8881-3bcb1235a4f7" class="equation"><style>@import url('https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.13.2/katex.min.css')</style><div class="equation-container"><span class="katex-display"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><semantics><mrow><mi mathvariant="normal">Δ</mi><mo>=</mo><mi>e</mi><mi>n</mi><mi>t</mi><mi>r</mi><mi>o</mi><mi>p</mi><mi>i</mi><mi>a</mi><mo stretchy="false">(</mo><mi>p</mi><mi>a</mi><mi>r</mi><mi>e</mi><mi>n</mi><mi>t</mi><mo stretchy="false">)</mo><mo>−</mo><munderover><mo>∑</mo><mrow><mi>j</mi><mo>=</mo><mn>1</mn></mrow><mi>k</mi></munderover><mfrac><mrow><mi>N</mi><mo stretchy="false">(</mo><msub><mi>v</mi><mi>j</mi></msub><mo stretchy="false">)</mo></mrow><mi>N</mi></mfrac><mi>e</mi><mi>n</mi><mi>t</mi><mi>r</mi><mi>o</mi><mi>p</mi><mi>i</mi><mi>a</mi><mo stretchy="false">(</mo><msub><mi>v</mi><mi>j</mi></msub><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">\Delta = entropia(parent)-\sum_{j=1}^{k}\frac{N(v_j)}{N}entropia(v_j)</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.68333em;vertical-align:0em;"></span><span class="mord">Δ</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathnormal">e</span><span class="mord mathnormal">n</span><span class="mord mathnormal">t</span><span class="mord mathnormal">ro</span><span class="mord mathnormal">p</span><span class="mord mathnormal">ia</span><span class="mopen">(</span><span class="mord mathnormal">p</span><span class="mord mathnormal">a</span><span class="mord mathnormal">re</span><span class="mord mathnormal">n</span><span class="mord mathnormal">t</span><span class="mclose">)</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">−</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span></span><span class="base"><span class="strut" style="height:3.2498900000000006em;vertical-align:-1.4137769999999998em;"></span><span class="mop op-limits"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:1.8361130000000006em;"><span style="top:-1.872331em;margin-left:0em;"><span class="pstrut" style="height:3.05em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathnormal mtight" style="margin-right:0.05724em;">j</span><span class="mrel mtight">=</span><span class="mord mtight">1</span></span></span></span><span style="top:-3.050005em;"><span class="pstrut" style="height:3.05em;"></span><span><span class="mop op-symbol large-op">∑</span></span></span><span style="top:-4.3000050000000005em;margin-left:0em;"><span class="pstrut" style="height:3.05em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathnormal mtight" style="margin-right:0.03148em;">k</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:1.4137769999999998em;"><span></span></span></span></span></span><span class="mspace" style="margin-right:0.16666666666666666em;"></span><span class="mord"><span class="mopen nulldelimiter"></span><span class="mfrac"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:1.427em;"><span style="top:-2.314em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.10903em;">N</span></span></span><span style="top:-3.23em;"><span class="pstrut" style="height:3em;"></span><span class="frac-line" style="border-bottom-width:0.04em;"></span></span><span style="top:-3.677em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.10903em;">N</span><span class="mopen">(</span><span class="mord"><span class="mord mathnormal" style="margin-right:0.03588em;">v</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.311664em;"><span style="top:-2.5500000000000003em;margin-left:-0.03588em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight" style="margin-right:0.05724em;">j</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.286108em;"><span></span></span></span></span></span></span><span class="mclose">)</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.686em;"><span></span></span></span></span></span><span class="mclose nulldelimiter"></span></span><span class="mord mathnormal">e</span><span class="mord mathnormal">n</span><span class="mord mathnormal">t</span><span class="mord mathnormal">ro</span><span class="mord mathnormal">p</span><span class="mord mathnormal">ia</span><span class="mopen">(</span><span class="mord"><span class="mord mathnormal" style="margin-right:0.03588em;">v</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.311664em;"><span style="top:-2.5500000000000003em;margin-left:-0.03588em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight" style="margin-right:0.05724em;">j</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.286108em;"><span></span></span></span></span></span></span><span class="mclose">)</span></span></span></span></span></div></figure><p id="154c148a-34cf-4638-b433-4e328ec563e9" class="">dove <style>@import url('https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.13.2/katex.min.css')</style><span data-token-index="0" contenteditable="false" class="notion-text-equation-token" style="user-select:all;-webkit-user-select:all;-moz-user-select:all"><span></span><span><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>N</mi></mrow><annotation encoding="application/x-tex">N</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.68333em;vertical-align:0em;"></span><span class="mord mathnormal" style="margin-right:0.10903em;">N</span></span></span></span></span><span>﻿</span></span> indica il numero di record del nodo genitore, <style>@import url('https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.13.2/katex.min.css')</style><span data-token-index="0" contenteditable="false" class="notion-text-equation-token" style="user-select:all;-webkit-user-select:all;-moz-user-select:all"><span></span><span><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>N</mi><mo stretchy="false">(</mo><msub><mi>v</mi><mi>j</mi></msub><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">N(v_j)</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1.036108em;vertical-align:-0.286108em;"></span><span class="mord mathnormal" style="margin-right:0.10903em;">N</span><span class="mopen">(</span><span class="mord"><span class="mord mathnormal" style="margin-right:0.03588em;">v</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.311664em;"><span style="top:-2.5500000000000003em;margin-left:-0.03588em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight" style="margin-right:0.05724em;">j</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.286108em;"><span></span></span></span></span></span></span><span class="mclose">)</span></span></span></span></span><span>﻿</span></span> indica il numero di record del figlio <style>@import url('https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.13.2/katex.min.css')</style><span data-token-index="0" contenteditable="false" class="notion-text-equation-token" style="user-select:all;-webkit-user-select:all;-moz-user-select:all"><span></span><span><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>j</mi></mrow><annotation encoding="application/x-tex">j</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.85396em;vertical-align:-0.19444em;"></span><span class="mord mathnormal" style="margin-right:0.05724em;">j</span></span></span></span></span><span>﻿</span></span>-esimo</p><h2 id="93c61e61-f1bf-404b-a8b6-eff56c964e33" class="">Come gestire l’overfitting di un modello</h2><p id="5320f3f1-3c3c-4351-8814-694099c4f30b" class="">Facendo <strong>pre-pruning </strong>o <strong>post-pruning </strong>ossia tagliando certi rami di un DT, così da rendere il DT più generico.</p><h2 id="ac5918ec-98ad-4cff-b94d-c226b82bc14f" class="">Valutare la bontà dei modelli</h2><p id="90264e4c-50e4-4c27-a4b8-6110965c8b15" class="">La cardinalità del learning set influenza l&#x27;accuratezza del modello appreso: se il campione è piccolo il modello risulta focalizzato e poco affidabile.</p><h3 id="a52d37e1-a658-4d6b-a544-aba20c36e0a9" class="">Metodi per valutare i test test</h3><ul id="8dd6c433-19cb-4773-a3ed-8581284d6dbd" class="bulleted-list"><li style="list-style-type:disc"><strong>holdout</strong>: partiziono i dati che ho in <em>test set</em> (che mi serviranno a valutare i risultati del modello) e <em>training set </em>(che mi serviranno a costruire il modello)</li></ul><ul id="2397765a-2c63-48dc-affd-78ab5fd2ec90" class="bulleted-list"><li style="list-style-type:disc"><strong>random subsampling: </strong><strong><em> </em></strong>le prestazioni potrebbero dipendere dalla partizione effettuata, se ne eseguono diverse e si fa la media</li></ul><ul id="8507b410-5734-4093-84a2-12f47d65def5" class="bulleted-list"><li style="list-style-type:disc"><strong>cross-validation: </strong>si fa una partizione ma si cerca di usare i dati in modo omogeneo</li></ul><ul id="794bc458-cfb2-414e-9b84-f6eb43be099c" class="bulleted-list"><li style="list-style-type:disc"><strong>bootstrap: </strong>se ci sono pochi dati partizionare può produrre insiemi troppo piccoli per essere significativi</li></ul><h3 id="f4fb71d0-95db-4d5b-8797-cb021927aac9" class="">Intervallo e livello di confidenza</h3><figure id="ccb1409d-0391-40c9-ac2b-b2bcf9e8a748" class="equation"><style>@import url('https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.13.2/katex.min.css')</style><div class="equation-container"><span class="katex-display"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><semantics><mrow><mi>P</mi><mo stretchy="false">(</mo><mi>a</mi><mo>≤</mo><mi>θ</mi><mo>≤</mo><mi>b</mi><mo stretchy="false">)</mo><mo>=</mo><mn>1</mn><mo>−</mo><mi>α</mi></mrow><annotation encoding="application/x-tex">P(a \le \theta \le b) = 1 - \alpha</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathnormal" style="margin-right:0.13889em;">P</span><span class="mopen">(</span><span class="mord mathnormal">a</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mrel">≤</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span></span><span class="base"><span class="strut" style="height:0.83041em;vertical-align:-0.13597em;"></span><span class="mord mathnormal" style="margin-right:0.02778em;">θ</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mrel">≤</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathnormal">b</span><span class="mclose">)</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span></span><span class="base"><span class="strut" style="height:0.72777em;vertical-align:-0.08333em;"></span><span class="mord">1</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">−</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span></span><span class="base"><span class="strut" style="height:0.43056em;vertical-align:0em;"></span><span class="mord mathnormal" style="margin-right:0.0037em;">α</span></span></span></span></span></div></figure><p id="92432f2d-3d41-495c-974b-24904b349d93" class="">dove <style>@import url('https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.13.2/katex.min.css')</style><span data-token-index="0" contenteditable="false" class="notion-text-equation-token" style="user-select:all;-webkit-user-select:all;-moz-user-select:all"><span></span><span><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false">[</mo><mi>a</mi><mo separator="true">,</mo><mi>b</mi><mo stretchy="false">]</mo></mrow><annotation encoding="application/x-tex">[a,b]</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mopen">[</span><span class="mord mathnormal">a</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.16666666666666666em;"></span><span class="mord mathnormal">b</span><span class="mclose">]</span></span></span></span></span><span>﻿</span></span> è l’<strong>intervallo di confidenza </strong>e <style>@import url('https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.13.2/katex.min.css')</style><span data-token-index="0" contenteditable="false" class="notion-text-equation-token" style="user-select:all;-webkit-user-select:all;-moz-user-select:all"><span></span><span><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>1</mn><mo>−</mo><mi>α</mi></mrow><annotation encoding="application/x-tex">1 - \alpha</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.72777em;vertical-align:-0.08333em;"></span><span class="mord">1</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">−</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span></span><span class="base"><span class="strut" style="height:0.43056em;vertical-align:0em;"></span><span class="mord mathnormal" style="margin-right:0.0037em;">α</span></span></span></span></span><span>﻿</span></span> è il <strong>livello di confidenza</strong></p><h1 id="1e1699a5-442c-497e-97cf-17752a2485f7" class="">Classificatori a regole </h1><figure class="block-color-gray_background callout" style="white-space:pre-wrap;display:flex" id="b0ddee6a-6bd7-4f22-9138-a5384df54685"><div style="font-size:1.5em"><span class="icon">📌</span></div><div style="width:100%">Una regola si attiva quando la descrizione di un&#x27;istanza soddisfa la condizione posta ad antecedente</div></figure><h2 id="ee87ea47-0baf-4796-9c51-7e0c39a5a7a3" class="">Due misure per stabilire la qualità di una regola</h2><div id="abe21438-91a8-40aa-a754-0d0592bf8558" class="column-list"><div id="4426c3b3-d91e-41ba-b59e-df4834a22348" style="width:50%" class="column"><h3 id="c35a71f3-16fc-4424-ac9f-21d04498f1bb" class=""><strong>Copertura</strong></h3><p id="d0788bb7-b5e4-4bab-988c-1aca9e976e4f" class="">indica il numero di istanze <strong>coperte</strong> dalla regola</p><figure id="1f5e5d06-c63b-46e5-b02a-9bebe9fc4819" class="equation"><style>@import url('https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.13.2/katex.min.css')</style><div class="equation-container"><span class="katex-display"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><semantics><mrow><mfrac><mrow><mi mathvariant="normal">∣</mi><mi>A</mi><mi mathvariant="normal">∣</mi></mrow><mrow><mi mathvariant="normal">∣</mi><mi>D</mi><mi mathvariant="normal">∣</mi></mrow></mfrac></mrow><annotation encoding="application/x-tex">\frac{|A|}{|D|}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:2.363em;vertical-align:-0.936em;"></span><span class="mord"><span class="mopen nulldelimiter"></span><span class="mfrac"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:1.427em;"><span style="top:-2.314em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord">∣</span><span class="mord mathnormal" style="margin-right:0.02778em;">D</span><span class="mord">∣</span></span></span><span style="top:-3.23em;"><span class="pstrut" style="height:3em;"></span><span class="frac-line" style="border-bottom-width:0.04em;"></span></span><span style="top:-3.677em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord">∣</span><span class="mord mathnormal">A</span><span class="mord">∣</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.936em;"><span></span></span></span></span></span><span class="mclose nulldelimiter"></span></span></span></span></span></span></div></figure><p id="039dd575-9644-4999-bbe0-c0f311fb993b" class="">dove <style>@import url('https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.13.2/katex.min.css')</style><span data-token-index="0" contenteditable="false" class="notion-text-equation-token" style="user-select:all;-webkit-user-select:all;-moz-user-select:all"><span></span><span><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi mathvariant="normal">∣</mi><mi>D</mi><mi mathvariant="normal">∣</mi></mrow><annotation encoding="application/x-tex">|D| </annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord">∣</span><span class="mord mathnormal" style="margin-right:0.02778em;">D</span><span class="mord">∣</span></span></span></span></span><span>﻿</span></span> indica la cardinalità del set, <style>@import url('https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.13.2/katex.min.css')</style><span data-token-index="0" contenteditable="false" class="notion-text-equation-token" style="user-select:all;-webkit-user-select:all;-moz-user-select:all"><span></span><span><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi mathvariant="normal">∣</mi><mi>A</mi><mi mathvariant="normal">∣</mi></mrow><annotation encoding="application/x-tex">|A|</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord">∣</span><span class="mord mathnormal">A</span><span class="mord">∣</span></span></span></span></span><span>﻿</span></span> il numero di istanze che soddisfano l’antecedente della regola</p></div><div id="d840d2f9-3ac2-49d3-abd3-310abfccc2ca" style="width:49.99999999999999%" class="column"><h3 id="3b2c3049-6ecd-4da8-87bc-399956d8a4fc" class=""><strong>Accuratezza </strong></h3><p id="ff6fedea-159d-458d-8a30-b362880d0d29" class="">indica il numero di istanze <strong>correttamente classificate</strong> dalla regola</p><figure id="a3d23258-0666-453e-8a04-66fed8dd1e3d" class="equation"><style>@import url('https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.13.2/katex.min.css')</style><div class="equation-container"><span class="katex-display"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><semantics><mrow><mfrac><mrow><mi mathvariant="normal">∣</mi><mi>A</mi><mo>∩</mo><mi>y</mi><mi mathvariant="normal">∣</mi></mrow><mrow><mi mathvariant="normal">∣</mi><mi>A</mi><mi mathvariant="normal">∣</mi></mrow></mfrac></mrow><annotation encoding="application/x-tex">\frac{|A \cap y|}{|A|}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:2.363em;vertical-align:-0.936em;"></span><span class="mord"><span class="mopen nulldelimiter"></span><span class="mfrac"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:1.427em;"><span style="top:-2.314em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord">∣</span><span class="mord mathnormal">A</span><span class="mord">∣</span></span></span><span style="top:-3.23em;"><span class="pstrut" style="height:3em;"></span><span class="frac-line" style="border-bottom-width:0.04em;"></span></span><span style="top:-3.677em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord">∣</span><span class="mord mathnormal">A</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">∩</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mord mathnormal" style="margin-right:0.03588em;">y</span><span class="mord">∣</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.936em;"><span></span></span></span></span></span><span class="mclose nulldelimiter"></span></span></span></span></span></span></div></figure><p id="8b539936-9d4a-48f5-94e4-1b9a4b44fd97" class="">dove indica <style>@import url('https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.13.2/katex.min.css')</style><span data-token-index="0" contenteditable="false" class="notion-text-equation-token" style="user-select:all;-webkit-user-select:all;-moz-user-select:all"><span></span><span><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi mathvariant="normal">∣</mi><mi>A</mi><mi mathvariant="normal">∣</mi></mrow><annotation encoding="application/x-tex">|A|</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord">∣</span><span class="mord mathnormal">A</span><span class="mord">∣</span></span></span></span></span><span>﻿</span></span> il numero di istanze che soddisfano l’antecedente della regola e <style>@import url('https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.13.2/katex.min.css')</style><span data-token-index="0" contenteditable="false" class="notion-text-equation-token" style="user-select:all;-webkit-user-select:all;-moz-user-select:all"><span></span><span><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi mathvariant="normal">∣</mi><mi>A</mi><mo>∩</mo><mi>y</mi><mi mathvariant="normal">∣</mi></mrow><annotation encoding="application/x-tex">|A \cap y|</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord">∣</span><span class="mord mathnormal">A</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">∩</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathnormal" style="margin-right:0.03588em;">y</span><span class="mord">∣</span></span></span></span></span><span>﻿</span></span> il numero delle istanze che soddisfano <style>@import url('https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.13.2/katex.min.css')</style><span data-token-index="0" contenteditable="false" class="notion-text-equation-token" style="user-select:all;-webkit-user-select:all;-moz-user-select:all"><span></span><span><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>A</mi></mrow><annotation encoding="application/x-tex">A</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.68333em;vertical-align:0em;"></span><span class="mord mathnormal">A</span></span></span></span></span><span>﻿</span></span> e che sono di classe <style>@import url('https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.13.2/katex.min.css')</style><span data-token-index="0" contenteditable="false" class="notion-text-equation-token" style="user-select:all;-webkit-user-select:all;-moz-user-select:all"><span></span><span><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>y</mi></mrow><annotation encoding="application/x-tex">y</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.625em;vertical-align:-0.19444em;"></span><span class="mord mathnormal" style="margin-right:0.03588em;">y</span></span></span></span></span><span>﻿</span></span></p></div></div><hr id="dc298157-111f-46aa-8cd8-da4d17aa1c9d"/><h2 id="8627debc-ba57-456d-a832-aaf212a589d9" class="">Produrre le regole</h2><p id="0bca28a3-4797-4d5a-b43e-8479febb51ab" class="">Le regole possono essere <strong>estratte dai dati</strong><strong> </strong>oppure <strong>estratte da altri classificatori</strong><strong> </strong>(quali i DT ad esempio)</p><h2 id="b413bc97-d2e8-44cb-a983-9bfd9cd18708" class="">Learn one rule: un esempio di sequential covering</h2><ol type="1" id="f4f6960e-9935-46d6-87aa-4f7036c905bb" class="numbered-list" start="1"><li>si decide un <strong>ordinamento delle classi</strong> con un qualche criterio</li></ol><ol type="1" id="55728020-10ef-4342-b7d9-5432c369dd60" class="numbered-list" start="2"><li>seguendo l&#x27;ordinamento ci si focalizza su <strong>una classe alla volta</strong> e si creano le regole di classificazione</li></ol><figure class="block-color-gray_background callout" style="white-space:pre-wrap;display:flex" id="bddfcc6c-9bc2-4456-9c4f-e38c69967e03"><div style="font-size:1.5em"><span class="icon">📌</span></div><div style="width:100%"><strong>Learn one rule</strong> è una funzione che permette di produrre una nuova regola per induzione da esempi. Si produce una regola iniziale e poi la si raffina nei passi successivi</div></figure><h2 id="fa760a23-6524-4681-be31-1635e98ddc85" class="">Strategie di raffinamento</h2><div id="21ea1654-0a35-4d8b-936d-39c953db5801" class="column-list"><div id="53a533e0-7052-4e5f-a9ac-1f6009eda86a" style="width:50%" class="column"><h3 id="77067ca7-bbd9-46d0-a775-33e0c4c584d5" class="">General to specific</h3><figure id="3df4c9ca-2d7e-4228-bd1a-e48bbda9be54" class="image"><a href="Agenti%20e%20apprendimento%20automatico%20062ce70996f94dc8bd665204776ec8c3/Untitled%2013.png"><img style="width:958px" src="Agenti%20e%20apprendimento%20automatico%20062ce70996f94dc8bd665204776ec8c3/Untitled%2013.png"/></a></figure></div><div id="c1b6643d-b565-4fe0-9df4-190129edb494" style="width:50%" class="column"><h3 id="345ff4e1-746b-49af-a891-2d8e59dda901" class="">Specific to general</h3><figure id="657f53d3-07dd-4500-af7b-5bb884af8972" class="image"><a href="Agenti%20e%20apprendimento%20automatico%20062ce70996f94dc8bd665204776ec8c3/Untitled%2014.png"><img style="width:1506px" src="Agenti%20e%20apprendimento%20automatico%20062ce70996f94dc8bd665204776ec8c3/Untitled%2014.png"/></a></figure></div></div><hr id="2f6ff30e-b0ec-452f-8ed7-02830cf8f040"/><h2 id="a4b7ac33-e33a-4c8f-8ed9-0f6927831b5d" class="">Eager vs lazy learners</h2><div id="9ec3913f-d565-411d-a505-92de81e7ea66" class="column-list"><div id="9c3e6a35-80e4-4ae6-8895-57ec9601f954" style="width:43.75%" class="column"><h3 id="cfecd283-7abc-424a-adee-3a9438f08d48" class="">Eager</h3><figure id="770281e9-ee84-4e8e-8557-88b7cc54a771" class="image"><a href="Agenti%20e%20apprendimento%20automatico%20062ce70996f94dc8bd665204776ec8c3/Untitled%2015.png"><img style="width:336px" src="Agenti%20e%20apprendimento%20automatico%20062ce70996f94dc8bd665204776ec8c3/Untitled%2015.png"/></a></figure><p id="0d1caaa3-be70-46ba-915e-ff25a97229e0" class="">Dati gli esempi si mettono subito all&#x27;opera per costruire un modello che in futuro useranno per classificare nuove istanze</p></div><div id="c476b387-61f1-4443-bbc3-99b4a73dac9d" style="width:56.25%" class="column"><h3 id="ead37991-d163-4065-8e49-13b543e1cba9" class="">Lazy</h3><figure id="c3d43abf-8acc-4968-89e1-1d9cc5a63523" class="image"><a href="Agenti%20e%20apprendimento%20automatico%20062ce70996f94dc8bd665204776ec8c3/Untitled%2016.png"><img style="width:570px" src="Agenti%20e%20apprendimento%20automatico%20062ce70996f94dc8bd665204776ec8c3/Untitled%2016.png"/></a></figure><p id="1ef45f62-0a06-4e57-9140-f883d7edfa56" class="">Dati gli esempi non se ne fanno nulla finché non viene il momento di classificare nuove istanze</p></div></div><hr id="c77b17c7-9b1f-46f9-a136-103796f45643"/><h2 id="1259df06-3c69-4a16-a48c-bcd6f3ab7d32" class="">K-nearest neighbour</h2><figure id="a7225f94-d6dc-4b63-a98c-33203e6096ec" class="image"><a href="Agenti%20e%20apprendimento%20automatico%20062ce70996f94dc8bd665204776ec8c3/Untitled%2017.png"><img style="width:1461px" src="Agenti%20e%20apprendimento%20automatico%20062ce70996f94dc8bd665204776ec8c3/Untitled%2017.png"/></a></figure><figure id="643542f2-a966-4207-9c2c-b8bb8017da8a" class="image"><a href="Agenti%20e%20apprendimento%20automatico%20062ce70996f94dc8bd665204776ec8c3/Untitled%2018.png"><img style="width:384px" src="Agenti%20e%20apprendimento%20automatico%20062ce70996f94dc8bd665204776ec8c3/Untitled%2018.png"/></a></figure><p id="6faf863c-b48b-47e8-96a6-1ee38be703e0" class="">Gli esempi sono visti come <strong>punti </strong>in uno spazio con <style>@import url('https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.13.2/katex.min.css')</style><span data-token-index="0" contenteditable="false" class="notion-text-equation-token" style="user-select:all;-webkit-user-select:all;-moz-user-select:all"><span></span><span><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>N</mi></mrow><annotation encoding="application/x-tex">N </annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.68333em;vertical-align:0em;"></span><span class="mord mathnormal" style="margin-right:0.10903em;">N</span></span></span></span></span><span>﻿</span></span> dimensioni, dove <style>@import url('https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.13.2/katex.min.css')</style><span data-token-index="0" contenteditable="false" class="notion-text-equation-token" style="user-select:all;-webkit-user-select:all;-moz-user-select:all"><span></span><span><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>N</mi></mrow><annotation encoding="application/x-tex">N </annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.68333em;vertical-align:0em;"></span><span class="mord mathnormal" style="margin-right:0.10903em;">N</span></span></span></span></span><span>﻿</span></span> è il numero degli attributi descrittivi. Le nuove istanze sono classificate sulla base di un <strong>criterio di vicinanza</strong> a quelle memorizzate dal sistema.</p><p id="c0d9566b-4c73-4bf2-9ee8-6ec542b364c6" class="">Se k <strong>è piccolo </strong>si corre il rischio di <strong>overfitting, </strong>se k <strong>è grande</strong> si corre il rischio di <strong>underfitting</strong>. </p><h1 id="16502062-efc0-48f9-b2e6-6ae286b42e2f" class="">Reti neurali</h1><p id="ad560e2e-7031-4d80-b485-a25148bb2881" class="">Un perceptron è in grado di calcolare una <strong>funzione di attivazione </strong>così formulata:</p><figure id="637600b2-eb80-4375-984f-d3c5a1eaf346" class="image"><a href="Agenti%20e%20apprendimento%20automatico%20062ce70996f94dc8bd665204776ec8c3/Untitled%2019.png"><img style="width:384px" src="Agenti%20e%20apprendimento%20automatico%20062ce70996f94dc8bd665204776ec8c3/Untitled%2019.png"/></a></figure><figure id="6f79e520-868c-4eac-9e8c-adb43033c264" class="equation"><style>@import url('https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.13.2/katex.min.css')</style><div class="equation-container"><span class="katex-display"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><semantics><mrow><mi>Y</mi><mo>=</mo><mi>f</mi><mo stretchy="false">(</mo><mi>n</mi><mi>e</mi><mi>t</mi><mo stretchy="false">)</mo><mo>=</mo><mfrac><mn>1</mn><mrow><mn>1</mn><mo>+</mo><msup><mi>e</mi><mrow><mo>−</mo><mi>α</mi><mo>∗</mo><mo stretchy="false">(</mo><mi>n</mi><mi>e</mi><mi>t</mi><mo>−</mo><mi>θ</mi><mo stretchy="false">)</mo></mrow></msup></mrow></mfrac></mrow><annotation encoding="application/x-tex">Y = f(net) = \frac{1}{1+e^{-\alpha*(net-\theta)}}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.68333em;vertical-align:0em;"></span><span class="mord mathnormal" style="margin-right:0.22222em;">Y</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathnormal" style="margin-right:0.10764em;">f</span><span class="mopen">(</span><span class="mord mathnormal">n</span><span class="mord mathnormal">e</span><span class="mord mathnormal">t</span><span class="mclose">)</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span></span><span class="base"><span class="strut" style="height:2.10877em;vertical-align:-0.78733em;"></span><span class="mord"><span class="mopen nulldelimiter"></span><span class="mfrac"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:1.32144em;"><span style="top:-2.2960000000000003em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord">1</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mord"><span class="mord mathnormal">e</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.814em;"><span style="top:-2.989em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mtight">−</span><span class="mord mathnormal mtight" style="margin-right:0.0037em;">α</span><span class="mbin mtight">∗</span><span class="mopen mtight">(</span><span class="mord mathnormal mtight">n</span><span class="mord mathnormal mtight">e</span><span class="mord mathnormal mtight">t</span><span class="mbin mtight">−</span><span class="mord mathnormal mtight" style="margin-right:0.02778em;">θ</span><span class="mclose mtight">)</span></span></span></span></span></span></span></span></span></span></span><span style="top:-3.23em;"><span class="pstrut" style="height:3em;"></span><span class="frac-line" style="border-bottom-width:0.04em;"></span></span><span style="top:-3.677em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord">1</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.78733em;"><span></span></span></span></span></span><span class="mclose nulldelimiter"></span></span></span></span></span></span></div></figure><p id="84c18a09-e354-4dda-9892-189b68789475" class="">dove <style>@import url('https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.13.2/katex.min.css')</style><span data-token-index="0" contenteditable="false" class="notion-text-equation-token" style="user-select:all;-webkit-user-select:all;-moz-user-select:all"><span></span><span><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>n</mi><mi>e</mi><mi>t</mi><mo>=</mo><msubsup><mo>∑</mo><mrow><mi>i</mi><mo>=</mo><mn>1</mn></mrow><mi>n</mi></msubsup><msub><mi>w</mi><mi>i</mi></msub><msub><mi>X</mi><mi>i</mi></msub></mrow><annotation encoding="application/x-tex">net = \sum_{i=1}^{n}w_iX_i</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.61508em;vertical-align:0em;"></span><span class="mord mathnormal">n</span><span class="mord mathnormal">e</span><span class="mord mathnormal">t</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span></span><span class="base"><span class="strut" style="height:1.104002em;vertical-align:-0.29971000000000003em;"></span><span class="mop"><span class="mop op-symbol small-op" style="position:relative;top:-0.0000050000000000050004em;">∑</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.804292em;"><span style="top:-2.40029em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathnormal mtight">i</span><span class="mrel mtight">=</span><span class="mord mtight">1</span></span></span></span><span style="top:-3.2029em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathnormal mtight">n</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.29971000000000003em;"><span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.16666666666666666em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.02691em;">w</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.31166399999999994em;"><span style="top:-2.5500000000000003em;margin-left:-0.02691em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight">i</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.07847em;">X</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.31166399999999994em;"><span style="top:-2.5500000000000003em;margin-left:-0.07847em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight">i</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span></span></span></span></span><span>﻿</span></span> indica la somma di tutti i pesi degli input del perceptron, <style>@import url('https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.13.2/katex.min.css')</style><span data-token-index="0" contenteditable="false" class="notion-text-equation-token" style="user-select:all;-webkit-user-select:all;-moz-user-select:all"><span></span><span><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>θ</mi></mrow><annotation encoding="application/x-tex">\theta</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.69444em;vertical-align:0em;"></span><span class="mord mathnormal" style="margin-right:0.02778em;">θ</span></span></span></span></span><span>﻿</span></span> indica la <strong>soglia </strong>o <strong>bias, </strong><strong><style>@import url('https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.13.2/katex.min.css')</style><span data-token-index="0" contenteditable="false" class="notion-text-equation-token" style="user-select:all;-webkit-user-select:all;-moz-user-select:all"><span></span><span><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>α</mi></mrow><annotation encoding="application/x-tex">\alpha</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.43056em;vertical-align:0em;"></span><span class="mord mathnormal" style="margin-right:0.0037em;">α</span></span></span></span></span><span>﻿</span></span></strong><strong> </strong>indica la pendenza della sigmoide</p><h2 id="69333a76-06c4-47df-99fd-2fc841234ada" class="">A cosa serve un perceptron?</h2><figure class="block-color-gray_background callout" style="white-space:pre-wrap;display:flex" id="bf1089a7-0a1c-42ad-afa1-c16ed37df285"><div style="font-size:1.5em"><span class="icon">📌</span></div><div style="width:100%">Un perceptron (che apprende da un learning set supervisionato) codifica un test lineare</div></figure><p id="087c3593-07f7-4ec7-b97f-76546032b964" class="">Ciò che cade <strong>al di sopra</strong> dell&#x27;iperpiano codificato dai suoi pesi fa <strong>attivare il neurone</strong>, ciò che è sotto non fa attivare il neurone.</p><p id="e83b248c-0aac-41af-8349-8208452e0fbf" class="">I <strong>pesi </strong>sulle connessioni in ingresso definiscono la <strong>posizione</strong> e la <strong>pendenza</strong> dell&#x27;iperpiano nello spazio in cui sono definiti gli input. I pesi caratterizzano i neuroni e costituiscono la conoscenza del neurone.</p><h1 id="a5cd187f-5d9d-43be-ab65-80baf8bdaad6" class="">Definizioni</h1><ul id="d9a18f65-55a6-4902-a7f7-e5f091656f23" class="toggle"><li><details open=""><summary>Agente</summary><p id="72382dee-ea69-4d92-a0ed-baa1ec6a942e" class="">astrazione che rappresenta un qualsiasi sistema che percepisce il proprio ambiente tramite dei sensori ed agisce su di esso tramite degli attuatori</p></details></li></ul><ul id="21931b56-5e2c-479f-918e-0e6936a4f0eb" class="toggle"><li><details open=""><summary>Sequenza percettiva</summary><p id="33d80532-3568-429b-a57c-d2a96fbbdc3e" class="">storia completa delle percezioni di un agente</p></details></li></ul><ul id="9be39c02-ac41-4430-b605-915bfa1f878f" class="toggle"><li><details open=""><summary>Task environment</summary><p id="2126fd5d-e0e5-4a22-abeb-eea903032a17" class="">è il contesto in cui l’agente è inserito</p></details></li></ul><ul id="769e5460-e2c7-4c63-ad95-22315cbd6e54" class="toggle"><li><details open=""><summary>Protocollo di interazione</summary><p id="93cbebce-0fb1-4c5f-beec-a866f97a2313" class="">è uno schema che permette di coordinare due o più agenti, tipicamente sfruttando uno scambio di messaggi come strumento di coordinazione</p></details></li></ul><ul id="b4ab9b3e-7a5a-41b2-bd28-886a61b4bbce" class="toggle"><li><details open=""><summary>Apprendimento supervisionato</summary><p id="65d40a7c-5080-4f6a-a0e9-cae1d49e1dba" class="">gli esempi dal quale astrarre le definizioni delle classi <strong>hanno associata la classe</strong> a cui appartengono</p></details></li></ul><ul id="636872cf-1ce2-46e4-94d7-4370c86fe50e" class="toggle"><li><details open=""><summary>Learning set</summary><p id="6cafe9a6-830f-4d83-908d-bbcce3ff1ab4" class="">collezione di dati usati per svolgere il compito di apprendimento</p></details></li></ul><ul id="51fc65c3-e533-4ce6-8425-4983e055e65f" class="toggle"><li><details open=""><summary>Imparare per induzione</summary><p id="c9a8fc08-7c72-4c26-999f-b16cb4438161" class="">generalizzare gli esempi contenuti in un learning set</p></details></li></ul><ul id="21d4f16e-346a-4d10-bde9-6b1a4138fe01" class="toggle"><li><details open=""><summary>Rasoio di Occam</summary><p id="5d1acd76-3f39-47eb-9050-8d60b2cff861" class="">a parità di assunzioni, la spiegazione più semplice è da preferire</p></details></li></ul><ul id="4b327aa3-9cca-475e-8ec2-14ddec897159" class="toggle"><li><details open=""><summary>Overfitting</summary><p id="f904fe00-1ca7-4f89-bf21-c40fe3800897" class="">si ha <strong>overfitting </strong>quando il modello appreso è troppo specifico</p></details></li></ul><ul id="fb576faf-6ede-4b29-9951-5a4bd47224e6" class="toggle"><li><details open=""><summary>Underfitting</summary><p id="af0035be-cbbf-421d-b1da-38bcc5c1d1d1" class="">contrario di overfitting, ossia quando il modello è troppo generale e non dà nessuna informazione</p></details></li></ul><ul id="14a97bd0-c697-4a1c-9ce5-d80971a026b9" class="toggle"><li><details open=""><summary>Pre-pruning</summary><p id="7136c7a8-b293-4465-9949-facb736e096c" class="">la costruzione del DT si interrompe prima che l&#x27;albero sia completo. Si impone una <strong>regola di terminazione</strong> più restrittiva</p></details></li></ul><ul id="43805158-adc9-4240-b0ed-f14409ef7804" class="toggle"><li><details open=""><summary>Post-pruning</summary><p id="eb201d78-cb4f-4463-9cf7-f54e85c313a9" class="">prima si costruisce l&#x27;albero poi si potano alcuni rami, trasformando alcuni nodi interni in foglie</p></details></li></ul><ul id="dc31284e-c67d-47eb-9bcb-10babd7f5efb" class="toggle"><li><details open=""><summary>Classificatori</summary><p id="399ba940-afed-4269-bac3-22b5f4dac5a1" class="">è una <strong>mappatura </strong>da uno spazio (discreto o continuo) di <em>feature </em><style>@import url('https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.13.2/katex.min.css')</style><span data-token-index="0" contenteditable="false" class="notion-text-equation-token" style="user-select:all;-webkit-user-select:all;-moz-user-select:all"><span></span><span><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>X</mi></mrow><annotation encoding="application/x-tex">X</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.68333em;vertical-align:0em;"></span><span class="mord mathnormal" style="margin-right:0.07847em;">X</span></span></span></span></span><span>﻿</span></span> a un insieme di etichette <style>@import url('https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.13.2/katex.min.css')</style><span data-token-index="0" contenteditable="false" class="notion-text-equation-token" style="user-select:all;-webkit-user-select:all;-moz-user-select:all"><span></span><span><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>Y</mi></mrow><annotation encoding="application/x-tex">Y</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.68333em;vertical-align:0em;"></span><span class="mord mathnormal" style="margin-right:0.22222em;">Y</span></span></span></span></span><span>﻿</span></span>. Esempi di classificatori basati sull&#x27;apprendimento automatico sono le <em>reti neurali</em>, i <em>classificatori bayesiani</em> e gli <em>alberi di decisione</em>.</p></details></li></ul><ul id="d9775ca5-8f54-420f-9452-7bc1212a1396" class="toggle"><li><details open=""><summary>Intervallo di confidenza</summary><p id="64158c38-ac93-44b2-aa20-0537303540c2" class="">intervallo a cui si pensa un certo valore reale e ignoto appartenga</p></details></li></ul><ul id="e86815d1-0018-4c96-88fc-52c2eac15ed0" class="toggle"><li><details open=""><summary>Livello di confidenza</summary><p id="63d4ca13-d6eb-42d7-b3c2-d011d7ff11b0" class="">probabilità che il valore reale e ignoto sia <strong>effettivamente compreso</strong> nell&#x27;intervallo dato</p></details></li></ul><ul id="bf2cb6ea-fd5a-4745-af1d-10d51fd17ac1" class="toggle"><li><details open=""><summary>Regole mutuamente esclusive</summary><p id="e071ef97-756b-4270-b811-17389a349a71" class="">ogni regola è attivata da un insieme di esempi disgiunto dagli insiemi di esempi che attivano le altre regole</p></details></li></ul><ul id="abaa80da-ae0f-4fa3-8440-d022353e7ed0" class="toggle"><li><details open=""><summary>Regole esaustive</summary><p id="246ecad0-9e98-4309-99c3-ef618ba5e313" class="">tutte le istanze saranno catturate da qualche regola</p></details></li></ul><ul id="f9d77e84-3a4f-47a4-adc9-8307def8e033" class="toggle"><li><details open=""><summary>Perceptron</summary><p id="06ba9636-cacf-42f2-bb89-e0191fc8ecd7" class="">Un perceptron è un elemento computazionale, dotato di una piccola memoria in grado di calcolare una <strong>funzione di attivazione</strong></p></details></li></ul></div></article></body></html>

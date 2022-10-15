@@ -1,0 +1,21 @@
+name: Pandoc
+
+on: push
+
+jobs:
+  convert_via_pandoc:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: create file list
+        id: files_list
+        run: |
+          mkdir output  # create output dir
+          echo "::set-output name=files::$(cat .github/workflows/files.txt)"
+      - uses: docker://pandoc/latex:2.9
+        with:
+          args: -V geometry:margin=1in --output=output/result.pdf ${{ steps.files_list.outputs.files }}
+      - uses: actions/upload-artifact@master
+        with:
+          name: output
+          path: output
