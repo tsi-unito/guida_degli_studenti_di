@@ -10,66 +10,70 @@ laurea [magistrale](http://magistrale.educ.di.unito.it/index.php/offerta-formati
 
 Tabella di traduzione (per le sole materie presenti in questa directory) da sigla a nome.
 
-| SIGLA     |                         Nome Completo                         |
-|-----------|:-------------------------------------------------------------:|
-| AAUT      |                   Apprendimento Automatico                    |
-| AINT      |                      Agenti Intelligenti                      |
-| ALGCOMPL  |                    Algoritmi e Complessità                    |
-| BIOINF    |                        Bioinformatica                         |
-| ARCH2     |               Architetture degli Elaboratori 2                |
-| ASD       |                  Algoritmi e Strutture Dati                   |
-| AVRC      |          Analisi e Visualizzazione di Reti Complesse          |
-| BD        |                         Basi di Dati                          |
-| BIOINF    |                        Bioinformatica                         |
-| CALCCOMPL |                  Calcolabilità & Complessità                  |
-| COMPLAP   |             Complementi di Analisi e Probabilità              |
-| DBM       |                   Basi di Dati Multimediali                   |
-| DIRITTO   |                            Diritto                            |
-| EGINB     |          Economia e Gestione delle Imprese Net-Based          |
-| ELIVA     |        Elaborazione di Immagini e Visione Artificiale         |
-| EPS       |             Elementi di Probabilità e Statistica              |
-| ESP       |                   Etica, Società e Privacy                    |
-| GR        |                      Gestione delle Reti                      |
-| IALAB     |            Intelligenza Artificiale e Laboratorio             |
-| INFTHEORY |                   Teoria dell'Informazione                    |
-| IUMTWEB   |          Interazione Uomo Macchina e Tecnologie Web           |
-| MAADB     |        Modelli e Architetture Avanzate di Basi di Dati        |
-| MCAD      |         Modelli Concorrenti ed Algoritmi Distribuiti          |
-| MDPA      |           Modellazione di Dati e Processi Aziendali           |
-| METNUM    |                        Metodi Numerici                        |
-| MFI       |               Metodi Formali per l'Informatica                |
-| MODSEM    |         Modellazione Concettuale per il Web Semantico         |
-| OC        |                  Ottimizzazione Combinatoria                  |
-| PROGMOB   |                     Programmazione Mobile                     |
-| RETI2     |                            Reti 2                             |
-| RNDL      |                 Reti Neurali e Deep Learning                  |
-| SAS       |                Sviluppo Applicazioni Software                 |
-| SIC1/2    |                   Sicurezza 1, Sicurezza 2                    |
-| SISINT    |                     Sistemi Intelligenti                      |
-| SISRV     |                  Sistemi di Realtà Virtuale                   |
-| SO        |                       Sistemi Operativi                       |
-| STORIA    |                    Storia dell'Informatica                    |
-| TAASS     | Tecniche e Architetture Avanzate per lo Sviluppo del Software |
-| TLN       |              Tecnologie del Linguaggio Naturale               |
-| TWEB      |                        Tecnologie Web                         |
-| VPC       |              Verifica dei Programmi Concorrenti               |
+| SIGLA                    |                         Nome Completo                         |
+|--------------------------|:-------------------------------------------------------------:|
+| [AAUT](./AAUT)           |                   Apprendimento Automatico                    |
+| [AINT](./AINT)           |                      Agenti Intelligenti                      |
+| [ALGCOMPL](./ALGCOMPL)   |                    Algoritmi e Complessità                    |
+| [ARCH](./ARCH)           |                Architetture degli Elaboratori                 |
+| [BIOINF](./BIOINF)       |                        Bioinformatica                         |
+| [ARCH2](./ARCH2)         |               Architetture degli Elaboratori 2                |
+| [ASD](./ASD)             |                  Algoritmi e Strutture Dati                   |
+| [AVRC](./AVRC)           |          Analisi e Visualizzazione di Reti Complesse          |
+| [BD](./BD)               |                         Basi di Dati                          |
+| [BIOINF](./BIOINF)       |                        Bioinformatica                         |
+| [CALCCOMPL](./CALCCOMPL) |                  Calcolabilità & Complessità                  |
+| [COMPLAP](./COMPLAP)     |             Complementi di Analisi e Probabilità              |
+| [DBM](./DBM)             |                   Basi di Dati Multimediali                   |
+| [DIRITTO](./DIRITTO)     |                            Diritto                            |
+| [EGINB](./EGINB)         |          Economia e Gestione delle Imprese Net-Based          |
+| [ELIVA](./ELIVA)         |        Elaborazione di Immagini e Visione Artificiale         |
+| [EPS](./EPS)             |             Elementi di Probabilità e Statistica              |
+| [ESP](./ESP)             |                   Etica, Società e Privacy                    |
+| [GR](./GR)               |                      Gestione delle Reti                      |
+| [IALAB](./IALAB)         |            Intelligenza Artificiale e Laboratorio             |
+| [INFTHEORY](./INFTHEORY) |                   Teoria dell'Informazione                    |
+| [IUMTWEB](./IUMTWEB)     |          Interazione Uomo Macchina e Tecnologie Web           |
+| [MAADB](./MAADB)         |        Modelli e Architetture Avanzate di Basi di Dati        |
+| [MCAD](./MCAD)           |         Modelli Concorrenti ed Algoritmi Distribuiti          |
+| [MDPA](./MDPA)           |           Modellazione di Dati e Processi Aziendali           |
+| [METNUM](./METNUM)       |                        Metodi Numerici                        |
+| [MFI](./MFI)             |               Metodi Formali per l'Informatica                |
+| [MODSEM](./MODSEM)       |         Modellazione Concettuale per il Web Semantico         |
+| [OC](./OC)               |                  Ottimizzazione Combinatoria                  |
+| [PROG2](./PROG2)         |                       Programmazione 2                        |
+| [PROGMOB](./PROGMOB)     |                     Programmazione Mobile                     |
+| [RETI2](./RETI2)         |                            Reti 2                             |
+| [RNDL](./RNDL)           |                 Reti Neurali e Deep Learning                  |
+| [SAS](./SAS)             |                Sviluppo Applicazioni Software                 |
+| [SIC1](./SIC1)           |                          Sicurezza 1                          |
+| [SIC2](./SIC2)           |                          Sicurezza 2                          |
+| [SISINT](./SISINT)       |                     Sistemi Intelligenti                      |
+| [SISRV](./SISRV)         |                  Sistemi di Realtà Virtuale                   |
+| [SO](./SO)               |                       Sistemi Operativi                       |
+| [STORIA](./STORIA)       |                    Storia dell'Informatica                    |
+| [TAASS](./TAASS)         | Tecniche e Architetture Avanzate per lo Sviluppo del Software |
+| [TLN](./TLN)             |              Tecnologie del Linguaggio Naturale               |
+| [TWEB](./TWEB)           |                        Tecnologie Web                         |
+| [VPC](./VPC)             |              Verifica dei Programmi Concorrenti               |
 
 ## Come contribuire?
 
 Quando effettui una PR in una di queste sezioni, per favore assicurati che i seguenti requisiti siano soddisfatti:
 
-- Se stai aggiungendo una cartella per un nuovo corso, deve contenere un file README.md al suo interno.
-- Ogni README.md contenuto nella cartella deve avere delle istruzioni su come contribuire, simili a queste e il
-  contenuto della cartella diviso per tipologia dei file contenuti
+- Se stai aggiungendo una cartella per un nuovo corso, deve contenere un file README.md al suo interno. Deve avere uno stile simile al [template](TEMPLATE.md).
 - Ogni cartella ha il nome della materia nel formato ristretto (ovvero Sistemi Operativi deve essere SO). Se non si è
   sicuri del nome nel formato ristretto, visitare la pagina dell'insegnamento o degli orari, dove sono indicati.
 - Per quanto riguarda il contenuto, siete liberi di contribuire con appunti, PDF e risorse varie, sempre tenendo a mente
   le regole indicate nel README della sezione principale.
+- Il materiale caricato nella cartella di un corso deve essere suddiviso in funzione del tipo (Appunti, Domande, Prove d'esame, Esercizi). Creare sottocartelle se è strettamente necessario.
+- Ogni risorsa deve essere descritta nel README del corso.
 - Se volete contribuire con progetti d'esame, è consigliato linkarli nel README della materia, in una tabella apposita,
   indicando l'anno accademico. In alternativa è accettata anche una push del progetto (NON compresso) in una
   sottocartella apposita, caricando ESCLUSIVAMENTE il sorgente (e annesse relazioni), evitando file di output o
   materiale compilato. Se scegliete questa via per aggiungere il vostro progetto, per favore limitatevi a un solo
   commit per l'intero lavoro, se possibile.
+- Il README deve contenere testo in italiano, con punteggiatura e grammatica consone.
 
 Raccomandiamo sempre di evitare files in formati proprietari per condividere appunti (non sono comunque vietati); in
 ogni caso sono preferibili appunti in formato Markdown, PDF, LaTeX (per varie motivazioni, tra cui la versionabilità)
