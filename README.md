@@ -4,7 +4,7 @@
 
 <span style="display: flex; align-items:flex-end">
   <h1>La guida <strong>degli</strong> Studenti</h1>
-  <img style="vertical-align: middle" src="./encyclopedia-1.1s-120px.svg" alt="Pila di libri"/>
+  <img style="vertical-align: middle" src="./images/encyclopedia-1.1s-120px.svg" alt="Pila di libri"/>
 </span>
 
 ## Dipartimento d'Informatica, UniTO
