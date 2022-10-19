@@ -2,4 +2,4 @@
 
 ## Appunti
 
-Attualmente sono disponibili gli appunti di Shtjefni Bryan (AA non specificato).
+Attualmente sono disponibili gli [appunti](Appunti/Appunti_Bryan.pdf) di Shtjefni Bryan (AA non specificato).
