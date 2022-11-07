@@ -91,12 +91,14 @@ Dentro il singolo tier, le distro non sono in un particolare ordine, giusto per 
 #### S-Tier
 
 - Pop_OS
-- Nobara Linux
 - ArcoLinux (advanced)
 
 #### A-Tier
 
-- Fedora
+- Nobara Linux
+- Solus
+- Nitrux
+- ZorinOS
 - Linux Mint
 - Xubuntu
 - MX Linux
@@ -108,12 +110,11 @@ Dentro il singolo tier, le distro non sono in un particolare ordine, giusto per 
 #### B-Tier
 
 - Ubuntu
+- Fedora
 - Lubuntu
 - EndeavourOS
 - RebornOS
 - Garuda Linux
-- Nitrux
-- ZorinOS
 - CutefishOS
 - Kubuntu
 - Elementary OS
@@ -126,6 +127,7 @@ Dentro il singolo tier, le distro non sono in un particolare ordine, giusto per 
 
 #### ?-Tier (non installarle a meno che tu non sia effettivamente a conoscenza del perché di queste distro)
 
+- Arch Linux
 - Parrot
 - Kali Linux
 - Qubes OS
@@ -150,6 +152,7 @@ Una chiavetta, un computer BARE METAL (non una VM, quindi) su cui installare la 
 
 ### Software per burnare la ISO consigliati
 
+- Popsicle (il migliore, ma non esiste per Windows/MacOS)
 - Balena Etcher (very yes, much consigliato)
 - UNetbootin (yes.)
 - LinuxLiveUSB-Creator (anche se il progetto non è più mantenuto)
@@ -169,44 +172,53 @@ Una chiavetta, un computer BARE METAL (non una VM, quindi) su cui installare la 
 - Obsidian (Per prendere appunti)
 - Sioyek (Per leggere paper accademici)
 - Steam (Gaming)
-- Thunderbird (Per le mail)
+- Betterbird (Per le mail)
 - Visual Studio Code (Per il codice)
 - VLC (Per video ed audio)
 
 ### App basatissime che potrebbero aprirti la mente
 
-- Librewolf
-- aria2
-- youtube-dlp
-- qrcp
-- rsync
-- Cryptomator
-- FileZilla
-- peerflix
-- Kitty
-- RustDesk
-- qimgv
-- ImageMagick
-- oxipng e Guetzli
-- Flameshot
+- Librewolf (Fork di Firefox, privacy-focused)
+- aria2 (Cli torrent client)
+- youtube-dlp (youtube-dl ma meglio)
+- qrcp (Trasferimento file da telefono a pc reso facile)
+- rsync (Il programma di Dio)
+- Cryptomator (Zero-trust encryption per il cloud)
+- FileZilla (FTP made easy)
+- peerflix (shh...)
+- Kitty (Un terminale decente per il 202x)
+- RustDesk (TeamViewer ma FOSS)
+- qimgv (Visualizzatore di immagini veloce e leggero)
+- ImageMagick (Modifica di immagini, programma FONDAMENTALE)
+- oxipng e Guetzli (Conversione di immagini)
+- Flameshot (Screenshot)
 - discord-screenaudio
+
+## Informazioni importanti subito dopo l'installazione di una qualsiasi distribuzione Linux
+
+1. Update e riavvia: non tutte le iso scaricate sono aggiornate, anzi!
+   1. Per i sistemi Ubuntu-based: `sudo apt update && sudo apt upgrade && sudo apt autoremove && sudo reboot`
+   2. Per i sistemi Arch-based: `sudo pacman -Syyu && sudo reboot`
+2. Installa un host blocker, come [hblock](https://github.com/hectorm/hblock).
+
+## FAQ
 
 ### Non trovo l'app X che invece avevo su Windows, come faccio?
 
 [Tiè](https://wiki.archlinux.org/title/List_of_applications).
 
-## Ma su Windows potevo fare X e invece su Linux non posso, e ora?
+### Ma su Windows potevo fare X e invece su Linux non posso, e ora?
 
 [Clicca qui](https://www.youtube.com/watch?v=KkLwnCKkf5I).
 
-## Si, però, su Windows potevo giocare ad X senza troppi problemi
+### Si, però, su Windows potevo giocare ad X senza troppi problemi
 
 Usa Lutris. git good.
 
-## Si, però, mio cuggino mi ha detto che Linux ha un sacco di problemi e non va bene!!1
+### Si, però, mio cuggino mi ha detto che Linux ha un sacco di problemi e non va bene!!1
 
 Scusa? Non ti sento! Ho gcc che compila in background nativamente mentre il tuo 20% di CPU è impegnato a mandare dati a Microsoft o Apple.
 
-## Scimmie Napoletane
+### Scimmie Napoletane
 
 [Scimmie Napoletane](https://www.youtube.com/watch?v=L5otNdhaeeI).
