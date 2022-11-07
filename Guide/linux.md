@@ -150,6 +150,7 @@ Una chiavetta, un computer BARE METAL (non una VM, quindi) su cui installare la 
 
 ### Software per burnare la ISO consigliati
 
+- Popsicle (il migliore, ma non esiste per Windows/MacOS)
 - Balena Etcher (very yes, much consigliato)
 - UNetbootin (yes.)
 - LinuxLiveUSB-Creator (anche se il progetto non è più mantenuto)
@@ -169,7 +170,7 @@ Una chiavetta, un computer BARE METAL (non una VM, quindi) su cui installare la 
 - Obsidian (Per prendere appunti)
 - Sioyek (Per leggere paper accademici)
 - Steam (Gaming)
-- Thunderbird (Per le mail)
+- Betterbird (Per le mail)
 - Visual Studio Code (Per il codice)
 - VLC (Per video ed audio)
 
@@ -191,22 +192,31 @@ Una chiavetta, un computer BARE METAL (non una VM, quindi) su cui installare la 
 - Flameshot
 - discord-screenaudio
 
+## Informazioni importanti subito dopo l'installazione di una qualsiasi distribuzione Linux
+
+1. Update e riavvia: non tutte le iso scaricate sono aggiornate, anzi!
+   1. Per i sistemi Ubuntu-based: `sudo apt update && sudo apt upgrade && sudo apt autoremove && sudo reboot`
+   2. Per i sistemi Arch-based: `sudo pacman -Syyu && sudo reboot`
+2. Installa un host blocker, come [hblock](https://github.com/hectorm/hblock).
+
+## FAQ
+
 ### Non trovo l'app X che invece avevo su Windows, come faccio?
 
 [Tiè](https://wiki.archlinux.org/title/List_of_applications).
 
-## Ma su Windows potevo fare X e invece su Linux non posso, e ora?
+### Ma su Windows potevo fare X e invece su Linux non posso, e ora?
 
 [Clicca qui](https://www.youtube.com/watch?v=KkLwnCKkf5I).
 
-## Si, però, su Windows potevo giocare ad X senza troppi problemi
+### Si, però, su Windows potevo giocare ad X senza troppi problemi
 
 Usa Lutris. git good.
 
-## Si, però, mio cuggino mi ha detto che Linux ha un sacco di problemi e non va bene!!1
+### Si, però, mio cuggino mi ha detto che Linux ha un sacco di problemi e non va bene!!1
 
 Scusa? Non ti sento! Ho gcc che compila in background nativamente mentre il tuo 20% di CPU è impegnato a mandare dati a Microsoft o Apple.
 
-## Scimmie Napoletane
+### Scimmie Napoletane
 
 [Scimmie Napoletane](https://www.youtube.com/watch?v=L5otNdhaeeI).
