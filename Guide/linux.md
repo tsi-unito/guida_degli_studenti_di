@@ -91,12 +91,14 @@ Dentro il singolo tier, le distro non sono in un particolare ordine, giusto per 
 #### S-Tier
 
 - Pop_OS
-- Nobara Linux
 - ArcoLinux (advanced)
 
 #### A-Tier
 
-- Fedora
+- Nobara Linux
+- Solus
+- Nitrux
+- ZorinOS
 - Linux Mint
 - Xubuntu
 - MX Linux
@@ -108,12 +110,11 @@ Dentro il singolo tier, le distro non sono in un particolare ordine, giusto per 
 #### B-Tier
 
 - Ubuntu
+- Fedora
 - Lubuntu
 - EndeavourOS
 - RebornOS
 - Garuda Linux
-- Nitrux
-- ZorinOS
 - CutefishOS
 - Kubuntu
 - Elementary OS
@@ -126,6 +127,7 @@ Dentro il singolo tier, le distro non sono in un particolare ordine, giusto per 
 
 #### ?-Tier (non installarle a meno che tu non sia effettivamente a conoscenza del perché di queste distro)
 
+- Arch Linux
 - Parrot
 - Kali Linux
 - Qubes OS
@@ -176,20 +178,20 @@ Una chiavetta, un computer BARE METAL (non una VM, quindi) su cui installare la 
 
 ### App basatissime che potrebbero aprirti la mente
 
-- Librewolf
-- aria2
-- youtube-dlp
-- qrcp
-- rsync
-- Cryptomator
-- FileZilla
-- peerflix
-- Kitty
-- RustDesk
-- qimgv
-- ImageMagick
-- oxipng e Guetzli
-- Flameshot
+- Librewolf (Fork di Firefox, privacy-focused)
+- aria2 (Cli torrent client)
+- youtube-dlp (youtube-dl ma meglio)
+- qrcp (Trasferimento file da telefono a pc reso facile)
+- rsync (Il programma di Dio)
+- Cryptomator (Zero-trust encryption per il cloud)
+- FileZilla (FTP made easy)
+- peerflix (shh...)
+- Kitty (Un terminale decente per il 202x)
+- RustDesk (TeamViewer ma FOSS)
+- qimgv (Visualizzatore di immagini veloce e leggero)
+- ImageMagick (Modifica di immagini, programma FONDAMENTALE)
+- oxipng e Guetzli (Conversione di immagini)
+- Flameshot (Screenshot)
 - discord-screenaudio
 
 ## Informazioni importanti subito dopo l'installazione di una qualsiasi distribuzione Linux
