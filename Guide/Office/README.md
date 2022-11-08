@@ -15,7 +15,7 @@ Ma c'è una soluzione! Per le aziende, Microsoft permette di personalizzare l'in
 
 - 15 minuti
 - Saper leggere in Inglese
-- Saper scaricare dei file
+- Saper scaricare ed eseguire dei file
 - Saper interagire con una linea di comando
 - Credenziali di Ateneo
 
@@ -40,7 +40,7 @@ Se per caso desideri cambiare qualcosa o partire da zero, il sito ufficiale del 
 
 Per poter procedere con l'installazione dovremo usare lo _Strumento di distribuzione di Office_, reperibile seguendo i link nella [guida](https://docs.microsoft.com/it-it/deployoffice/overview-office-deployment-tool). Per comodità, [questo è il link diretto](https://www.microsoft.com/en-us/download/confirmation.aspx?id=49117).
 
-Una volta scaricato l'"installer", segui le indicazioni della pagina di download per ottenere lo _Strumento di distribuzione_ (da ora in avanti, _setup.exe_).
+Quello che hai scaricato è un software che contiene il vero installer. Per ottenerlo esegui il file (doppio click/seleziona + invio) e scegli una posizione comoda in cui far estrarre lo _Strumento di distribuzione_ (da ora in avanti, _setup.exe_), che effettivamente effettuerà il download e l'installazione di office.
 
 ## 3. Installazione
 
