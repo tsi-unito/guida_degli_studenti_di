@@ -6,6 +6,8 @@ e della
 laurea [magistrale](http://magistrale.educ.di.unito.it/index.php/offerta-formativa/insegnamenti/elenco-completo/elenco-completo/)
 .
 
+Sotto la tabella trovi le informazioni su come contribuire.
+
 ## Tabella di traduzione
 
 Tabella di traduzione (per le sole materie presenti in questa directory) da sigla a nome.

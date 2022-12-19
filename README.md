@@ -40,12 +40,12 @@ In generale sono preferibili se in forma digitale, e ancora meglio se sono forni
 o Markdown).
 In ogni caso, dei PDF col testo selezionabile vanno più che bene.
 
-Per maggiori informazioni sull'aggiunta di appunti, ti invito a leggere [le indicazioni nella sezione materie](Materie).
+Per maggiori informazioni sull'aggiunta di appunti, ti invito a leggere [le indicazioni nella sezione materie](Materie#come-contribuire).
 
 #### Prove d'esame
 
 Come per gli appunti, anche le prove d'esame sono ben accette! Come prima, ti invito a
-leggere [le indicazioni nella sezione materie](Materie).
+leggere [le indicazioni nella sezione materie](Materie#come-contribuire).
 
 ### Guide
 

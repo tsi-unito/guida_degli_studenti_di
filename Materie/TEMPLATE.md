@@ -11,7 +11,7 @@ Deve essere presente almeno un elenco puntato o una tabella che descriva gli app
 subdirectory). Deve essere presente un'indicazione che specifichi se gli appunti sono completi, e in quale anno
 accademico sono stati prodotti.
 
-- Appunti presi a lezione di Mario Rossi (AA 20XX-20XX), disponibili [qui](link diretto alla risorsa)
+- Appunti presi a lezione di Mario Rossi (AA 20XX-20XX), disponibili `[qui](link diretto alla risorsa)`
 - ...
 
 ## Esercizi
