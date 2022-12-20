@@ -7,26 +7,26 @@ Nel nostro caso di interesse, ci permette di aprire una linea di comunicazione f
 
 # Come creo una chiave SSH?
 - apri il terminale 
-- incolla al suo interno questo comando, sostituendo il tuo indirizzo mail (*ed25519* rappresenta l'algoritmo di criptazione)
+- incolla al suo interno questo comando, sostituendo il tuo indirizzo mail (*ed25519* rappresenta l'algoritmo di criptazione)  
 `ssh-keygen -t ed25519 -C "your_email@example.com"`
-- questo comando genera una chiave SSH con la tua mail come etichetta 
+- questo comando genera una chiave SSH con la tua mail come etichetta  
 `> Generating public/private ALGORITHM key pair.`
-- viene richiesto di selezionare un file dove salvare la chiave, premi `INVIO` per accettare quella di default.
-- viene richiesto ora di selezionare una password. Se desideri non avere una password, premi `INVIO` due volte
 ```
 > Enter passphrase (empty for no passphrase): [Type a passphrase]
 > Enter same passphrase again: [Type passphrase again]
 ```
+- viene richiesto di selezionare un file dove salvare la chiave, premi `INVIO` per accettare quella di default.
+- viene richiesto ora di selezionare una password. Se desideri non avere una password, premi `INVIO` due volte
 
 # Come aggiungo una chiave SSH al mio account?
 Dobbiamo ora trovare la nostra chiave pubblica.
-- apri il terminale
-  **Linux** 
-`cat ~/.ssh/ed25519.pub`
- **Windows** 
-`notepad ~/.ssh/ed25519.pub` e copia l'interno contenuto dal notepad
- **MacOS**
-`pbcopy < ~/.ssh/ed25519.pub`
+- apri il terminale  
+  **Linux**     
+	`cat ~/.ssh/id_ed25519.pub`  
+  **Windows**  
+	`notepad ~/.ssh/id_ed25519.pub` e copia l'interno contenuto dal notepad  
+  **MacOS**  
+	`pbcopy < ~/.ssh/id_ed25519.pub`  
 - accedi al tuo account 
     - GitLab 
         - premi sulla tua foto profilo, poi *Preferences*
