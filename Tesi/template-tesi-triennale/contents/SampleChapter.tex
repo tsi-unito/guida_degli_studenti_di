@@ -1,0 +1,120 @@
+\chapter{Chapter Title}
+
+An introduction here (with a cite from bibliography, like this: \cite{greenwade93}).
+%  ----
+\section{Type of texts}
+\subsection{Normal text}
+\lipsum[1]
+
+\subsection{Normal text}
+\textbf{\lipsum[1]}
+
+\subsection{Italic text}
+\textit{\lipsum[1]}
+
+\subsection{Mono space text}
+\subsubsection{(usually I use this type of format to refer me to code)}
+\texttt{Here is some text. Pay attention to this type, because It can go 
+\\ out of bounds! Usually you solve it with a double back-slash, to 
+\\ go to the new line.}
+%  ----
+
+%  ----
+\section{Lists}
+\subsection{Unbulleted lists}
+\begin{itemize}
+    \item \lipsum[1]
+    \item \lipsum[1]
+    \item \lipsum[1]
+\end{itemize}
+
+\subsection{Bulleted lists}
+\begin{enumerate}
+    \item \lipsum[1]
+    \item \lipsum[1]
+    \item \lipsum[1]
+\end{enumerate}
+%  ----
+
+%  ----
+\section{Images}
+Random Duolingo Image example:
+\begin{figure}[H]
+\centering
+    \includegraphics[scale=0.1]{images/duolingo.png}
+    \caption{Caption example.}
+    \label{fig:duolingo}
+\end{figure}
+
+In the text, you reference an image in this way: \ref{fig:duolingo}.
+%  ----
+
+%  ----
+\section{Tables}
+Example of table that can even be split into several pages if it's too long:
+\begin{longtable}[H]{| l | l |}
+    \hline
+     \rowcolor[HTML]{F87C58}\textbf{Head 1} & \textbf{Head 2}\\
+    \hline
+    \endfirsthead
+    
+    \texttt{Text} & \texttt{Text}\\
+    \hline
+    \texttt{text} & \texttt{Text}\\
+    \hline
+    \texttt{Text} & \texttt{Text}\\
+    \hline
+    \texttt{text} & \texttt{Text}\\
+    \hline
+    \texttt{Text} & \texttt{Text}\\
+    \hline
+    \texttt{text} & \texttt{Text}\\
+    \hline
+    \texttt{Text} & \texttt{Text}\\
+    \hline
+    \texttt{text} & \texttt{Text}\\
+    \hline
+    \texttt{Text} & \texttt{Text}\\
+    \hline
+    \texttt{text} & \texttt{Text}\\
+    \hline
+    \texttt{Text} & \texttt{Text}\\
+    \hline
+    \texttt{text} & \texttt{Text}\\
+    \hline
+    \texttt{Text} & \texttt{Text}\\
+    \hline
+    \texttt{text} & \texttt{Text}\\
+    \hline
+    \texttt{Text} & \texttt{Text}\\
+    \hline
+    \texttt{text} & \texttt{Text}\\
+    \hline
+    \texttt{Text} & \texttt{Text}\\
+    \hline
+    \texttt{text} & \texttt{Text}\\
+    \hline
+    \texttt{Text} & \texttt{Text}\\
+    \hline
+    \texttt{text} & \texttt{Text}\\
+    \hline
+    \caption{Table caption.}
+\end{longtable}
+%  ----
+
+%  ----
+\section{Code}
+Finally, here we are with code! The following examples are with typescript and HTML with Angular syntax, colored using the \textbf{minted} package.
+
+\begin{code}
+    \inputminted{typescript}{listings/ts-example.ts}
+    \caption{Caption for the typescript example.}
+\end{code}
+\vspace{4mm}
+
+\begin{code}
+    \inputminted{ng2}{listings/html-example.html}
+    \caption{Caption for the HTML with Angular syntax example.}
+\end{code}
+\vspace{4mm}
+%  ----
