@@ -30,21 +30,21 @@ Dobbiamo ora trovare la nostra chiave pubblica.
 
 ⚠⚠ PER NESSUNA RAGIONE DEVE ESSERE CONDIVISA LA CHIAVE PRIVATA!! ⚠⚠
 1. Apri il terminale  
-  **Linux**     
+    - **Linux**     
 	`cat ~/.ssh/id_ed25519.pub`  
-  **Windows**  
+    - **Windows**  
   Vai nella cartella del tuo utente (generalmente con Windows 10 è sotto `C:\Users\<Nome Utente>`) e apri la cartella `.ssh` (è una cartella nascosta, assicurati di averne abilitato la visualizzazione dalle impostazioni dell'esplora risorse).  
   Apri il file `id_ed25519.pub` con il tuo text editor di fiducia e copia l'intero contenuto: `CTRL+A` -> `CTRL+C`.  
-  **MacOS**  
+    - **MacOS**  
 	`pbcopy < ~/.ssh/id_ed25519.pub`  
 2. Accedi al tuo account 
-    - GitLab  
+    - **GitLab**  
         3. Premi sulla tua foto profilo, poi *Preferences*  
         4. Premi *SSH Keys*  
         5. In *Key* incolla il testo  
         6. In *Title* scegli un nome che ti permetta di identificare facilmente il dispositivo  
         7. Seleziona una data di scadenza. Se non lo desideri, premi sulla x per non farla scadere.
-    - GitHub
+    - **GitHub**  
         3. Premi sulla tua foto profilo, poi *Settings*  
         4. Seleziona *SSH and GPG keys*  
         5. Seleziona *New SSH key*  
