@@ -1,0 +1,832 @@
+/*questi esercizi, hanno passato tutti la classe di test*/
+
+/**ESERCIZIO I
+
+Scrivere un metodo fD con le seguenti caratteristiche:
+
+    fD ha un parametro formale a di tipo array di interi;
+    fD restituisce un array che contiene tutti e soli gli interi dispari inizialmente in a, rispettando l'ordine originale degli elementi;
+    fD è wrapper di un paio di metodi ricorsivi con le seguenti caratteristiche:
+        uno contro-variante che conta quanti elementi in a dovranno essere restituiti nell'array risultato;
+        uno co-variante che risolve effettivamente il problema.
+
+  Per ipotesi, l'array a passato al metodo fD come parametro attuale non puo' essere null. 
+
+  NOTA. Il metodo con firma boolean Arrays.equals(int[],int[]) restituisce true se i due parametri
+
+  attuali sono array identici elemento per elemento, e false altrimenti.*/
+  
+  // Contro-variante
+    public static int contaDispari(int[] a, int i) {
+		if(i==a.length){return 0;}
+		else{
+		if(a[i]%2==0){return 0 + contaDispari(a,i+1);}
+		else{return 1 + contaDispari(a,i+1);}
+		}
+    }
+
+    // Co-variante
+    public static int fD(int[] a, int i, int[] r) { /*posso contare gli elementi, sfrutto "indiceR"*/
+		if(i==0){return 0; /*oppure r.length-1???*/}
+		else{
+			int indiceR=fD(a,i-1,r);
+			if(a[i-1]%2==0){return indiceR;}
+			else{
+				r[indiceR]=a[i-1];
+				return indiceR+1;
+			}
+		}
+    }
+
+    // Wrapper
+    public static int[] fD(int[] a) {
+		int[]r=new int[contaDispari(a,0)];
+		fD(a,a.length,r);
+		return r;
+    }
+    /**fatto da me e funzionante*/
+
+  /* Metodi di supporto */
+  // Restituisce true se gli array di interi a e b sono uguali
+  public static boolean uguali(int[] a, int[] b) {
+  return Arrays.equals(a, b);
+  }
+
+  // Stampa un array di interi 
+  public static void pA(int[][] a) {
+    System.out.println(Arrays.toString(a));
+  }
+  
+  
+  
+  /**ESERCIZIO II
+  Scrivere un metodo fD con le seguenti caratteristiche:
+
+    fD ha un parametro formale a di tipo array di interi;
+    fD restituisce un array che contiene tutti e soli gli interi dispari inizialmente in a, rispettando l'ordine originale degli elementi;
+    fD è wrapper di un paio di metodi ricorsivi tali che:
+         il primo è dicotomico e conta quanti elementi in a dovranno essere restituiti nell'array risultato;
+         il secondo è contro-variante e risolve effettivamente il problema.
+
+  Per ipotesi, l'array a passato al metodo fD come parametro attuale non puo' essere null. 
+
+  NOTA. Il metodo con firma boolean Arrays.equals(int[],int[]) restituisce true se i due parametri
+
+  attuali sono array identici elemento per elemento, e false altrimenti.*/
+  
+  // Dicotomico
+    public static int contaDispari(int[] a, int l, int r) {
+        if(l==r){return 0;}/*caso base*/
+        else{
+            if(r-l==1){/*caso più semplice con una cella*/
+                if(a[l]%2==0){return 0;}
+                else{return 1;}
+            }
+            else{/*ho più di una cella*/
+                int medio=((l+r)/2);
+                return contaDispari(a,l,medio) + contaDispari(a,medio,r);
+               
+            }
+        }
+    }
+
+    // Contro-variante
+    public static int fD(int[] a, int i, int[] r) { /*posso contare attraverso indiceR*/
+        if(i==a.length){return 0;} /*caso base*/
+        else{
+            int indiceR=fD(a,i+1,r);
+            if(a[i]%2==0){return indiceR;}
+            else{
+                r[indiceR]=a[i];
+                return indiceR+1;
+                
+            }
+        }
+    }
+
+    // Wrapper
+    public static int[] fD(int[] a) {
+        int[]r=new int[contaDispari(a,0,a.length)];
+        fD(a,0,r);
+        return r;
+    }
+	/**fatto da me e funzionante*/
+
+  /* Metodi di supporto */
+  // Restituisce true se gli array di interi a e b sono uguali
+  public static boolean uguali(int[] a, int[] b) {
+  return Arrays.equals(a, b);
+  }
+
+  // Stampa un array di interi 
+  public static void pA(int[][] a) {
+    System.out.println(Arrays.toString(a));
+  }
+  
+  
+  /**ESERCIZIO III (quello meno chiaro, da rivedere, non fatto da me)
+	Scrivere un metodo fMag con le seguenti caratteristiche:
+
+    fMag ha un primo parametro formale a di tipo array di interi ed un secondo parametro formale l di tipo intero;
+    fMag restituisce un array che contiene tutti e soli gli interi inizialmente in a e strettamente maggiori del valore in l, rispettando l'ordine 
+	originale degli elementi;
+    fMag *non* puo' contare il numero di elementi in a che soddisfano la proprieta' indicata per dimensionare opportunamente l'array da produrre 
+	come risultato;
+    fMag è wrapper di un solo metodo ricorsivo co-variante che risolve effettivamente il problema.
+
+  Per ipotesi, l'array a passato al metodo fD come parametro attuale non puo' essere null. 
+
+  NOTA. Il metodo con firma boolean Arrays.equals(int[],int[]) restituisce true se i due parametri
+
+  attuali sono array identici elemento per elemento, e false altrimenti.
+  */
+  
+   // Co-variante
+    private static int[] fMag(int[] a, int l, int i) {
+        if(i==0){return new int[0];}
+        else{
+            int[]tmp=fMag(a,l,i-1); /*richiama la funz in una sitazione 
+            più semplice*/
+            if(a[i-1]>l){ /*condizione verificata*/
+                int[]r=new int[tmp.length+1]; /*perchè??*/
+                copiaDi(tmp,r,0);
+                r[r.length-1]=a[i-1];
+                return r;
+            }
+            else{
+                return tmp;
+            }
+        }
+    }
+
+    // Wrapper
+    public static int[] fMag(int[] a, int l) {
+        return fMag(a,l,a.length);
+    }
+
+    /* Metodo contro-variante che copia tmp in r, assumendo 
+    che tmp.length<=r.length. */
+    private static void copiaDi(int[] tmp, int[] r, int i) {
+        /*gli vengono passati due array della stessa dimensione se copia
+        soltanto --> c'è scritto copia e non crea*/
+        if(i==tmp.length){}
+        else{
+            r[i]=tmp[i];
+            copiaDi(tmp,r,i+1);
+        }
+    }
+
+  /* Metodi di supporto */
+  // Restituisce true se gli array di interi a e b sono uguali
+  public static boolean uguali(int[] a, int[] b) {
+    return Arrays.equals(a, b);
+  }
+
+  // Stampa un array di interi 
+  public static void pA(int[][] a) {
+    System.out.println(Arrays.toString(a));
+  }
+  
+  
+  /**ESERCIZIO IV
+  Scrivere un metodo fMag con le seguenti caratteristiche:
+
+    fMag ha un primo parametro formale a di tipo array di interi ed un secondo parametro formale m di tipo intero;
+    fMag restituisce un array che contiene tutti e soli gli interi inizialmente in a e strettamente maggiori del valore in m, rispettando l'ordine originale degli elementi;
+    fMag *non* puo' contare il numero di elementi in a che soddisfano la proprieta' indicata per dimensionare opportunamente l'array da produrre come risultato. La conseguenza è che occorrerà scrivere anche un metodo append (ricorsivo o iterativo) che, dati due array x, ed y di interi, ne costruisce un terzo z la cui prima parte contiene tutti e soli i valori in x e la seconda tutti e soli i valori di y;
+    fMag è wrapper di un solo metodo ricorsivo dicotomico che risolve effettivamente il problema.
+
+  Per ipotesi, l'array a passato al metodo fD come parametro attuale non puo' essere null.
+
+  NOTA. Il metodo con firma boolean Arrays.equals(int[],int[]) restituisce true se i due parametri
+
+  attuali sono array identici elemento per elemento, e false altrimenti. 
+  */
+  
+   // Dicotomica
+    private static int[] fMag(int[] a, int m, int l, int r) { /*ricordati che restituisce un array sta roba*/
+		if(l==r){ /*caso base della dicotomia*/
+			return new int[0];
+		}
+		else{ /*non posso usare indiceR perchè il metodo per ipotesi non può contare*/
+			if(r-l==1){/*caso base con una cella*/
+				if(a[l]>m){
+					int[]ris=new int[1];
+					ris[0]=a[l];
+					return ris;
+				}
+				else{
+					return new int[0];
+				}
+			}
+			else{/*applico la dicotomia*/
+				int medio=((l+r)/2);
+				return append(fMag(a,m,l,medio),fMag(a,m,medio,r));
+			}
+		}
+    }
+
+    // Wrapper
+    public static int[] fMag(int[] a, int m) {
+		return fMag(a,m,0,a.length);
+    }
+
+    // Appende array y ad array x
+    public static int[] append(int[] x, int[] y) { /*unisce due array*/
+		int[]z=new int[x.length+y.length];
+		int i=0; /*scorre la lunghezza di x*/
+		int j=0; /*scorre la lunghezza di y*/
+		while(i<x.length){
+			z[i]=x[i];
+			i=i+1;
+		}
+		while(j<y.length){
+			z[i+j]=y[j];
+			j=j+1;
+		}
+		return z;
+    }
+
+  /* Metodi di supporto */
+  // Restituisce true se gli array di interi a e b sono uguali
+  public static boolean uguali(int[] a, int[] b) {
+    return Arrays.equals(a, b);
+  }
+
+  // Stampa un array di interi
+  public static void pA(int[][] a) {
+    System.out.println(Arrays.toString(a));
+  }
+  
+  
+  /**ESERCIZIO 5
+	Scrivere un metodo fMin con le seguenti caratteristiche:
+
+    fMin ha un primo parametro formale a di tipo array di interi ed un secondo parametro formale m di tipo intero;
+    fMin restituisce un array che contiene tutti e soli gli interi inizialmente in a e strettamente minori del valore in m, rispettando l'ordine originale degli elementi;
+    fMin è wrapper di un paio di metodi ricorsivi con le seguenti caratteristiche:
+         uno co-variante che conta quanti elementi in a dovranno essere restituiti nell'array risultato;
+         uno contro-variante che risolve effettivamente il problema.
+
+  Per ipotesi, l'array a passato al metodo fMin come parametro attuale non puo' essere null. 
+
+  NOTA. Il metodo con firma boolean Arrays.equals(int[],int[]) restituisce true se i due parametri
+
+  attuali sono array identici elemento per elemento, e false altrimenti.
+  */
+  
+  // Co-variante
+    public static int contaMinori(int[] a, int m, int i) {
+        if(i==0){return 0;} /*caso base*/
+        else{
+            if(a[i-1]<m){ /*i-1 perchè le celle girano da 0 a .length-1, mentre
+            il numero delle celle è .length*/
+            return 1 + contaMinori(a,m,i-1);
+            }
+            else{return 0+contaMinori(a,m,i-1);}
+            }
+        }
+
+    // Contro-variante
+    public static int fMin(int[] a, int m, int i, int[] r) {
+        if(i==a.length){return 0;}/*caso base*/
+        else{ /*risolvo effettivamente il problema ricorsivamente*/
+            int indiceR=fMin(a,m,i+1,r);
+            if(a[i]<m){
+                r[indiceR]=a[i];
+                return indiceR+1;
+            }
+            else{
+                return indiceR;
+            }
+        }
+    }
+
+    // Wrapper
+    public static int[] fMin(int[] a, int m) {
+        int[]r=new int[contaMinori(a,m,a.length)];
+        fMin(a,m,0,r);
+        return r; /*ritorna il puntatore a r*/
+    }
+    /**funzionante, fatto da me*/
+
+  /* Metodi di supporto */
+  // Restituisce true se gli array di interi a e b sono uguali
+  public static boolean uguali(int[] a, int[] b) {
+    return Arrays.equals(a, b);
+  }
+
+  // Stampa un array di interi 
+  public static void pA(int[][] a) {
+    System.out.println(Arrays.toString(a));
+  }
+
+
+/**ESERCIZIO VI
+Scrivere un metodo fMin con le seguenti caratteristiche:
+
+    fMin ha un primo parametro formale a di tipo array di interi ed un secondo parametro formale m di tipo intero;
+    fMin restituisce un array che contiene tutti e soli gli interi inizialmente in a e strettamente minori del valore in m, rispettando l'ordine originale degli elementi;
+    fMin è wrapper di un paio di metodi con le seguenti caratteristiche:
+          il primo è ricorsivo dicotomico conta quanti elementi in a dovranno essere restituiti nell'array risultato;
+          il secondo è ricorsivo co-variante e risolve effettivamente il problema.
+
+  Per ipotesi, l'array a passato al metodo fMin come parametro attuale non puo' essere null. 
+
+  NOTA. Il metodo con firma boolean Arrays.equals(int[],int[]) restituisce true se i due parametri
+
+  attuali sono array identici elemento per elemento, e false altrimenti.
+*/
+  
+ // Dicotomico
+    public static int contaMinori(int[] a, int m, int l, int r) {
+		if(l==r){return 0;}/*caso semplice con array vuoto e/o di zero elementi*/
+		else{
+			if(r-l==1){/*caso semplice con una cella */
+				if(a[l]<m){return 1;}
+				else{return 0;}
+			}
+			else{/*chiamo la dicotomia*/
+				int medio=((l+r)/2);
+				return contaMinori(a,m,l,medio)+contaMinori(a,m,medio,r);
+				
+			}
+		}
+    }
+
+    // Co-variante
+    public static int fMin(int[] a, int m, int i, int[] r) {
+		if(i==0){return 0;} /*caso base*/
+		else{
+			int indiceR=fMin(a,m,i-1,r); /*richiamo della funzione*/
+			if(a[i-1]<m){
+				r[indiceR]=a[i-1];
+				return indiceR+1;
+			}
+			else{return indiceR;}
+		}
+    }
+
+    // Wrapper
+    public static int[] fMin(int[] a, int m) {
+		int[]r=new int[contaMinori(a,m,0,a.length)];
+		fMin(a,m,a.length,r);
+		return r;
+    }
+    /**funzionante e fatto da me*/
+
+  /* Metodi di supporto */
+  // Restituisce true se gli array di interi a e b sono uguali
+  public static boolean uguali(int[] a, int[] b) {
+    return Arrays.equals(a, b);
+  }
+
+  // Stampa un array di interi 
+  public static void pA(int[][] a) {
+    System.out.println(Arrays.toString(a));
+  }
+  
+  /**ESERCIZIO VII
+	Scrivere un metodo fPosDValD con le seguenti caratteristiche:
+
+     fPosDValD ha un parametro formale a di tipo array di interi;
+     fPosDValD restituisce un array che contiene il doppio di tutti e soli gli interi di posizione dispari inizialmente in a, rispettando l'ordine originale degli elementi;
+     fPosDValD è wrapper un metodo metodo ricorsivo contro-variante che risolve effettivamente il problema.
+
+  Per ipotesi, l'array a passato al metodo fPosDValD come parametro attuale non puo' essere null. 
+
+  NOTA. Il metodo con firma boolean Arrays.equals(int[],int[]) restituisce true se i due parametri
+
+  attuali sono array identici elemento per elemento, e false altrimenti.
+  */
+  // Contro-variante
+    public static int fPosDValD(int[] a, int i, int[] r) {
+        if(i==a.length){return r.length-1; /*return 0 non va bene perchè
+        il caso base è al fondo dell'array, ovvero non la cella 0, 
+        ma la cella r.length-1*/}
+        else{
+            int indiceR=fPosDValD(a,i+1,r); /*mai scrivere in un richiamo
+            della funzione i++ o i--*/
+            if(i%2==0){return indiceR;} 
+            else{
+                r[indiceR]=2*a[i];
+                return indiceR-1; /*-1 perchè il valore iniziale è
+                la sua massima lunghezza
+                anche qui, scrivi indiceR-1 e non indiceR--*/
+                
+            }
+
+        }
+    }
+
+    // Wrapper
+    public static int[] fPosDValD(int[] a) {
+        int[]r=new int[a.length/2]; /*sfrutto il fatto che le celle
+        con indice dispari in a saranno a.length/2*/
+        fPosDValD(a,0,r);
+        return r;
+    }
+    /**funzionante, svolto da me*/
+
+    
+  /* Metodi di supporto */
+  // Restituisce true se gli array di interi a e b sono uguali
+  public static boolean uguali(int[] a, int[] b) {
+    return Arrays.equals(a, b);
+  }
+
+  // Stampa un array di interi 
+  public static void pA(int[][] a) {
+    System.out.println(Arrays.toString(a));
+  }    
+
+/**ESERCIZIO VIII
+	 Scrivere un metodo fPosDValD con le seguenti caratteristiche:
+
+     fPosDValD ha un parametro formale a di tipo array di interi;
+     fPosDValD restituisce un array che contiene il doppio di tutti e soli gli interi di posizione dispari inizialmente in a, rispettando l'ordine originale degli elementi;
+     fPosDValD è wrapper un metodo metodo ricorsivo dicotomico che risolve effettivamente il problema.
+
+  Per ipotesi, l'array a passato al metodo fPosDValD come parametro attuale deve avere almeno un elemento.
+
+  NOTA. Il metodo con firma boolean Arrays.equals(int[],int[]) restituisce true se i due parametri
+
+  attuali sono array identici elemento per elemento, e false altrimenti.
+*/
+
+ // Dicotomico
+    public static void fPosDValD(int[] a, int l, int r, int[] ris) {
+        /*void non retituisce, mi passo gli array attraverso lo heap*/
+        if(l==r){}/*caso di un array vuoto*/
+        else{
+            if(r-l==1){
+                if(l%2==0){}
+                else{
+                    ris[l/2]=2*a[l];
+                }
+            }
+            else{ /*do vita alla dicotomia*/
+                int medio=((l+r)/2);
+                fPosDValD(a,l,medio,ris);
+                fPosDValD(a,medio,r,ris);
+            }
+        }
+    }
+
+// Wrapper
+    public static int[] fPosDValD(int[] a) {
+        int[]ris=new int[a.length/2]; /*sfrutto il fatto che le celle
+        con indice dispari in a saranno a.length/2*/
+        fPosDValD(a,0,a.length,ris);
+        return ris;
+    } /**funzionante svolto interamente da me!!*/
+    
+  /* Metodi di supporto */
+  // Restituisce true se gli array di interi a e b sono uguali
+  public static boolean uguali(int[] a, int[] b) {
+    return Arrays.equals(a, b);
+  }
+
+  // Stampa un array di interi 
+  public static void pA(int[][] a) {
+    System.out.println(Arrays.toString(a));
+  }    
+
+
+/**ESERCIZIO IX
+	Scrivere un metodo t con le seguenti caratteristiche:
+
+     t ha un primo parametro formale a di tipo array di interi ed un secondo parametro formale m di tipo intero;
+     t restituisce un array di booleani in cui ogni elemento e' true se l'elemento che gli corrisponde in a e' strettamente  inferiore al valore in l e false altrimenti;
+     t è wrapper di un solo metodo ricorsivo co-variante che risolve effettivamente il problema.
+
+Per ipotesi, l'array a passato al metodo T come parametro attuale non puo' essere null.
+
+NOTA. Il metodo con firma boolean Arrays.equals(int[],int[]) restituisce true se i due parametri attuali sono array identici elemento per elemento, e false altrimenti.
+*/
+
+ // Co-variante
+    private static void t(int[] a, int m, int i, boolean[] r) {
+        /*void non ritorna nulla*/
+        if(i==0){} /*caso base*/
+        else{
+            /*provo se con indiceR riesco a risolvere il problema*/
+            if(a[i-1]<m){
+                r[i-1]=true;
+            }
+            else{
+                r[i-1]=false;
+            }
+            t(a,m,i-1,r);
+        }
+    }
+    /**forse un po' sporchino, ma passa tutti i test*/
+    /*r[i-1] = (a[i-1] < m); --> inserirebbe in automatico true o false
+    in base alla veridicitità dell'eq*/
+
+    // Wrapper
+    public static boolean[] t(int[] a, int m) {
+        boolean[]r=new boolean[a.length];
+        t(a,m,a.length,r);
+        return r;
+        }
+
+  /* Metodi di supporto */
+  // Restituisce true se gli array di booleani a e b sono uguali
+  public static boolean uguali(boolean[] a, boolean[] b) {
+    return Arrays.equals(a, b);
+  }
+
+  // Stampe di array
+  public static void pABool(boolean[] a) {
+    System.out.println(Arrays.toString(a));
+  }
+  public static void pAInt(int[] a) {
+    System.out.println(Arrays.toString(a));
+  }
+
+
+/**ESERCIZIO X
+Scrivere un metodo t con le seguenti caratteristiche:
+
+     t ha un primo parametro formale a di tipo array di interi ed un secondo parametro formale m di tipo intero;
+     t restituisce un array di booleani in cui ogni elemento e' true se l'elemento che gli corrisponde in a e' strettamente  inferiore al valore in l e false altrimenti;
+     t è wrapper di un solo metodo ricorsivo dicotomico che risolve effettivamente il problema.
+
+Per ipotesi, l'array a passato al metodo T come parametro attuale non puo' essere null.
+
+NOTA. Il metodo con firma boolean Arrays.equals(int[],int[]) restituisce true se i due parametri attuali sono array identici elemento per elemento, e false altrimenti. 
+*/
+
+// Co-variante
+   /*ma covariante o dicotomico? non si capisce la consegna
+   dovrebbe essere dicotomico richesto nella consegna
+   ancora, non è chiaro se l sia left o il valore da confrontare
+   m --> potrebbe essere il valore da confrontare*/
+    private static void t(int[] a, int m, int l, int r, boolean[] ris) {
+        /*ricordati che il metodo void NON restituisce nulla*/
+        if(l==r){}
+        else{
+            if(r-l==1){/*caso con una cella*/
+                if(a[l]<m){
+                    ris[l]=true;
+                }
+                else{
+                    ris[l]=false;
+                }
+            }
+            else{/*richiamo dicotomia*/
+                int medio=((l+r)/2);
+                t(a,m,l,medio,ris);
+                t(a,m,medio,r,ris);
+            }
+        }
+    
+    }
+
+    // Wrapper
+    public static boolean[] t(int[] a, int m) {
+        boolean[]ris=new boolean[a.length];
+        t(a,m,0,a.length,ris);
+        return ris;
+    }
+    
+    /**funzionante e fatto interamente da me!!
+    
+    va bene comunque? forse è meno elegante perchè non faccio inserire
+    true o false in "automatico" attraverso un'equazione*/
+
+  /* Metodi di supporto */
+  // Restituisce true se gli array di booleani a e b sono uguali
+  public static boolean uguali(boolean[] a, boolean[] b) {
+    return Arrays.equals(a, b);
+  }
+
+  // Stampe di array
+  public static void pABool(boolean[] a) {
+    System.out.println(Arrays.toString(a));
+  }
+  public static void pAInt(int[] a) {
+    System.out.println(Arrays.toString(a));
+  }
+
+
+/**ESERCIZIO XI
+Scrivere un metodo nDD con le seguenti caratteristiche:
+
+    nDD ha un parametro formale a di tipo array di interi ed un intero n;
+    nDD restituisce un nuovo array, rispetto ad a, che contiene tutti e soli i multipli di n che si trovano in a, rispettando l'ordine originale 
+	degli elementi;
+    nDD è wrapper di un metodo con le seguenti caratteristiche:
+        è ricorsivo dicotomico;
+        risolve effettivamente il problema usando il metodo append, fornito a corredo del testo.
+
+Per ipotesi, il parametro attuale a, passato al metodo nDD, può essere null o può contenere 0 elementi.
+
+NOTA. Il metodo con firma boolean Arrays.equals(int[],int[]) restituisce true se i due parametri attuali sono array identici elemento per elemento,
+e false altrimenti. Il metodo con firma boolean Arrays.toString(int[]) restituisce una stringa con gli elementi del parametro formale.
+*/
+
+// Dicotomico
+  static int[] nDD(int[] a, int n, int l, int r) {
+    /*mi serve un indiceR?*/
+    if(l==r){return new int[0];} /*caso base*/
+    else{
+        if(r-l==1){ /*una cella*/
+            if(a[l]%n==0){
+                int[]b=new int[1];
+                b[0]=a[l];
+                return b;
+            }
+            else{return new int[0];}
+        }
+        else{ /*applico la dicotomia*/
+            int medio=((l+r)/2);
+            return append(nDD(a,n,l,medio),nDD(a,n,medio,r));
+            
+            /**funzionante, fatto da me*/
+            
+            /*potrei anche fare
+             int[] sx = nDD(a, n, l, m);
+             int[] dx = nDD(a, n, m, r);
+             return append(sx, dx);
+            */
+            
+            /**alternativa, funziona, ma non è detto sia corretta, perchè
+            la lunghezza di b può essere più lunga del necessario*/
+            /*
+            int medio((l+r)/2);
+            int[]b=new int[a.length];
+            int[]b=append(nDD(a,n,l,medio),nDD(a,n,medio,r));
+            */
+        }
+    }
+  }
+  
+  // Wrapper
+  static int[] nDD(int[] a, int n) {
+    int[]b=null; /*seve?*/
+    if(a!=null){
+        b=nDD(a,n,0,a.length);
+    }
+    return b;
+  }
+  
+  /* Metodi di supporto */
+  // Appende array y ad array x
+  public static int[] append(int[] x, int[] y) {
+      int[] z = new int[x.length+y.length];
+      int i;
+      for(i = 0; i < x.length; i++)
+          z[i] = x[i];
+      for(i = 0; i < y.length; i++)
+          z[x.length+i] = y[i];
+      return z;
+  }
+
+  // Restituisce true se gli array di interi a e b sono uguali
+  public static boolean uguali(int[] a, int[] b) {
+    return Arrays.equals(a, b);
+  }
+
+  // Stampa un array di interi
+  public static void pA(int[] a) {
+    System.out.println(Arrays.toString(a));
+  }
+  
+  /**ESERCIZIO XII
+	Scrivere un metodo sZD con le seguenti caratteristiche:
+
+    sZD ha un parametro formale a di tipo array di interi;
+    sZD è wrapper di un metodo ricorsivo dicotomico che, tramite il meccanismo di aliasing, modifica a sostituendo 0 ad ogni valore pari
+	inizialmente in a;
+    sZD restituisce una copia di a, per mezzo dell'assegnamento int[] b = Array.copyOf(a, a.length).
+
+  Per ipotesi, il parametro attuale a, passato al metodo sZD, può essere null o può contenere 0 elementi.
+
+  NOTA. Il metodo con firma boolean Arrays.equals(int[],int[]) restituisce true se i due parametri attuali sono array identici
+  elemento per elemento, e false altrimenti. Il metodo con firma boolean Arrays.toString(int[]) restituisce una stringa con gli
+  elementi del parametro formale.
+  */
+  
+  // Dicotomico
+  static void sZD(int[] a, int l, int r) {
+    if(l==r){}
+    else{
+        if(1==r-l){ 
+            if(a[l]%2==0){
+                a[l]=0;
+            }
+                else{}
+        }
+        else{
+            int medio=((l+r)/2);
+            sZD(a,l,medio);
+            sZD(a,medio,r);
+         }
+    }
+  }
+  
+  
+  // Wrapper
+  static int[] sZD(int[] a) {
+    int[]b=null;
+    if(a!=null){
+        sZD(a,0,a.length);
+        b=new int[a.length];
+        //b=Array.copyOf(a,a.length); manca l'import?
+        b=Arrays.copyOf(a,a.length);
+    }
+    return b;
+  }
+  
+  /* Metodi di supporto */
+  // Restituisce true se gli array di interi a e b sono uguali
+  public static boolean uguali(int[] a, int[] b) {
+    return Arrays.equals(a, b);
+  }
+
+  // Stampa un array di interi
+  public static void pA(int[] a) {
+    System.out.println(Arrays.toString(a));
+  }
+  
+  /**ESERCIZIO XIII
+	Scrivere un metodo sZSD con le seguenti caratteristiche:
+
+    sZSD ha un parametro formale a di tipo array di interi;
+    sZSD è wrapper di un metodo ricorsivo dicotomico che, tramite il meccanismo di aliasing, modifica a come segue:
+        ogni valore che si trova nella posizione immediatamente successiva ad una cella con valore pari è sostituito con 0,
+		ammesso che tale cella successiva esista;
+    sZSD restituisce una copia di a, per mezzo dell'assegnamento int[] b = Array.copyOf(a, a.length).
+
+Per ipotesi, il parametro attuale a, passato al metodo sZSD, può essere null o può contenere 0 elementi.
+
+NOTA. Il metodo con firma boolean Arrays.equals(int[],int[]) restituisce true se i due parametri attuali sono array
+identici elemento per elemento, e false altrimenti. Il metodo con firma boolean Arrays.toString(int[]) restituisce una stringa
+con gli elementi del parametro formale.
+  */
+
+ // Dicotomico
+  static void sZSD(int[] a, int l, int r) {
+    if(l==r){}/*caso senza celle*/
+    else{
+        if(r-l==1){/*caso con una cella*/
+            if(a[l]%2==0){
+                if(l+1<a.length){ /*la cella, esiste?*/
+                a[l+1]=0;
+                }
+            }
+            else{}
+        }
+        else{
+            int medio=((l+r)/2);
+            sZSD(a,l,medio);
+            sZSD(a,medio,r);
+        }
+    }
+  } /**funzionante!!! mio!!!*/
+  
+  /*Dcotomico*/
+    /*static void sZSD(int[]a,int l, int r){
+        if(l==r){}/*caso in cui non ho elementi
+        if(l<r){ /*caso in cui ho almento un elemento
+            if(r-l==1){ /*caso in cui ho un solo elemento
+                if(a[l]%2==0){
+                    if((l+1)<a.length){/*va bene anche <=a.length-1
+                        a[l+1]=0;
+                    }
+                }
+            }
+            else{ /*ho più di un elemento
+                int medio=((l+r)/2);
+                sZSD(a,l,medio);
+                sZSD(a,medio,r);
+            }
+        }
+    }/*funziona*/
+  // Wrapper
+  static int[] sZSD(int[] a) {
+    int[]b=null;
+    if(a!=null){
+        sZSD(a,0,a.length);
+        b=new int[a.length];
+        b=Arrays.copyOf(a,a.length);
+    }
+    return b;
+  }
+  
+  /* Metodi di supporto */
+  // Restituisce true se gli array di interi a e b sono uguali
+  public static boolean uguali(int[] a, int[] b) {
+    return Arrays.equals(a, b);
+  }
+
+  // Stampa un array di interi
+  public static void pA(int[] a) {
+    System.out.println(Arrays.toString(a));
+  }
+}
+///////////////////////// LE CLASSI DI TEST SI TROVANO NEL MATERIALE ZIPPATO DEL DOCENTE//////////////////////////
+
+
