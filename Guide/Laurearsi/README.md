@@ -1,5 +1,6 @@
-Guida fornita da Luca (@Anzafilo su telegram, di più non so)
-link originale: https://barumba.notion.site/Come-laurearsi-28ca4749e3574767915941490d90afb8
+Guida fornita da [@Anzafilo](https://t.me/Anzafilo)
+Link originale: https://barumba.notion.site/Come-laurearsi-28ca4749e3574767915941490d90afb8
+
 # Come laurearsi?
 
 Durante il lavoro di tesi/stage interno/esterno avrete della documentazione da firmare e far firmare al relatore che probabilmente avrete ricevuto dalla Castelli o dalla Gatti.
@@ -58,7 +59,13 @@ Alcuni software se azzecchi le testate di ogni sezione (le grandezze dei titoli 
 
 DICHIARAZIONE DI ORIGINALITÀ
 
+**ITA**
+
 "Dichiaro di essere responsabile del contenuto dell'elaborato che presento al fine del conseguimento del titolo, di non avere plagiato in tutto o in parte il lavoro prodotto da altri e di aver citato le fonti originali in modo congruente alle normative vigenti in materia di plagio e di diritto d'autore. Sono inoltre consapevole che nel caso la mia dichiarazione risultasse mendace, potrei incorrere nelle sanzioni previste dalla legge e la mia ammissione alla prova finale potrebbe essere negata."
+
+**ENG**
+
+"I declare to be responsible for the content I'm presenting in order to obtain the final degree, not to have plagiarized in all or part of, the work produced by others and having cited original sources in consistent way with current plagiarism regulations and copyright. I am also aware that in case of false declaration, I could incur in law penalties and my admission to final exam could be denied"
 
 ### Bibliografia
 
@@ -102,7 +109,7 @@ Paola Gatti:
 
 “Probabilmente vi faremo consegnare le presentazioni sul DataCloud del Dipartimento (normalmente la scadenza e' il giorno prima della seduta), ma vi inviero' indicazioni precise.”
 
-In teoria son 10 minuti a testa, non penso ci sia troppo tempo per avere troppe slide. (ndr: 10 minuti in triennale, 30 in magistrale)
+In teoria son 10 minuti a testa, non penso ci sia troppo tempo per avere troppe slide. (ndr: 10 minuti in triennale, 25 in magistrale)
 
 ## Documentazione utile da scaricare
 
