@@ -1,3 +1,5 @@
+Guida fornita da Luca (@Anzafilo su telegram, di più non so)
+link originale: https://barumba.notion.site/Come-laurearsi-28ca4749e3574767915941490d90afb8
 # Come laurearsi?
 
 Durante il lavoro di tesi/stage interno/esterno avrete della documentazione da firmare e far firmare al relatore che probabilmente avrete ricevuto dalla Castelli o dalla Gatti.
@@ -10,11 +12,8 @@ Documenti legati ad un modulo google compilato durante l’inizio o metà stage.
 
 (sulla sidebar a sinistra compaiono dei file .excel con le date e scadenze per ogni sessione)
 
-<center>
 
 ![Untitled](img/Untitled.png)
-
-</center>
 
 A domanda compilata ci si ritrova con questa schermata
 
@@ -34,11 +33,7 @@ Cercano di inquadrarvi per il mercato con un form abbastanza lungo e a fine form
 
 ************************************************************Cosa succede durante lo sviluppo tesi************************************************************
 
-<center>
-
 ![Untitled](img/Untitled%203.png)
-
-</center>
 
 ### Doc tesi
 
@@ -55,11 +50,9 @@ Dal link passare alla sezione sotto e premere il bottone cerchiato
 ### Inserire un indice, nella pagina dopo il frontespizio
 
 Alcuni software se azzecchi le testate di ogni sezione (le grandezze dei titoli e dei sottotitoli son coerenti su tutta la tesi) genera automaticamente un’indice organizzato
-<center>
 
 ![Untitled](img/Untitled%206.png)
 
-</center>
 
 ### ****************************************Dichiarazione di originalità (da inserire dopo l’indice o a fine tesi)****************************************
 
@@ -72,11 +65,8 @@ DICHIARAZIONE DI ORIGINALITÀ
 A fine tesi inserire libri-articoli-link usati per la laurea
 
 esempio
-<center>
 
 ![Untitled](img/Untitled%207.png)
-
-</center>
 
 **UPLOAD TESI sito ATENEO**
 
@@ -112,7 +102,7 @@ Paola Gatti:
 
 “Probabilmente vi faremo consegnare le presentazioni sul DataCloud del Dipartimento (normalmente la scadenza e' il giorno prima della seduta), ma vi inviero' indicazioni precise.”
 
-In teoria son 10 minuti a testa, non penso ci sia troppo tempo per avere troppe slide
+In teoria son 10 minuti a testa, non penso ci sia troppo tempo per avere troppe slide. (ndr: 10 minuti in triennale, 30 in magistrale)
 
 ## Documentazione utile da scaricare
 
