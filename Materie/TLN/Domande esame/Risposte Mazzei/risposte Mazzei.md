@@ -11,7 +11,7 @@ Pesca da un file di domande, quindi escono sempre le stesse ed eventualmente fa 
 ### Differenza fra HMM (Hidden Markov Model) e MEMM (Maximum-entropy Markov model): spiegazione dei pro e dei contro, differenze a livello di probabilità utilizzate
 
 - **HMM**: modello generativo che usa le regole di bayes. Consideriamo il problema del Pos tagging come un problema di Sequence Labeling, in pratica sceglieremo il Pos più probabile fra quelli possibili. L'algoritmo si divide in due parti:
-  1. **Fase di Modelling**: l'obiettivo è data la sequenza di tag $t^{n}_{1}$ e una sequenza di parole osservabili $w^{n}_{1}$ trovare il tag più probabile in base alle parole e i loro tag.  
+  1. **Fase di Modelling**: l'obiettivo è data la sequenza di tag $t^n_1$ e una sequenza di parole osservabili $w^{n}_{1}$ trovare il tag più probabile in base alle parole e i loro tag.  
    Per esprimerlo in modo più matematico la probabilità ecco la formula: $t^n_1 = argmax P(t^n_1|w^n_1)$ che semplificheremo come $t^n_1 = argmax P(w^n_1|t^n_1)P(t^n_1 )$ ovvero la probabilità dell parola dato il tag diviso la probabilità del tag.  
    In Questa ultima formula $P(w^n_1|t^n_1)$ rappresenta la _likelyhood_ che dice quale può essere il valore del mio output in base al valore degli osservabili, mentre $P(t^n_1)$ rappresenta la probabilità a priori di quel tag, la probabilità a priori potrà essere riscritta come $P(t_i|t_1)$ ovvero la probabilità del tag $i$ dato il tag $i-1$.  
     \
