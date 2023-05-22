@@ -1,7 +1,7 @@
 # Domande Mazzei
 
-> Premessa: alcune domande potrebbero non essere più attuali perchè il programma e le esercitazioni cambia di anno in anno  
-> Le domande sono state fornite da marcoscale98 mentre le risposte da Gabriele Naretto aka SpectralWall
+> Premessa: alcune domande potrebbero non essere più attuali perchè il programma e le esercitazioni cambia di anno in anno\
+> Le domande sono state fornite da marcoscale98 mentre le risposte da Gabriele Naretto aka SpectralWall\
 > Alcune correzioni e una migliore disposizione del testo a cura di Stefano Vittorio Porta (Stefa168)
 
 Pesca da un file di domande, quindi escono sempre le stesse ed eventualmente fa dei collegamenti.
@@ -135,12 +135,12 @@ L'algoritmo presentato a lezione cerca di mappare le regole su un array bidimens
 Vediamo quindi come funziona l'algoritmo:
 
 - _for j from 1 to length(word) do_ : facciamo un ciclo che va da 1 fino al numero di parole. <span style="color:red"> Questo ciclo scorre le colonne</span>.
-  - _for all {A|A $\rightarrow$ word[j] $\subset$ grammar}_: Per tutte le parole in posizione j che vengono generate da una grammatica
-    - _table[j-1,j] $\leftarrow$ tabel[j-1,j] $\cup$ A_ : allora aggiungiamo la regola A alla tabella nella posizione j-1,j. <span style="color:red"> Questa operazione riempie le celle inferiori </span>.
-  - _for i $\leftarrow$ from j-2 down to 0 do_ : questo ciclo scorre andando da j-2 fino a 0. Teoricamente <span style="color:blue"> Questa operazione riempie la riga i nella colonna j</span>.
-    - _for k $\leftarrow$ i+1 to j-1 do_ : questo ciclo rappresenta il k (ovvero il mezzo tra B e C) e ci permette di <span style="color:green"> ciclare su tutte le possibili posizione di split tra i e j </span>.
-      - _for all {A | A $\rightarrow$ BC $\cup$ grammar and B $\cup$ table[i, k] and C $\cup$ table[k, j]}_ : in questo punto facciamo un loop su ogni elemento della grammatica in cui esiste la regola A $\rightarrow$ BC, in cui B è compreso nei punti della tabella [i,k] e C è compreso nei punti della tabella [k,j]
-        - _table[i,j] table[i,j] $\subset$ A_ : E per ognuna di queste regole mi salvo A nella cella [i,j].
+  - for all {A|A $\rightarrow$ word[j] $\subset$ grammar}: Per tutte le parole in posizione j che vengono generate da una grammatica
+    - table[j-1,j] $\leftarrow$ table[j-1,j] $\cup$ A: allora aggiungiamo la regola A alla tabella nella posizione j-1,j. <span style="color:red"> Questa operazione riempie le celle inferiori </span>.
+  - for i $\leftarrow$ from j-2 down to 0 do : questo ciclo scorre andando da j-2 fino a 0. Teoricamente <span style="color:blue"> Questa operazione riempie la riga i nella colonna j</span>.
+    - for k $\leftarrow$ i+1 to j-1 do : questo ciclo rappresenta il k (ovvero il mezzo tra B e C) e ci permette di <span style="color:green"> ciclare su tutte le possibili posizione di split tra i e j </span>.
+      - for all {A | A $\rightarrow$ BC $\cup$ grammar and B $\cup$ table[i, k] and C $\cup$ table[k, j]} : in questo punto facciamo un loop su ogni elemento della grammatica in cui esiste la regola A $\rightarrow$ BC, in cui B è compreso nei punti della tabella [i,k] e C è compreso nei punti della tabella [k,j]
+        - table[i,j] table[i,j] $\subset$ A : E per ognuna di queste regole mi salvo A nella cella [i,j].
 
 Quindi dicendolo a parole mie:
 
@@ -282,11 +282,11 @@ Ed è proprio in questo contesto che iniziamo a parlare di Lambda calcolo. $\lam
 
 Per continuare il nostro esempio avremo quindi $\lambda x.love(x,francesca)\ @\ paolo$. Per passare dalla versione $\lambda$ alla versione FOL dovremo effettuare un passaggio detto **Beta reduction**, gli step per eseguire questa riduzione sono i seguenti:
 
-- Partiamo dalla versione base $\rightarrow$ $\lambda x.love(x,francesca)\ @\ paolo$
+- Partiamo dalla versione base $\rightarrow \lambda x.love(x,francesca)\ @\ paolo$
 
-  1. Eliminare il $\lambda$ $\rightarrow$ $love(x,francesca)(paolo)$
-  2. Rimuoviamo l'argomento $\rightarrow$ $love(x,francesca)$
-  3. Rimpiazziamo le occorenze della vartiabile legata dal $\lambda$ con l'argomento in tutta la formula $\rightarrow$ $love(paolo,francesca)$
+  1. Eliminare il $\lambda \rightarrow love(x,francesca)(paolo)$
+  2. Rimuoviamo l'argomento $\rightarrow love(x,francesca)$
+  3. Rimpiazziamo le occorenze della vartiabile legata dal $\lambda$ con l'argomento in tutta la formula $\rightarrow love(paolo,francesca)$
   bisogna ricordarsi che quando usiamo i $\lambda$ l'ordine della frase deve essere preciso.  
   
   > **Nota:** il prof chiede l'esempio visto a lezione con la frase "Paolo ama Francesca" e la sua traduzione in lambda calcolo. Quindi guardate le slide.
@@ -296,7 +296,7 @@ Possiamo quindi usare principi matematici e regole logiche per analizzare qualsi
 
 Inoltre si basa sul principio di _composizionalità_. La composizionalità ci permette di definire le regole per specificare quale sia la funzione e quale l'argomento (queste regole sono grammatiche a cui è stata aggiunta un informazione in più, sono anche dette augmented CFG). 
 
-Un esempio di regola di composizione è il seguente "$VP:f(a) \rightarrow V:f$ $NP: a$" che indica che quando ho un tag VP il suo figlio sinistro sarà V e il suo figlio destro sarà NP. Un altra regola è "$S:f(a)\rightarrow NP:a$     $VP:f$", questa regola indica che S ha  come figlio destro NP e come figlio sinistro VP
+Un esempio di regola di composizione è il seguente $VP:f(a) \rightarrow V:f$ $NP: a$ che indica che quando ho un tag VP il suo figlio sinistro sarà V e il suo figlio destro sarà NP. Un altra regola è $S:f(a)\rightarrow NP:a$ $VP:f$, questa regola indica che S ha  come figlio destro NP e come figlio sinistro VP
 
 - Andiamo anche a rappresentare ogni tempo verbale con tre tempi
     1. **U** Utterance (quando viene detta la frase)
@@ -311,17 +311,17 @@ Un esempio di regola di composizione è il seguente "$VP:f(a) \rightarrow V:f$ $
 
   Gestire gli articoli è molto più complesso di gestire nomi e verbi. Questo è dovuto al fatto che nomi e verbi sono vocaboli "di contenuti" e dunque si spiegano da soli indipendentemente dal contesto. Questo invece non si può dire per gli articoli che hanno una semantica più complicata. Vediamo una frase con l'articolo "Un" in particolare l'esempio _"Un uomo ama francesca"_. Partiamo dal fatto che "un uomo" significa che "c'è un uomo" e non "un uomo", per risolvere questo esempio dobbiamo fare reverse engineering quindi partire dalla frase finale.
   1. Un uomo ama francesca
-  2. $ \exist z(man(z) \wedge love(z,francesca)) $
-  3. $ \exist z(\lambda y.man(y)(z) \wedge \lambda x.love(x,francesca)(z)) $
+  2. $\exists z(man(z) \wedge love(z,francesca))$
+  3. $\exists z(\lambda y.man(y)(z) \wedge \lambda x.love(x,francesca)(z))$
   Quella al punto 3 è la frase in $\lambda$
   Ma vediamo come aggiungerci il predicato "un"
-  4. $ (\lambda Q.\exist z (\lambda y.man(y)(z) \wedge Q(z))) (\lambda x.love(x,francesca)(z)) $
-  5. $ (\lambda P.\lambda Q \exist z(P(z) \wedge Q(z)))(\lambda x.love(x,francesca)) (\lambda y.man(y))$  
-  In particolare questa stringa corrisponde a Un =  $\lambda P.\lambda Q \exist z(P(z) \wedge Q(z))$.  
+  4. $(\lambda Q.\exists z (\lambda y.man(y)(z) \wedge Q(z))) (\lambda x.love(x,francesca)(z))$
+  5. $(\lambda P.\lambda Q \exists z(P(z) \wedge Q(z)))(\lambda x.love(x,francesca)) (\lambda y.man(y))$  
+  In particolare questa stringa corrisponde a Un =  $\lambda P.\lambda Q \exists z(P(z) \wedge Q(z))$.  
   In pratica stiamo dicendo che se c'è l'articolo "un" allora ci sarà un NP alla destra, quindi stiamo  già prevedendo un predicato binario in sostanza.
   Abbiamo inoltre le seguenti regole di composizione
-     1. $ VP:f(a) \rightarrow V:f $ $NP: a$
-     2. $S:f(a)\rightarrow NP:f$     $VP:a$
+     1. $VP:f(a) \rightarrow V:f$ $NP: a$
+     2. $S:f(a)\rightarrow NP:f$ $VP:a$
 
   La Struttura dell'albero sarà quindi la seguente:  
   ![Albero di "Un uomo ama francesca"](foto/un%20uomo%20ama%20francesca.png)  
@@ -335,20 +335,20 @@ Di base andiamo a usare ancora una volta l'espressione $\lambda$ ma su `paolo`, 
 > **Nota:** Questo procedimento andrà fatto anche per francesca.
 
 Vediamo ora la **gestione dei verbi transitivi**.  
-Il problema e che vogliamo ora gestire il verbo "ama Francesca". Il modo in cui abbiamo gestito "ama" $ \lambda y.\lambda x.love(x, y)$ e il modo in cui abbiamo gestito il nome proprio francesca $\lambda P.P(francesca)$ non posso essere fusi insieme nell'albero (non ho capito perchè, dalle slide abbiamo solo una X rossa). Andiamo quindi a rifare type-raising e otteniamo cosi $\lambda R.\lambda x.R(\lambda y.love(x, y))$:  
+Il problema e che vogliamo ora gestire il verbo "ama Francesca". Il modo in cui abbiamo gestito "ama" $\lambda y.\lambda x.love(x, y)$ e il modo in cui abbiamo gestito il nome proprio francesca $\lambda P.P(francesca)$ non posso essere fusi insieme nell'albero (non ho capito perchè, dalle slide abbiamo solo una X rossa). Andiamo quindi a rifare type-raising e otteniamo cosi $\lambda R.\lambda x.R(\lambda y.love(x, y))$:  
 ![Albero di "Ama francesca"](foto/ama%20francesca.png)
 
 Un altro punto da gestire sono le frasi con **coordinazione di nomi**.  
-Un esempio è la frase $run(Paolo) \wedge run(Francesca)$, per gestire questa frase dovremo aggiungere al lessico l'istruzione $\lambda$ apposita che indica "e". Come nella frase "Paolo e Francesca corrono", questa frase sarà uguale a $ \lambda x.\lambda y.\lambda R.(x(R) ∧ y(R)) $  
+Un esempio è la frase $run(Paolo) \wedge run(Francesca)$, per gestire questa frase dovremo aggiungere al lessico l'istruzione $\lambda$ apposita che indica "e". Come nella frase "Paolo e Francesca corrono", questa frase sarà uguale a $\lambda x.\lambda y.\lambda R.(x(R) \wedge y(R))$  
 ![Albero di "Paolo e Francesca corrono"](foto/paolo%20e%20francesca%20corrono.png)
 
-Vediamo ora gli **esistenziali** come "Ogni uomo ama una donna", quindi dobbiamo provare a gestire l'operatore $\forall$. Questa formulazione in $\lambda$ corrisponde a $\lambda Q.\lambda P(∀x (Q(x) → P(x)))$
+Vediamo ora gli **esistenziali** come "Ogni uomo ama una donna", quindi dobbiamo provare a gestire l'operatore $\forall$. Questa formulazione in $\lambda$ corrisponde a $\lambda Q.\lambda P(∀x (Q(x) \rightarrow P(x)))$
 
 Infine ci sono gli **avverbi**, come la frase "Paolo ama Francesca dolcemente".  
 Il problema degli avverbi che si tratta i logica del second'ordine: $sweetly(love(P,F))$, inoltre il prof si pone la domanda di avere avverbi annidati come $love(P,F,sweetly)$.
 
-La soluzione sarà reificare l'evento, ovvero definire una variabile che identifica l'evento (in stile Davidson), in logica la rappresentiamo come $\exist e$ $love(e,P,F) \wedge sweetly(e)$.  
-Inoltre possiamo generalizzare anche gli argomenti (neo-davidsonian style) facendoli diventare $∃e$ $love(e) ∧ agent(e,P) ∧ patient(e,F) \wedge sweetly(e)$.
+La soluzione sarà reificare l'evento, ovvero definire una variabile che identifica l'evento (in stile Davidson), in logica la rappresentiamo come $\exists e$ $love(e,P,F) \wedge sweetly(e)$.  
+Inoltre possiamo generalizzare anche gli argomenti (neo-davidsonian style) facendoli diventare $\exists e love(e) \wedge agent(e,P) \wedge patient(e,F) \wedge sweetly(e)$.
 > **Nota:** Un eserzio richiede di sviluppare la derivazione (ovvero albero più lambda-Fol) di questa frase.
 
 Quindi alla fine avremo le seguenti regole
@@ -360,7 +360,7 @@ Quindi alla fine avremo le seguenti regole
   5. Articoli un $\lambda P.\lambda Q.∃z(P(z) \wedge Q(z))$
   6. Congiunzioni e $\lambda x.\lambda y.\lambda R.(x(R) \wedge y(R))$
   7. Esistenziali ogni $\lambda Q\lambda P(∀x (Q(x) → P(x)))$
-  8. Con le solite due regole di composizione, una per la composizione del verbo $ VP:f(a) \rightarrow V:f $ $NP: a$  e una per la composizione di S $S:f(a)\rightarrow NP:f$     $VP:a$
+  8. Con le solite due regole di composizione, una per la composizione del verbo $VP:f(a) \rightarrow V:f$ $NP: a$  e una per la composizione di S $S:f(a)\rightarrow NP:f$ $VP:a$
   
 Inoltre il professore segnala i punti chiave che sono
 
@@ -370,7 +370,7 @@ Inoltre il professore segnala i punti chiave che sono
 
 ### Semantica formale e composizionale con esercizio (montague)
 
-### semantica di montague (fol + lambda calcolo) e la sintassi a dipendenze
+### Semantica di montague (fol + lambda calcolo) e la sintassi a dipendenze
 
 ## Tipi di ambiguità
 
@@ -379,8 +379,8 @@ Inoltre il professore segnala i punti chiave che sono
 - **Ambiguità sintattica**: essendo il livello sintattico l'ambiguità è nella struttura stessa della frase e non a livello di significato.  
   Un esempio è la frase "_Mangio la pizza con le acciughe_", in questo esempio per ogni albero generato avremo un valore univoco in FOL. Possiamo dire quindi che l'ambiguità sintattica avviene quando vengono generati differenti alberi sintattici ma questa non da problemi a livello semantico.
 - **Ambiguità semantica**: quando parliamo di semantica intendiamo il non capire il significato della frase, un esempio è la frase "_Tutti gli uomini amano una donna_" in questo caso viene generato un solo albero sintattico ma i significato in FOL possono essere 2:
-  1. $\forall x(man(x) \rightarrow \exist(woman(y) \wedge love(x,y))) $ ovvero che **per ogni uomo esiste una donna, e l'uomo ama quella donna**.
-  2. $ \exist woman(y)\forall (man(x) \rightarrow love(x,y)) $ ovvero che **esiste una donna che è amata da tutti gli uomini**.
+  1. $\forall x(man(x) \rightarrow \exists(woman(y) \wedge love(x,y)))$ ovvero che **per ogni uomo esiste una donna, e l'uomo ama quella donna**.
+  2. $\exists woman(y)\forall (man(x) \rightarrow love(x,y))$ ovvero che **esiste una donna che è amata da tutti gli uomini**.
 
   Quindi quando parliamo di ambiguità semantica intendiamo che abbiamo un solo albero ma che ha più significati in FOL.
 
@@ -479,5 +479,3 @@ I dialog sistem sono leggermente più evoluti, poiché usano una vera e propria 
     - Statistical Model Dialog Control
 - _Response Generation_: questa parte corrisponde all'architettura di generazione del testo vista sopra.
 - _Text to Speech_: Sempre tramite delle librerie è possibile generare voce a partire dal testo scritto.
-
-#### Confronti la semantica che ha prodotto nell'esercitazione con la semantica di Siri (Frame and Slot)
