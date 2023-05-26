@@ -132,17 +132,14 @@ inferenziali necessari per agire in modo intelligente_**.
 Analogamente alle reti semantiche, i frame rappresentano le conoscenze in modo dichiarativo ma privo di una semantica formale. Pertanto, parlando di frame bisogna presupporre l’esistenza di procedure in grado di utilizzare le informazioni in essi contenute. Quindi vogliamo capire come fare inferenza sulle informazioni dei frame.
 
 - Una prima teoria dice che le persone organizzano i concetti su **tre livelli**.
-  - **Base**: il livello di mezzo, nel nostro esempio qua avremo il concetto sedia. I concetti di base costituiscono il modo naturale di categorizzare gli oggetti e le entità di cui è formato il nostro mondo, e sono le prime categorie che gli esseri umani apprendono.
-  - **Super ordinate**: livello più generale, ovvero il concetto più generale che include tutti gli altri. Nel nostro esempio avremo il concetto mobile. I concetti super ordinati traggono origine da una generalizzazione dei concetti di base.
-  - **Subordinate**: livello più specifico, nel nostro esempio avremo il concetto sedia da ufficio. I concetti subordinati sono una specializzazione dei concetti di base.
+  - **Base**: il livello di mezzo, nel _nostro esempio qua avremo il concetto sedia_. I concetti di base costituiscono il modo naturale di categorizzare gli oggetti e le entità di cui è formato il nostro mondo, e sono le prime categorie che gli esseri umani apprendono.
+  - **Super ordinate**: livello più generale, ovvero il concetto più generale che include tutti gli altri. _Nel nostro esempio avremo il concetto mobile_. I concetti super ordinati traggono origine da una generalizzazione dei concetti di base.
+  - **Subordinate**: livello più specifico, _nel nostro esempio avremo il concetto sedia da ufficio_. I concetti subordinati sono una specializzazione dei concetti di base.
 
 L’appartenenza categoriale non viene caratterizzata tramite un elenco di attributi necessari e sufficienti, ma nei termini di una maggiore o minore somiglianza rispetto a membri tipici della categoria, o prototipi.
-Queste idee sono state recepite nei linguaggi di rappresentazione dei frame: tutti i sistemi a frame permettono di ragionare intorno a classi di oggetti usando delle rappresentazioni prototipiche che, valide in linea di massima, hanno bisogno di venire adattate e modificate per tener conto della complessità del mondo.
+Queste idee sono state recepite nei linguaggi di rappresentazione dei frame: _tutti i sistemi a frame permettono di ragionare intorno a classi di oggetti usando delle rappresentazioni prototipiche che, valide in linea di massima, hanno bisogno di venire adattate e modificate per tener conto della complessità del mondo._
 
-Per applicare questa teoria si userà un sistema gerarchico. In cui i sistemi a frame organizzano le conoscenze in strutture gerarchiche i cui
-elementi sono collegati fra loro da espressioni di tipo isA o ako (a kind of) che consentono la trasmissione ereditaria delle proprietà. Le proprietà dei frame ad alto livello restano fisse (rappresentando fatti veri per la classe), mentre i livelli più bassi, sottoclassi o istanze individuali,
-possono essere contraddistinti da proprietà specifiche, anche in contrasto
-con quelle delle super classi.
+Per applicare questa teoria si userà un sistema gerarchico. In cui i sistemi a frame organizzano le conoscenze in strutture gerarchiche i cui elementi sono collegati fra loro da espressioni di tipo isA o ako (a kind of) che consentono la trasmissione ereditaria delle proprietà. Le proprietà dei frame ad alto livello restano fisse (rappresentando fatti veri per la classe), mentre i livelli più bassi, sottoclassi o istanze individuali, possono essere contraddistinti da proprietà specifiche, anche in contrasto con quelle delle super classi.
 
 #### Struttura di un frame
 
@@ -158,17 +155,45 @@ Un altra caratteristica dei frame e che gli **slot possono essere strutture comp
 Altre alla parte dichiarativa, i frame possono avere anche una parte procedurale. è possibile associare ai vari slot delle procedure in modo da rendere la computazione più efficiente. Un esempio sono ereditarietà e valori di default per riempire uno slot, questi metodi possono essere integrati con delle euristiche e conoscenze di dominio. Abbiamo due procedure:
 
 - **_Procedure if needed_**: procedure che codificano metodi ad-hoc per il calcolo del valore di uno slot qualora sia richiesto dal processo di elaborazione in corso
--**_ Procedure if added_**: rimangono silenti finché non si tenta di riempire un qualche valore lo slot a cui sono associate
+- **_Procedure if added_**: rimangono silenti finché non si tenta di riempire un qualche valore lo slot a cui sono associate
 
-### Significato delle parole
+### Teoria del Significato
+
+In informatica le ontologie sono una concettualizzazione formale del mondo, spesso rappresentano relazioni fra concetti e classi rappresentate.
+Inoltre un'ontologia formale specifica un insieme di vincoli che dichiarano cosa dovrebbe necessariamente tenere in un modello.
 
 Nel tempo ci sono state diverse teorie che hanno cercato di spiegare il significato delle parole.
 
-- **_Prototype theory:/Teoria dei Prototipi_**: Un prototipo è un approssimazione statisticamente rilevante e rappresentava di una categoria. Potremmo vederla come la teoria che spiega il significato di concetto in base alla vicinanza col prototipo della categoria. Si va creare un prototipo in base alle caratteristiche della classe.
+- **_Prototype theory:/Teoria dei Prototipi_**: Un prototipo è un approssimazione statisticamente rilevante e rappresentava di una categoria. Potremmo vederla come la teoria che spiega il significato di concetto in base alla vicinanza col prototipo della categoria.**è uno strumento per rappresentare le tipicalità delle classi.**
+![Prototipi](./foto/teoria%20del%20prototipo.png)
 - **_Exemplar theory/Teoria dell'esempio_**: la rappresentazione mentale di un concetto è il set di rappresentazioni di alcuni esempi della categoria, che abbiamo sviluppato nel tempo. Un esempio è che noi sappiamo cose un gatto perché abbiamo visto molti esemplari di questa categoria nel tempo, siamo cosi giunti alla generalizzazione del concetto "gatto".
+![Esempio](./foto/teoria%20del%20esempio.png)
 - **_Theory theory_**: i concetti fanno parte della comprensione del mondo, visione evolutiva, relazioni con altri concetti importanti.
 
-Questi approcci sono stati formulati come alternative disgiunte, ma ci sono sistemi che mettono insieme più caratteristiche di questi approcci. Ma come si possono combinare più approcci?.
+l'Ipotesi eterogenea dice che prototipi ed esemplari possono co-esistere.
+Questi approcci sono stati formulate come alternativi, ma in realtà ci sono sistemi che mettono insieme I diversi meccanismi di prioirtà per le diverse forme di rapressentazione. Man mano che il Sistema include nuove esempi I prototipi ed esemplari possono cambiare in modo dinamico nel tempo, per continuare a migliorare l'accuratezza.
+
+Ci sono inoltre dei sistemi che però combinano queste teorie insieme alle ontologie formali. Vediamo quali sono. Questa teoria si ispirano alle “Dual Process Theories” nate nel campo della psicologia del ragionamento e della razionalità.
+
+Secondo le teorie del processo duale, esistono due diversi tipi di processi cognitivi e sistemi, essi sono chiamati _system1_ e _system2_.
+
+1. **System1**: è implicito e inconscio. Nel senso che l’elemento che triggera la procedura è legato alla sensoristica. sono instinti automatici.
+Sono meccanismi profondi ed evolutivi e noi possiamo assimilarli in modo veloce $\rightarrow$ Sono processi altamente paralleli e veloci nella computazione.
+Sono indipendenti dal linguaggio: classi di processi che hanno una rappresentazione e manipolazione sotto-simbolica ed assimilarli a reti.
+Hanno un tratto contestuale: sono processi che mettono il sistema in rapporto con il mondo.
+E’ l’insieme dei processi che permettono ai nostri antenati di sopravvivere (astrazione semplice).
+**In pratica l'insieme di istindi di sorpavivenza innati che abbiamo.**
+
+2. **System2**: Sistema conscio, si è evoluto recentemente, possiamo controllarlo ed è correlato al linguaggio. Abbiamo processi molto lenti e sequenziali. è la classe di sistemi che ci permette di fare inferenza e lavorare in modo astratto.
+**In pratica l'insieme di processi che ci permettono di fare inferenza e lavorare in modo astratto.**
+
+Tutto quello che è vettoriale appartiene a system1 mentre tutto quello che è ontologico appartiene a system2.
+
+![Dual Process](./foto/system1%20system2.png)
+
+Inoltre abbiamo delle abilità concettuali cruciali che possonoe ssere viste in system1 e system2.
+
+![differenze concettuali](./foto/system1%20system2%20concetual.png%20.png)
 
 ## Risorse Ontologiche
 
@@ -274,6 +299,12 @@ I frame tendono a rappresentare situazioni più o meno fini, quindi non saranno 
 
 I _frame sono una struttura dati costituita da slot_, dove uno slot può essere a sua volta un frame. Inoltre i frame possono essere organizzati secondo una gerarchia.
 
+I frame inoltre hanno due componenti fondamentali:  
+
+- **_Frame element_**: Un frame element (elemento di frame) in FrameNet  riferisce alle parti o agli _**elementi costituenti di un frame**_. Un frame element rappresenta un ruolo semantico o un'istanza specifica all'interno di un frame. Gli elementi di frame sono le entità o i concetti che sono necessari per realizzare o completare un frame specifico. Ad esempio, _nel frame "**Buying" (Acquisto)**, i frame elements potrebbero includere "**buyer" (acquirente), "seller" (venditore), "product" (prodotto)**, **"price" (prezzo)**_, ecc. I frame elements catturano le parti costituenti o i ruoli semantici all'interno di un frame specifico.
+
+- **_Lexical unit_**: Una lexical unit (unità lessicale) in FrameNet si riferisce a un _**termine specifico o a un'espressione che denota un concetto o un'azione all'interno di un frame specifico**_. Le lexical units sono le parole o le frasi che si collegano a un frame particolare e rappresentano i modi in cui il frame può essere espressamente menzionato nel linguaggio. Ad esempio, nel frame **"Buying" (Acquisto)**, le lexical units potrebbero includere parole come **"buy" (comprare), "purchase" (acquistare), "sell" (vendere)**, ecc. **Sono termini che evocano il frame, possono inotre evocare più frame**.
+
 Un problema comune quando trattiamo il linguaggio e quello delle parole **ambigue** o polisemiche, in FrameNet questo problema rischia di "evocare" diversi frame oltre a quello che ci interessa, entrano quindi in gioco le lexical unit (LU) che sono una coppia {parola - significato}, questo ci dovrebbe permettere di raffinare la nostra ricerca e di evitare di evocare frame che non ci interessano.
 Questo concetto di lexical unit ci aiuta anche nel caso dei **verbi**, questo perché appunto i verbi spesso cambiano in base al contesto della frase. Anche in questo caso posso usare un analisi sintattica per cercare il frame che calza meglio con quel verbo.
 
@@ -285,7 +316,7 @@ Una particolarità di cui abbiamo parlato trattando framenet è che possiamo ave
 - **Subject as Speaker**: nel caso in cui il soggetto della frase compie un azione, un esempio è "la mamma ha spiegato"  oppure "tu ti sei lamentato"
 - **Subject as Medium**: nel caso in cui il soggetto della frase non compie un azione ma è solo metaforico, un esempio è "il capitolo 2 spiega" oppure "la tua lettera si lamenta"
 
-Esiste un evento chiamato **Nominalizzazione**, ossia quando il verbo cambia significato a seconda del sostantivo con cui appare. Un esempio è “aderire alla pelle” (aderenza) o “aderire a un partito” (fedeltà/adesione); Anche in questo caso, FN ci aiuta a comprendere il significato di un verbo.
+Esiste inoltre un evento chiamato **Nominalizzazione**, ossia quando il verbo cambia significato a seconda del sostantivo con cui appare. Un esempio è “aderire alla pelle” (aderenza) o “aderire a un partito” (fedeltà/adesione); Anche in questo caso, FN ci aiuta a comprendere il significato di un verbo.
 
 #### Utilizzo di FrameNet
 
@@ -326,8 +357,8 @@ Fatto questo riassunto veloce parliamo ora di BableNet.
 BabelNet codifica la conoscenza come un grafo diretto etichettato $G = (V,E)$, dove
 
 - $V$ sono un set di nodi
-- $E \subset V*R*V$ che rappresenta un insieme in cui si raccolgono i link per i possibili concetti a cui un'espressione arbitraria potrebbe essere riferita. Ogni elemento dell'insieme (il prof chiama questo insieme _edge_) è etichettato con una relazione semantica R. Queste relazioni possono essere {part_of,is_a,$\epsilon$,...} dove $\epsilon$ raoressenta una relazione non specificata.
-- Inoltre ogni nodo $v \in V$ contiene un set di lessicalizzazioni del concetto per i differenti linguaggi, un esempio è {$playen_{en}$, $Theaterstückde_{de}$, $drammait_{it}$,...}.
+- $E \subset V*R*V$ che rappresenta un insieme in cui si raccolgono i link per i possibili concetti a cui un'espressione arbitraria potrebbe essere riferita. Ogni elemento dell'insieme (il prof chiama questo insieme _edge_) è etichettato con una relazione semantica R. Queste relazioni possono essere {part_of,is_a,$\epsilon$,...} dove $\epsilon$ rapressenta una relazione non specificata.
+- Inoltre ogni nodo $v \in V$ contiene un set di lessicalizzazioni del concetto per i differenti lingue, un esempio è {$playen_{en}$, $Theaterstückde_{de}$, $drammait_{it}$,...}.
 
 Queste concettualizzazioni multiple sono dette Babel Synset.
 Ora non ci rimane che capire come costruire il grafo che unisce WordNet e Wikipedia, la metodologia segue 3 passi:
@@ -341,6 +372,10 @@ Ora non ci rimane che capire come costruire il grafo che unisce WordNet e Wikipe
 ### Nasari
 
 ### LessLex
+
+### Text Summarization
+
+Il text summarization è un task che consiste nel creare un riassunto di un testo mantenendo pero le informazioni rilevanti.
 
 ## Language Models
 
@@ -357,7 +392,7 @@ Nel caso dei bi-grammi la probabilità è riscrivibile come $$ P(w_i|w_{i−1}) 
 
 Che è quindi la probabilià di del bi-gramma diviso la probabilità della parola.
 
-Andiamo ora a fare una piccola aggiunta, ovvero aggiungere un tag all'inizio e alla fine di tutte le frasi del corpus (il tag $<s>$). Questo ci permette di gestire meglio i bordi, necessario per stimare le probabilità delle parole iniziali e finali, e di non avere problemi con le parole che sono all'inizio o alla fine della frase.
+Andiamo ora a fare una piccola aggiunta, ovvero aggiungere un tag all'inizio e alla fine di tutte le frasi del corpus (il tag <$s$>). Questo ci permette di gestire meglio i bordi, necessario per stimare le probabilità delle parole iniziali e finali, e di non avere problemi con le parole che sono all'inizio o alla fine della frase.
 
 ### Sequence generation
 
@@ -379,15 +414,17 @@ La procedura di valutazione implica la partizione dei dati in set di allenamento
 
 - si adatta meglio all'insieme di test il modello che assegna all'insieme di test una maggiore probabilità (cioè "predice" l'insieme di test)
 
-Metrica di **Perplexity** (metrica di valutazione intrinseca): consideriamo una sequenze di parole di k elementi. Dato un LM possiamo calcolare la probabilità della sequenza di parole. Probabilità più alta significa un modello migliore.
-Funzione che prende due argomenti: il particolare modello e un input che è una stringa di linguaggio.
-Dato un certo LM, calcoliamo la probabilità di una certa frase con l’operazione LM(w) (vedere slides per la formula).
-Più alta è la probabilità di emettere quella frase, più il LM è sicuro di spiegare quella emissione nella valutazione intrinseca.
-Mediamo il punteggio dividendolo per il numero di token della sequenza.
-Dei valori bassi di perplexity significa che il modello spiega efficacemente il suo input, la frase.
-Dei valori alti significa che il LM predice meno bene il suo input, la frase.
+Metrica di **Perplexity** (metrica di valutazione intrinseca): consideriamo una sequenze di parole di $k$ elementi. Dato un LM possiamo calcolare la probabilità della sequenza di parole. 
+Probabilità più alta significa un modello migliore.
 
-### Problema degli zeri
+La funzione di perplexity è definita come $ PPL(LM,W) $, dove $W$ è la sequenza di $k$ parole del test set e $LM$ è il modello.
+(Per la formula vedere le slides)
+Più alta è la probabilità di emettere quella frase, più il LM è sicuro di spiegare quella emissione nella valutazione intrinseca. 
+Mediamo il punteggio dividendolo per il numero di token della sequenza.
+_Dei valori bassi di perplexity significa che il modello spiega efficacemente il suo input/la frase_.
+_Dei valori alti significa che il LM predice meno bene il suo input, la frase_.
+
+### Problema degli zeri e Parole sconosciute
 
 Gli zeri sono un problema perché nullifica la probabilità di calcolare l’intera emissione.
 Ci possono essere delle sequenze che non abbiamo mai visto oppure dei termini che non appaiono mai. Le due ipotesi per risolvere:
@@ -448,7 +485,7 @@ Ebbene se sappiamo che un termine appare molto in un documento ma meno nel resto
 La term frequency è facile da ottenere.
 La ricetta per la _TF-IDF_ è quindi $w_{i,j}=tf_{i,j}*idf_{i,j}$
 
-#### Rocchio Metod
+#### Rocchio Method
 
 il metodo di rocchio è un metodo di classificazione che punta a trovare un _profilo esplicito_ / _prototypical document_ di una categoria.
 Il funzionamento del metodo di rocchio si bassa sul concetto di centroide.
@@ -532,6 +569,11 @@ L’output diventa il l’input del livello successivo e i livelli possono esser
 Impilando i livelli, raffiniamo l’output.
 
 #### Architettura
+
+Iniziamo con il vedere l'architettura:
+
+![transformers](./foto/transformers.png)
+
 L'architettura dei transformers è composta da 2 parti fondamentali: l'**encoder** e il **decoder**.
 Inoltre, usiamo il meccanismo dell’attenzione per capire come i termini sono legati l'uno agli altri.
 In particolare: gli input entrano nel lato encoder del trasformatore attraverso un sotto strato di attenzione e un sotto strato FeedForward Network (FFN). Dalla parte del decoder, gli outputs entrano nel lato decodificatore del trasformatore attraverso due sotto strati di attenzione e un sotto strato FFN.
@@ -541,59 +583,69 @@ Fondamentale la rappresentazione interna degli elementi è costruita in una mani
 
 Ogni livello implementa cinque operazioni:
 
-- la **prima operazione** aggiunge informazioni sulla posizione degli embeddings di input di ogni parola nel testo di input: l'embeddings di ogni parola cambia a seconda della sua posizione nel testo di input;
-- nella **seconda operazione** vengono generati gli incorporamenti che sono
-una media ponderata degli embeddings prodotti nella fase precedente (self-attention)
+- la **prima operazione** _aggiunge informazioni sulla posizione degli embeddings di input di ogni parola nel testo di input_: l'embeddings di ogni parola cambia a seconda della sua posizione nel testo di input;
+- nella **seconda operazione** _vengono generati gli incorporamenti che sono
+una media ponderata degli embeddings prodotti nella fase precedente_ (self-attention)
 
 Le altre operazioni sono meno rilevanti, ma fanno funzionare meglio la rete. Per esempio si sommano i vari embeddings dei livelli sottostanti e normalizzano i risultati in modo da evitare dei salti con dei valori che rischiano di minacciare il processo di discesa del gradiente.
 
-#### Encoder
+##### Encoder
 
-L'encoder è composto da 6 blocchi, ognuno dei quali è composto da 2 sotto strati:
+L'encoder classico è composto da 6 blocchi, ognuno dei quali è composto da 2 sotto strati:
 
-- il primo è un meccanismo di attenzione multi-testa (multi-head self-attention) e il secondo è un sotto strato di rete di feed-forward (feed-forward network).
+- il primo è un meccanismo di attenzione multi-testa (multi-head self-attention)
+- il secondo è un sotto strato di rete di feed-forward (feed-forward network).
+
+![encoder transformer](foto/encoder%20transformer.png)
 
 Una connessione residua è impostata attorno a ciascuno dei due sottolivelli, seguito dalla normalizzazione del livello (ovvero l'output di ciascun sottolivello è una LayerNorm(X + SubLayer(X)), dove la funzione SubLayer(X) è la funzione implementata dal sottolivello stesso). Per facilitare queste connessioni residue, tutti i sotto strati nel modello, così come gli strati di embeddings, producono outputs di dimensione 512.
 
-#### Decoder
+##### Decoder
 
-Il decoder è composto da 6 blocchi, ognuno dei quali è composto da 3 sotto strati:
+Il decoder standard è composto da 6 blocchi, ognuno dei quali è composto da 3 sotto strati:
 
 - Oltre ai due strati presenti nell'encoder, il decoder inserisce un terzo sottostrato, che esegue l'attenzione multi-head sulle rappresentazioni dell'encoder (sull'output dell'encoder stack). Come nell'encoder, una connessione residua è impostata attorno a ciascuno dei tre sottolivelli, seguito dalla normalizzazione del livello.
-- Il sottostrato di self-attention nello stack del decoder viene modificato in modo da
-evitare che le posizioni prendano parte alle posizioni successive. Questo mascheramento,
-combinato con il fatto che gli embeddings di output sono sfalsati di una posizione,
-assicura che le predictions per la posizione _i_ possano dipendere solo dagli outputs noti in posizioni inferiori a _i_.
+- Il sottostrato di self-attention nello stack del decoder viene modificato in modo da evitare che le posizioni prendano parte alle posizioni successive. Questo mascheramento, combinato con il fatto che gli embeddings di output sono sfalsati di una posizione, assicura che le predictions per la posizione _i_ possano dipendere solo dagli outputs noti in posizioni inferiori a _i_.
 
-Abbiamo quindi una serie di livelli di encoder e l’ultimo livello dell’encoder produce in output un insieme di elementi che vengono dati come input ai vari livelli del decoder.
-Il decoder ha in aggiunta un altro livello di softmax che permette di ottenere il risultato.
+![encoder transformer](foto/decoder%20transformer.png)
 
-#### Cosa facciamo nel Decoder
+Abbiamo quindi una serie di livelli di encoder e l’ultimo livello dell’encoder produce in output un insieme di elementi che vengono dati come input ai vari livelli del decoder. Il decoder ha in aggiunta un altro livello di softmax che permette di ottenere il risultato.
 
-Gli encoder ricevono una lista di vettori sempre della stessa dimensione. Dopodiché l’encoder processa l’elenco dei vettori facendoli transitare nel livello di self-attention. Il livello di self-attention produce dei nuovi vettori Z che vengono dati come input alla NNFF (neural netword feed forward).
+##### Cosa facciamo nel Decoder
 
-##### SELF-ATTENTION
-Data la fase: "The animal didn't cross the street because it was too tired." io come posso dire a cosa si riferisce "it"? Il meccanismo di self-attention ci permette di associare "it" con "animal".
+Gli encoder ricevono una lista di vettori sempre della stessa dimensione. Dopodiché processano l’elenco dei vettori facendoli transitare nel livello di self-attention. Il livello di self-attention produce dei nuovi vettori Z che vengono dati come input alla NNFF (neural netword feed forward).
+
+##### Self-Attention
+
+Data la fase: "The animal didn't cross the street because it was too tired." io come posso dire a cosa si riferisce "it"?
+Il meccanismo di self-attention ci permette di associare "it" con "animal".
 
 **Primo passaggio**: calcoliamo le matrici Query (Q), Key (K) e Value(V). Vengono impacchettate gli embeddings in una matrice X e moltiplicandola per le matrici di peso. 
 Diciamo anche che una riga nella matrice X corrisponde a una parola nella frase di input e la dimensione del vettore degli embeddings è 512 e la dimensione dei vettori query, key e value è 64 (512/8 = 64 -> 8 sta per le matrici Z di output che saranno 8).
 
 Definiamo cosa sono queste matrici:
 
-- **Query**: è una matrice che contiene le parole che vogliamo analizzare, cioè l'elemento target del nostro apprendimento corrente. Si calcola: $$ Q = X * W^Q $$
-- **Key**: è una matrice che contiene i possibili elementi che appartengono al contesto che stiamo analizzando, cioè le diverse righe della matrice X che abbiamo in input. Si calcola: $$ K = X * W^K $$
-- **Value**: è il nostro "prezzo" di ogni elemento, i valori degli elementi. Si calcola: $$ V = X * W^V $$
+- **Query** : è una matrice che contiene le parole che vogliamo analizzare, cioè l'elemento target del nostro apprendimento corrente. Si calcola: 
+<span style="color:purple"> $$ Q = X * W^Q $$ </span>
+- **Key**: è una matrice che contiene i possibili elementi che appartengono al contesto che stiamo analizzando, cioè le diverse righe della matrice X che abbiamo in input. Si calcola:
+<span style="color:orange">$$ K = X * W^K $$</span>
+- **Value**: è il nostro "prezzo" di ogni elemento, i valori degli elementi. Si calcola:
+<span style="color:blue">$$ V = X * W^V $$</span>
 
 Un esempio: se la query (Q) fosse "bagel", le keys (K) sono i nomi di tutti i prodotti della panetteria (bread, croissant) e il valore (V) è il prezzo di ogni prodotto.
 
-Una volta ottenute le tre matrici si applica la funzione softmax per ottenere le matrici di output (Z): $$ Z = softmax(\frac{Q* K^T}{\sqrt{d_k}})V $$
+Una volta ottenute le tre matrici si applica la funzione softmax per ottenere le matrici di output (Z): 
+$$ Z = softmax(\frac{Q* K^T}{\sqrt{d_k}})V $$
+
+![self attention transformer 2](foto/self%20attention%20transformer%202.png)
 
 Quest'ultima formula è la formula dell'**attention**.
 
 Applicando la softmax otteniamo varie matrici Z (per motivi computazionali e di efficienza le otteniamo dividendo, per esempio, la nostra grandezza di 512 in 8 matrici Z da 64) che vengono concatenate tra di loro, moltiplicate per un'ulteriore matrice di pesi W per ottenere la matrice risultante.
 La matrice risultante è l’elemento che incorpora l’influenza e le relazioni che i termini della nostra frase in input avevano.
 
-Quindi ricapitolando i passaggi sono questi:
+Vedimao un immagine che riassume il tutto e poi ripetiamo:
+![encoder transformer](foto/self%20attntion%20transformer.png)
 
 1. Abbiamo la nostra frase di input
 2. Produciamo gli embeddings per ogni parola della frase
