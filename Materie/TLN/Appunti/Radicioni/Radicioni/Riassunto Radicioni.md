@@ -424,6 +424,7 @@ Mediamo il punteggio dividendolo per il numero di token della sequenza.
 _Dei valori bassi di perplexity significa che il modello spiega efficacemente il suo input/la frase_.
 _Dei valori alti significa che il LM predice meno bene il suo input, la frase_.
 
+
 ### Problema degli zeri e Parole sconosciute
 
 Gli zeri sono un problema perché nullifica la probabilità di calcolare l’intera emissione.
