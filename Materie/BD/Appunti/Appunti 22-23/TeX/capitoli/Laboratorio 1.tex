@@ -1,0 +1,136 @@
+\chapter{Laboratorio 1}
+
+\section{Introduzione alla progettazione}
+
+Il ciclo di vita di una \textcolor{blue}{base  di dati} è diviso in fasi: studio di fattibilità, raccolta e analisi dei requisiti, progettazione, implementazione, validazione e collaudo, funzionamento e manutenzione. In un progetto si devono minimizzare i costi e i tempi e massimizzare la qualità e la funzionalità. Solitamente, nel mondo reale, ci si deve accontentare di un compromesso. 
+
+La \textcolor{blue}{progettazione} di un sistema informativo\footnote{vedi \ref{Sistemi informativi}} riguarda due parti:
+
+\begin{itemize}
+    \item \textcolor{blue}{dati} : la parte stabile;
+    \item \textcolor{blue}{funzionalità} : la parte meno stabile.
+\end{itemize}
+
+\section{Modello entity-relationship}
+
+Il \textcolor{blue}{modello entity-relationship} è il modello concettuale più diffuso per progettare database. Esso \textbf{\textit{non}} modella il comportamento del sistema, ma modella i dati.
+
+\subsection{Entità}
+
+Le \textcolor{blue}{entità} sono aspetti del mondo reale autonomi. Esse sono l'insieme di tutte le occorrenze dei dati, perciò. Per esempio "impiegato" è l'insieme di tutti gli impiegati. Le entità sono rappresentate da un rettangolo.
+
+\begin{center}
+    \begin{tikzpicture}[auto]
+
+  \node[entity] (impiegato) {Impiegato};
+      
+    \end{tikzpicture}
+\end{center}
+
+\section{Associazioni}
+
+Le \textcolor{blue}{associazioni} rappresentano legami logici tra due o più entità. Esse non hanno un verso di lettura e sono rappresentate da rombi.
+
+\begin{center}
+    \begin{tikzpicture}[auto]
+
+  \node[entity] (studente) at (0,0) {Studente};
+  \node[entity] (corso) at (4,0) {Corso};
+    \node[relationship] at (2,0) {Esame}
+    edge (corso)
+    edge (studente);
+    \end{tikzpicture}
+\end{center}
+
+Si possono avere associazioni diverse tra stesse entità.
+
+\begin{center}
+    \begin{tikzpicture}[auto]
+
+  \node[entity] (impiegato) at (0,0) {Impiegato};
+  \node[entity] (città) at (4,0) {Città};
+    
+    \node[relationship] at (2,0) {Risiede}
+    edge (corso)
+    edge (studente);
+
+    \node[relationship] at (2,-2) {Lavora}
+    edge (corso)
+    edge (studente);
+    
+    \end{tikzpicture}
+\end{center}
+
+Si possono avere associazioni ricorsive.
+
+\begin{center}
+    \begin{tikzpicture}[ node distance =5 em]
+
+  \node[entity] (impiegato) at (0,0) {Impiegato};
+    \node[relationship] (collega) [below of = impiegato] {Collega}
+    edge (impiegato);
+    \end{tikzpicture}
+\end{center}
+
+Le occorrenze di un'associazione sono le coppie o le triple  delle occorrenze delle entità. La semantica delle associazioni \textbf{\textit{non}} permette ripetizioni.
+
+\subsection{Cardinalità delle associazioni}
+
+La \textcolor{blue}{cardinalità} delle associazioni descrive il numero minimo e massimo di possibili occorrenze dell'associazione a cui le occorrenze delle entità partecipano.
+
+\begin{center}
+    \begin{tikzpicture}[node distance = 6 em]
+
+  \node[entity] (impiegato) at (0,0) {Impiegato};
+  \node[entity] (progetto) at (8,0) {Progetto};
+    
+    \node[relationship] (partecipazione) at (4,0) {Partecipazione};
+    \path (partecipazione) edge [above] node {(0-5)} (impiegato)
+    edge [above] node {(1-50)}	(progetto);
+    
+    \end{tikzpicture}
+\end{center}
+
+\section{Attributi}
+
+Gli \textcolor{blue}{attributi} descrivono proprietà di entità o associazioni. Ogni attributo è caratterizzato da un dominio che comprende i valori ammissibili. Si possono avere attributi con lo stesso nome, ma devono essere legati a entità/associazioni diverse. Gli attributi sono rappresentati da pallini vuoti.
+
+\begin{center}
+    \begin{tikzpicture}[auto]
+
+  \node[entity] (studente) at (0,0) {Studente};
+    \tikzstyle{knode}=[circle,draw=black,thick,inner sep=2pt]
+    \node (n1) at (0:1.5cm) [knode] {};
+    \node (n2) at (100:1.5cm) [knode] {};
+
+\path (n1) edge [above right] node {Matricola} (studente);
+\path (n2) edge [above right] node {Anno di iscrizione} (studente);
+    \end{tikzpicture}
+\end{center}
+
+\subsection{Cardinalità degli attributi}
+
+Anche gli attributi possono avere una \textcolor{blue}{cardianlità}:
+
+\begin{itemize}
+    \item 0, l'attributo è opzionale;
+    \item 1, l'attributo è obbligatorio;
+    \item n, l'attributo è multivalore.
+\end{itemize}
+
+\begin{center}
+    \begin{tikzpicture}[auto]
+
+  \node[entity] (studente) at (0,0) {Studente};
+    \tikzstyle{knode}=[circle,draw=black,thick,inner sep=2pt]
+    \node (n1) at (0:1.5cm) [knode] {};
+    \node (n2) at (100:1.5cm) [knode] {};
+
+\path (n1) edge [above right] node {Matricola (1,1)} (studente);
+\path (n2) edge [above right] node {Esami superati (0, n)} (studente);
+    \end{tikzpicture}
+\end{center}
+
+\subsection{Attributi composti}
+
+Gli \textcolor{blue}{attributi composti} raggruppano attributi simili. Per esempio indirizzo può raggruppare via e numero civico.

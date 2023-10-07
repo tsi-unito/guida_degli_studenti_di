@@ -1,0 +1,78 @@
+\chapter{Teoria 13}
+
+\section{Gestione delle transazioni}
+
+Supponiamo che il DBMS riceva contemporaneamente le transazioni $T_1$ e $T_2$. Queste due transazioni devono godere della proprietà di isolamento. Per cui l’esecuzione completa di T1 (isolata) seguita dall’esecuzione completa di T2 (isolata) ha la proprietà di lasciare la BD in una situazione di consistenza. Se il DBMS riceve le transazioni contemporaneamente, la
+scelta di eseguire la sequenza $T_1 T_2$ oppure $T_2 T_1$ è irrilevante. In base al sistema informativo le due transazioni possono essere eseguite in parallelo oppure prima una e poi l'altra (ma questo caso è inefficiente per via dei tempi morti).
+
+L’esecuzione in parallelo di due transazioni richiede di \textcolor{blue}{interfogliare} (interleave) le attività delle transazioni.
+
+\paragraph{Inconsistenze dell'interfogliamento:} l'interfogliamento può causare problemi interferendo con le transazioni.
+
+\section{Serializzabilità}
+
+La \textcolor{blue}{schedulazione} (o \textcolor{blue}{storia}) è uno specifico interfogliamento. Una storia è la sequenza di azioni eseguite dal DBMS per far fronte alle transazioni.
+
+Dato che si assume che l’esecuzione seriale delle transazioni sia consistente, sono consistenti tutti gli interfogliamenti equivalenti alle storie seriali. Il criterio di serializzabilità dice che una storia S è corretta se è equivalente a una qualsiasi storia seriale delle transazioni coinvolte da S. Date n transazioni ci possono essere n! storie seriali.
+
+\subsection{Meccanismo dei lock}
+
+Il \textcolor{blue}{meccanismo dei lock} è un protocollo che evita a priori la non serializzabilità.
+
+Le transazioni possiedono alcuni comandi per richiedere l’autorizzazione a compiere azioni sull’oggetto X\footnote{Assimilabile a una tupla}:
+
+\begin{itemize}
+    \item LS(X): lock shared sull'oggetto X, da richiedere prima della lettura;
+    \item LX(X): lock exclusive sull'oggetto X, da richiedere prima della scrittura;
+    \item UN(X): unlock sull'oggetto X.
+\end{itemize}
+
+Di solito LS, LX e UN vengono invocati implicitamente dal gestore della concorrenza.
+
+\paragraph{Lock shared:} quando una transazione $T_i$ vuole eseguire un’azione di lettura $r_i(X)$, prima di effettuare la lettura deve avere acquisito almeno il permesso per leggere l’oggetto X (lock shared). Il lock shared (condiviso) si chiama così perché transazioni diverse possono acquisire un lock condiviso sul medesimo oggetto.
+
+\paragraph{Lock exclusive:} la richiesta di lock exclusive è fatta da una transazione per modificare un oggetto X: questa richiesta deve sempre precedere una $w_i(X)$. Quando $T_i$ ha acquisito l’autorizzazione esclusiva a scrivere l’oggetto X, nessuna altra transazione può acquisire lock (né LS né LX) sullo stesso oggetto.
+
+\paragraph{Unlock:} quando una transazione non ha più bisogno di leggere o scrivere l’oggetto X, può rilasciare il lock
+(shared o exclusive) attraverso l’unlock.
+
+Se il DBMS non può concedere il lock la transazione che lo ha richiesto entra in stato di wait. Tutti i lock sono memorizzati in una tabella dei lock.
+
+Esiste una tabella di compatibilità che descrive il funzionamento del dbms in presenza di più lock.
+\begin{center}
+    \begin{tabular}{|c|c|c|}
+        \hline
+        \textbf{Possesso/richiesta} & \textbf{LS} & \textbf{LX} \\
+        \hline
+        \textbf{LS} & Concede & Nega \\
+        \hline
+        \textbf{LX} & Nega & Nega \\
+        \hline
+    \end{tabular}
+\end{center}
+
+
+È possibile aggiornare il lock da LS a LX se una stessa transazione ne fa richiesta ed è l’unica che possiede il LS.
+
+Tuttavia il meccanismo dei lock, da solo, non è sufficiente a risolvere la concorrenza.
+
+\subsection{2PL}
+
+Il \textcolor{blue}{two-phase lock} (2PL) divide il meccanismo dei lock in due fasi:
+
+\begin{itemize}
+    \item fase di acquisizione dei lock;
+    \item fase di rilascio dei lock.
+\end{itemize}
+
+Questo sistema garantisce la serializzabilità\footnote{vedere le slide per esempi}, però il protocollo del lock a due fasi è piuttosto rigido, infatti esistono storie serializzabili che non sono possibili con il lock a due fasi
+
+\subsection{Granularità del lock}
+
+L'attributo X può essere:
+\begin{itemize}
+    \item una tupla (soluzione più diffusa);
+    \item un attributo (aumenta il parallelismo, ma è più difficile da gestire);
+    \item una pagina (facile da gestire, ma riduce il parallelismo);
+    \item un file (usato nella gestione degli indici\footnote{vedi \ref{Indici}}).
+\end{itemize}

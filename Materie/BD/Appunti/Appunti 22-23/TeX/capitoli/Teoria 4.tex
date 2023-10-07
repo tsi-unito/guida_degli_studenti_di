@@ -1,0 +1,78 @@
+\chapter{Teoria 4}
+
+\section{Interrogazioni con negazione}
+
+Nelle basi di dati si assume un mondo chiuso\footnote{Closed-world assumption}. Per cui gli unici fatti veri sono quelli presenti nella base di dati. Se un fatto non è descritto allora è falso.
+
+\paragraph{Schema generale:}
+\begin{enumerate}
+    \item si definisce l'universo del discorso (U);
+    \item si risponde all'interrogazione in modo positivo (P);
+    \item si trova la risposta all'interrogazione originale con la differenza tra U e P\footnote{U e P devono avere lo stesso schema, inoltre ciò vale solo in un mondo chiuso}.
+\end{enumerate}
+
+\section{Interrogazioni con quantificazione universale}
+
+L'algebra relazionale non è in grado di gestire direttamente la quantificazione universale per cui ci deve ricondurre alla quantificazione esistenziale.
+
+\paragraph{Schema generale:}
+
+\begin{enumerate}
+    \item si definisce l'universo del discorso (U);
+    \item si ricavano tutte le combinazioni possibili;
+    \item si trova la differenza;
+    \item si proietta sugli attributi di interesse;
+    \item si sottrae il risultato del punto 4 all'universo del punto 1.
+\end{enumerate}
+
+Questo ragionamento corrisponde all'operatore quoziente.
+
+\section{Quoziente}
+
+Il \textcolor{blue}{quoziente} è un operatore derivato: $r(A, B) \div s(B) := \pi_a(r) - \pi_a((\pi_a(r) X s) - r)$.
+Serve per ricavare tutte le tuple di r che compaiono in ogni combinazione. Non è implementato in SQL per cui si devono utilizzare sotto-query.
+
+La cardinalità della relazione virtuale dell'operatore quoziente è:
+
+$0 \leq |r(A,B) \div s(B)| \leq |\pi_A(r)| \leq |r|$
+
+\section{Join esterni}
+\label{Join e}
+\subsection{Left join}
+
+Il \textcolor{blue}{left join} contiene tutte le tuple della relazione a sinistra in join con la relazione di destra. Nel caso una tupla della relazione destra non faccia join con nessuna tupla della relazione di sinistra si inserisce il valore NULL per gli attributi della seconda relazione.
+
+\subsection{Right join}
+
+Il \textcolor{blue}{right join} contiene tutte le tuple della relazione a destra in join con la relazione di sinistra. Nel caso una tupla della relazione sinistra non faccia join con nessuna tupla della relazione di destra si inserisce il valore NULL per gli attributi della prima relazione.
+
+\subsection{Full join}
+
+Il \textcolor{blue}{full join} è l'unione di left join e right join.
+
+\section{Semantica di Codd del valore nullo}
+
+\label{Logica a tre valori}
+
+La \textcolor{blue}{semantica di Codd} del valore nullo è il comportamento di un'interrogazione con tuple che contengono valori nulli. Per fare ciò, Codd propose di passare da una logica a due valori (True, False) a una logica a tre valori (True, False, Unknown).
+
+\subsection{Logica a tre valori}
+
+Tre valori:
+
+\begin{itemize}
+    \item True (T, vale 2);
+    \item False (F, vale 0);
+    \item Unknown (U, vale 1).
+\end{itemize}
+
+In questa logica:
+
+\begin{itemize}
+    \item AND si calcola con il minimo;
+    \item OR si calcola con il massimo;
+    \item NOT si calcola con 2 - p. 
+\end{itemize}
+
+Per cercare un valore nullo si usa il predicato ISNULL, per cercarne uno non nullo si usa ISNOTNULL.
+In questa logica non valgono nè il principio di non contraddizione, nè il principio del terzo escluso.
