@@ -1,0 +1,67 @@
+\chapter{Teoria 9}
+
+\section{3NF}
+
+Se una relazione è in 3NF allora è anche in BCNF. La 3NF è sempre raggiungibile mantenendo le dipendenze funzionali, ma non elimina tutte le anomalie.
+
+Una relazione (R(A),F) è in 3NF (terza forma normale) se per ogni ogni $X \rightarrow Y \in F$ si verifica almeno una delle
+seguenti condizioni:
+
+\begin{itemize}
+    \item $Y \subseteq X$;
+    \item X è superchiave di R;
+    \item Y sono attributi primi.
+\end{itemize}
+
+Data una relazione R(A), gli attributi $Y \subseteq A$ sono detti \textcolor{blue}{attributi primi} se e solo se $Y \subseteq K$, dove K è una chiave di R(A).
+
+Partendo da un insieme di dipendenze funzionali, si deve trovare un altro insieme di dipendenze funzionali equivalente e minimale. Per fare ciò si introducono i concetti di \textcolor{blue}{attributo estraneo} e \textcolor{blue}{dipendenza ridondante}.
+
+\paragraph{Attributo estraneo:} un attributo in una dipendenza funzionale in F è estraneo se e solo se possiamo rimuovere l’attributo dalla dipendenza funzionale continuando ad avere un insieme di dipendenze funzionali equivalente.
+
+\paragraph{Dipendenza ridondante:} Una dipendenza funzionale è ridondante in un insieme di dipendenze funzionali F se e solo se possiamo rimuoverla da F continuando un insieme di dipendenze funzionali equivalente.
+
+\section{Insieme di copertura minimale}
+
+Un insieme F' di dipendenze funzionali è un \textcolor{blue}{insieme di copertura minimale} rispetto a F quando:
+
+\begin{itemize}
+    \item $F' \equiv F$ (equivalenza, indica che è minimale);
+    \item in ogni $X \rightarrow Y \in F' Y$ è un attributo singolo (si dice che è in forma canonica, non è un requisito necessario, ma semplifica la trattazione);
+    \item ogni $X \rightarrow Y \in F'$ è priva di attributi estranei;
+    \item ogni $X \rightarrow Y \in F'$ non è ridondante.
+\end{itemize}
+
+\subsection{Algoritmo per il calcolo di una copertura minimale}
+
+\begin{enumerate}
+    \item per ogni d. f. X $\rightarrow A_1 ... A_n \in F'$ si sostituisce in F' la d. f. X $\rightarrow A_1 ... A_n$ con X $\rightarrow A_1, ..., X \rightarrow A_n$;
+    \item per ogni d. f. $X \rightarrow A_i \in F'$ (per ogni $B_j \in X$ (se $A_i \in (X-B_j)^+_{F'}$ allora cancella $B_j$ da X e aggiorna F'));
+    \item per ogni d. f. $X \rightarrow A_i \in F'$ (F* := F' - ($X \rightarrow A_i)$ se $A_i \in X^+_{F*}$ allora F' := F*) return F'.
+\end{enumerate}
+
+Il passo 1 decompone le d. f. per trasformarle in d. f. di un attributo singolo. Il passo 2 serve per eliminare gli attributi estranei e il passo 3 serve per eliminare le dipendenze ridondanti. Bisogna sempre prima eliminare tutti gli attributi estranei e poi eliminare le dipendenze funzionali ridondanti, altrimenti si rischia di non riconoscere tutte le
+dipendenze funzionali ridondanti. 
+
+La copertura minimale F' \textcolor{blue}{non è unica}, ma tutte le coperture minimali che si ottengono eseguendo l'algoritmo sono equivalenti. La complessità dell’algoritmo per il calcolo dell’insieme di copertura minimale è \textcolor{blue}{polinomiale}.
+
+\section{Normalizzazione in 3NF}
+
+\begin{enumerate}
+    \item calcola la copertura minimale F' di F;
+\item per ogni insieme di d. f. $\{X \rightarrow A_1, ..., X \rightarrow A_n\} \subseteq F'$ che contiene tutte le d. f. che hanno a sinistra gli stessi attributi X (crea la relazione ($R_X(\underline{X}A_1 ... A_n), \{X \rightarrow A_1 ... A_n\}$));
+\item per ogni coppia di relazioni $R_X(\underline{X}Y), R_{X'}(\underline{X}'Y')$ in cui $X'Y' \subseteq XY$ (elimina la relazione $R_{X'}$ e aggiungi le d. f. di $R_{X'}$ a quelle di $R_X$;
+\item se nessuna relazione contiene una chiave K qualsiasi di R(A) (trova K tale che $K^+ = A$ e crea una nuova relazione $R_K(K)$.
+\end{enumerate}
+
+\subsection{Proprietà della normalizzazione 3NF}
+
+\begin{itemize}
+    \item nelle relazioni $R_i(XA_1 ... A_n)$ generate dalle d. f. $X \rightarrow A_i$, X è chiave di $R_i$;
+    \item genera relazioni in 3NF;
+    \item ha complessità polinomiale;
+    \item conserva le dipendenze, infatti troviamo ogni dipendenza di F' all’interno della relazione corrispondente;
+    \item garantisce la decomposizione con join senza perdita.
+\end{itemize}
+
+Tutte le dimostrazioni di queste proprietà sono spiegate in dettaglio nelle slide del corso.

@@ -1,0 +1,66 @@
+\chapter{Laboratorio 3}
+
+\section{Progettazione concettuale}
+
+L'analisi inizia con i primi requisiti raccolti (in linguaggio naturale).
+Le possibili fonti sono:
+\begin{itemize}
+    \item utenti, attraverso documenti o interviste;
+    \item documentazione già esistente, come normative o regolamenti interni;
+    \item realizzazioni preesistenti.
+\end{itemize}
+
+\subsection{Acquisizione tramite interviste}
+Utenti diversi possono fornire informazioni diverse (complementari o contradditorie). Gli utenti ad alto livello vedono il quadro generale, mentre gli utenti a basso livello vedono i dettagli.
+
+\subsection{Suggerimenti per la progettazione}
+
+Se un concetto ha proprietà significative e descrive oggetti con esistenza autonoma è un'entità.
+
+Se un concetto è semplice e non ha proprietà è un attributo.
+
+Se un concetto lega tra loro due o più concetti è un'associazione.
+
+Se un concetto è un caso particolare di un altro concetto è una generalizzazione.
+
+\subsection{Requisiti (documentazione descrittiva)}
+
+Si deve scegliere il corretto livello di astrazione, standardizzare la struttura delle frasi ed evitare frasi contorte. Si devono unificare i termini eliminando omonimi\footnote{Hanno lo stesso nome, ma si riferiscono a concetti diversi} e sinonimi\footnote{Hanno nomi diversi, ma si riferiscono allo stesso concetto}, rendendo espliciti i riferimenti tra i termini. Si deve costruire un \textcolor{blue}{glossario dei termini} (tabella).
+
+\section{Pattern di progettazione}
+
+Sono soluzioni progettuali pronte per problemi comuni\footnote{Per la spiegazione in dettaglio si rimanda alle slide}:
+
+\begin{itemize}
+    \item Reificazione di attributo di entità: è la trasformazione di un attributo in un'identità;
+    \item Part-of: due casi, il primo nel quale una parte non può esistere senza l'intero e il secondo in cui la parte può esistere senza l'intero;
+    \item Instance-of: rappresenta il concetto istanza-classe;
+    \item Reificazione di un'associazione binaria: si trasforma l'associazione binaria in un'entità;
+    \item Reificazione di un'associazione ricorsiva: si trasforma l'associazione ricorsiva in un'entità;
+    \item Reificazione di associazione ternaria: si trasforma l'associazione ternaria in un'entità;
+    \item Reificazione di attributo di associazione;
+    \item Caso particolare di un'entità: livelli diversi della generalizzazione partecipano ad associazioni diverse;
+    \item Storicizzazione di un’entità: si usa la generalizzazione per rappresentare le informazioni correnti e contemporaneamente tenere traccia dello storico;
+    \item Storicizzazione di un’associazione;
+    \item Evoluzione di un concetto: si usa la generalizzazione per rappresentare l’evoluzione di un concetto mettendo nel genitore gli attributi e le associazioni comuni.
+\end{itemize}
+
+\section{Strategie di progetto}
+
+\paragraph{Top-Down:} si individuano i concetti più importanti e si procede per raffinamenti successivi. Essa è conveniente perchè permette di trascurare momentaneamente alcuni dettagli, ma la si può utilizzare solo quando si ha una visione generale del progetto.
+
+\paragraph{Bottom-Up:} le specifiche vengono divise in parti più semplici e poi unite alla fine. Questa strategia è adatta per i progetti di gruppo, ma l'integrazioni di varie parti può essere difficoltosa.
+
+\paragraph{Inside-Out:} è una variante della Bottom-Up in cui si parte dai concetti più importanti e ci si espande a macchia d'olio. Non richiede integrazione, ma è necessario rivisitare periodicamente i requisiti per essere certi di rappresentare tutti i concetti.
+
+\paragraph{Mista:} nella realtà si procede con una soluzione ibrida.
+
+\section{Qualità di uno schema concettuale}
+
+\paragraph{Correttezza:} devono essere utilizzati propriamente i costrutti messi a disposizione dal modello concettuale di riferimento.
+
+\paragraph{Completezza:} deve modellare tutte le specifiche.
+
+\paragraph{Leggibilità:} deve poter essere compreso in maniera immediata.
+
+\paragraph{Minimalità:} le specifiche devono presentarsi una volta sola.

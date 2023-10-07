@@ -1,0 +1,121 @@
+\chapter{Teoria 12}
+
+\section{Architettura dei DBMS}
+
+\paragraph{Gestore delle interrogazioni:} riceve i comandi SQL delle interrogazioni, li rende più efficienti ed elabora un piano per la loro esecuzione.
+
+\paragraph{Gestore delle transazioni:} invia i comandi DML, per gestire il ciclo di vita delle transazioni, alle componenti che ne fanno richiesta. Garantisce parte della proprietà di consistenza.
+
+\paragraph{Serializzatore:} garantisce la proprietà di isolamento e parte della proprietà di consistenza.
+
+\paragraph{Gestore del ripristino:} gestisce ripristini in seguito a guasti ed è responsabile delle proprietà di atomicità e di integrità.
+
+\paragraph{Gestore del buffer:} garantisce la proprietà di durabilità.
+
+\section{Gestore del buffer}
+
+Il DBMS usa alcune funzionalità del \textit{file system} creando una propria astrazione dei file che consente di garantire efficienza e transazionalità. La struttura dei file è gestita direttamente dal DBMS.
+
+\subsection{Richiami di architettura degli elaboratori}
+
+I programmi possono fare riferimento solo a dati in memoria principale. I dati in memoria secondaria possono essere
+utilizzati solo se prima trasferiti in memoria principale. Le basi di dati sono troppo grandi per essere memorizzate interamente in memoria principale, inoltre la persistenza richiede esplicitamente che i dati siano salvati in memoria secondaria. 
+
+\subsection{Richiami di sistemi operativi}
+
+Tutti i dati del database (tabelle, indici, log, dump) e i \textcolor{blue}{record} (la realizzazione fisica del concetto di tupla) sono organizzati in \textcolor{blue}{pagine}. La dimensione delle pagine è variabile e dipende dal sistema. Se la transazione ha bisogno di lavorare su un determinato record , il gestore del buffer cerca una pagina \textit{pid} (page id) che contiene il record desiderato. Il gestore del buffer, riceve una richiesta chiamata fix pid, che significa: metti a disposizione della transazione la pagina pid.
+
+Quando il gestore del buffer riceve la richiesta di una pagina essa viene presa dalla memoria secondaria trasferendola in \textcolor{blue}{cache}. Dalla cache la pagina viene portata in memoria principale. Dopo di chè il gestore del buffer risponde alla transazione, che aveva richiesto la pagina, con l'indirizzo della memoria in cui trovare la pagina.
+Il costo temporale grava soprattutto sulla movimentazione delle pagine da memoria secondaria a memoria principale.
+
+I dispositivi di memoria secondaria sono organizzati in blocchi di lunghezza fissa (grandi alcuni KB). Le uniche operazioni sui dispositivi sono la lettura e la scrittura di una pagina, cioè dei dati di un blocco\footnote{In questo corso pagina e blocco verrano considerati come sinonimi}. Se la dimensione di un blocco è superiore alla dimensione media di un record allora un blocco può contenere più record e lo spazio residuo può essere usato per record spanned (altre relazioni) o non usato.
+
+Un record ID è composto da due parti:
+\begin{itemize}
+    \item un pid che punta all'intera pagina;
+    \item un offset che punta al record preciso di quella pagina.
+\end{itemize}
+
+Nelle pagine sono anche presenti un PinCount (che conta le transazioni che hanno avuto l'okay di accesso alla pagina), un dirty bit (che è a 1 se la pagina è stata modificata rispetto alla versione presente in memoria secondaria) e uno stack dei record (contenente i record della pagina).
+
+\section{Strutture primarie per l’organizzazione dei file}
+
+Le \textcolor{blue}{strutture primarie per l’organizzazione dei file} specificano come sono organizzati record e pagine:
+\begin{itemize}
+    \item file di record \textcolor{blue}{a heap} (struttura seriale);
+    \item file di record \textcolor{blue}{ordinati} (struttura sequenziale);
+    \item struttura a hash\footnote{Che non è argomento di questo corso}.
+\end{itemize}
+
+\subsection{Record a heap}
+
+Questa struttura è la più usata dai DBMS, spesso associato a strutture di accesso secondarie. I record vengono inseriti nelle pagine in ordine di arrivo (in coda o al posto di record cancellati). La cancellazione lascia spazio inutilizzato, per cui i blocchi vanno ricompattati periodicamente. Il costo di un'interrogazione va valutato a priori: una ricerca con insuccesso prevede la lettura di tutte le pagine, una con successo prevede, in media, di leggere metà delle pagine (perchè il record ha la stessa probabilità di trovarsi in ogni pagina). 
+
+\subsection{Struttura ordinata}
+
+L’inserimento è costoso perché richiede di spostare pagine. La cancellazione si può attuare contrassegnando un record come
+cancellato e attuando una riorganizzazione periodica. La ricerca con insuccesso sull’attributo chiave (usato per ordinare i record) ha lo stesso costo della ricerca con successo perché non si ha bisogno di scorrere tutte le pagine (ci si può arrestare quando si supera il valore richiesto). Se si fa una ricerca su un attributo non chiave, in caso di insuccesso, si devono scorrere tutte le pagine (come nel caso dei record a heap).
+
+Si possono migliorare i tempi di accesso delle strutture seriali e sequenziali aggiungendo strutture secondarie.
+
+\section{Strutture secondarie (indici)}
+\label{Indici}
+Un \textcolor{blue}{indice} è memorizzato in una sezione diversa dalle aree che contengono le pagine. Gli indici contengono puntatori (RID) ai record memorizzati in strutture primarie.
+
+Un DB administrator crea un indice quando il carico di lavoro in termini di interrogazioni è tale per cui il costo di accesso all’indice riduce notevolmente i tempi di risposta rispetto alla scansione sequenziale. Tuttavia ciò appesantisce inserimenti, cancellazioni e modifiche (gli indici sono utili se il DB non viene modificato spesso).
+
+Gli indici possono essere:
+\begin{itemize}
+    \item \textcolor{blue}{primari}: se definiti sullo stesso attributo chiave relazionale su cui sono ordinati i record;
+    \item \textcolor{blue}{clusterizzati}: se definiti su un attributo non chiave relazionale su cui sono ordinati i record;
+    \item \textcolor{blue}{secondari}: se definiti su un attributo qualunque sui cui i record non sono ordinati.
+\end{itemize}
+
+\subsection{B-tree}
+
+Un B-tree è una generalizzazione degli alberi binari di ricerca\footnote{visti nel corso di Programmazione II} in cui ogni nodo può avere m figli (\textcolor{blue}{branching factor}):
+\begin{itemize}
+    \item ogni sottoalbero di sinistra di una chiave k ha chiavi di ricerca strettamente inferiori alla chiave k;
+    \item ogni sottoalbero di destra di una chiave k ha chiavi di ricerca strettamente superiori alla chiave k.
+\end{itemize}
+
+I B-tree sono bilanciati.
+
+Dato un B-tree con branching factor m, il B-tree ha le seguenti proprietà:
+
+\begin{itemize}
+    \item ogni nodo ha al massimo m-1 chiavi;
+    \item ogni nodo (tranne la radice) ha almeno $\frac{m}{2}-1$ chiavi (è mezzo pieno);
+    \item se non è vuoto la radice ha almeno una chiave;
+    \item tutte le foglie sono allo stesso livello;
+    \item un nodo non-foglia che ha k chiavi ha k+1 figli.
+\end{itemize}
+
+Il dato quantitativo importante per i DBMS è il numero di livelli (la stima del numero minimo e del numero massimo di livelli è presente sulle slide). Si può approssimare il tutto a $N \simeq m^L$ (dove N è il numero di chiavi, m è il branching factor e L è il numero di livelli).
+
+Nei sistemi DBMS, gli indici reggono bene un carico del 70\% della capacità massima (con 3 livelli si reggono bene 700 mila chiavi).
+
+\subsection{B+-tree}
+
+Si cerca di mantenere in memoria principale i nodi più interni (perchè attraversati più spesso). Le chiavi di ricerca vengono duplicate nelle foglie, per alleggerire i nodi interni. Inoltre le foglie sono linkate le une alle altre.
+
+\paragraph{Tipi diversi di data entry K*:}
+
+\begin{itemize}
+    \item $<$k,tupla$>$ il data entry è il record stesso (B+-tree è usato come struttura di memorizzazione primaria);
+    \item $<$k,RID$>$: il data entry è puntatore al record nell'area primaria;
+    \item $<$k,lista\_di\_RID$>$: il data entry è una lista di puntatori con la stessa chiave di k, serve quando si vuole fare riferimento a più record.
+\end{itemize}
+
+\subsection{Regole generali per l'utilizzo degli indici}
+
+\begin{itemize}
+    \item Evitare gli indici su tabelle di poche pagine;
+    \item Evitare indici su attributi volatili;
+    \item Evitare indici su chiavi poco selettive;
+    \item Evitare indici su chiavi con valori sbilanciati;
+    \item Limitare il numero di indici;
+    \item Definire indici su chiavi relazionali ed esterne;
+    \item Gli indici velocizzano le scansioni ordinate;
+    \item Conoscere a fondo il DBMS.
+\end{itemize}
