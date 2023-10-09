@@ -1,0 +1,114 @@
+\chapter{Statistica descrittiva}
+
+La \textcolor{purple}{stastistica descrittiva} si occupa di ricavare informazioni qualitative. 
+\\
+In statistica ci si riferisce sempre a una \textcolor{purple}{popolazione di interesse}:
+\begin{itemize}
+    \item con un censimento si raggiungono tutti gli individui;
+    \item con un campionamento si raggiunge una parte della popolazione.
+\end{itemize}
+
+\nt{Il campionamento deve essere rappresentativo, indipendente e di giusta taglia}
+
+\section{Tipologie di dati}
+
+\begin{itemize}
+    \item \textcolor{purple}{Fattore}: variabile che codifica l'appartenenza a un gruppo;
+    \item \textcolor{purple}{Character data}: identifica gli elementi, ma non viene usato per raggruppare.
+    \item \textcolor{purple}{Quantitativi}: possono essere discreti o continui.
+    \item \textcolor{purple}{Data frame}: matrice di dati.
+\end{itemize}
+
+\section{Statistica descrittiva per dati quantitativi}
+
+\subsection{Indici di posizione}
+
+\begin{itemize}
+    \item \textcolor{purple}{Media campionaria}: la media aritmetica, è sensibile ai valori estremi.
+    \item \textcolor{purple}{Mediana campionaria}: lascia il 50\% delle sue osservazioni alla sua sinistra e il 50\% alla sua destra. Il vettore di elementi che si sta analizzando deve essere ordinato. 
+    \item \textcolor{purple}{Percentile campionario}: è il valore che lascia a sinistra il p\% delle osservazioni (è una generalizzazione della mediana).
+\end{itemize}
+
+Se mediana $<$ media gli estremali sono piccoli.
+
+Se mediana $>$ media gli estremali sono grandi.
+
+Se mediana $=$ media si ha simmetria.
+
+\subsection{Indici di dispersione}
+
+\begin{itemize}
+    \item \textcolor{purple}{Varianza campionaria}: $s^2$ è la media aritmetica degli scarti al quadrato.
+    \item \textcolor{purple}{Deviazione standard campionaria}: $s$ è la radice quadrata della varianza campionaria.
+    \item \textcolor{purple}{Z-Score}: $z = \frac{x_i - x}{s}$. Standardizzazione dei valori, permette di confrontare dati diversi.
+    \item \textcolor{purple}{CV} (coefficiente di varianza/fano factor): $cv = \frac{s}{x}$.
+\end{itemize}
+
+Se $cv > 1$ si ha alta variabilità. 
+
+Se $cv < 1$ si ha bassa variabilità. 
+
+Se $cv = 1$ si ha una distribuzione esponenziale. 
+
+\subsection{Indici di forma}
+
+\begin{itemize}
+    \item \textcolor{purple}{Skewness} (indicedi asimmetria): è la media aritmetica degli z-score al cubo. Se i contributi dei vari z-score è prossima a 0 si ha la simmetria. Se il valore è maggiore o minore si ha asimmetria. 
+\end{itemize}
+
+\section{Rappresentazione grafica dei dati}
+
+\subsection{Istogrammi}
+
+Solitamente si usano degli \textcolor{purple}{istogrammi} per rappresentare la distribuzione:
+
+\begin{itemize}
+    \item si divide l'asse delle x in classi;
+    \item si contano le osservazioni in ogni classe;
+    \item si costruisce un rettangolo in ciascuna classe, con altezza proporzionale al conteggio.
+\end{itemize}
+
+\subsection{Legge del 3\texorpdfstring{$\nabla$}- per la gaussiana}
+
+\nt{La \textcolor{purple}{gaussiana} ha code "leggere". La maggior parte dei dati (0.99) si trova tra $\mu - 3\nabla$ e $\mu + 3\nabla$ }
+
+\subsection{Box-plot}
+
+Il \textcolor{purple}{box-plot} è una rappresentazione grafica della distribuzione dei dati. La scatola contiene il 50\% delle osservazioni, le restanti si trovano nei whiskers (che non sono troppo lontani dal centro), mentre i valori estremali (outliers) sono rappresentati come puntini e non vengono considerati in quanto troppo lontani dal centro.
+
+\section{Statistica descrittiva (univariata) per dati qualitativi}
+
+I dati qualitativi sono di tipo fattore, per cui non ha senso calcolare la media o altri valori numerici. Possono essere rappresentati come grafici a barre, a punti o a torta (pessima rappresentazione).
+
+\section{Statistica decrittiva (bivariata)}
+
+Nella statistica bivariata si considerano contemporaneamente due valori:
+
+\begin{itemize}
+    \item Numero/Fattore;
+    \item Numero/Numero;
+    \item Fattore/Fattore.
+\end{itemize}
+\subsection{Numero/Fattore}
+
+Si creano dei sottogruppi e si osserva la differenza nelle quantità.
+
+\subsection{Numero/Numero}
+
+Si creano delle relazioni di tipo funzione tra i valori numerici delle variabili. Generalmente le relazioni sono lineari con coefficiente angolare non nullo. Per fare ciò si usa il \textcolor{purple}{coefficiente di correlazione di Pearson}: 
+\begin{center}
+    $\frac{1}{n - 1} * \sum_{i = 1}^n (\frac{x_i - x}{sx}) * (\frac{y_i - y}{sy})$
+\end{center}
+
+\begin{itemize}
+    \item Se è circa 0: la nuvola di osservazioni è sparpagliata (nessuna correlazione lineare);
+    \item Se è circa 1: c'è relazione lineare forte;
+    \item Se è maggiore di 0: a valori grandi corrispondono valori grandi e viceversa (c'è relazione lineare);
+    \item Se è minore di 0: a valori grandi corrispondono valori piccoli e viceversa (c'è relazione inversa).
+\end{itemize}
+
+\nt{Tuttavia questo coefficiente soffre per valori grandi di segno opposto, quindi si ricorre al \textcolor{purple}{coefficiente di Spearman}: le osservazioni non pesano in base alla grandezza, ma in base al segno}
+
+\subsection{Fattore/Fattore}
+
+Si usano tabelle a doppia entrata. Se le variabili sono ordinabili si usa il \textcolor{purple}{coefficiente di Kendall} per capire se gli individui si spostano all'interno dei gruppi secondo una direzione.

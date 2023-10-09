@@ -1,0 +1,81 @@
+\chapter{Statistica inferenziale}
+
+La \textcolor{purple}{stastistica inferenziale} si occupa di trovare e stimare dei parametri. Fare "inferenza" significa estrarre dai dati alcune informazioni sull'intera popolazione di interesse. I dati sono soggetti a variabilità, per cui bisogna quantificare \textcolor{purple}{l'incertezza}.
+
+Un \textcolor{purple}{campione casuale} è un vettore di variabili aleatorie indipendenti e identicamente distribuite. 
+
+\section{Statistica inferenziale parametrica}
+
+Si suppone di conoscere il tipo di distribuzione delle variabili aleatorie, ma non si conosce il parametro. Per risolvere questo problema si usano degli \textcolor{purple}{stimatori}, ossia delle funzioni calcolabili sul campione casuale. Possono essere puntuali (su un solo punto) o intervallari (su un intervallo).
+
+\subsection{Legge dei grandi numeri (per la media campionaria)}
+
+Tramite una dimostrazione si può capire che la media di una popolazione risulta uguale alla sua media campionaria. Inoltre, più si aumenta la taglia del campione, più si riducono le oscillazioni. Questo avviene perchè la media campionaria è uno stimatore \textcolor{purple}{corretto} e \textcolor{purple}{consistente}.
+
+\subsection{Legge dei grandi numeri (per la varianza campionaria)}
+
+Per la varianza, essendo direttamente correlata alla media, vale ciò che è stato detto nel precedente paragrafo.
+
+\subsection{TLC (per la media campionaria)}
+
+Il teorema centrale del limite spiega che la \textcolor{purple}{media campionaria standardizzata} ha distribuzione molto vicina a quella di una normale (gaussiana), per campioni sufficientemente grandi ($>$30). Se i campioni sono piccoli ($<$30) si deve fare un'assunzione di normalità, altrimenti i dati non avrebbero senso.
+
+\section{Intervalli di confidenza}
+
+Essendo che, in statistica, non si ha una certezza assoluta si deve formare un intervallo [a, b] è specificare quanto si è sicuri del risultato.
+
+Il \textcolor{purple}{livello di confidenza} è la probabilità che l'intervallo [a, b] contenga il valore esatto del parametro incognito cercato ed è $1 - \alpha$ (tra 0.95 e 0.99). Se si aumenta il numero di osservazioni l'intervallo di confidenza aumenta.
+
+\subsection{Per medie}
+
+Per ottenere l'intervallo di confidenza si ha bisogno di una quantità pivotale:
+\begin{itemize}
+    \item una variabile aleatoria;
+    \item una funzione casuale;
+    \item una funzione del parametro incognito;
+    \item deve avere distribuzione nota.
+\end{itemize}
+
+La \textcolor{purple}{t di Student} è una distribuzione di probabilità continua che funziona da stimatore. Essa è caratterizzata da un parametro chiamato grado di libertà. Se questo parametro è molto grande si può approssimare la t con una normale.
+\subsection{Per proporzioni}
+
+Si fa un'ipotesi sulla distribuzione del campione (solitamente una Bernoulli). Se il numero di osservazioni è minore di 30 non si fa nulla. Se è maggiore si calcola la quantità pivotale e si fissa $1 - \alpha = 0.95$.
+
+\subsection{Per differenze di medie}
+
+Ci sono due tipologie:
+
+\begin{itemize}
+    \item si misura un parametro di interesse per individui appartenenti a diverse categorie, si è interessati alle differenze tra categorie. I campioni sono indipendenti dal punto di vista del dataset per cui si calcola l'intervallo di confidenza per differenza di medie (t.test);
+    \item si misura lo stesso individuo prima e dopo per vedere la differenza. I campioni sono appaiati per cui si calcola l'intervallo di confidenza per la media della differenza (t.test(paired = true)).
+\end{itemize}
+
+\section{Test di ipotesi}
+
+Un \textcolor{purple}{test di ipotesi} è una delle possibili tecniche per controllare la variabilità nel contesto della statistica inferenziale.
+
+Si ha un ipotesi di partenza ($H_0$) che per tutta la durata del test viene assunta come vera. Se i dati portano ad abbandonare $H_0$ in favore di un'ipotesi alternativa ($H_1$), essa diventa la nuova ipotesi di partenza.
+\\
+Le ipotesi possono essere:
+\begin{itemize}
+    \item semplici;
+    \item composte: un sistema di ipotesi;
+    \item bilaterali (two-sided): un unione di ipotesi;
+    \item unilaterali (one-sided);
+\end{itemize}
+
+Procedimento di un test di ipotesi:
+\begin{enumerate}
+    \item si parte con $H_0$ vera;
+    \item si considera una certa quantità aleatoria di cui si conosce il comportamento;
+    \item si prendono i dati (x1, x2, ..., xn);
+    \item si valuta la quantità aleatoris in corrispondenza di questi dati, sotto l'ipotesi $H_0$ (p-value);
+    \item se il valore ottenuto è plausibile non si rifiuta $H_0$, altrimenti si passa a una nuova ipotesi $H_1$.
+\end{enumerate}
+
+$\alpha$ rappresenta la significatività del test e deve essere scelto piccolo (0.05 o 0.01).
+
+\begin{itemize}
+    \item Se p-value $< \alpha$: si rifiuta $H_0$;
+        \item Se p-value $> \alpha$: non si rifiuta $H_0$;
+\end{itemize}
