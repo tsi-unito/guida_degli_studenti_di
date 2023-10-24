@@ -1,5 +1,9 @@
 # La guida all-in-one al mondo GNU-Linux @ UniTO (WIP!)
 
+## Changelog
+
+- 24-10-2023: update alla tier list
+
 ## Preambolo
 
 ### Come mai questa guida?
@@ -91,7 +95,8 @@ Dentro il singolo tier, le distro non sono in un particolare ordine, giusto per 
 #### S-Tier
 
 - Pop_OS
-- ArcoLinux (advanced)
+- Linux Mint
+- CachyOS (advanced)
 
 #### A-Tier
 
@@ -99,17 +104,16 @@ Dentro il singolo tier, le distro non sono in un particolare ordine, giusto per 
 - Solus
 - Nitrux
 - ZorinOS
-- Linux Mint
 - Xubuntu
 - MX Linux
 - NixOS (advanced)
 - Artix (advanced)
+- ArcoLinux (advanced)
 - Archcraft (advanced)
 - KISS (very, very, very advanced)
 
 #### B-Tier
 
-- Ubuntu
 - Fedora
 - Lubuntu
 - EndeavourOS
@@ -124,10 +128,12 @@ Dentro il singolo tier, le distro non sono in un particolare ordine, giusto per 
 
 - Manjaro
 - Deepin
+- Ubuntu (proprietary blobs)
 
 #### ?-Tier (non installarle a meno che tu non sia effettivamente a conoscenza del perché di queste distro)
 
 - Arch Linux
+- Gentoo
 - Parrot
 - Kali Linux
 - Qubes OS
@@ -179,6 +185,7 @@ Una chiavetta, un computer BARE METAL (non una VM, quindi) su cui installare la 
 ### App basatissime che potrebbero aprirti la mente
 
 - Librewolf (Fork di Firefox, privacy-focused)
+- Floorp (Fork di Firefox, feature-focused)
 - aria2 (Cli torrent client)
 - youtube-dlp (youtube-dl ma meglio)
 - qrcp (Trasferimento file da telefono a pc reso facile)
