@@ -96,6 +96,7 @@ Dentro il singolo tier, le distro non sono in un particolare ordine, giusto per 
 
 - Pop_OS
 - Linux Mint
+- Debian
 - CachyOS (advanced)
 
 #### A-Tier
