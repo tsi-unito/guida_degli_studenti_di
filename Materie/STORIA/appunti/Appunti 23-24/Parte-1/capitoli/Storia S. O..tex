@@ -1,0 +1,347 @@
+\chapter{Storia dei sistemi operativi}
+
+\section{Prima dei sistemi operativi}
+
+Il concetto di programma negli anni '40 era appenna accennato e molto
+diverso da quello attuale. Per esempio, l'ENIAC, il primo computer
+elettronico, era programmato tramite cablaggi elettrici. Il concetto di
+programma memorizzato in memoria centrale è stato introdotto da John
+von Neumann nel 1945 (con l?EDVAC e le istruzioni macchina).
+Ma questa era una procedura manuale, a quei tempi non si pensava minimamente
+al farsi aiutare da un programma per inserire un programma nel computer.
+
+\dfn{Sistema operativo}{
+    Un sistema operativo è un programma che aiuta a "far girare" gli altri
+    programmi. 
+}
+
+Le cose iniziaro a cambiare dal 1955. Con il tempo i sistemi operativi sono diventati sempre
+più complessi e sofisticati. Uno dei compiti storici degli S. O. era quello di rendere 
+semplice agli utenti l'utilizzo di un computer.
+
+Storicamente molti dei concetti ancora usati nei moderni S. O. (paginazione della memoria,
+memoria virtuale, etc.) nascono dalla scarsità di risorse dei primi computer.
+
+\section{Fase 1 : Job by Job / Open Shop}
+\begin{itemize}
+    \item I computer erano usati solo dai loro progettisti e dai loro collaboratori;
+    \item Scrivere un programma veniva svolto in più passi:
+    \begin{enumerate}
+        \item Scrivere il programma su carta;
+        \item Trasferire il programma su schede perforate;
+        \item Nello slot prenotato il programmatore si recava nella sala del computer;
+        \item Inseriva le schede perforate nel computer (se il computer non era guasto);
+        \item Faceva partire il programma;
+        \item Potevano essere lette le celle di memoria per seguire l'esecuzione del programma;
+        \item L'output poteva essere stampato o convertito in schede perforate
+    \end{enumerate}
+    \item Se un programma andava storto era difficile il debugging;
+    \item Si introduce la figura professionale dell'operatore addetto alla sala macchine
+    che stampava la fotografia della memoria in caso di comportamenti anomali;
+    \item Si caricava un solo programma alla volta;
+    \item A metà degli anni '50 nascono i primi assembler.
+\end{itemize}
+
+\section{Fase 2 : Sistemi batch}
+
+\begin{itemize}
+    \item Bisogna permettere al computer di pianificare 
+    il lavoro da svolgere in modo da sfruttare al meglio le risorse;
+    \item \textbf{Resident monitor}: programma che rimane in memoria 
+    e gestisce l'input e l'output. Si occupa anche di far partire i programmi;
+    \item Per esempio se si voleva eseguire un programma in FORTRAN:
+    \begin{enumerate}
+        \item \$FORTRAN: carica il compilatore e compila il sorgente;
+        \item \$LOAD: carica il programma utente;
+        \item \$RUN: esegue il programma utente fino a \$END.
+    \end{enumerate}
+    \item Rispetto alla fase 1 emerge la distinzione tra programma e
+    dati, ma non c'era nessuna protezione della memoria;
+    \item \textbf{Batch processing}: il lavoro del Resident monitor per 
+    eseguire tutti i programmi di un certo batch;
+    \item Se erano presenti nastri magnetici si poteva parallelizzare
+    parte del lavoro;
+    \item La produttività aumentava a scapito dei tempi del singolo
+    utente
+\end{itemize}
+
+\nt{Un esempio di sistema Batch è il BKS per il Philco 2000 che
+aveva più lettori di nastro che funzionavano come diverse aree di
+un file system.}
+
+Però per i processori di quegli anni si raccomandava di scrivere programmi che:
+\begin{itemize}
+    \item Non contenesserò istruzioni di halt;
+    \item Non riavvolgesserò i nastri;
+    \item Non indirizzasserò indirizzi di memoria riservati al sistema.
+\end{itemize}
+
+\section{Fase 3 : Multiprogrammazione}
+
+\begin{itemize}
+    \item Si introdusserò dispositivi di memoria di massa ad accesso
+    diretto;
+    \item Si diffuserò transistor più potenti che implementasserò
+    un sistema di interrupt;
+    \item Così si poteva simulare un'esecuzione contemporanea di più programmi;
+    \item Il termine Multiprogrammazione fu coniato nel 1959 da Christopher Strachey;
+    \item \textbf{Spooling}: Simultaneous Peripheral Operation On Line, 
+    permetteva di eseguire più programmi in parallelo asincronicamente;
+    \item \textbf{Multitasking cooperativo}: un programma può girare perchè un
+    altro programma lascia \textit{volontariamente} la CPU.
+\end{itemize}
+
+\dfn{Il sistema Atlas}{
+    Il sistema Atlas era un sistema operativo che permetteva di eseguire
+    più programmi in parallelo. Fu sviluppato da Tom Kilburn, Bruce
+    Payne e David Howarth. Nell'Atlas compaiono per la prima volta
+    le system call (o extracode) e l'implementazione di memoria virtuale 
+    con paginazione su richiesta.
+    \begin{itemize}
+        \item La memoria dell'Atlas era suddivisa in pagine (blocks);
+        \item Fixed store: una memoria a nuclep magnetico (MCM) da
+        8192 words per il codice del supervisor;
+        \item Subsidiary store: una MCM da 1024 words per i dati del
+        supervisor;
+        \item Core store\footnote{Una memoria cache}: una MCM da 16384 words per il processo utente;
+        \item Drum store\footnote{Una RAM}: memoria a tamburo rotante per i processi non in
+        esecuzione.
+    \end{itemize}
+
+    Il sistema Atlas prevedeva anche un system input tape, ossia una sorta
+    di memoria di Swap. Il supervisor si assicurava di avere sempre
+    un programma in esecuzione, se non ce n'era ne caricava uno dalla   
+    memoria di Swap.
+    
+    }
+
+\dfn{Il sistema B5000}{
+    Il sistema B5000 era un computer della Burroughs Corporation    
+    in grado di gestire uno stack. Nel Master Control Program (MCP)
+    compare il "trashing". Inoltre MCP era scritto in un linguaggio
+    ad alto livello.
+    Nel MCV compare per la prima volta un timer hardware.
+}
+
+\section{Fase 4 : Timesharing}
+
+\begin{itemize}
+    \item Nel 1959 John McCarthy conia il termine \textbf{Timesharing};
+    \item Nel 1961 McCarthy specifica che il Timesharing deve permettere
+    a più utenti di usare la stessa macchina contemporaneamente;
+    \item Il primo sistema Timesharing fu il CTSS (Compatible Time Sharing System)
+    sviluppato da Fernando Corbato al MIT;
+    \item Il suo obiettivo era quello di permettere a più utenti di usare
+    la stessa macchina contemporaneamente attraverso un supervisor;
+    \item Il CTSS doveva:
+    \begin{enumerate}
+        \item Tenere traccia delle aree di memoria occupate da ogni programma;
+        \item Poter spostare i programmi da una memoria all'altra;
+        \item Il programma in esecuzione deve poter essere interrotto dopo un certo lasso di tempo;
+        \item Le operazioni di I/O devono essere asincrone;
+        \item Se le operazioni I/O erano lente il programma doveva essere spostato in memoria secondaria;
+        \item Gli utenti dovevano poter interrompere un programma non funzionante;
+        \item Gli utenti dovevano poter interrogare il sistema.
+    \end{enumerate}
+    \item Il CTSS era dotato di accesso controllato dagli utenti attraverso
+    login e password;
+    \item Si potevano sviluppare nuovi comandi;
+    \item Nel 1965  fu scritto un programma MAIL per automatizzare lo scambio di MAIL
+    e nel 1971 fu inviato il primo SPAM;
+    \item Il CTSS fu l'antecedente del MULTICS diretto da Robert Fano;
+    \item Il MULTICS fu un fallimento commerciale ma un successo tecnologico
+    dato che porto involontariamente alla nascita di UNIX;
+    \item Nel 1965 Robert Daley e Peter Neumann svilupparono, in un 
+    articolo, il concetto di file system gerarchico;
+    \item Il file system doveva essere uno standard per cui tutti i suoi 
+    processi dovevano essere invisibili all'utente;
+    \item Nasce anche il termine "pathname" e il termine "link";
+    \item Gli utenti hanno a disposizione comandi per manipolare i file;
+    \item Il sistema Titan venne dotato di una file allocation table (FAT);
+    \item Il sistema Titan aveva anche un sistema di protezione dei file in maniera criptata;
+    \item Un altro sistema operativo diffuso in quegli anni era OS/360,
+    il SO di IBM;
+    \item OS/360 serviva a facilitare il passaggio a hardware più potenti.
+\end{itemize}
+
+\dfn{UNIX}{
+    Inizialmente il nome UNIX era UNICS, ossia UNiplexed Information
+    and Computing Service. Il nome fu cambiato in UNIX perchè UNICS
+    era già stato registrato. Il nome UNIX è un gioco di parole
+    con MULTICS.
+    
+    A metà degli anni '80 UNIX era il sistema operativo Timesharing 
+    di riferimento. Lo UNIX ebbe la fortuna di comparire al momento
+    giusto, quando i computer erano abbastanza potenti da poter
+    supportare un sistema operativo Timesharing. Dennis Ritchie notò
+    che il successo dello UNIX dipese anche dalla capacità di migliorare
+    idee già utilizzate.
+
+}
+
+\nt{Nel MULTICS nascono directory e subdirectory, ma la soluzione
+proposta aveva molti difetti risolti da UNIX.}
+
+\section{Fase 5 : Sistemi concorrenti}
+
+\begin{itemize}
+    \item I sistemi operativi soffrivano spesso di deadlock, starvation e trashing;
+    \item Si riscoprirono i principi della programmazione concorrente (semafori, regioni critiche e monitor);
+    \item Nel 1969 Dijkstra sviluppa THE\footnote{Technische Hogeschool Eindhoven} operating system;
+    \item Il THE era un sistema a strati sovrapposti (una serie di VM) e usava i semafori;
+    \item Nel 1969 fu sviluppato anche il sistema operativo RC4000 (da Per Brinch Hansen);
+    \item RC4000 era il primo a implementare un kernel (nucleos);
+\end{itemize}
+
+\dfn{Concurrent Pascal}{
+    Hansen fu anche il padre del Concurrent Pascal (1973), un linguaggio
+    contenente primitive di sincronizzazione e comunicazione tra processi.
+    Fu usato per sviluppare il S.O. Solo.
+}
+
+\section{Fase 6 : Sistemi per PC}
+
+\begin{itemize}
+    \item Il capostipite degli S. O. per PC può essere considerato il sistema
+    OS 6 sviluppato tra il 1969 e il 1972 da Stoy e Strachey;
+    \item OS 6 era un S.O. scritto in BCPL, i cui concetti furono ripresi
+    nello Xerox Alto;
+    \item All'Alto seguono Pilot, Cedar e Xerox Star (dotato di Mouse e interfaccia grafica a finestre);
+    \item Purtroppo la Xerox non seppe convincere il mercato.
+\end{itemize}
+
+\subsection{CP/M, MS-DOS e Windows}
+
+All'inizio degli anni '60, Gary Kildall sviluppa il CP/M (Control Program for Microcomputers)
+per controllare un floppy disk da un processore Intel 8080.
+Nel 1974 fonda, insieme alla moglie, la Digital Research Inc. per commercializzare il CP/M 
+(pubblicizato su riviste di elettronica e informatica). Il CP/M aveva la
+caratteristica di poter girare su computer diversi. Il CP/M era diviso in:
+
+\begin{itemize}
+    \item CCP (Console Command Processor): interprete dei comandi;
+    \item BDOS (Basic Disk Operating System): interfaccia tra CCP e hardware;
+    \item BIOS;
+\end{itemize}
+
+Nel 1975, Kildall ideò il concetto di BIOS (Basic Input Output System) per
+interfacciare un sistema operativo con l'hardware. Sostanzialmente le istruzioni
+passavano da CCP a BDOS e poi a BIOS.
+
+\nt{Questo favoriva la portabilità del sistema operativo.}
+
+Il 4 Aprile 1975 Bill Gates e Paul Allen fondano la Micro-Soft e scrivono,
+per il CP/M, un interprete BASIC. Successivamente Bill Gates:
+
+\begin{enumerate}
+    \item compra la licenza d'uso dell'86-DOS (un clone del CP/M) da Seattle Computer Products;
+    \item ingaggia Tim Patterso per portare l'86-DOS sull'IBM PC (con processori 8088);
+    \item rinomina l'86-DOS in MS-DOS e vende la licenza d'uso alla IBM;
+    \item Microsoft può vendere DOS anche ad altri produttori di PC IBM compatibili.
+\end{enumerate}
+
+Nel 1985 Microsoft presenta Windows 1.0, un'interfaccia grafica per MS-DOS.
+Successivamente con la versione 3.0, Windows diventa un sistema operativo
+completo. Nel 1995 Windows 95 diventa il sistema operativo più diffuso.
+
+\nt{Apple in una serie di campagne pubblicitarie prese
+    in giro Windows 95 e i suoi vari problemi.}
+
+\subsection{DOS, Mac OS e OS X}
+
+Nel 19877 Apple II utilizzava DOS (Disk Operating System) per gestire
+un floppy disk. In realtà era noto come Apple DOS.
+Un'idea profiqua della Apple fu quella di rendere pubbliche le specifiche
+hardware delle sue macchine. Questo permise a terzi di sviluppare software
+per i computer Apple, per esempio VisiCalc (il primo foglio elettronico).
+
+Il primo tentativo della Apple di sviluppare un sistema operativo fu il Lisa OS
+(1983), ma non ebbe successo e fu rimpiazzato dal Macintosh con il Mac OS (1984).
+Mac OS arriva fino alla versione 9, ma nel 2001 viene sostituito da OS X.
+Il passaggio da Mac OS a OS X fu una importante svolta: OS X era basato su UNIX,
+derivato da NeXTSTEP (il sistema operativo di NeXT, la compagnia fondata da Steve Jobs
+dopo essere stato cacciato dalla Apple).
+
+\subsection{GNU, Minix e Linux}
+
+Nel 1983 Richard Stallman fonda il progetto GNU (GNU is Not Unix, acronimo ricorsivo):
+un progetto per lo sviluppo di software libero. L'obiettivo del progetto GNU era
+quello di creare software sviluppato da una comunità di programmatori e distribuito
+con una licenza che ne permettesse la modifica e la redistribuzione. 
+
+Nel 1987 Andrew Tanenbaum sviluppa Minix, un sistema operativo Unix-like per 
+l'uso didattico (usando il Tanenbaum). Il Minix era a 16 bit e non aveva il supporto   
+per i dispositivi di massa. 
+
+Linus Torvalds decise di sviluppare un nuovo sistema operativo usando il
+GNU C Compiler (gcc) e il Minix (in realtà è usato solo come esempio, non contiene codice del Minix). Nel 1991 Linus Torvalds rilascia la prima
+versione di Linux (un kernel) su una news group. Il nome originale di questo S.O.
+era Freax (Free Unix), ma il nome Linux fu scelto da un suo amico.
+Nel 1992 il kernel Linux viene rilasciato con la licenza GNU GPL (General Public License).
+
+\nt{Il logo di Linux è un pinguino di nome Tux., scelto nel 1996.}
+
+Ovviamente Linux, avendo licenza GNU GPL, era completamente modificabile e
+da esso nacquerò diverse distribuzioni (Debian, Red Hat, Ubuntu, SUSE, Arch, etc.).
+
+\section{Fase 7 : Sistemi distribuiti}
+
+\begin{itemize}
+    \item I sistemi distribuiti sono un insieme di computer collegati tra loro
+    tramite una rete;
+    \item Devono dare l'idea di un unico sistema;
+    \item Negli anni '80 si diffuserò, tramite Ethernet, vari sistemi distribuiti;
+    \item In questi sistemi era implementato Remote Procedure Call (RPC), un'estensione 
+    di IPC\footnote{Come visto nel corso "Sistemi Operativi".};
+    \item Le prime RPC in ambiente UNIX furono sviluppate da Sun Microsystems
+    per NFS (Network File System);
+    \item In realtà i sistemi distribuiti non si diffuserò al di fuori dall'ambito
+    di ricerca.
+\end{itemize}
+
+\nt{A titolo esemplificativo si possono ricordare:
+\begin{itemize}
+    \item Unix United System (UUS), nel 1982 che collegava 5 PDP11;
+    \item Amoeba formato da una rete di workstation e con un file System
+    distribuito.
+\end{itemize}
+}
+
+\section{Fase 8 : Sistemi operativi per dispositivi mobili}
+
+Dalla metà degli anni '90 si diffuserò i dispositivi mobili (smartphone e tablet).
+Un S.O. per dispositivi mobili deve essere:
+\begin{itemize}
+    \item in grado di gestire un touchscren;
+    \item in grado di gestire funzionalità in tempo reale;
+    \item in grado di gestire le risorse in maniera efficiente.
+\end{itemize}
+
+Nel 1996 la Nokia inizia la commercializzazione del Nokia 9000,
+enormemente diffuso dagli operatori di borsa. Nel 1993 Apple sviluppa
+il primo palmare, MessagePad. Dall'integrazione di questi due dispositivi
+nascono i veri e propri smartphone. L'iPhone (2007) è il primo smartphone
+ad avere accesso ai social. Nei primi anni 2000 si diffondono anche i tablet,
+il coronamento del sogno di Alan Kay\footnote{Dynabook.}.
+
+\nt{Per questi dispositivi si sviluppano sistemi operativi come:
+\begin{itemize}
+    \item Symbian OS (1998);
+    \item BlackBerry OS (1999);
+    \item iOS (2007);
+    \item Android (2008);
+    \item Windows Mobile.
+\end{itemize}}
+
+\subsection{Android}
+
+La Android fu fondata nel 2003, nel 2005 viene acquistata da Google.
+Il suo sistema si basa su un kernel linux, ma viene sviluppato in Java.
+Fece il suo debutto nel 2008 con HTC Dream.
+
+\subsection{Apple iOS}
+
+Apple iOS è un sistema operativo sviluppato da Apple per iPhone, iPod Touch e iPad.
+Viene rilasciato nel 2007 e ha un kernel XNU (X is Not Unix) basato su Mach e BSD. Ha una
+ristretta fetta di mercato (tra il 15\% e il 25\%).
+
