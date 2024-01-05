@@ -42,6 +42,7 @@ Tabella di traduzione (per le sole materie presenti in questa directory) da sigl
 | [METNUM](./METNUM)       |                        Metodi Numerici                        |
 | [MFI](./MFI)             |               Metodi Formali per l'Informatica                |
 | [MODSEM](./MODSEM)       |         Modellazione Concettuale per il Web Semantico         |
+| [MTDI](./MTDI)           |    Metodologie e tecnologie didattiche per l'informatica      |
 | [OC](./OC)               |                  Ottimizzazione Combinatoria                  |
 | [PROG1](./PROG1)         |                       Programmazione 1                        |
 | [PROG2](./PROG2)         |                       Programmazione 2                        |
