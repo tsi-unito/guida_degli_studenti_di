@@ -43,6 +43,7 @@ Tabella di traduzione (per le sole materie presenti in questa directory) da sigl
 | [MFI](./MFI)             |               Metodi Formali per l'Informatica                |
 | [MODSEM](./MODSEM)       |         Modellazione Concettuale per il Web Semantico         |
 | [OC](./OC)               |                  Ottimizzazione Combinatoria                  |
+| [PROG1](./PROG1)         |                       Programmazione 1                        |
 | [PROG2](./PROG2)         |                       Programmazione 2                        |
 | [PROGMOB](./PROGMOB)     |                     Programmazione Mobile                     |
 | [RETI2](./RETI2)         |                            Reti 2                             |
