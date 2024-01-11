@@ -1,0 +1,79 @@
+\chapter{Teoria 15}
+
+Questa lezione non fa parte del programma d'esame, ma può essere spunto per approfondimenti.
+
+\section{Database non relazionali}
+
+Negli ultimi anni si sono diffusi approcci \textcolor{blue}{NoSQL}\footnote{Not only SQL} (database non relazionali): database distribuiti (condivisi tra più computers) con dati semi-strutturati ad alte prestazioni, scalabili, disponibili e replicabili.
+
+NoSQL ha applicazioni nel campo dei "big data": social, web link, post, tweet, email, etc.
+
+\subsection{Scalabilità}
+
+La \textcolor{blue}{scalabilità} è la capacita di una macchina di crescere.
+
+\paragraph{Scalabilità verticale:} aumenta la potenza di calcolo di una macchina migliorandola (più RAM, CPU, storage).
+
+\paragraph{Scalabilità orizzontale:} aumenta la potenza di calcolo aggiungendo nuove macchine (i database relazionali hanno una limitata scalabilità orizzontale).
+
+\paragraph{Commodity machines:} sono computers poco potenti e identici che servono a favorire la scalabilità orizzontale (esempio: server di google).
+
+\section{Caratteristiche di NoSQL}
+
+Si evita:
+\begin{itemize}
+    \item il costo delle proprietà ACID;
+    \item la complessità delle query in SQL;
+    \item la progettazione a priori dello schema;
+    \item le transazioni.
+\end{itemize}
+
+Vengono permessi:
+\begin{itemize}
+    \item cambiamenti facili e frequenti alla BD;
+    \item uno sviluppo veloce;
+    \item la gestione di grandi quantità di dati;
+    \item dei database senza schema.
+\end{itemize}
+
+Quindi No SQL è adatto per log di dati e dati temporanei, ma non per dati finanziari o aziendali.
+
+I database non relazionali si possono raggruppare in base al modello di dati utilizzato:
+\begin{itemize}
+    \item chiave-valore: associano ogni chiave a un valore come fanno gli array associativi o le tabelle hash dei linguaggi di programmazione. Sono utili per fare cache in memoria principale per applicazioni web;
+    \item documento: gestiscono enormi volumi di dati su server diversi (nodi). Hanno una grande scalabilità orizzontale;
+    \item a colonna: un documento consiste in un ID associato a valori di vari tipi come hash. Possono contenere strutture annidate;
+    \item a grafo: i data sono altamente interconnessi e nodi e archi possono avere proprietà.
+\end{itemize}
+
+\section{Mongo}
+
+mongoDB è un database NoSQL orientato ai documenti. Il nome Mongo deriva da humongous (gigantesco). In mongo:
+
+\begin{itemize}
+    \item i dati sono memorizzati come documenti, in formato JSON/BSON;
+    \item i documenti non devono aderire ad uno schema standard, ma possono contenere qualsiasi campo;
+    \item per le operazioni di ricerca, si recuperano i documenti basandosi sul valore di un determinato campo;
+    \item il DB è scalabile orizzontalmente, supportando partizionamento (sharding) dei dati in sistemi distribuiti;
+    \item esistono funzionalità per aggregazione e analisi dei dati.
+\end{itemize}
+\section{Quando conviene usare NoSQL?}
+
+NoSQL è un'alternativa ai database relazionali.
+
+\paragraph{Vantaggi:}
+
+\begin{itemize}
+    \item alte prestazioni;
+    \item riduzione dei tempi di sviluppo;
+    \item supporto alla scalabilità orizzontale.
+\end{itemize}
+
+\paragraph{Svantaggi:}
+
+\begin{itemize}
+    \item nessun supporto per join e transazioni;
+    \item grande ridondanza dei dati;
+    \item mancanza di un linguaggio standard;
+    \item mancanza di vincoli di integrità.
+\end{itemize}

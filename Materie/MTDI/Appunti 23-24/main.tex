@@ -1,0 +1,39 @@
+\documentclass{report}
+
+\input{enviroment/preamble}
+\input{enviroment/macros}
+\input{enviroment/letterfonts}
+
+\renewcommand{\contentsname}{Indice}
+
+\title{\Huge{Metodologie e tecnologie didattiche per l'informatica}}
+\author{\huge{Luca Barra}}
+\date{Anno accademico 2023/2024}
+
+\begin{document}
+
+\maketitle
+\newpage% or \cleardoublepage
+% \pdfbookmark[<level>]{<title>}{<dest>}
+\pdfbookmark[section]{\contentsname}{toc}
+\afterpage{\blankpage}
+\pagenumbering{Roman}
+\tableofcontents
+\cleardoublepage\pagenumbering{arabic}
+\pagebreak
+\afterpage{\blankpage}
+
+\include{capitoli/Introduzione}
+\include{capitoli/L'informatica a scuola}
+\include{capitoli/Teorie dell'apprendimento}
+\include{capitoli/Progettazione della didattica}
+\include{capitoli/Problem solving}
+\include{capitoli/Definizione di algoritmo}
+\include{capitoli/Didattica della programmazione}
+\include{capitoli/La natura dei programmi}
+\include{capitoli/Valutazione}
+\afterpage{\blankpage}
+\include{capitoli/Letture}
+\include{capitoli/Domande e risposte}
+
+\end{document}

@@ -1,0 +1,47 @@
+\documentclass{report}
+
+\input{enviroment/preamble}
+\input{enviroment/macros}
+\input{enviroment/letterfonts}
+
+\renewcommand{\contentsname}{Indice}
+
+\title{\Huge{Basi di dati}}
+\author{\huge{Luca Barra}}
+\date{Anno accademico 2022/2023}
+
+\begin{document}
+
+\maketitle
+\newpage% or \cleardoublepage
+% \pdfbookmark[<level>]{<title>}{<dest>}
+\pdfbookmark[section]{\contentsname}{toc}
+\afterpage{\blankpage}
+\pagenumbering{Roman}
+\tableofcontents
+\cleardoublepage\pagenumbering{arabic}
+\pagebreak
+\afterpage{\blankpage}
+\include{capitoli/Teoria 1}
+\include{capitoli/Teoria 2}
+\include{capitoli/Teoria 3}
+\include{capitoli/Teoria 4}
+\include{capitoli/Teoria 5}
+\include{capitoli/Teoria 6}
+\include{capitoli/Teoria 7}
+\include{capitoli/Teoria 8}
+\include{capitoli/Teoria 9}
+\include{capitoli/Teoria 10}
+\include{capitoli/Teoria 11}
+\include{capitoli/Teoria 12}
+\include{capitoli/Teoria 13}
+\include{capitoli/Teoria 14}
+\include{capitoli/Teoria 15}
+\include{capitoli/Laboratorio 1}
+\include{capitoli/Laboratorio 2}
+\include{capitoli/Laboratorio 3}
+\include{capitoli/Laboratorio 4}
+\afterpage{\blankpage}
+\include{capitoli/SQL}
+
+\end{document}
