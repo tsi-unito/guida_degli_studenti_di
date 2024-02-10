@@ -32,6 +32,7 @@ Tabella di traduzione (per le sole materie presenti in questa directory) da sigl
 | [ELIVA](./ELIVA)         |        Elaborazione di Immagini e Visione Artificiale         |
 | [EPS](./EPS)             |             Elementi di Probabilità e Statistica              |
 | [ESP](./ESP)             |                   Etica, Società e Privacy                    |
+| [FDA](./FDA)             |                   Fondamenti dell'informatica                 |
 | [GR](./GR)               |                      Gestione delle Reti                      |
 | [IALAB](./IALAB)         |            Intelligenza Artificiale e Laboratorio             |
 | [INFTHEORY](./INFTHEORY) |                   Teoria dell'Informazione                    |
