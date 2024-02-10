@@ -1,11 +1,49 @@
 # Matematica discreta
+Cartella contenente appunti, simulazioni ed 
+esercizi riguardanti il corso di Matematica
+Discreta.
 
 ## Appunti
+Cartella contenente gli appunti riguardanti
+le sezioni del corso presi durante l'anno
+o da fonti terze al corso.
+Di seguto l'alberatura della cartella:
 
-- Appunti presi a lezione di Chen e Terracini (a.a. 2022-23), disponibili [qui](https://github.com/Ela17/guida_degli_studenti_di/tree/master/Materie/MD/Appunti%20Elena%20Derosas)
-- Appunti presi al _tutoraggio_ (a.a. 2022-23), disponibili [qui](https://github.com/Ela17/guida_degli_studenti_di/tree/master/Materie/MD/Appunti%20Tutorato%20Elena%20Derosas)
-- Formulario di Elena Derosas, disponibile [qui](https://github.com/Ela17/guida_degli_studenti_di/blob/master/Materie/MD/FORMULARIO.pdf)
+- [tutorati](./appunti/tutorati/): Cartella 
+contenente gli appunti presi dal tutorato
+    - [tutorato_appunti_2022_2023](./appunti/tutorati/tutorato_appunti_2022_2023/): 
+    Cartella contenente gli appunti presi 
+    durante il tutorato nel 2022-2023
+- [appunti_2022_2023](./appunti/appunti_2022_2023): appunti presi da 
+    elena de rosas prima dell'anno 2023-2024.
+- [appunti_2023_2024](./appunti/appunti_2023_2024/): appunti presi durante
+    l'anno 2023-2024
+- [fonti_esterne](./appunti/fonti_esterne/): 
+    Appunti misti presi da fonti esterne.
 
-## Per l'esame
-- Temi degli anni passati, dal 2017 al 2022, disponibili [qui](https://github.com/Ela17/guida_degli_studenti_di/blob/master/Materie/MD/temi%20anni%20passati.zip)
-- Regole d'esame per l'a.a. 2022-23, disponibili [qui](https://github.com/Ela17/guida_degli_studenti_di/blob/master/Materie/MD/regole22-23.pdf)
+## Esami
+Cartella contenenti esami degli anni passati,
+risoluzioni degli esami e regole degli esami
+passati:
+- [consegne_con_soluzioni](./esami/consegne_con_soluzioni/): Cartella contenente
+    le consegne degli esami dei vari anni, nella
+    forma esercizio-soluzione forniti dai prof.
+- [regole_esami](./esami/regole_esami/): 
+    Cartella contenente le regole degli esami
+    dei vari anni.
+- [risoluzione_esami](./esami/risoluzione_esami/): Cartella contenente
+    risoluzioni degli esami fatte a mano dagli
+    studenti.
+
+## Formulari
+Cartella contenente formulari e altri 
+documenti/informazioni utili per sostenere 
+l'esame:
+-   [formulari_2022_2023](./formulari/formulari_2022_2023): Cartella contenente 
+    formulari creati per l'anno 2022-2023.
+-   [formulari_2023_2024](./formulari/formulari_2023_2024/): Cartella contenente 
+    formulari creati per l'anno 2023-2024.
+
+## Libri
+Cartella contenente i libri di testo usati dal 
+corso.
