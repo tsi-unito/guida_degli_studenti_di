@@ -1,3 +1,8 @@
+> Nota: è stato richiesto dall'autore originale di rimuovere le informazioni di contatto.
+> Inoltre, presto verranno rimossi questi files in quanto ci ha anche segnalato che contengono degli errori.
+
+---
+
 Ciao ragazzi, 
 ho realizzato degli apppunti praticamente perfetti sul corso di: 
 Sicurezza (6CFU)
@@ -9,13 +14,9 @@ Sono appunti dettagliati ma allo stesso tempo comprensibili da chiunque; anche c
 
 
 Sono appunti oggettivamente ben fatti e spero di poter aiutare qualcuno a prendere un voto alto all'esame.
-Spero inoltre che qualcuno possa e voglia fare anche una piccola donazione ad esempio su paypal (email: tuccimarco03@gmail.com oppure paypal.me/MTucci299 ). 
+Spero inoltre che qualcuno possa e voglia fare anche una piccola donazione ad esempio su paypal {SU RICHIESTA DELL'AUTORE SONO STATE RIMOSSE LE INFORMAZIONI DI CONTATTO}. 
 
 Grazie in anticipo:)
-
-
-P.S. Posso mandare i file nativi a chi possiede l'IPAD e notability; contattatemi su telegram: @arcaolo
-paypal.me/MTucci299
 
 ##########################################
 Indice a grosse linee:
