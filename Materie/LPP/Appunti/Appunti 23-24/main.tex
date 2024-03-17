@@ -1,0 +1,34 @@
+\documentclass{report}
+
+\input{environment/preamble}
+\input{environment/macros}
+\input{environment/letterfonts}
+\input{environment/haskell}
+
+\renewcommand{\contentsname}{Indice}
+
+\title{\Huge{Linguaggi e paradigmi di programmazione}}
+\author{\huge{Luca Barra}}
+\date{Anno accademico 2023/2024}
+
+\begin{document}
+
+\maketitle
+\newpage% or \cleardoublepage
+% \pdfbookmark[<level>]{<title>}{<dest>}
+\pdfbookmark[section]{\contentsname}{toc}
+\afterpage{\blankpage}
+\pagenumbering{Roman}
+\tableofcontents
+\cleardoublepage\pagenumbering{arabic}
+\pagebreak
+\afterpage{\blankpage}
+
+\include{capitoli/Intro}
+\include{capitoli/Lambda calcolo}
+\include{capitoli/Programmare nel lambda calcolo}
+\include{capitoli/Algoritmo di inferenza}
+\include{capitoli/Funzioni}
+\include{capitoli/Java 8}
+
+\end{document}
