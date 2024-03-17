@@ -32,6 +32,7 @@ Tabella di traduzione (per le sole materie presenti in questa directory) da sigl
 | [ELIVA](./ELIVA)         |        Elaborazione di Immagini e Visione Artificiale         |
 | [EPS](./EPS)             |             Elementi di Probabilità e Statistica              |
 | [ESP](./ESP)             |                   Etica, Società e Privacy                    |
+| [FDA](./FDA)             |                   Fondamenti dell'informatica                 |
 | [GR](./GR)               |                      Gestione delle Reti                      |
 | [IALAB](./IALAB)         |            Intelligenza Artificiale e Laboratorio             |
 | [INFTHEORY](./INFTHEORY) |                   Teoria dell'Informazione                    |
@@ -44,6 +45,7 @@ Tabella di traduzione (per le sole materie presenti in questa directory) da sigl
 | [MODSEM](./MODSEM)       |         Modellazione Concettuale per il Web Semantico         |
 | [MTDI](./MTDI)           |    Metodologie e tecnologie didattiche per l'informatica      |
 | [OC](./OC)               |                  Ottimizzazione Combinatoria                  |
+| [PROG1](./PROG1)         |                       Programmazione 1                        |
 | [PROG2](./PROG2)         |                       Programmazione 2                        |
 | [PROGMOB](./PROGMOB)     |                     Programmazione Mobile                     |
 | [RETI2](./RETI2)         |                            Reti 2                             |
