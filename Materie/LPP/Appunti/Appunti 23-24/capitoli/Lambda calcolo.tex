@@ -1,0 +1,175 @@
+\chapter{Il \texorpdfstring{$\mathcal{\lambda}$}--calcolo}
+
+\section{Perchè studiarlo?}
+
+Il $\lambda$-calcolo definisce in modo preciso il processo di valutazione (riduzione) di un programma funzionale. Esso pone le basi per lo sviluppo di un sistema di tipi e il relativo algoritmo di inferenza.
+
+\subsection{Le funzioni}
+
+\begin{itemize}
+    \item \textbf{Punto di vista estensionale:} $f = \{(0, 1), (1, 2), (2, 5), (3, 10), ...\}$, rappresenta un'elegante interpretazione insiemistica, ma non fornisce informazioni su come calcolare le funzioni e sul relativo costo;
+    \item \textbf{Punto di vista intensionale:} $f(x) = x^2 + 1$, fornisce una "ricetta" per il calcolo, ma non tutte le funzioni hanno una ricetta finita. Su questo punto di vista si basa il $\lambda$-calcolo.
+\end{itemize}
+
+\nt{Nel $\lambda$-calcolo i numeri non sono primitive, in Haskell sì}
+
+\section{Sintassi}
+
+\dfn{Variabili e sintassi}{Sia Var = $\{x, \:y,\:z,\:...\}$ un insieme finito di variabili, la sintassi è la seguente:
+$$M, N\:::= x \:\:\:|\:\:\: (\lambda x.M)\:\:\: |\:\:\: (M N)$$}
+
+\nt{$\lambda x.M$ è un'astrazione o funzione con argomento x e corpo M}
+\nt{$(M N)$ è l'applicazione delle funzione $M$ all'argomento $N$}
+
+\ex{}{
+\begin{itemize}
+    \item $(\lambda x.x)$;
+    \item $((\lambda x.(x x))(\lambda y.(y y)))$;
+    \item $(\lambda f.(\lambda x.(f (f x))))$.
+\end{itemize}
+}
+
+\subsection{Convenzioni sintattiche}
+
+Si può limitare l'uso delle parentesi:
+
+\begin{itemize}
+    \item le parentesi più esterne sono omesse $M N = (M N)$;
+    \item il corpo delle associazioni si estende il più possibile a destra $\lambda x.x x = (\lambda x(x x))$;
+    \item l'applicazione è associativa a sinistra $M_1 M_2 M_3 = ((M_1 M_2) M_3)$.
+\end{itemize}
+
+\section{Semantica}
+
+\nt{Diciamo che un occorrenza di $x$ in $M$ è legata se compare in sotto-termine della forma $\lambda x.N$ in $M$, altrimenti è libera}
+
+\ex{}{
+\begin{itemize}
+    \item $\lambda x.x$ non ha nessuna variabile libera;
+    \item x y z ha solo variabili libere;
+    \item ($\lambda x.x y) x$ in cui x occorre sia libera che legata.
+\end{itemize}
+}
+
+\dfn{Insieme delle variabili libere}{L'insieme delle variabili libere di un termine M, denotato come $fv(M)$, è definito induttivamente sulla struttura di M come segue:
+$$fv(x) = \{x\} \:\:\:\: fv(\lambda x.M) = fv(M) \ /\{x\}\:\:\:\: fv(M N) = fv(M) \cup fv(N)$$
+}
+
+\dfn{Sostituzione}{
+\begin{itemize}
+    \item $x\{N/y\} = \begin{cases}
+        N \text{ se } x = y \\
+        x\; \text{ se } x \not = y
+    \end{cases}$
+    \item $(M_1 M_2) \{N/y\} = M_1\{N/y\} M_2\{N/y\}$;
+    \item $(\lambda x.M)\{N/y\} = \begin{cases}
+        \lambda x.M \:\:\:\:\:\:\:\:\:\:\:\:\:\:\:\:\:\:\:\:\:\:\:\:\text{ se } x = y \\
+        \lambda x.M\{N/y\} \:\:\:\:\:\:\:\:\:\:\:\text{ se } x \not = y \text{ e } x \not\in fv(N) \\
+        \lambda z.M\{z/x\}\{N/y\} \text{ se } x \not= y \text{ e } x \in fv(N) \text{ e } z \in Var - (fv(M) \cup fv(N))
+    \end{cases}$
+\end{itemize}
+}
+
+\nt{$M\{N/y\}$ è ottenuta sostituendo le occorrenze libere di $y$ in $M$ con $N$. Serve per evitare la cattura delle variabili libere di N per non alterarne il senso}
+
+\ex{}{\begin{itemize}
+    \item $\lambda x.x \{y/x\} = \lambda x.x$ non avviene nessuna sostituzione, perchè non ci sono variabili libere;
+    \item $((\lambda x.x) x) \{y/x\} = (\lambda x.x) y$ sono state sostituite le occorrenze libere;
+    \item $(\lambda z.x) \{y/x\} = \lambda z.y $ $y \neq z$ quindi non viene catturata;
+    \item $(\lambda y.x y) \{y/x\} = \lambda z.y z$ y verrebbe catturata, quindi viene cambiata con z;
+    \item $(\lambda x.y) \{\lambda x.x/y\} = \lambda x. \lambda x.x$ non c'è cattura;
+    \item $(\lambda x.y) \{\lambda z.x/y\} = \lambda u. \lambda z.x$ perchè x verrebbe catturata.
+\end{itemize}}
+
+\nt{Il significato di una funzione è indipendente dal nome dell'argomento}
+
+\subsection{\texorpdfstring{$\mathcal{\alpha}$}--conversione}
+
+\dfn{$\alpha$-conversione}{L'$\alpha$-conversione  $\ac$ è la congruenza tra $\lambda$-espressioni tale che, se $y \not\in fv(M)$, allora $\lambda x.M \ac \lambda y.M\{y/x\}$}
+
+\nt{$y \not\in fv(M)$ serve a evitare che una variabile libera in M venga catturata dalla conversione}
+
+\subsection{\texorpdfstring{$\mathcal{\beta}$}--riduzione}
+
+\nt{Applicare una funzione $\lambda x.M$ a un argomento N significa valutare il corpo della funzione (M) in cui ogni occorrenza libera dell'argomento (x) è stata sostituita da N}
+
+\dfn{$\beta$-riduzione}{ La $\beta$-riduzione è la relazione tra $\lambda$-espressioni tale che:
+\begin{itemize}
+    \item $(\lambda x.M) N \br M\{N/y\}$;
+    \item se $M\br M'$ allora $M N \br M' N$;
+    \item se $M\br M'$ allora $M N \br N M'$;
+    \item se $M\br M'$ allora $M N \br \lambda x.M'$.
+\end{itemize}
+}
+
+\nt{Nella $\beta$-riduzione:
+
+    $$(\lambda x.M) N \br M\{N/y\}$$
+
+$(\lambda x.M) N$ è un \textit{$\beta$-redex}\footnote{REDucible EXpression}.
+
+$M\{N/y\}$ è il suo \textit{ridotto}.
+
+Ci possono essere più modi di ridurre la stessa $\lambda$-espressione. La riduzione di un $\beta$-redex può creare altri $\beta$-redex. La riduzione di un $\beta$-redex può cancellare altri $\beta$-redex. La riduzione può non terminare.}
+
+\nt{Ci sono esempi di espressioni che rappresentano la stessa espressione, ma che non possono essere ridotti. Per esempio:
+
+\begin{center}
+    $(\lambda x.M x) N \br (M x)\{N / x\} = M\{N / x\} N = M N$
+\end{center}
+
+M e $\lambda x.M x$ producono lo stesso risultato se applicate allo stesso argomento, tuttavia nessuna delle due è $\beta$-riducibile nell'altra.
+}
+
+\subsection{\texorpdfstring{$\mathcal{\eta}$}--riduzione}
+
+\dfn{$\eta$-riduzione}{La $\eta$-riduzione è la relazione tra $\lambda$-espressioni tale che:
+
+\begin{itemize}
+    \item se x $\notin$ fv(M) allora $\lambda x.M x \er M$;
+    \item se $M\er M'$ allora $M N \er M' N$;
+    \item se $M\er M'$ allora $M N \er N M'$;
+    \item se $M\er M'$ allora $M N \er \lambda x.M'$.
+\end{itemize}
+}
+
+\dfn{Riduzioni singole e multiple}{ Si scrive $\rightarrow$ per indicare l'unione $\br \cup \er$ e $\Rightarrow$ per indicare la chiusura riflessiva e transitiva di $\rightarrow$. Ovvero $\Rightarrow$ è la più piccola relazione tale che: 
+
+\begin{itemize}
+    \item $M \Rightarrow M$;
+    \item se $M \rightarrow N$ allora $M \Rightarrow N$;
+    \item se $M \Rightarrow M'$ e $M' \Rightarrow N$ allora $M \Rightarrow N$. 
+\end{itemize}
+}
+
+\dfn{Convertibilità}{Scriviamo $M \leftrightarrow N$ se $M \rightarrow N$ oppure $N \rightarrow M$ e scriviamo $\Leftrightarrow$ per la chiusura riflessiva e transitiva di $\leftrightarrow$. Diciamo che M e N sono convertibili se $M \Leftrightarrow N$.}
+
+\section{Confluenze e strategie di riduzione}
+
+\thm{Confluenza}{Se $M \Rightarrow N_1$ e $M \Rightarrow N_2$ allora esiste $N$ tale che $N_1 \Rightarrow N$ e $N_2 \Rightarrow N$}
+
+\nt{Ossia, indipendentemente dalla strada presa, si giunge allo stesso risultato}
+
+\dfn{Forma normale}{Diciamo che $M$ è in forma normale se non può più essere ridotto, ovvero se non esiste $N$ tale che $M \rightarrow N$. In tal caso scriviamo $M \not\rightarrow$}
+
+\cor{}{La forma normale di M, se esiste, è unica (a meno di $\alpha$-conversioni)}
+
+\ex{Dimostrazione della forma normale}{Supponiamo che $M$ abbia due forme normali $N_1$ e $N_2$, ovvero $M \Rightarrow N_1 \not\rightarrow$ e $M \Rightarrow N_2 \not \rightarrow$. Per il teorema di confluenza esiste $N$ tale che $N_1 \Rightarrow N$ e $N_2 \Rightarrow N$. Siccome $N_1$ e $N_2$ sono in forma normale, deve essere $N_1 = N = N_2$ (a meno di $\alpha$-conversioni)}
+
+\subsection{Ordine applicativo}
+
+\dfn{Ordine applicativo}{Nell'ordine applicativo si sceglie il redesso più interno e più a sinistra}
+
+\nt{Viene utilizzato dai linguaggi zelanti o eager}
+
+\subsection{Ordine normale}
+
+\dfn{Ordine normale}{Nell'ordine normale si sceglie il redesso più esterno e più a destra}
+
+\nt{Viene utilizzato dai linguaggi pigri o lazy}
+
+\subsection{Normalizzazione}
+
+\thm{Normalizzazione}{Se $M \Leftrightarrow N$ e $N$ è in forma normale, allora c'è una riduzione in ordine normale $M \Rightarrow N$}
+
+\nt{Questa proprietà non vale per l'ordine applicativo}
