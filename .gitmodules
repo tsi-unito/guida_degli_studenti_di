@@ -1,0 +1,3 @@
+[submodule "Tesi/template-tesi-typst"]
+	path = Tesi/template-tesi-typst
+	url = https://github.com/eduardz1/UniTO-typst-template
