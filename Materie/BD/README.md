@@ -10,3 +10,7 @@
 ## Esercizi
 
 - [Repository con esercizi in SQL](https://github.com/lucamodica/sql-exercises--bachelor) di Luca Modica. Provengono prevalentemente da testi di esami scorsi. Nota che alcuni esercizi potrebbero essere incompleti.
+
+## Progetti
+
+- [Occhipinti-Molica-Solaih](Progetti/2021-2022/Occhipinti-Molica-Solaih/)
