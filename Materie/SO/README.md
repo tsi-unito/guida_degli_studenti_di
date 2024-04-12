@@ -12,3 +12,4 @@
 ## Progetti
 
 - Progetto AA 2018-2019 di Stefano Vittorio Porta, disponibili [QUI](https://github.com/stefa168/progetto_so)
+- [Eduard Occhipinti](Progetti/2021-2022/Occhipinti/)
