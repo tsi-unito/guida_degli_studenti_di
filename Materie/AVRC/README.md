@@ -2,4 +2,6 @@
 
 ## Appunti
 
-Attualmente sono disponibili gli [appunti](Appunti/Appunti_Bryan.pdf) di Shtjefni Bryan (AA non specificato).
+Attualmente sono disponibili gli appunti di:
+- [Shtjefni Bryan](appunti/Appunti_Bryan.pdf) (AA non specificato).
+- [Santimaria, De Rosa, Lorenzo](appunti/Appunti_NetSci__AVRC_.pdf) (AA 2022/2023)
