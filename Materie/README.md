@@ -15,6 +15,7 @@ Tabella di traduzione (per le sole materie presenti in questa directory) da sigl
 | SIGLA                    |                         Nome Completo                         |
 |--------------------------|:-------------------------------------------------------------:|
 | [AAUT](./AAUT)           |                   Apprendimento Automatico                    |
+| [AG](./AG)               |                   Algebra lineare e Geometria                 |
 | [AINT](./AINT)           |                      Agenti Intelligenti                      |
 | [ALGCOMPL](./ALGCOMPL)   |                    Algoritmi e Complessità                    |
 | [ARCH](./ARCH)           |                Architetture degli Elaboratori                 |
