@@ -26,6 +26,7 @@ Tabella di traduzione (per le sole materie presenti in questa directory) da sigl
 | [BD](./BD)               |                         Basi di Dati                          |
 | [BIOINF](./BIOINF)       |                        Bioinformatica                         |
 | [CALCCOMPL](./CALCCOMPL) |                  Calcolabilità & Complessità                  |
+| [CMRO](./CMRO)           |             Calcolo Matriciale e Ricerca Operativa            |
 | [COMPLAP](./COMPLAP)     |             Complementi di Analisi e Probabilità              |
 | [DBM](./DBM)             |                   Basi di Dati Multimediali                   |
 | [DIRITTO](./DIRITTO)     |                            Diritto                            |
