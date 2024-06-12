@@ -37,4 +37,5 @@ Pro Pro tip: Se non sai cosa significa qualcosa, chiedi! Non c'è nessuna vergog
 - **Pendolare**: Studente che non risiede nella città in cui studia e viaggia ogni giorno per raggiungere l'università. {Tanto rispetto per i loro sacrifici}.
 - **Piano Carriera**: Elenco degli esami che vuoi sostenere, per la triennale la scelta è abbastanza bloccata, in magistrale è più libera. Ricordati di ricompilarlo ogni anno!
 ### S:
+- **SCU**: Sistema di Credenziali Unificato. Sono le credenziali che ti permettono di accedere ai servizi online dell'Università di Torino. L'username solitamente "nome.cognome" a cui sono aggiunti dei numeri in caso di omonimia.
 - **Sessione**: Periodo in cui si svolgono gli appelli. Di solito sono tre invernale (febbraio-gennario), estiva (giugno-luglio) e autunnale (settembre). 
