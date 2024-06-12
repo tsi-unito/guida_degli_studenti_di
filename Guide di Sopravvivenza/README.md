@@ -17,7 +17,7 @@ Le guide sono state scritte da studenti per studenti con lo scopo di creare un p
 | [Laurearsi](Laurearsi)                                            | Guida per affrontare il processo di richiesta laurea e publicazione tesi.                  |
 | [Collaborazioni a Tempo Pazriali](collaborazioni_tempo_parziale.md)                                 | Lista di opportunità lavorative retribuite presso l'università. |
 | [Assistenza Medica](assistenza_medica.md)                                 | Informazioni su come ottenere assistenza medica a Torino e tariffe aggevolate |
-                            
+| [Supporto Psicologico](supporto_psicologico.md)                                 | Unito offre assistenza gratuita per chi sta affrontando un momento difficile |                            
 
 ## Contribuire
 
