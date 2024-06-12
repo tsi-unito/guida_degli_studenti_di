@@ -11,6 +11,7 @@ Le guide sono state scritte da studenti per studenti con lo scopo di creare un p
 | [Vocabolario dell'universitario](vocabolario.md)                                 | Vocabolario di termini che senti in giro, ma che non hai il coraggio di chiedere  |
 | [Borsa di Studio](borsa_studio.md)                                 | Opportunità per sostenere gli studi di chi ha difficoltà economiche  |
 | [Dove mangiare](dove_mangiare.md)                                 | Una breve analisi sui luoghi in cui conviene mangiare nei dintorni del Dipartimento       |
+| [Trasporti](trasporti.md)                                 | Come arrivare al dipartimento? quanto costa spostarsi a Torino?     |
 | [Stage](stage.md)                                 | Breve chiarimento sui dubbi più grossi riguardo lo stage  |
 | [Laurearsi](Laurearsi)                                            | Guida per affrontare il processo di richiesta laurea e publicazione tesi                  |
                             
