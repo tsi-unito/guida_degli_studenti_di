@@ -12,6 +12,7 @@ Le guide sono state scritte da studenti per studenti con lo scopo di creare un p
 | [Borsa di Studio](borsa_studio.md)                                 | Opportunità per sostenere gli studi di chi ha difficoltà economiche  |
 | [Dove mangiare](dove_mangiare.md)                                 | Una breve analisi sui luoghi in cui conviene mangiare nei dintorni del Dipartimento       |
 | [Trasporti](trasporti.md)                                 | Come arrivare al dipartimento? quanto costa spostarsi a Torino?     |
+| [Collaborazioni a Tempo Pazriali](collaborazioni_tempo_parziale.md)                                 | Lista di opportunità lavorative retribuite presso l'università  |
 | [Stage](stage.md)                                 | Breve chiarimento sui dubbi più grossi riguardo lo stage  |
 | [Laurearsi](Laurearsi)                                            | Guida per affrontare il processo di richiesta laurea e publicazione tesi                  |
                             
