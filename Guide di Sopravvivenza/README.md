@@ -8,13 +8,14 @@ Le guide sono state scritte da studenti per studenti con lo scopo di creare un p
 | Guida                                                             | Descrizione                                                                               |
 |-------------------------------------------------------------------|-------------------------------------------------------------------------------------------|
 | [Introduzione Matricole](Matricole)                                 |Sei una matricola? clicca qui! (NO CLICKBAIT) |
-| [Vocabolario dell'universitario](vocabolario.md)                                 | Vocabolario di termini che senti in giro, ma che non hai il coraggio di chiedere  |
-| [Borsa di Studio](borsa_studio.md)                                 | Opportunità per sostenere gli studi di chi ha difficoltà economiche  |
-| [Dove mangiare](dove_mangiare.md)                                 | Una breve analisi sui luoghi in cui conviene mangiare nei dintorni del Dipartimento       |
+| [Vocabolario dell'universitario](vocabolario.md)                                 | Vocabolario di termini che senti in giro, ma che non hai il coraggio di chiedere.  |
+| [Borsa di Studio](borsa_studio.md)                                 | Opportunità per sostenere gli studi di chi ha difficoltà economiche.  |
+| [Dove mangiare](dove_mangiare.md)                                 | Una breve analisi sui luoghi in cui conviene mangiare nei dintorni del Dipartimento.       |
+| [Tasse](tasse.md)                                 | Come funzionano le tasse ad Unito.    |
 | [Trasporti](trasporti.md)                                 | Come arrivare al dipartimento? quanto costa spostarsi a Torino?     |
-| [Collaborazioni a Tempo Pazriali](collaborazioni_tempo_parziale.md)                                 | Lista di opportunità lavorative retribuite presso l'università  |
-| [Stage](stage.md)                                 | Breve chiarimento sui dubbi più grossi riguardo lo stage  |
-| [Laurearsi](Laurearsi)                                            | Guida per affrontare il processo di richiesta laurea e publicazione tesi                  |
+| [Collaborazioni a Tempo Pazriali](collaborazioni_tempo_parziale.md)                                 | Lista di opportunità lavorative retribuite presso l'università. |
+| [Stage](stage.md)                                 | Breve chiarimento sui dubbi più grossi riguardo lo stage.  |
+| [Laurearsi](Laurearsi)                                            | Guida per affrontare il processo di richiesta laurea e publicazione tesi.                  |
                             
 
 ## Contribuire
