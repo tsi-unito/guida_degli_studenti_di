@@ -7,9 +7,10 @@ Le guide sono state scritte da studenti per studenti con lo scopo di creare un p
 
 | Guida                                                             | Descrizione                                                                               |
 |-------------------------------------------------------------------|-------------------------------------------------------------------------------------------|
+| [Introduzione Matricole](intro_matricole.pdf)                                 | Cosa sapere per iniziare a frequentare l'università di informatica.     |
 | [Dove mangiare](dove_mangiare.md)                                 | Una breve analisi sui luoghi in cui conviene mangiare nei dintorni del Dipartimento       |
 | [Laurearsi](Laurearsi)                                            | Guida per affrontare il processo di richiesta laurea e publicazione tesi                  |
-                            |
+                            
 
 ## Contribuire
 
