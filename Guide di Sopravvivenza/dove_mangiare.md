@@ -7,8 +7,8 @@ Nei pressi del dipartimento d'informatica ci sono due posti principali in cui è
 
 Esistono due tipi di formule principali per il pasto:
 
-- ridotto, che comprende un primo e un contorno oppure un secondo e un contorno + acqua, pane e un frutto o yogurt
-- intero, che comprende primo, secondo, contorno + acqua, pane, frutta o yogurt o dolce
+- **RIDOTTO**: comprende un primo e un contorno oppure un secondo e un contorno + acqua, pane e un frutto o yogurt
+- **INTERO**: comprende primo, secondo, contorno + acqua, pane, frutta o yogurt o dolce
 
 ## Costi
 
@@ -28,28 +28,10 @@ Entrambe le mense offrono anche un menù studenti ridotto, diverso però dalle t
 
 ## Come si paga
 
-### Tariffe agevolate
+- **Tariffe agevolate EDISU**: Da quest'anno è possibile pagare solo attraverso la  "fantastica" App [Campus Piemonte ID Meal](https://www.edisu.piemonte.it/it/notizie/avvisi/app-campus-piemonte-id-meal), ricaricabile esclusivamente online attraverso PagoPa o carta di credito
 
-Si può pagare in due maniere:
 
-1. Usando la tessera universitaria: è possibile ricaricarla attraverso l'aula studio (in soli contanti) presente all'interno del Pier della Francesca (ci potete accedere sempre girando a destra prima dei tornelli dei laboratori) oppure a uno dei tanti punti di ricarica che potete consultare scaricando "Elenco punti di ricarica Smart card" dalla [questa](https://www.edisu.piemonte.it/it/servizi/ristorazione/scarica-i-materiali-che-ti-servono) pagina
-   - Al Doc poi bisogna andare al POS EDISU (che è attualmente locato nell'angolo a destra appena si entra), clickare il tasto _1_, avvicinare la carta (o inserirla se è una di quelle con il chip), selezionare il tipo di pasto, clickare il verde, ritirare e consegnare alla cassa lo scontrino
-   - Al Dubai ci pensano loro :)
-2. Compilando il foglio firme presente alle casse delle mense con la propria matricola, fascia, tipo di pasto, costo e firma (quindi pagando in contanti)
-
-### Menù studenti
-
-Pagando in contanti o con carta alla cassa.
-
-## FAQ
-
-### Ho sentito che ho bisogno di attivare la tessera universitaria per usufruire delle tariffe agevolate, come faccio?
-
-Questa procedura serve solamente a chi ha ancora una tessera universitaria rilasciata prima del 2020 con ancora il chip (per intenderci, quello delle carte di credito).
-
-Per farla, basta semplicemente effettuare una ricarica della carta, e verrà aggiornata la tariffa.
-
-Per chi ha una tessera nuova senza chip, questa procedura è superflua.
+- **Menù studenti**: Pagando in contanti o con carta alla cassa.
 
 ### Ho richiesto la borsa di studio EDISU, devo fare altro per avere il servizio ristorazione?
 
@@ -63,6 +45,7 @@ Doc:
 - Possibilità di avere acqua e bibite illimitate utilizzando il bicchiere
 - Buona varietà dei pasti, abbondanti nelle porzioni, alle volte di media qualità
 - Leggermente meno coda del Dubai nelle ore di punta
+- Possibilità di prendere la pizza (medio bassa qualità)
 
 Dubai:
 
