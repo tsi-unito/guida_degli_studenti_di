@@ -20,4 +20,10 @@ Qui non ci sono particolari requisiti. Le guide possono essere informali; basta 
 - Controllate sempre che ogni link che includete non sia temporaneo, ma una risorsa fissa. Alternativamente, indicare
   altre informazioni che permettano la reperibilità nel futuro e, se questa non fosse certa, archiviare i file online
   (<https://web.archive.org/> ad esempio).
-  cas
+
+
+**Alcune idee di guide di cui ci sarebbe bisogno**
+- come contribuire al repo e scirvere una guida
+- come utilizzare latex e markdown
+- come utilizzare git
+- come utilizzare chat-gpt e simili in modo appropriato
