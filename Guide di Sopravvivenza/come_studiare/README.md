@@ -13,7 +13,7 @@ Su internet troverai centinaia di video su come studiare, molti passano metà vi
 - [Alessandro De Concini](https://www.youtube.com/watch?v=3FvXpqJEvvM&list=PLonYEgYBv1Ic1QptGuC-hjQ0DzmYQDyRx&ab_channel=AlessandrodeConcini-ADC): Canale di riferimento in italiano di un esperto dell'apprendimento. Acuni video sono inutili e/o prolissi, ma è considerato il migliore in Italia. Offre anche un corso a pagamento che non ho mai provato, ma che non è fuffa come quelli di "metodo universitario" e simili.
 
 canale bonus:
-- [Enkk](https://www.youtube.com/@enkk): Il buon Enkk (Enrico Mensa) è un dotorando presso il nostro dipartimento di informatica, ma anche streamer e youtuber, seppur il suo main content riguarda tutt'altro, ultimamente sta facendo coinciliare le sue due vite e porta sempre più contenuti interessantissimi sul mondo informatico. In questo [estratto di live](https://www.youtube.com/watch?v=aBZX3jtFDF0&ab_channel=ModificatiTV) racconta la sua esperienza universitaria e come ha affrontato gli studi. Molto utile per ascoltare l'esperienza di qualcuno che c'è già passato.
+- [Enkk](https://www.youtube.com/@enkk): Enkk (Enrico Mensa) è un ricercatore a tempo determinato presso il nostro dipartimento di informatica, ma anche streamer e youtuber, seppur il suo main content riguarda tutt'altro, ultimamente sta facendo coinciliare le sue due vite e porta sempre più contenuti interessantissimi sul mondo informatico. In questo [estratto di live](https://www.youtube.com/watch?v=aBZX3jtFDF0&ab_channel=ModificatiTV) racconta la sua esperienza universitaria e come ha affrontato gli studi. Molto utile per ascoltare l'esperienza di qualcuno che c'è già passato.
 
 ## I due pilastri dei metodi di studio
 #### Active Recall
