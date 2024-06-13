@@ -10,12 +10,13 @@ Pro Pro tip: Se non sai cosa significa qualcosa, chiedi! Non c'è nessuna vergog
 ### C:
 - **CFU**: Crediti Formativi Universitari. Sono una misura del carico di lavoro richiesto per superare un esame o un corso. Un CFU corrisponde a 25 ore di lavoro, comprensive di lezioni frontali, esercitazioni, studio individuale e preparazione all'esame.
 - **Classe di Laurea**: Codice identificativo del corso di laurea (es. L-31 per informatica Triennale e LM-18 per informatica Magistrale).
+-**Coorte**: Anno di iscrizione al corso di laurea.
 - **Corso di Laurea/ di Studio**: Tipologia di laura che si può conseguire. Nel nostro caso informatica. 
 - **Corso**: Insieme di lezioni che trattano un argomento specifico.
 ### E:
 - **EDISU** : Ente regionale per il diritto allo studio universitario del Piemonte. Offre borse di studio, servizi abitativi e ristorazione a studenti universitari.
 - **Esame**: Prova scritta o orale che verifica la conoscenza di un argomento. In alcuni casi suddivisa in paraziali o esoneri. Potrebbe richiedere lo sviluppo di un progetto. Gli esami possono essere superati con voto in trentesimi (da 18 a 30 e lode).
-- **ESSE3**: Sistema informatico dell'Università di Torino che permette di iscriverti agli appelli.
+- **ESSE3**: Sistema informatico che l'Università di Torino usa per gestire le iscrizioni agli appelli.
 ### F:
 - **Fuori Corso**: Studente che non ha completato il corso di laurea entro i termini previsti (3 anni per la triennale e 2 per la magistrale). **NON** si è fuori corso se non si da qualche esame il primo/secondo anno! Si possono sempre recuprare in sessioni successive. 
 - **Fuori Sede**: Studente che non risiede nella città in cui studia, ma è domiciliato in quest'ultima. Possiede un contratto di locazione o è ospite in un alloggio universitario.

@@ -17,7 +17,8 @@ L'importo minimo, se l'ISEE è inferiore 23.000€ è della sola prima rata, par
 Le tasse possono essere pagate tramite il portale PagoPA sulla sezione personale di MyUnito, dove troverai anche le ricevute e lo stato dei pagamenti.
 
 ### Cosa devo fare?
-1. **Fai l'ISEE**: se non l'hai già fatto, **fallo**. Senza ISEE pagherai il massimo. **N.B.** non serve caricare l'isee da nessuna parte, Unito lo recupera automaticamente!
+1. **Fai l'ISEE**: se non l'hai già fatto, **fallo**. Senza ISEE pagherai il massimo + mora!
+ **N.B.** non serve caricare l'isee da nessuna parte, Unito lo recupera automaticamente.
 2. **Calcola le tasse**: usa il simulatore per sapere quanto pagare.
 3. **Paga in tempo**: controlla le scadenze e la sezione personale di MyUnito, appena compare una tassa da pagare, pagala!
 

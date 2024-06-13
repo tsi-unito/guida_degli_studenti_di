@@ -5,7 +5,7 @@ Ogni anno l'università di Torino e il Dipartimento di Informatica offrono diver
 La durata massima di ore lavorative è di 200 ore annue. La retribuzione va dai 9 ai 12 euro all'ora netti a seconda della collaborazione. 
 
 ### Requisti
-I requisiti variano da bando a bando, ma in generale i posti sono limitati e viene stilata uan graduatoria in base a criteri economici e/o di merito (numero di CFU ottenuti). Inoltre certe collaborazioni possono richiedere competenze specifiche, o essere accessibili solo a studenti magistrali
+I requisiti variano da bando a bando, ma in generale i posti sono limitati e viene stilata uan graduatoria in base a criteri economici e/o di merito (numero di CFU ottenuti). Inoltre certe collaborazioni possono richiedere competenze specifiche, o essere accessibili solo a studenti magistrali. Purtroppo le collaborazioni non sono dispobili per gli studenti del primo anno.
 
 ### Dove trovare le collaborazioni?
 Consulta la lista dei [bandi](https://www.unito.it/ateneo/concorsi-e-selezioni/lavorare-da-studente-o-da-laureato/collaborazioni-tempo-parziale) Unito per trovare la collaborazione più adatta a te, se non trovi nulla di tuo interesse, non scoraggiarti, i bandi vengono pubblicati periodicamente, quindi continua a controllare.
