@@ -1,4 +1,12 @@
-| Nome corso                                            | Nome abbreviato | N. CFU | Tipologia esame | Progetto                             | Semestre |
+# Esami
+
+## Triennale
+
+> TODO
+
+## Magistrale
+
+| Nome corso                                            | Nome abbreviato | N. CFU | Tipologia esame | Progetto                             | Semestre (consigliato) |
 | ----------------------------------------------------- | --------------- | ------ | --------------- | ------------------------------------ | -------- |
 | Elaborazione delle immagini e Visione Artificiale     | ELIVA           | 9      | Orale           | X                                    | 2        |
 | Elaborazione delle immagini e Visione Artificiale     | ELIVA           | 6      | Orale           |                                      | 2        |
