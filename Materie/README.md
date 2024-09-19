@@ -1,9 +1,9 @@
 # Materie
 
 Ai link seguenti trovi l'elenco completo degli insegnamenti della
-laurea [triennale](http://laurea.educ.di.unito.it/index.php/offerta-formativa/insegnamenti/elenco-completo/elenco-completo/)
+laurea [triennale](https://laurea.informatica.unito.it/do/home.pl/View?doc=Insegnamenti.html)
 e della
-laurea [magistrale](http://magistrale.educ.di.unito.it/index.php/offerta-formativa/insegnamenti/elenco-completo/elenco-completo/)
+laurea [magistrale](https://magistrale.informatica.unito.it/do/home.pl/View?doc=Insegnamenti.html)
 .
 
 Sotto la tabella trovi le informazioni su come contribuire.
