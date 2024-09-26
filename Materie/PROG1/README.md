@@ -30,3 +30,6 @@ Cartella contenente il materiale relativo al laboratorio della materia. In parti
     Infine, per ogni cartella di esercizio e' presente 
     anche un PDF della lezione in cui sono relativi gli
     esercizi con tanto di consegna
+
+## Altre risorse
+È disponibile una [guida alla compilazione ed all'esecuzione](<../../Guide Tecniche/GCC_Make_guida_alla_compilazione_ed_all_esecuzione.pdf>) nella directory `Guide Tecniche/` valida per questa materia.
