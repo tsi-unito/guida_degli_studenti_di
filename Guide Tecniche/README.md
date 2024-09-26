@@ -1,14 +1,15 @@
 # Guide Tecniche
 
-In questa sezione puoi trovare diverse guide di tecniche, consigli e tutorial realizzati da noi studenti.
-Per altre guide di carattere generale sulla vita studentesca al dipartimento di informatica dai un occhiata alla nostre [Guide di sopravvivenza](../Guide%20di%20Sopravvivenza/README.md)
+In questa sezione puoi trovare diverse guide tecniche, consigli e tutorial realizzati da noi studenti.
+Per altre guide di carattere generale sulla vita studentesca al dipartimento di informatica dai un'occhiata alla nostre [Guide di sopravvivenza](../Guide%20di%20Sopravvivenza/README.md)
 
-| Guida                                                             | Descrizione                                                                               |
-|-------------------------------------------------------------------|-------------------------------------------------------------------------------------------|
-| [Consigli Tecnici Esami Online](consigli_tecnici_esami_online.md) | Alcuni consigli tecnici per gli esami online                                              |
-| [Generare e aggiungere chiavi SSH per Git](generare_e_aggiungere_ssh_key.md)| Guida rapida per generare credenziali SSH e per aggiungerle ai propri account GitHub o GitLab |
-| [Office](Office)                                                  | Guida per installare Microsoft Office **gratis** con la convenzione tra Microsoft e UniTO |
-| [Linux](Linux)                                                    | Guida per installare Linux e per utilizzarlo al meglio                                    |
+| Guida                                                                             | Descrizione                                                                               |
+|-----------------------------------------------------------------------------------|-------------------------------------------------------------------------------------------|
+| [Consigli Tecnici Esami Online](consigli_tecnici_esami_online.md)                 | Alcuni consigli tecnici per gli esami online                                              |
+| [Generare e aggiungere chiavi SSH per Git](generare_e_aggiungere_ssh_key.md)      | Guida rapida per generare credenziali SSH e per aggiungerle ai propri account GitHub o GitLab |
+| [Office](Office)                                                                  | Guida per installare Microsoft Office **gratis** con la convenzione tra Microsoft e UniTO |
+| [Linux](Linux)                                                                    | Guida per installare Linux e per utilizzarlo al meglio                                    |
+| [Compilare con GCC e Make](GCC_Make_guida_alla_compilazione_ed_all_esecuzione.pdf) | Guida alla compilazione ed all'esecuzione di piccoli progetti C                           |
 
 ## Contribuire
 
