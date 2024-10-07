@@ -75,7 +75,7 @@ Su [questo sito](https://www.tablesgenerator.com/latex_tables), troverete un edi
 
 Le tabelle in Typst, al contrario di LaTeX, sono già molto feature complete di base e non richiedono l'uso di [pacchetti esterni](https://typst.app/universe) (che comunque sono disponibili).
 
-Fare riferimento a [questa sezione](https://typst.app/docs/reference/model/table/) della documentazione.
+Fare riferimento a [questa sezione](https://typst.app/docs/guides/table-guide/) del manuale.
 
 ## Bibliografia incasinata?
 
