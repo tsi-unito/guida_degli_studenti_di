@@ -1,3 +1,21 @@
 [submodule "Tesi/template-tesi-typst"]
 	path = Tesi/template-tesi-typst
 	url = https://github.com/eduardz1/UniTO-typst-template
+[submodule "Materie/ASD/Progetti/2022/Eduard-Occhipinti"]
+	path = Materie/ASD/Progetti/2021-2022/Occhipinti-Molica-Solaih
+	url = https://github.com/eduardz1/Laboratorio-Algoritmi
+[submodule "Materie/BD/Progetti/2022/Eduard-Occhipinti"]
+	path = Materie/BD/Progetti/2021-2022/Occhipinti-Molica-Solaih
+	url = https://github.com/eduardz1/Home-Booking/
+[submodule "Materie/LFT/Progetti/2022/Eduard-Occhipinti"]
+	path = Materie/LFT/Progetti/2021-2022/Occhipinti
+	url = https://github.com/eduardz1/Progetto-LFT/
+[submodule "Materie/PROG3/Progetti/2022-2023/Eduard-Occhipinti"]
+	path = Materie/PROG3/Progetti/2022-2023/Occhipinti-Frattarola-Molica
+	url = https://github.com/eduardz1/Jmail/
+[submodule "Materie/SAS/Progetti/2021-2022/Occhipinti-Cardona"]
+	path = Materie/SAS/Progetti/2021-2022/Occhipinti-Cardona
+	url = https://github.com/eduardz1/Cat_e_Ring
+[submodule "Materie/SO/Progetti/2021-2022/Eduard-Occhipinti"]
+	path = Materie/SO/Progetti/2021-2022/Eduard-Occhipinti
+	url = https://github.com/eduardz1/Simulazione-Transazioni
