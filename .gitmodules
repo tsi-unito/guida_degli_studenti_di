@@ -1,3 +1,6 @@
+[submodule "Tesi/template-tesi-typst"]
+	path = Tesi/template-tesi-typst
+	url = https://github.com/eduardz1/UniTO-typst-template
 [submodule "Materie/ASD/Progetti/2022/Eduard-Occhipinti"]
 	path = Materie/ASD/Progetti/2021-2022/Occhipinti-Molica-Solaih
 	url = https://github.com/eduardz1/Laboratorio-Algoritmi
