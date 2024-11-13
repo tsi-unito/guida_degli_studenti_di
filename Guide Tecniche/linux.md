@@ -2,7 +2,7 @@
 
 ## Changelog
 
-- 13-11-2023: Revisione completa della guida, rimossa tier list
+- 13-11-2024: Revisione completa della guida, rimossa tier list
 - 24-10-2023: update alla tier list
 
 ## Preambolo
@@ -240,7 +240,6 @@ Controlla la Arch Wiki.
 - [Linux Journey](https://linuxjourney.com/) - Tutorial interattivo
 - [The Linux Command Line](https://linuxcommand.org/tlcl.php) - Libro gratuito
 - [Greg's Wiki](https://mywiki.wooledge.org/BashGuide) - Guida Bash definitiva
-- [DistroTest](https://distrotest.net/) - Prova distro online
 
 ### Tools Online
 - [Repology](https://repology.org/) - Cerca pacchetti tra distro
