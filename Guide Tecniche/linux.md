@@ -2,6 +2,7 @@
 
 ## Changelog
 
+- 13-11-2023: Revisione completa della guida, rimossa tier list
 - 24-10-2023: update alla tier list
 
 ## Preambolo
@@ -22,11 +23,11 @@ Quando in questa guida parlerò di Linux, intenderò la distribuzione utilizzata
 - Si tratta di un sistema FOSS (free and open source), codice controllabile e controllato, senza lo spyware aggiunto di Windows o MacOS. Immagina effettivamente possedere il computer che hai comprato (_insert cyberpunk dystopia here_).
 - Aggiorni il sistema quando vuoi: se ti piace restare alla versione di 6 anni fa oppure non aggiornare mai una certa applicazione, Linux non lo farà per te a meno che non direttamente istruito. Inoltre, (molto probabilmente) non dovrai riavviare immediatamente dopo un aggiornamento di sistema (vd. Rolling Release distributions).
 - Sia il kernel, sia i sistemi che si appoggiano al kernel, sono estremamente sicuri. Così sicuri ed efficienti che il 99% del web si appoggia a Linux. Antivirus? Mai sentito.
-- Una corretta separazione root-user.
+- Una corretta separazione root-user: niente più "Esegui come amministratore" ogni 3 secondi.
 - _Drivers_? Quali _drivers_? Una distribuzione Linux funziona nella stragrande maggioranza dei casi senza l'installazione di drivers esterni: il kernel pensa a tutto.
 - Leggero, veloce: immagina avere un sistema operativo senza candy crush saga pre-installato.
 - Estremamente personalizzabile: così personalizzabile che puoi far saltare tutto in aria con un comando.
-- Tante, tante, tante [distribuzioni](https://distrowatch.com/)...
+- Tante, tante, tante [distribuzioni](https://distrowatch.com/)... ma tranquillo, ti aiuto io a scegliere.
 
 ## Intro a Linux: le distribuzioni
 
@@ -37,114 +38,229 @@ Darò per scontato che tu sia alle prime armi e non abbia mai usato Linux se non
 La scelta della distribuzione è importante, ma non fondamentale. Linux rimane sempre Linux, e quindi in ogni caso è sempre possibile installare qualsiasi applicazione
 compatibile con una distribuzione su un'altra.
 
-Ciò che distingue quindi una distro da un'altra sono i programmi pre-installati, solitamente.
-Il mondo di Linux è perciò diviso tra una scelta di software e configurazioni, tanto da perderci la testa.
-Andiamo adesso, passo passo, a vedere cosa differenzia una distribuzione dall'altra.
+### Distribuzioni consigliate
 
-### Il package manager
+Per iniziare, ecco quattro distribuzioni particolarmente indicate per chi si avvicina a Linux:
 
-Al contrario di Windows, Linux non ha bisogno degli eseguibili. Tutto viene installato attraverso un package manager.
-Questo ci da la convenienza di poter aggiornare tutte le applicazioni insieme oppure a ritmi diversi, se necessario.
+- **Linux Mint**: Perfetta per chi viene da Windows, stabile e user-friendly. Basata su Ubuntu ma senza i problemi legati agli Snap packages. Mint è tipo Ubuntu ma senza le boiate di Canonical. Viene con Cinnamon come DE di default, che è praticamente Windows ma fatto bene.
 
-[Qui](https://itsfoss.com/package-manager/) una guida che mostra cosa sia un package manager.
+- **Pop!_OS**: Ideale per programmatori e gamers che non vogliono farsi tante domande. Offre driver proprietari NVIDIA preinstallati e un'esperienza out-of-the-box eccellente. Il suo DE è basato su GNOME ma con modifiche che lo rendono effettivamente utilizzabile. Ottima per laptop con doppia GPU. Nel caso in cui qualcuno menzioni il fatto che *gne gne, non viene aggiornata da tot anni*, **COSMIC** sta arrivando.
 
-Di Package Managers ne esistono tantissimi, ma i più famosi sono apt (Advanced Package Tool, tipico delle distribuzioni Ubuntu-based),
-pacman (tipico delle distribuzioni arch-based), dnf (Dandified Yum, il successore di rpm, il package manager di Fedora), portage (Gentoo) e Zypper (openSUSE).
+- **Fedora**: Un ottimo compromesso tra stabilità e innovazione. Perfetta per sviluppatori e per chi vuole restare aggiornato senza sacrificare l'affidabilità. GNOME vanilla experience, ma fatta bene. Red Hat ci mette i soldi, quindi sai che non morirà domani.
 
-Scegliere il package manager vuol dire scegliere il modo in cui verranno installate **tutte** le vostre applicazioni.
-Le differenze nella gestione dei pacchetti probabilmente fanno più la differenza per gli amministratori della distribuzione Linux che per gli utenti finali. 
-Il compito di mantenere la repository dei pacchetti della tua distribuzione Linux sana non è un compito banale o facile. Se una voce del database di un pacchetto contiene un errore, chiunque nel mondo utilizzi la tua distribuzione improvvisamente non sarà in grado di installare quel pacchetto o, peggio, installarlo potrebbe danneggiare il sistema.
-Questo accadeva spesso con Gentoo Linux all'inizio. C'erano volte in cui provavo a installare qualcosa di cui avevo veramente bisogno, solo per scoprire che c'era un errore nel database del pacchetto e l'installazione non sarebbe riuscita, e avrei dovuto dire loro dell'errore, aspettare qualche giorno prima che lo risolvessero, quindi provare a installarlo di nuovo. Questo non è più un problema così tanto, ma le funzionalità del gestore di pacchetti aiutano gli amministratori del database a mantenere le cose senza intoppi e a prevenire il verificarsi di errori.
+- **Debian**: La "madre" di molte distribuzioni. Estremamente stabile e affidabile, ideale per chi cerca un sistema solido che "semplicemente funziona". La usano i server di mezzo mondo, quindi sai che è stabile. Un po' old school nell'approccio, ma hey, funziona.
 
-Per gli utenti finali, non c'è quasi alcuna differenza, perché ogni gestore di pacchetti deve fare lo stesso lavoro e lo fanno tutti in modi leggermente diversi. Devono tutti connettersi a un repository attendibile e scaricare e verificare l'autenticità dei pacchetti firmati crittograficamente, tutti devono avere informazioni su quali pacchetti dipendono da cosa altri e tutti hanno bisogno di consentirti di installare e disinstallare roba sul tuo sistema senza rompere le cose.
+## Desktop Environment (DE) e Window Manager (WM)
 
-Ora uno potrebbe certamente dire che _pacman_ sia più veloce o _apt_ più reliable, ma sono chiacchericci.
-Nella sostanza, quello che cambia sono i comandi per chiamarli, che sono riassunti [qui](https://distrowatch.com/dwres.php?resource=package-management).
+### Cosa sono?
 
-### Il Desktop Environment
+Il DE è l'interfaccia grafica che vedi quando usi il computer. È composto da:
+- Un window manager (WM) che gestisce le finestre
+- Un set di applicazioni base (file manager, terminale, etc.)
+- Un set di librerie grafiche
+- Un insieme di temi e icone
 
-Un DE raggruppa una varietà di componenti per fornire elementi comuni dell'interfaccia utente grafica come icone, barre degli strumenti, sfondi e widget desktop. Inoltre, la maggior parte dei DE include una serie di applicazioni già integrate. Soprattutto, i DE dispongono di un proprio window manager, che tuttavia può essere generalmente sostituito con un altro compatibile.
+Il WM invece è solo il gestore delle finestre. Può essere:
+- **Floating**: le finestre "galleggiano" sullo schermo (come in Windows)
+- **Tiling**: le finestre sono organizzate in modo da occupare tutto lo spazio disponibile
+- **Dynamic**: un mix dei due precedenti
 
-L'utente è libero di configurare il proprio ambiente GUI in qualsiasi modo. Gli ambienti desktop forniscono semplicemente un mezzo completo e conveniente per aiutarci in questa attività. Tieni presente che gli utenti sono liberi di combinare applicazioni da più ambienti desktop. Ad esempio, un utente di **KDE** può installare ed eseguire applicazioni **GNOME** come il browser Web Epiphany, se lo preferisce al browser Web Konqueror di KDE. Uno svantaggio di questo approccio è che molte applicazioni fornite da progetti di ambiente desktop fanno molto affidamento sulle librerie alla base del rispettivo ambiente desktop. Di conseguenza, l'installazione di applicazioni da una vasta gamma di ambienti desktop richiederà l'installazione di un numero maggiore di dipendenze. Gli utenti che cercano di risparmiare spazio su disco spesso evitano tali ambienti misti o scelgono alternative che dipendono solo da poche librerie esterne.
+### DE Consigliati
 
-Inoltre, le applicazioni fornite dagli ambienti desktop tendono a integrarsi meglio con i loro ambienti nativi. Parlando di visibilità, la combinazione di ambienti con diversi toolkit di widget risulterà in discrepanze visive (ovvero, le interfacce utilizzeranno icone e stili di widget diversi). In termini di usabilità, gli ambienti misti potrebbero non comportarsi in modo simile (ad es. clic singolo o doppio clic sulle icone; funzionalità di trascinamento...) causando potenzialmente confusione o comportamenti imprevisti.
+- **GNOME**: Moderno, minimalista, touch-friendly. Pesante come un mattone ma bello da vedere. Usa tantissima RAM ma almeno è carino.
+  - Pro: Bellissimo, coerente, facile da usare
+  - Contro: Pesante, poco personalizzabile (senza estensioni)
 
-I DE più utilizzati ed amati sono:
+- **KDE Plasma**: Potente, personalizzabile, leggero. Windows-like fatto bene.
+  - Pro: Super personalizzabile
+  - Contro: A volte troppo personalizzabile, può spaventare i novizi
 
-- BUDGIE
-- CINNAMON
-- CUTEFISH
-- DEEPIN
-- **GNOME**
-- **KDE**
-- **LXDE**
-- LXQT
-- MATE
-- UKUI
-- **XFCE**
+- **Cinnamon**: Il DE di Linux Mint. Classico, stabile, familiare.
+  - Pro: Facile da usare, stabile, non ti fa impazzire
+  - Contro: Un po' noioso, non molto moderno
 
-In grassetto ho sottolineato quelli a mio parere meglio supportati dalle applicazioni.
+- **XFCE**: Leggero, stabile, tradizionale. Per PC vecchi, per chi vuole velocità o Bini.
+  - Pro: Velocissimo, stabile come una roccia
+  - Contro: Non bellissimo di default, richiede un po' di setup
 
-### Distro Tier List
+### WM Standalone
 
-Qua di seguito ho voluto raggruppare sotto forma di Tier List una serie di distribuzioni che ritengo utilizzabili da uno studente di informatica.
-Sono organizzate dalle migliori alle peggiori in termini di usabilità, bellezza, sicurezza, velocità, utilizzo day-by-day, gaming ed altri fattori.
-Tra gli altri fattori ho personalmente contato l'inclusione di blob proprietari (vd. Snap per Canonical...), che vanno contro la filosofia UNIX.
-Dentro il singolo tier, le distro non sono in un particolare ordine, giusto per triggherare il vostro OCD.
+Se sei un power user, potresti voler usare solo un WM. Ecco i più popolari:
 
-#### S-Tier
+- **i3**: Tiling WM leggero e configurabile. La porta d'ingresso nel mondo dei tiling WM.
+- **Sway**: Come i3 ma per Wayland. Il futuro è qui.
+- **AwesomeWM**: Potente e programmabile in Lua. Per veri nerd.
+- **DWM**: Minimalista, veloce, da configurare in C. Per masochisti.
 
-- Pop_OS
-- Linux Mint
-- Debian
-- CachyOS (advanced)
+## Package Manager e Software
 
-#### A-Tier
+### APT (Debian/Ubuntu & derivate)
 
-- Nobara Linux
-- Solus
-- Nitrux
-- ZorinOS
-- Xubuntu
-- MX Linux
-- NixOS (advanced)
-- Artix (advanced)
-- ArcoLinux (advanced)
-- Archcraft (advanced)
-- KISS (very, very, very advanced)
+```bash
+sudo apt update             # Aggiorna la lista dei pacchetti
+sudo apt upgrade           # Aggiorna i pacchetti installati
+sudo apt install package   # Installa un pacchetto
+sudo apt remove package    # Rimuove un pacchetto
+sudo apt autoremove       # Rimuove le dipendenze non più necessarie
+```
 
-#### B-Tier
+### DNF (Fedora/RHEL & derivate)
 
-- Fedora
-- Lubuntu
-- EndeavourOS
-- RebornOS
-- Garuda Linux
-- CutefishOS
-- Kubuntu
-- Elementary OS
-- Alpine (advanced)
+```bash
+sudo dnf update            # Aggiorna tutto
+sudo dnf install package   # Installa un pacchetto
+sudo dnf remove package    # Rimuove un pacchetto
+sudo dnf autoremove       # Rimuove le dipendenze non più necessarie
+```
 
-#### C-Tier (da evitare)
+### Pacman (Arch & derivate)
 
-- Manjaro
-- Deepin
-- Ubuntu (proprietary blobs)
+```bash
+sudo pacman -Syu          # Aggiorna tutto
+sudo pacman -S package    # Installa un pacchetto
+sudo pacman -R package    # Rimuove un pacchetto
+sudo pacman -Rns package  # Rimuove un pacchetto e le sue dipendenze
+```
 
-#### ?-Tier (non installarle a meno che tu non sia effettivamente a conoscenza del perché di queste distro)
+## Software Essenziale
 
-- Arch Linux
-- Gentoo
-- Parrot
-- Kali Linux
-- Qubes OS
-- Tails
+### Browser
+- **Firefox**: Il browser FOSS per eccellenza
+- **Thorium**: Chrome ma senza Google che ti spia
+- **Zen**: Firefox, but better.
 
-#### Ottima ma ancora in beta
+### Editor di Testo & IDE
+- **VSCode**: L'editor che tutti conoscono (usa la versione OSS)
+- **Neovim**: Per chi odia il mouse e ama la propria sanità mentale
+- **GNOME Text Editor**: Semplice ma efficace
+- **Kate**: Come notepad++ ma fatto bene
+- **JetBrains**: Per chi ha RAM da bruciare (e una licenza universitaria)
 
-- VanillaOS
-- InstantOS (advanced)
+### Terminal Emulator
+- **GNOME Terminal**: Viene con GNOME, fa il suo lavoro
+- **Konsole**: Il terminale di KDE, veloce e personalizzabile
+- **Alacritty**: Veloce, GPU-accelerated, configurabile in YAML
+- **Kitty**: Come Alacritty ma con più feature
+- **WezTerm**: Rust-based, veloce, personalizzabile
 
+### Shell
+- **Bash**: Il default, funziona
+- **Zsh**: Bash++ con plugin (oh-my-zsh ftw)
+- **Fish**: User friendly, default sane, _il mio preferito_
+- **Nushell**: Per chi vuole qualcosa di completamente diverso
+
+### Utility
+- **htop/btop**: Task manager ma bello
+- **neofetch**: Per flex su r/unixporn
+- **timeshift**: Backup del sistema, salvati la vita
+- **flameshot**: Screenshot tool potente
+- **bat**: cat ma con syntax highlighting
+- **exa/lsd**: ls ma decente
+- **fzf**: Fuzzy finder per il terminale
+- **ripgrep**: grep ma più veloce
+
+## Tips & Tricks
+
+### Shell Aliases Utili
+
+```bash
+# Metti nel tuo .bashrc o .zshrc
+alias ll='ls -alF'
+alias la='ls -A'
+alias l='ls -CF'
+alias update='sudo apt update && sudo apt upgrade' # o dnf/pacman
+alias please='sudo $(history -p !!)'
+alias cls='clear'
+alias cd..='cd ..'
+```
+
+### Comandi Utili
+
+```bash
+# Spazio disco
+df -h               # Spazio disco per partizione
+du -sh *           # Spazio usato per cartella
+
+# Processi
+ps aux | grep nome  # Cerca processo
+kill -9 PID         # Termina processo
+
+# Network
+ip a                # Info network
+ss -tunlp          # Porte aperte
+ping google.com     # Test connessione
+
+# File
+find . -name "*.txt"  # Cerca file
+locate filename       # Cerca file (database)
+grep -r "testo" .     # Cerca testo nei file
+```
+
+### Permessi e Proprietà
+
+```bash
+chmod +x script.sh     # Rendi eseguibile
+chown user:group file  # Cambia proprietario
+sudo !!               # Ripeti ultimo comando con sudo
+```
+
+## Troubleshooting Comune
+
+### Wi-Fi non funziona
+
+1. sudo rfkill list per vedere se bloccato
+2. sudo rfkill unblock all per sbloccare
+3. Controlla driver con lspci -k
+
+### Scheda video NVIDIA
+
+1. Usa driver proprietari se possibile
+2. Pop!_OS ha già tutto configurato
+3. prime-select per switchare GPU
+
+### Sistema non si avvia
+
+1. Modalità recovery dal GRUB/systemd-boot
+2. fsck per check filesystem
+3. timeshift per restore backup
+
+### Altri problemi
+
+Controlla la Arch Wiki.
+
+## Risorse & Link Utili
+
+### Community & Supporto
+- [Reddit r/linux4noobs](https://reddit.com/r/linux4noobs) - Per domande da novizi
+- [Reddit r/unixporn](https://reddit.com/r/unixporn) - Per flex e ispirazione
+- [AskUbuntu](https://askubuntu.com/) - StackOverflow per Ubuntu
+- [Arch Wiki](https://wiki.archlinux.org/) - La bibbia di Linux, non solo per Arch
+
+### Tutorial & Guide
+- [Linux Journey](https://linuxjourney.com/) - Tutorial interattivo
+- [The Linux Command Line](https://linuxcommand.org/tlcl.php) - Libro gratuito
+- [Greg's Wiki](https://mywiki.wooledge.org/BashGuide) - Guida Bash definitiva
+- [DistroTest](https://distrotest.net/) - Prova distro online
+
+### Tools Online
+- [Repology](https://repology.org/) - Cerca pacchetti tra distro
+- [AlternativeTo](https://alternativeto.net/) - Alternative FOSS a software proprietario
+- [TLDRPages](https://tldr.sh/) - man pages semplificate
+
+## Pro Tips
+
+### Sicurezza Base
+```bash
+# Firewall
+sudo ufw enable
+sudo ufw default deny incoming
+sudo ufw default allow outgoing
+sudo ufw allow ssh
+
+# Updates automatici (Ubuntu/Debian)
+sudo apt install unattended-upgrades
+sudo dpkg-reconfigure unattended-upgrades
+```
 ## Come installare la mia distribuzione?
 
 ### Di cosa ho bisogno?
@@ -161,52 +277,26 @@ Una chiavetta, un computer BARE METAL (non una VM, quindi) su cui installare la 
 
 - Popsicle (il migliore, ma non esiste per Windows/MacOS)
 - Balena Etcher (very yes, much consigliato)
-- UNetbootin (yes.)
-- LinuxLiveUSB-Creator (anche se il progetto non è più mantenuto)
 - Rufus (anche se personalmente ho avuto diversi problemi con questo)
-
-## Quali applicazioni mi consigli non appena ho finito con l'installazione?
-
-- Bottles (Runnare le app di Windows)
-- Firefox (Browser web)
-- Fish (Shell basata)
-- Flatseal (Per gestire i permessi delle app Flatpak)
-- GParted (Per gestire le partizioni)
-- GIMP (Immagini)
-- HandBrake (Per gestire file video, comprimerli, tagliarli...)
-- Neovim (HELL YEAH.)
-- OBS Studio (Per fare screen recording)
-- Obsidian (Per prendere appunti)
-- Sioyek (Per leggere paper accademici)
-- Steam (Gaming)
-- Betterbird (Per le mail)
-- Visual Studio Code (Per il codice)
-- VLC (Per video ed audio)
 
 ### App basatissime che potrebbero aprirti la mente
 
-- Librewolf (Fork di Firefox, privacy-focused)
-- Floorp (Fork di Firefox, feature-focused)
 - aria2 (Cli torrent client)
 - youtube-dlp (youtube-dl ma meglio)
 - qrcp (Trasferimento file da telefono a pc reso facile)
 - rsync (Il programma di Dio)
 - Cryptomator (Zero-trust encryption per il cloud)
 - FileZilla (FTP made easy)
-- peerflix (shh...)
-- Kitty (Un terminale decente per il 202x)
+- Stremio (shh...)
 - RustDesk (TeamViewer ma FOSS)
 - qimgv (Visualizzatore di immagini veloce e leggero)
 - ImageMagick (Modifica di immagini, programma FONDAMENTALE)
-- oxipng e Guetzli (Conversione di immagini)
 - Flameshot (Screenshot)
 - discord-screenaudio
 
 ## Informazioni importanti subito dopo l'installazione di una qualsiasi distribuzione Linux
 
 1. Update e riavvia: non tutte le iso scaricate sono aggiornate, anzi!
-   1. Per i sistemi Ubuntu-based: `sudo apt update && sudo apt upgrade && sudo apt autoremove && sudo reboot`
-   2. Per i sistemi Arch-based: `sudo pacman -Syyu && sudo reboot`
 2. Installa un host blocker, come [hblock](https://github.com/hectorm/hblock).
 
 ## FAQ
