@@ -9,6 +9,10 @@
 - [Appunti di teoria di Paolo Alfano](Alfano_2015-2016_Teoria.pdf) (AA 2015-2016)
 - [Appunti di laboratorio di Paolo Alfano](Alfano_2015-2016_Laboratorio.pdf) (AA 2015-2016)
 
+## ESERCIZI DI LABORATORIO
+
+- [Esercizi di laboratorio di Mirco De Andreis](./ESERCIZI-LABORATORIO-SISTEMI-OPERATIVI-TURNO1-2024-2025) (AA 2024-2025)
+
 ## Progetti
 
 - Progetto AA 2018-2019 di Stefano Vittorio Porta, disponibili [QUI](https://github.com/stefa168/progetto_so)
