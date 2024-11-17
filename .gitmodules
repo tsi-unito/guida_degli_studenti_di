@@ -19,3 +19,6 @@
 [submodule "Materie/SO/Progetti/2021-2022/Eduard-Occhipinti"]
 	path = Materie/SO/Progetti/2021-2022/Eduard-Occhipinti
 	url = https://github.com/eduardz1/Simulazione-Transazioni
+[submodule "Materie/SO/ESERCIZI-LABORATORIO-SISTEMI-OPERATIVI-TURNO1-2024-2025"]
+	path = Materie/SO/ESERCIZI-LABORATORIO-SISTEMI-OPERATIVI-TURNO1-2024-2025
+	url = https://github.com/MircoDeAndreis/ESERCIZI-LABORATORIO-SISTEMI-OPERATIVI-TURNO1-2024-2025
