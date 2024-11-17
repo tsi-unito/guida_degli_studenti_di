@@ -11,7 +11,7 @@
 
 ## ESERCIZI DI LABORATORIO
 
-- [Esercizi di laboratorio di Mirco De Andreis](https://github.com/MircoDeAndreis/ESERCIZI-LABORATORIO-SISTEMI-OPERATIVI-TURNO1-2024-2025/tree/2b256977af42ee7cb264289481bc142a652ff3b3) (AA 2024-2025)
+- [Esercizi di laboratorio di Mirco De Andreis](https://github.com/MircoDeAndreis/ESERCIZI-LABORATORIO-SISTEMI-OPERATIVI-TURNO1-2024-2025/) (AA 2024-2025)
 
 ## Progetti
 
