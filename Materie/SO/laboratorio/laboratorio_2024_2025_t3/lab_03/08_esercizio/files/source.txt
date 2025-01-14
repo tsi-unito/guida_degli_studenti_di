@@ -1,0 +1,10 @@
+1. introduzione a UNIX;
+2. integrazione C: operatori bitwise, precedenze,
+preprocessore, pacchettizzazione del codice,
+compilazione condizionale e utility make;
+3. controllo dei processi;
+4. segnali;
+5. pipe e fifo;
+6. code di messaggi;
+7. memoria condivisa;
+8. semafori;
