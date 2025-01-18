@@ -11,4 +11,4 @@ Sono attualmente presenti gli [appunti](Appunti/Raimo-Romeo/) prodotti da Raimo 
 
 ## Progetti
 
-- [Occhipinti-Molica-Solaih](Progetti/2021-2022/Occhipinti-Molica-Solaih/)
+- [Occhipinti-Molica-Solaih](https://github.com/eduardz1/Laboratorio-Algoritmi)
