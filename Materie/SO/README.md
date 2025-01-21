@@ -18,13 +18,13 @@ Link Esterni:
 Cartella contenente esercizi fatti nel laboratorio
 Elementi su questo Git:
 - [laboratorio_2024_2025_t3](./esercizi/laboratorio_2024_2025_t3/) Di Carlos Palomino.
-- [laboratorio_2024_2025_t1](./esercizi/laboratorio_2024_2025_t1/) Link al 
+- [laboratorio_2024_2025_t1](https://github.com/MircoDeAndreis/ESERCIZI-LABORATORIO-SISTEMI-OPERATIVI-TURNO1-2024-2025) Link al 
 submodule interno di Mirco de Andreis.
 
 ## Progetti
 Cartella contenente i progetti richiesti da questo corso:
 Elementi su questo Git:
-- [Eduard-Occhipinti](./progetti/2021-2022/Eduard-Occhipinti/): Submodule al progetto di SO di Eduard Occhipinti
+- [Eduard-Occhipinti](https://github.com/eduardz1/Simulazione-Transazioni): di Eduard Occhipinti
 
 Link Esterni:
 - [progetto_2018_2019](https://github.com/stefa168/progetto_so): Progetto AA 2018-2019 di Stefano Vittorio Porta.
