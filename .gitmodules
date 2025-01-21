@@ -17,8 +17,14 @@
 	path = Materie/SAS/Progetti/2021-2022/Occhipinti-Cardona
 	url = https://github.com/eduardz1/Cat_e_Ring
 [submodule "Materie/SO/Progetti/2021-2022/Eduard-Occhipinti"]
-	path = Materie/SO/Progetti/2021-2022/Eduard-Occhipinti
+	path = Materie/SO/progetti/2021-2022/Eduard-Occhipinti
 	url = https://github.com/eduardz1/Simulazione-Transazioni
 [submodule "Materie/SO/ESERCIZI-LABORATORIO-SISTEMI-OPERATIVI-TURNO1-2024-2025"]
-	path = Materie/SO/ESERCIZI-LABORATORIO-SISTEMI-OPERATIVI-TURNO1-2024-2025
-	url = https://github.com/MircoDeAndreis/ESERCIZI-LABORATORIO-SISTEMI-OPERATIVI-TURNO1-2024-2025
+ 	path = Materie/SO/esercizi/laboratorio_2024_2025_t1
+ 	url = https://github.com/MircoDeAndreis/ESERCIZI-LABORATORIO-SISTEMI-OPERATIVI-TURNO1-2024-2025
+[submodule "Materie/SO/esercizi/laboratorio_2024_2025_t1"]
+	path = Materie/SO/esercizi/laboratorio_2024_2025_t1
+	url = https://github.com/MircoDeAndreis/ESERCIZI-LABORATORIO-SISTEMI-OPERATIVI-TURNO1-2024-2025.git
+[submodule "Materie/SO/progetti/2021-2022/Eduard-Occhipinti"]
+	path = Materie/SO/progetti/2021-2022/Eduard-Occhipinti
+	url = https://github.com/eduardz1/Simulazione-Transazioni.git
