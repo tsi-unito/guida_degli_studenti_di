@@ -5,11 +5,11 @@ Cartella contenente gli appunti riguardanti le sezioni del corso presi durante l
 Di seguto l'alberatura della cartella:
 
 Elementi su questo Git:
-- [appunti_anno_2015_2016](./appunti/2015_2016/): Appunti presi da Paolo alfano, contenenti sia la parte di teoria che di 
+- [2015_2016](./appunti/2015_2016/): Appunti presi da Paolo alfano, contenenti sia la parte di teoria che di 
                                                                laboratorio.
-- [appunti_anno_sconosciuto_01](./appunti/aa_sconosciuto_01/): Appunti presi da raimo e romeo, in anno accademico sconosciuto.
-- [appunti_anno_sconosciuto_02](./appunti/aa_sconosciuto_02/): Appunti presi da uno sconociuto in anno accademico sconosciuto.
-- [appunti_anno_2024_2025_B](./appunti/2024_2025_B/): Appunti presi da Carlos Palomino nelll'AA 2024-2025 per il corso B.
+- [aa_sconosciuto_01](./appunti/aa_sconosciuto_01/): Appunti presi da raimo e romeo, in anno accademico sconosciuto.
+- [aa_sconosciuto_02](./appunti/aa_sconosciuto_02/): Appunti presi da uno sconociuto in anno accademico sconosciuto.
+- [2024_2025_B](./appunti/2024_2025_B/): Appunti presi da Carlos Palomino nelll'AA 2024-2025 per il corso B.
 
 Link Esterni:
 - [appunti_su_notion](https://lopsided-flavor-398.notion.site/96c7d002164e47d0b9782abf1d05a9fd?v=8ae0f65c2149405cb402a041db10df46): Appunti presi da Leoluca D'Atri (AA 2022-2023).
