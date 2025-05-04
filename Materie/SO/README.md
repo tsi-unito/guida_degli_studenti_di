@@ -16,4 +16,4 @@
 ## Progetti
 
 - Progetto AA 2018-2019 di Stefano Vittorio Porta, disponibili [QUI](https://github.com/stefa168/progetto_so)
-- [Eduard Occhipinti](Progetti/2021-2022/Occhipinti/)
+- [AA 2021-2022 Eduard Occhipinti](https://github.com/eduardz1/Simulazione-Transazioni/)
