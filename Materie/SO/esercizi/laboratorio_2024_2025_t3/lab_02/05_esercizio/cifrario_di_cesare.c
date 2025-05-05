@@ -22,7 +22,8 @@ int main() {
 
 void print_decode(char *str) {
     int i = 0;
-    while (i < strlen(str)) {
+    int len = strlen(str); // Cache the length of the string
+    while (i < len) {
         printf("%c", str[i] - 2);
         i++;
     }
