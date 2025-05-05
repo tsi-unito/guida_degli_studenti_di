@@ -12,7 +12,7 @@ int main() {
 
         while (*env_variable != NULL) {
             if (strstr(*env_variable, "LOGNAME") != NULL ||
-                strstr(*env_variable, "HOME") ||
+                strstr(*env_variable, "HOME") != NULL ||
                 strstr(*env_variable, "PATH")) {
                 printf("%s\n", *env_variable);
             }
