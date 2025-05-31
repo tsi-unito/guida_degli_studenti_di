@@ -47,6 +47,7 @@ Tabella di traduzione (per le sole materie presenti in questa directory) da sigl
 | [MODSEM](./MODSEM)       |         Modellazione Concettuale per il Web Semantico         |
 | [MTDI](./MTDI)           |    Metodologie e tecnologie didattiche per l'informatica      |
 | [OC](./OC)               |                  Ottimizzazione Combinatoria                  |
+| [PPOO](./PPOO)           |       Principi di Programmazione Orientata agli Oggetti       |
 | [PROG1](./PROG1)         |                       Programmazione 1                        |
 | [PROG2](./PROG2)         |                       Programmazione 2                        |
 | [PROGMOB](./PROGMOB)     |                     Programmazione Mobile                     |
