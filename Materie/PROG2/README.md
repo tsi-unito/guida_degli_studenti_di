@@ -7,3 +7,6 @@
   
 ## Esercizi
 - [Repository con esercizi in Java](https://github.com/lucamodica/java-oop-exercises--bachelor) di Luca Modica. Sono presenti esercizi dei lab dell'anno accademico 2020-2021, oltre ad alcuni di simulazioni/fac-simile di esami. Nota che alcuni esercizi potrebbero essere incompleti.
+
+- [Esercizi in C](Bibbia-PROG2/) di Lorenzo Cavallero. Esercizi capitati in esami passati, con Test e soluzioni. (Presi dal gruppo telegram)
+- [Domande e risposte di teoria](domande_e_risposte_teoria.md) di Lorenzo Cavallero. Lista di domande capitate in esami passati, con risposte e spiegazioni. (Presi dal gruppo telegram)
