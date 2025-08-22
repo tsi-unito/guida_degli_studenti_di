@@ -1,0 +1,258 @@
+\chapter{Teoria dei Giochi}
+
+\section{Introduzione}
+
+\qs{}{Abbiamo una serie di agenti \fancyglitter{egoisti}. Come può un agente prendere una decisione razionale?}
+
+
+\begin{itemize}
+  \item Solitamente i giochi studiati sono a turni con informazione perfetta. 
+  \item In questo capitolo si descriveranno gli aspetti della teoria dei giochi con mosse simultanee. 
+  \item Per semplicità ci si limiterà ai giochi con una sola mossa.
+\end{itemize}
+
+\nt{La teoria dei giochi è utilizzata per procedimenti per bancarotta, vendita delle frequenze radio, sviluppo di prodotti, etc.}
+
+\paragraph{La teoria dei giochi può essere usata in almeno due modi:}
+
+\begin{itemize}
+  \item \fancyglitter{Progettazione di agenti:} analizzare le decisioni dell'agente e calcolarne l'utilità attesa.
+  \item \fancyglitter{Progettazione di meccanismi:} se un ambiente è popolato da più agenti si potrebbero definire delle regole in modo da massimizzare il bene comune.
+\end{itemize}
+
+\paragraph{Un gioco è definito dai seguenti componenti:}
+
+\begin{itemize}
+  \item \fancyglitter{Giocatori} che prendono decisioni. 
+  \item \fancyglitter{Azioni} (strategie) che ogni giocatore può scegliere. 
+  \item Il \fancyglitter{risultato} è determinato dallo \fancyglitter{strategy profile} che specifica quale strategia viene adottata.
+\end{itemize}
+
+\dfn{Soluzione a un Gioco}{
+Una soluzione a un gioco è uno strategy profile in cui ogni giocatore adotta una strategia razionale.
+}
+
+\qs{}{
+  Ma cosa significa che la strategia è razionale?
+}
+
+\subsection{Strategie}
+
+\dfn{Strategia Dominante}{
+  Una strategia dominante è una che domina tutte le altre. Dato un giocatore $A$ e due strategie $sA_1$ e $sA_2$ di questo giocatore: 
+  \begin{itemize}
+    \item $sA_1$ domina strettamente $sA_2$ se, qualunque cosa faccia l'altro giocatore, $sA_1$ dà al giocatore $A$ un payoff maggiore di quello che $sA_2$. 
+    \item $sA_1$ domina debolmente $sA_2$ se, qualunque cosa faccia l'altro giocatore, $sA_1$ dà al giocatore $A$ un payoff maggiore o uguale di quello che $sA_2$, e in almeno un caso $sA_1$ dà un payoff maggiore di quello che $sA_2$ dà.
+    \item $sA_1$ è una strategia fortemente dominante se $sA_1$ domina fortemente ogni altra strategia del giocatore $A$.
+  \end{itemize}
+}
+
+\cor{Strategia che Domina}{
+Una strategia  $s$ per il giocatore $p$ domina fortemente la strategia $s'$ se il risultato di $s$ è meglio per $p$ di quello di $s'$ per ogni scelta di strategie da parte degli altri giocatori.
+}
+
+\nt{È irrazionale scegliere una strategia fortemente dominata ed è irrazionale non scegliere una strategia dominante quando ne esiste una.}
+
+\ex{Dilemma del Prigioniero}{
+  Due presunti scassinatori, Alice e Bob, sono catturati con le mani nel sacco e interrogati
+separatamente dalla polizia. Entrambi sanno che, se confessano il crimine, verranno
+condannati a 5 anni di prigione per furto con scasso, ma se entrambi rifiutano di confessare
+potranno essere condannati solo a 1 anno per il crimine minore di possesso di oggetti rubati.
+Tuttavia, la polizia offre a ognuno di loro separatamente la possibilità di testimoniare contro
+il complice: in tal caso il testimone se ne andrebbe libero, mentre l’altro sarebbe
+condannato a 10 anni.
+Ora Alice e Bob sono posti di fronte al cosiddetto dilemma dei prigionieri: devono
+testimoniare o no?
+Essendo agenti razionali, Alice e Bob vogliono massimizzare la propria utilità. Supponiamo
+che Alice sia totalmente disinteressata del destino del complice: in questo caso la sua utilità
+decresce con il numero di anni che ella dovrà passare in prigione, ma quel che accade a Bob è
+del tutto ininfluente. Bob contraccambia tale sentimento.
+
+\begin{itemize}
+  \item L'utilità dipende dagli anni in prigione: più breve il periodo in prigione, più utilità. 
+  \item Conviene sempre testimoniare perché:
+    \begin{itemize}
+      \item Nel caso migliore non si va in prigione. 
+      \item Nel caso peggiore ci si sta per 5 anni.
+    \end{itemize}
+  \item Se non si testimonia: 
+    \begin{itemize}
+      \item Nel caso migliore ci si sta per 1 anno. 
+      \item Nel caso peggiore ci si sta per 10 anni.
+    \end{itemize}
+    \item Il vero dilemma è che all'altra persona conviene anche testimoniare.
+\end{itemize}
+}
+
+\subsection{Equilibrio di Nash e Strategie}
+
+\dfn{Pareto Optimal}{
+  Un risultato è pareto optimal se non c'è un altro risultato preferibile da tutti i giocatori.
+}
+
+\nt{Nel caso del dilemma del prigioniero (testify, testify) non è pareto optimal, ma (refuse, refuse) lo è.
+
+La soluzione pareto optimal è improbabile perché non è un \fancyglitter{punto di equilibrio}.
+}
+
+\dfn{Equilibrio di Nash}{
+ Uno strategy profile $S = (P_1: s_1, P_2: s_2)$ è un equilibrio di Nash se ogni giocatore $P_i$ in $S$ farebbe peggio se deviasse da $S$, assumendo che tutti gli altri giocatori si attengano a $S$. Precisamente:
+ \begin{itemize}
+  \item Assumendo che il primo agente giochi $s_1$, il secondo agente non può fare niente di meglio che giocare $s_2$. 
+\item Assumendo che il primo agente giochi $s_1$, il secondo agente non può fare niente di meglio che giocare $s_2$. 
+ \end{itemize}
+}
+
+\nt{Un equilibrio con strategie dominanti è un equilibrio di Nash, ma non tutti i giochi hanno strategie dominanti. Se non esistono strategie dominanti possono esserci più equilibri di Nash.}
+
+\qs{}{Un gioco può avere più equilibri di Nash, ma può non averne nessuno?}
+
+\begin{itemize}
+  \item E.g. la morra a due dita. Se il numero di dita è pari, D (dispari) vorrà cambiare, viceversa se il numero di dita è dispari, P (pari) vorra cambiare. È un \fancyglitter{gioco a somma zero}: la somma dei payoff è zero. 
+  \item Nei giochi a somma zero a due giocatori le vincite devono essere uguali e opposte. 
+  \item Nessun profilo di strategie è un punto di equilibrio e quindi si considerano \fancyglitter{strategie miste}.
+\end{itemize}
+
+\thm{Teorema di Nash}{
+  Ogni gioco in cui ogni giocatore ha un insieme finito di strategie possibili ha un equilibrio con strategie miste.
+}
+
+\paragraph{Cooperazione e Self-interested:}
+
+\begin{itemize}
+  \item Il dilemma tra testimoniare o rifiutarsi è il problema fondamentale delle interazioni multi-agenti. 
+  \item Sembra implicare che la cooperazione non si presenti in società di agenti Self-interested (egoisti). 
+  \item Le persone non sono razionali: si potrebbe essere felici a rischiare la cooperazione. 
+  \item Il futuro: se si sa che si incontrerà nuovamente l'avversario allora l'incentivo per disertare non esiste. 
+  \item La cooperazione è la scelta razionale nel dilemma del prigioniero ripetuto infinite volte.
+  \item Se però si sa a priori che il gioco sarà ripetuto $n$ volte allora al giro $n - 1$ si sarà incentivati a disertare. Però questo rende $n - 2$ l'ultimo giro reale, per cui si avrà un incentivo per disertare ancora. 
+  \item Questo è il problema di \fancyglitter{backwards induction}. 
+  \item Se il numero di giri si conosce a priori allora diserare è la migliore strategia.
+\end{itemize}
+
+\subsection{Torneo di Axelrod}
+
+Supponiamo di giocare il dilemma del prigioniero iterato contro un insieme di avversari. Quale strategia si dovrebbe scegliere per massimizzare il proprio payoff? Axelrod ha investigato questo problema con un torneo di computer, ognuno con la propria strategia. Ogni gioco consisteva di 200 rounds.
+
+\paragraph{Strategie utilizzate:}
+
+\begin{itemize}
+  \item ALLD: Diserta sempre.
+  \item TIT-FOR-TAT:
+  \begin{itemize}
+    \item Nel round 0 coopera. 
+    \item Nei rounds successivi $n$ fa quello che ha fatto il suo avversario nel round $n - 1$.
+  \end{itemize}
+\item TESTER:
+  \begin{itemize}
+    \item Nel round 0 diserta. 
+    \item Se l'avversario collabora allora si passa a TIT-FOR-TAT.
+    \item Altrimenti si fa interleaving tra cooperazione e diserzione.
+  \end{itemize}
+\item JOSS: come TIT-FOR-TAT, ma ogni tanto diserta.
+\end{itemize}
+
+\nt{
+  Il programma migliore è risultato TIT-FOR-TAT. Questo sempra spingere sul fatto che la cooperazione sia  la cosa giusta da fare. Ma questo è perché si è considerata la media di tutte le strategie contro cui ha giocato, per esempio contro ALLD ha perso.
+}
+
+\paragraph{Axelrod ha suggerito alcune regole:}
+
+\begin{itemize}
+  \item Non essere invidiosi: non giocare come se si fosse a somma zero. 
+  \item Sii simpatici: iniziare cooperando e ricambiare la cooperazione. 
+  \item Vendicarsi appropriatamente: si punisce sempre il disertore, ma senza esagerare. 
+  \item Non tenere rancore: ricambiare la cooperazione immediatamente.
+\end{itemize}
+
+\section{Progettazione di Meccanismi}
+
+\subsection{Mechanism Design}
+
+\dfn{Mechanism Design}{Mechanism Design indica la progettazione di protocolli per governare interazioni multi-agenti in modo che essi abbiano certe proprietà desiderabili.}
+
+\paragraph{Proprietà desiderabili:}
+
+\begin{itemize}
+  \item Successo garantito: il protocollo garantisce che prima o poi verrà raggiunto un accordo. 
+  \item Massimizzare il welfare sociale: massimizzare le utilità dei partecipanti. 
+  \item Pareto efficiency: il risultato deve essere pareto optimal. 
+  \item Individual rationality: i partecipanti hanno interesse nel seguire le regole del protocollo. 
+  \item Stability: c'è incentivo nel comportarsi in un determinato modo (e.g. equilibrio di Nash). 
+  \item Simplicity: si sceglie la strategia più ovvia.
+\end{itemize}
+
+\clm{}{}{
+  \begin{itemize}
+    \item Formalmente un meccanismo consiste in un linguaggio  per la descrizione delle possibili strategie adottabili dagli agenti e una regola per i risultati che determina le vincite dato un profilo di strategie adottabili. 
+    \item Le azioni di ogni agente possono influenzare il benessere degli altri in modo tale da ridurre l'utilità globale.
+    \item Tragedy of commons: tutti i contadini portano le proprie bestie a brucare sui prati comunali distruggendoli. 
+    \item Una possibile soluzione è quella di far pagare a ogni agente l'uso delle risorse collettive.
+  \end{itemize}
+}
+
+\subsection{Aste}
+
+Assumiamo che ci sia un singolo bene in vendita, che ha un valore pubblico per tutti i partecipenti e un valore privato che può essere diverso da un partecipante all'altro. 
+
+\paragraph{Tipi di aste:}
+
+\begin{itemize}
+  \item \fancyglitter{Asta inglese:} il banditore incrementa via via il prezzo dell'articolo controllando che ci siano ancora acquirenti interessati finché non ne rimane solo uno. Tutti i partecipanti hanno una semplice strategia dominante: continuare a puntare finché il costo corrente è inferiore al valore personale.
+  \item \fancyglitter{Asta olandese:} il banditore parte da un valore alto e continua ad abbassarlo finché un qualche partecipante accetta l'offerta. 
+  \item \fancyglitter{Asta in busta chiusa:} ogni partecipante comunica al venditore segretamente una singola offerta e quella più alta vince . 
+  \item \fancyglitter{Asta Vickey} (asta in busta chiusa al secondo prezzo): vince chi fa l'offerta più alta, ma paga il prezzo della seconda offerta più alta. In questo caso la strategia dominante è quella di offrire il proprio valore privato.
+\end{itemize}
+
+\section{Extra - Agent-Based Modelling}
+
+\dfn{Complex Adaptive System}{
+  Un complex adaptive system è un sistema che: 
+  \begin{itemize}
+    \item Si compone di unità interagenti (componenti, elementi primitivi, etc.). 
+    \item Presentare proprietà emergenti, cioé proprietà derivanti dalle interazioni delle unità che non sono delle singole unità stesse.
+  \end{itemize}
+}
+
+\paragraph{Unità:}
+
+\begin{itemize}
+  \item \fancyglitter{Reattive:} reagiscono sistematicamente alle diverse condizioni ambientali. 
+  \item \fancyglitter{Goal-directed:} le reazioni sono guidate al raggiungimento di obiettivi. 
+  \item \fancyglitter{Pianificare:} finalizzate a modificare l'ambiente in modo da facilitare il successivo raggiungimento dei propri obiettivi. 
+ \end{itemize}
+
+ \paragraph{Social Science e Complex Adaptive Systems:}
+
+ \begin{itemize}
+   \item Le scienze sociali cercano di capire come si comportano gli individui e come l'interazione di molti individui porti a risultati su larga scala. 
+   \item Questo si può applicare anche in sistemi politici o economici.
+ \end{itemize}
+
+ \paragraph{L'Agent-Based Modelling:}
+
+\begin{itemize}
+  \item È adatto allo studio delle scienze sociali. 
+  \item Studia i sistemi: 
+    \begin{itemize}
+      \item Composti da agenti interagenti. 
+      \item Che mostrano proprietà emergenti, ossia derivanti dalle interazioni e che non possono essere dedotte aggregando proprietà degli agenti. 
+    \end{itemize}
+  \item Si parte da ipotesi sul comportamento di agenti e delle interazioni tra agenti. 
+  \item Vengono generate storie che possono rilevare le conseguenze delle ipotesi fatte. 
+  \item Si studiano gli effetti su larga scale. 
+  \item Gli agenti possono essere consumatori, venditori, elettori, gruppi sociali, etc. 
+\end{itemize}
+
+\paragraph{Simulazione vs. Deduzione:}
+
+\begin{itemize}
+  \item La simulazione è un modo di fare indagine oltre la deduzione e all'induzione. 
+  \item La deduzione serve per derivare teoremi da ipotesi e l'induzione per trovare modelli nei dati empirici. 
+  \item La simulazione, a differenza della deduzione:
+    \begin{itemize}
+      \item Non dimostra teoremi con generalità. 
+      \item I dati simulati provengono da esperimenti controllati e non dal mondo reale. 
+    \end{itemize}
+  \item La simulazione consente una maggior comprensione dei sistemi.
+\end{itemize}
