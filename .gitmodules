@@ -28,3 +28,6 @@
 [submodule "Materie/SO/progetti/2021-2022/Eduard-Occhipinti"]
 	path = Materie/SO/progetti/2021-2022/Eduard-Occhipinti
 	url = https://github.com/eduardz1/Simulazione-Transazioni.git
+[submodule "Materie/ALGCOMPL/AleCO"]
+	path = Materie/ALGCOMPL/AleCO
+	url = https://github.com/Altair-39/AleCO
