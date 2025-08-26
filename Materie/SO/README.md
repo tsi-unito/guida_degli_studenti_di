@@ -21,6 +21,6 @@ Cartella contenente esercizi fatti nel laboratorio
 submodule interno di Mirco de Andreis.
 
 ## Progetti
-Cartella contenente i progetti richiesti da questo corso:
-- [Eduard-Occhipinti](https://github.com/eduardz1/Simulazione-Transazioni): di Eduard Occhipinti
-- [progetto_2018_2019](https://github.com/stefa168/progetto_so): Progetto AA 2018-2019 di Stefano Vittorio Porta.
+
+- Progetto AA 2018-2019 di Stefano Vittorio Porta, disponibili [QUI](https://github.com/stefa168/progetto_so)
+- [AA 2021-2022 Eduard Occhipinti](https://github.com/eduardz1/Simulazione-Transazioni/)

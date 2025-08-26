@@ -7,4 +7,4 @@
 
 ## Progetti
 
-- [Eduard Occhipinti](Progetti/2021-2022/Occhipinti/)
+- [Eduard Occhipinti](https://github.com/eduardz1/Home-Booking)

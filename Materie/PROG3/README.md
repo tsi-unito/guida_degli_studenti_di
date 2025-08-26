@@ -2,4 +2,4 @@
 
 ## Progetti
 
-- [Occhipinti-Frattarola-Molica](Progetti/2022-2023/Occhipinti-Frattarola-Molica/)
+- JMail [Occhipinti-Frattarola-Molica](https://github.com/eduardz1/Jmail)

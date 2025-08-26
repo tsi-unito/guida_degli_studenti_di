@@ -28,7 +28,7 @@ Da qui, la strada è in discesa: modifica, ritaglia ed incolla le parti che ti p
 
 ### Typst
 
-Per iniziare a scrivere la propria tesi su Typst, è possibile scrivere da se il proprio template o utilizzare il template linkato in [template-tesi-typst](template-tesi-typst) ([pagina universe](https://typst.app/universe/package/modern-unito-thesis)).
+Per iniziare a scrivere la propria tesi su Typst, è possibile scrivere da se il proprio template o utilizzare il template linkato in [template-tesi-typst](https://github.com/eduardz1/UniTO-typst-template) ([pagina universe](https://typst.app/universe/package/modern-unito-thesis)).
 
 Per inizializzare un progetto con il template menzionato è possibile clonare [la repo](https://github.com/eduardz1/unito-typst-template) o eseguire da CLI il comando:
 
