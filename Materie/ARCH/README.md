@@ -32,3 +32,6 @@ passati:
 Cartella contenente esercitazioni fatte nel laboratorio in RISC-V
 - [laboratorio_2023_2024](./laboratorio/lab_2023_2024): Contiene il laboratorio
   dell'AA 2023-2024
+
+## Simulatori
+Durante le lezioni di laboratorio viene usato il simulatore [RARS](./laboratorio/simulatori). Inoltre, esiste il simulatore [RARSJS](https://rarsjs.vercel.app/) sviluppato da studenti del dipartimento e noto ai docenti del corso.
