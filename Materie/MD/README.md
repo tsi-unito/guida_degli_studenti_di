@@ -43,6 +43,8 @@ l'esame:
     formulari creati per l'anno 2022-2023.
 -   [formulari_2023_2024](./formulari/formulari_2023_2024/): Cartella contenente 
     formulari creati per l'anno 2023-2024.
+-   [formulari_2024_2025](./formulari/formulari_2024_2025/): Cartella contenente 
+    formulari creati per l'anno 2024-2025.
 
 ## Libri
 Cartella contenente i libri di testo usati dal 
