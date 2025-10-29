@@ -35,6 +35,8 @@ documenti/informazioni utili per sostenere
 l'esame:
 -   [formulari_2023_2024](./formulari/formulari_2023_2024/): Cartella contenente 
     formulari creati per l'anno 2023-2024.
+-   [formulari 2024_2025](./formulari/formulari_2024_2025): Cartella contenente
+    formulari creati per l'anno 2024-2025 (**NOTA:** massimo 4 facciate)
 
 ## Tutorati
 Cartella contenente esercizi fatti nel tutorato del corso.
