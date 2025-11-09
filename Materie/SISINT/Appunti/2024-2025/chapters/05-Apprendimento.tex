@@ -1,0 +1,601 @@
+\chapter{Apprendimento e Reti Neurali}
+
+\section{Apprendimento}
+
+\subsection{Introduzione alla Classificazione}
+
+\paragraph{Il problema:}
+
+\begin{itemize}
+	\item Dati:
+	      \begin{itemize}
+		      \item Esempi.
+		      \item Categorie/classi.
+	      \end{itemize}
+	\item Costruire:
+	      \begin{itemize}
+		      \item Una rappresentazione astratta (modello) che permetta di
+		            associare in modo corretto nuove istanze alla classe (o alle
+		            classi) di appartenenza.
+	      \end{itemize}
+\end{itemize}
+
+\dfn{Apprendimento Supervisionato}{
+	Gli esempi dal quale astrarre le definizioni delle classi hanno associata la classe a cui appartengono.
+}
+
+\begin{figure}[h]
+	\centering
+	\includegraphics[scale=0.4]{05/apprendimento.png}
+	\caption{Schema generale.}
+\end{figure}
+
+\cor{Learning Set}{
+	Per learning (o training) set si intende la collezione di dati usati per svolgere il
+	compito di apprendimento. I dati sono divisi in istanze (o record o esempi). Ogni
+	esempio è rappresentato da una tupla (x, y) dove x è a sua volta una tupla di valori
+	di attributi descrittivi e y è la classe di appartenenza dell'istanza.
+}
+
+\paragraph{Uso dei modelli appresi:}
+
+\begin{itemize}
+	\item \fancyglitter{Predittivo:} viene usato per predire la classe
+	      di appartenenza di istanze ignote
+	      in fase di apprendimento.
+	\item \fancyglitter{Descrittivo:} Viene usato come strumento esplicativo
+	      che permette di evidenziare quali carat-
+	      teristiche distinguono le diverse categorie.
+\end{itemize}
+
+\qs{}{Ma qual è la bontà dei modelli appresi?}
+
+\dfn{Valutazione Sperimentale}{
+	Il modello viene usato per classificare le istanze di un
+	test set. La valutazione della bontà è fatta sulla base del comportamento di classificazione corretto/sbagliato su questi dati.
+}
+
+\paragraph{Proprietà:}
+
+\begin{itemize}
+	\item \fancyglitter{Accuratezza} = predizioni corrette / predizioni totali.
+	\item \fancyglitter{Error Rate} = predizioni sbagliate / predizioni totali.
+\end{itemize}
+
+\cor{Matrice di Confusione}{
+	Matrice quadrata $N x N$ (con $N$ numero di classi). Le righe indicano le classi reali di appartenenza, le colonne indicano le classi predette.
+}
+
+\nt{L'ideale è che tutte le predizioni stiano sulla diagonale principale.}
+
+\begin{figure}[h]
+	\centering
+	\includegraphics[scale=0.35]{05/confusion.png}
+	\caption{Matrice di confusione.}
+\end{figure}
+
+\cor{Matrice dei Costi}{
+	Matrice $N x N$ (con $N$ numero di classi). Associa un costo allo indovinare/sbagliare una predizione.
+}
+
+\begin{figure}[h]
+	\centering
+	\includegraphics[scale=0.35]{05/cost.png}
+	\caption{Matrice dei costi.}
+\end{figure}
+
+\subsection{Costruire un Modello}
+
+\dfn{Rote Learning (Apprendimento Meccanico)}{
+	Si tratta di memorizzare le varie istanze. Tramite confronti cerca un’istanza
+	identica:
+	\begin{itemize}
+		\item Se la trova restituisce la classe corrispondente.
+		\item Se non la trova prova a indovinare (cerca istanze simili utilizzando una misura di distanza).
+	\end{itemize}
+}
+
+\paragraph{Strategie per decidere:}
+
+\begin{itemize}
+	\item Votazione a Maggioranza: la classe più votata vince.
+	\item Votazione pesata: ogni voto ha un peso maggiore/minore a seconda
+	      della “distanza” fra le istanze considerate.
+\end{itemize}
+
+\nt{
+	In caso di votazione pesata, i pesi vengono
+	calcolati, usati e poi dimenticati.
+}
+
+\paragraph{Algoritmi di apprendimento diversi producono modelli di tipo diverso:}
+
+\begin{itemize}
+	\item Alberi di decisione: albero.
+	\item Sistemi a regole: if-then.
+	\item Reti neurali: matrici di numeri.
+	\item Apprendimento per rinforzo: distribuzioni di
+	      probabilità e matrici di numeri.
+\end{itemize}
+
+\nt{Nell'apprendimento automatico non sono importanti i numeri, ma cosa essi rappresentato e come sono ottenuti.}
+
+\dfn{Alberi di Decisione}{
+	Sono strumenti di supporto alle decisioni che
+	usano modelli strutturati ad albero, comunemente utilizzati per esempio per la definizione
+	di strategie mirate al conseguimento di un goal.
+}
+
+\nt{Per esempio i sottomenu a tendina sono alberi di decisione.}
+
+\begin{figure}[h]
+	\centering
+	\includegraphics[scale=0.3]{05/dec.png}
+	\caption{Struttura di un albero di decisione.}
+\end{figure}
+
+\clm{}{}{
+	\begin{itemize}
+		\item Ogni test è su un attributo.
+		\item Le foglie sono classi.
+		\item A ogni branch dell'albero si prende una decisione sulla base di un test e si scende al nodo successivo.
+		\item Un dataset noto è il dataset degli iris.
+	\end{itemize}
+}
+
+\paragraph{Tipi di attributi:}
+
+\begin{itemize}
+	\item Binari: booleani.
+	\item Nominali: che hanno un nome.
+	\item Ordinali: per cui vale un ordine.
+	\item Continui.
+\end{itemize}
+
+\dfn{Algoritmo di Hunt}{
+	L'albero viene costruito procedendo ricorsivamente e suddividendo il learning
+	set in sottoinsiemi via via più “puri”.
+
+	Dati:
+
+	\begin{itemize}
+		\item $D_t$ = sottoinsieme del learning set associato al nodo $t$.
+		\item $y = \{y_1, y_2, \dots, y_c\}$ = insieme delle etichette che identificano le classi.
+	\end{itemize}
+}
+
+\paragraph{Algoritmo di Hunt:}
+
+\begin{enumerate}
+	\item Se tutte le istanze in $D_t$ appartengono alla stessa classe $y_t$ allora il nodo
+	      è una foglia etichettata dalla classe $y_t$ delle sue istanze.
+	\item Si sceglie un attributo fra quelli che descrivono le istanze, si produce un
+	      nodo figlio per ogni possibile valore dell'attributo.
+\end{enumerate}
+
+\clm{}{}{
+	\begin{itemize}
+		\item Se una certa combinazione di valori non è rappresentata da nessuna
+		      istanza, questa sarà associata alla classe di default (se esiste).
+		\item Se tutte le istanze associate a un nodo sono identiche come tuple ma
+		      corrispondono a classi differenti (non-determinismo), il nodo non può
+		      essere scisso.
+		\item Quando si termina la costruzione dell'albero?
+		\item Come si sceglie l'attributo di split?
+	\end{itemize}
+}
+
+\paragraph{Tipi di split:}
+
+\begin{itemize}
+	\item Su attributi binari: Il nodo corrente avrà due figli a seconda del
+	      valore rappresentato. Gli esempi associati
+	      al nodo radice verranno suddivisi fra i due
+	      figli a seconda del valore riportato in corrispondenza dell'attributo.
+	\item Su attributi multivalore: l nodo avrà tanti figli quanti sono i possibili valori dell'attributo.
+	\item Su attributi nominali: l'attributo assume valori su un insieme (finito) di etichette $\{L_1, L_2, \dots, L_n\}$. Gli split possono essere binari oppure multivalore.
+	\item Su attributi nominali: si possono avere split binari o multivalore con un vincolo, il
+	      raggruppamento dei valori deve rispettare l'ordinamento.
+	\item Binari di attributi continui: in questo caso il test prevedono l'identificazione di un valore possibile v per
+	      l'attributo A in questione.
+	\item Multivalore di attributi continui: in questo caso il test prevedono l'identificazione di un insieme di valori $v_i$ per
+	      l'attributo A in questione e la produzione di una serie di test $v_i \leq A < v_{i+1}$
+\end{itemize}
+
+\paragraph{Bontà degli split:}
+
+\begin{itemize}
+	\item \fancyglitter{Criterio generale:} alberi compatti sono preferiti ad alberi che consentono di
+	      raggiungere lo stesso grado di accuratezza (e di error rate) usando un maggior
+	      numero di test. Sono preferiti gli split che producono nodi figli la cui estensione
+	      prevede minore confusione (il cui grado di purezza è maggiore). Misure alternative: entropia, gini, errore di classificazione.
+	\item \fancyglitter{Rasoio di Occam:} a parità di assunzioni, la spiegazione più semplice è da
+	      preferire.
+\end{itemize}
+
+\dfn{Entropia}{
+	Serve per capire quanto sia confuso un insieme, più bassa è meglio è.
+	\[
+		\text{Entriopia}(t) = - \displaystyle\sum_{i=0}^{c-1} p(i|t) \text{log}_2 p(i|t)
+	\]
+	Dove $P(i|t)$ è la probabilità che l'elemento appartenenga all' i-esima classe.
+
+}
+
+\cor{Calcolo del Guadagno}{
+	Formula per calcolare il guadagno di uno split.
+	\[
+		\Delta = I(\text{parent}) - \displaystyle\sum_{j=1}^{k} \displaystyle\frac{N(v_j)}{N} I(v_j)
+	\]
+}
+
+\paragraph{Guadagno:}
+
+\begin{itemize}
+	\item $\Delta$ = guadagno.
+	\item $I(\text{parent})$ = impurità del nodo genitore.
+	\item $N$ = numero record del nodo genitore.
+	\item $N(v_j)$ = numero dei record del nodo figlio j-mo.
+	\item $I(v_j)$ = impurità del figlio j-mo.
+\end{itemize}
+
+\nt{Si vuole minimizzare l'impurità e massimizzare il guadagno.}
+
+\cor{Information Gain}{
+	Per information gain si intende una misura del guadagno ottenuta usando
+	l'entropia come valore dell'impurità dei nodi.
+	\[
+		\Delta = \text{entropia(parent)} - \displaystyle\sum_{j=1}^{k} \displaystyle\frac{N(v_j)}{N} \text{entropia}(v_j)
+	\]
+}
+
+\nt{
+	Le misure del grado di confusione, come Gini ed entropia tendono a favorire
+	attributi che hanno molti valori diversi rispetto ad attributi con pochi valori alternativi.
+}
+
+\subsection{Overfitting}
+
+Consideriamo la costruzione di un albero di decisione: ad ogni iterazione
+occorre individuare un attributo su cui effettuare il test. Un attributo viene
+preso in considerazione se il guadagno che dà supera una soglia minima.
+
+\dfn{Overfitting}{
+	Essere troppo adatto. Il modello che è stato costruito è troppo specializzato.
+}
+
+\clm{}{}{
+	\begin{itemize}
+		\item Il problema dell'overfitting nasce dal fatto che si utilizzano algoritmi \fancyglitter{greedy}.
+		\item Questi algoritmi tendono a massimizzare il guadagno.
+		\item Un modello addestrato in questo modo effettua una cattiva generalizzazione e non riesce a classificare nel mondo reale.
+	\end{itemize}
+}
+
+\paragraph{Ridurre l'overfitting:}
+
+\begin{itemize}
+	\item Prepruning: si stabilisce una soglia per cui si smette la costruzione dell'albero. Ci saranno foglie con più classi diverse (si dovrà fare una scelta sulla classe da restituire).
+	\item Postpruning: si applica al modello già addestrato. Vengono tagliati i percorsi meno usati o particolari.
+\end{itemize}
+
+\nt{Esistono altre tecniche come Minimum Description Length (MDL).}
+
+\section{Reti Neurali}
+
+\subsection{Ispirazione Biologica}
+
+Le reti neurali si ispirano al modo in cui i neuroni agiscono ed interagiscono.
+
+\nt{I neuroni artificiali non sono modelli fedeli dei neuroni biologici, ne
+	catturano solo alcuni principi.}
+
+\dfn{Perceptron}{
+	Un perceptron è un elemento computazionale, dotato di una piccola memoria
+	in grado di calcolare una funzione di attivazione in esso strettamente codificata:
+	\[
+		Y = f(net)
+	\]
+	\[
+		net = \displaystyle\sum_{i=1}^{n}w_i X_i
+	\]
+	Tale funzione è calcolata su una composizione dei valori in ingresso, opportuna-
+	mente pesati.
+
+}
+
+\nt{Originariamente era usata la funzione gradino ($y = 0 | y = i$).}
+
+\begin{figure}[h]
+	\centering
+	\includegraphics[scale=0.4]{05/per.png}
+	\caption{Un percettrone.}
+\end{figure}
+
+\cor{Funzione Sigmoide}{
+$Y = f(net) = \displaystyle\frac{1}{1+e^{-\alpha * (net - \theta)}}$
+
+\begin{itemize}
+	\item $\theta$ soglia o bias.
+	\item $\alpha$ controlla la pendenza.
+\end{itemize}
+}
+
+\begin{center}
+	\begin{minipage}{0.45\textwidth}
+		\centering
+		\includegraphics[scale=0.45]{05/sig.png}
+	\end{minipage}%
+	\hfill
+	\begin{minipage}{0.45\textwidth}
+		\centering
+		\includegraphics[scale=0.15]{05/sigma.png}
+	\end{minipage}
+\end{center}
+
+\paragraph{Un percettrone codifica un test lineare:}
+
+\begin{itemize}
+	\item Ciò che cade al di sopra
+	      dell'iperpiano codificato
+	      dai suoi pesi fa attivare il
+	      neurone.
+	\item Ciò che è sotto
+	      non fa attivare il neurone.
+	\item Classificazione:
+	      \begin{itemize}
+		      \item Ciò che è sopra all'iperpiano
+		            è riconosciuto come
+		            appartenente alla classe
+		            obiettivo.
+		      \item Sotto all'iperpiano
+		            le istanze negative.
+	      \end{itemize}
+\end{itemize}
+
+\cor{Pesi}{I pesi sulle connessioni in ingresso definiscono la posizione e la pendenza
+	dell'iperpiano nello spazio in cui sono definiti gli input. I pesi caratterizzano
+	i neuroni e costituiscono la conoscenza del neurone.}
+
+\paragraph{Caratteristiche del perceptron:}
+
+\begin{itemize}
+	\item Adatto a svolgere compiti di tipo numerico.
+	\item Consente di risolvere problemi separabili linearmente.
+	\item Conoscenza data dai pesi.
+	\item I pesi sono persistenti.
+	\item Apprendimento da esempi, supervisionato.
+	\item Imparare = individuare la posizione corretta dell'iperpiano nello spazio.
+\end{itemize}
+
+\dfn{Epoca di Apprendimento}{
+	Elaborare una volta tutte le istanze appartenenti al learning set.
+}
+
+\nt{Solitamente si utilizzano più epoche di apprendimento.}
+
+\paragraph{Limiti del perceptron:}
+
+\begin{itemize}
+	\item Un perceptron non è in grado di capire un XOR.
+	\item Interpreto le coppie come coordinate di punti e il risultato dello XOR come il fatto
+	      che il punto debba stare sopra o sotto all'iperpiano.
+	\item Un'iperpiano da solo non ce la fa (sono necessari più iperpiani).
+\end{itemize}
+
+\subsection{Nascita delle Reti Neurali}
+
+\dfn{Rete Neurale}{
+	Una rete neurale è un approssimatore universale di funzioni, avente natura
+	distribuita. È costituita da un insieme di neuroni, collegati fra di loro secondo
+	una topologia, che dipende dal modello di rete realizzato. I neuroni possono
+	implementare funzioni diverse. Possono essere software oppure hardware.
+}
+
+\cor{Multi-Layer Perceptron}{
+	Il multi-layer perceptron (MLP) è un modello di NN con topologia a strati,
+	Feed-forward (flusso di calcolo in una sola direzione). Di solito i neuroni
+	di input implementano la funzione identità. I neuroni hidden sono perceptron,
+	che usano la sigmoide (o altre funzioni tipo a scalino, derivabili), i neuroni di
+	output combinano i risultati dei neuroni hidden. Si possono avere più layer
+	hidden.
+}
+
+\begin{figure}[h]
+	\centering
+	\includegraphics[scale=0.35]{05/mlp.png}
+	\caption{Multi-Layer Perceptron.}
+\end{figure}
+
+\paragraph{Spesso si usano MLP con più hidden layers:}
+
+\begin{itemize}
+	\item Primo layer: traccia dei confini.
+	\item Secondo layer: costruisce delle forme.
+	\item Terzo layer: crea forme qualsivoglia complesse.
+\end{itemize}
+
+\qs{}{Come può imparare un MLP?}
+
+\begin{itemize}
+	\item Una rete neurale di tipo MLP impara in modo supervisionato inducendo
+	      la matrice dei pesi a partire da un insieme di esempi (etichettati nel caso
+	      della classificazione).
+	\item Per ogni istanza:
+	      \begin{itemize}
+		      \item \fancyglitter{Passata in avanti (forward):} l'istanza viene sottoposta all'MLP che
+		            la elabora e produce un risultato.
+		      \item \fancyglitter{Passata all'indietro (backward):} l'errore viene utilizzato per
+		            modificare i pesi partendo dalle connessioni più vicine ai neuroni di
+		            output e procedendo a ritroso.
+	      \end{itemize}
+\end{itemize}
+
+\dfn{Gradiente}{
+	Il gradiente è una misura che indica la direzione di massimo cambiamento di una funzione.
+}
+
+\cor{Discesa del Gradiente}{
+	La tecnica usata in MLP per l'apprendimento è la discesa del gradiente.
+
+	\[
+		\nabla w_{j i} = - \lambda \displaystyle\frac{\gamma E(w)}{\gamma w_{j i}}
+	\]
+}
+
+\nt{Si tratta di una tecnica greedy che cerca un punto di minimo.}
+
+\begin{figure}[h]
+	\centering
+	\includegraphics[scale=0.5]{05/grad.png}
+	\caption{Discesa del gradiente.}
+\end{figure}
+
+\dfn{Errore Globale MLP}{
+	$$	E = \displaystyle\frac{1}{2} \displaystyle\sum_{i=1}^{p} ||t_i - y_i||^2 $$
+	\begin{itemize}
+		\item $p$: numero dei neuroni di output.
+		\item $t_i$: valore desiderato per il neurone di output $i$-esimo.
+		\item $y_i$: valore prodotto dal neurone di output $i$-esimo.
+	\end{itemize}
+}
+
+\nt{Le seguenti formule sono da saper spiegare a parole e saperne fare i disegni.}
+
+\paragraph{Delta rule:}
+
+\begin{itemize}
+	\item \fancyglitter{Delta rule generalizzata:}
+	      \begin{itemize}
+		      \item Variazione da applicare al peso: $\Delta w_{j i} = \alpha * \gamma^i * x_{j i}$
+		      \item Misura derivante dal calcolo dell'errore: $\gamma^i = y_j * (1- y_j) * (t_j - y_j)$
+	      \end{itemize}
+	\item \fancyglitter{Delta rule per i neuroni hidden:}
+	      \begin{itemize}
+		      \item Variazione da applicare al peso: $\Delta w_{k i} = \alpha * \gamma^k * x_{k i}$
+
+		      \item Misura derivante dalla retropropagazione dell'errore: $\gamma^k = y * (1- y) * \displaystyle\sum_{j \in I_k} \gamma^j w_{k j}$
+	      \end{itemize}
+\end{itemize}
+
+\nt{
+	$\alpha$ è il learning rate.
+}
+
+\begin{figure}[h]
+	\centering
+	\includegraphics[scale=0.5]{05/delta.png}
+	\caption{Delta rule.}
+\end{figure}
+
+\subsection{Cenni di Reinforcement Learning}
+
+Si vuole che un agente impari un \fancyglitter{comportamento}: eseguire azioni secondo certi schemi per raggiungere certi obiettivi. Prendendo spunto dai cani di Pavlov e deai piccioni di Skinner:
+
+\begin{itemize}
+	\item \fancyglitter{Condizionamento:} modifica il comportamento riflesso, non
+	      controllato in maniera conscia.
+	\item \fancyglitter{Condizionamento operante:} modifica il comportamento
+	      conscio grazie a un meccanismo di premi/punizioni (rinforzo).
+\end{itemize}
+
+\clm{}{}{
+	\begin{itemize}
+		\item Comportamento: effetto dell’agire, comporta la scelta delle azioni
+		      da eseguire situazione per situazione.
+		\item Ambiente: ciò che non è sotto il controllo dell’agente.
+		\item Adattamento all'ambiente: agente non più unica componente
+		      attiva del binomio agente-ambiente; immagino l’ambiente come
+		      produttore e restitutore di feedback.
+	\end{itemize}
+}
+
+\begin{figure}[h]
+	\centering
+	\includegraphics[scale=0.5]{05/rl.png}
+	\caption{Agente e Ambiente.}
+\end{figure}
+
+\dfn{Reinforcement Learning}{
+	Si tratta di un approccio computazionale all'apprendimento per interazione. Riguarda l'imparare che cosa fare, associando azioni a situazioni in modo tale da
+	massimizzare un segnale numerico di compenso.
+}
+
+\cor{Policy}{
+	L'agente implementa un mapping fra situazioni $(s_j)$ e azioni possibili $(a_i)$: il valore $p_{a i}$
+	è la probabilità di selezionare l’azione $a_i$ essendo nella situazione $s_j$.
+
+	Lo scopo dell'apprendimento è quello di costruire una policy che consenta all'agente di massimizzare
+	il compenso totale ricevuto durante il suo funzionamento (obiettivo dell'agente).
+
+}
+
+\nt{L'apprendimento è guidato dalla massimizzazione del compenso atteso.}
+
+\begin{figure}[h]
+	\centering
+	\includegraphics[scale=0.7]{05/ai.png}
+	\caption{Si vuole massimizzare il guadagno maggiore sul lungo termine, non immediato.}
+\end{figure}
+
+\nt{
+	Il compenso indica COSA si desidera che l'agente faccia non il COME farlo.
+}
+
+\dfn{Compenso Atteso}{
+	\[
+		R_t = r_{t+1} + r_{t+2} + \dots + r_{t + n}
+	\]
+	\begin{itemize}
+		\item $t$ istante corrente.
+		\item $r_{t+i}$ compenso che si riceverà all'istante $t+1$.
+		\item $t + n$ istante terminale dell'istante.
+	\end{itemize}
+}
+
+\nt{
+	\begin{itemize}
+		\item $n < \infty$ allora l'interazione con l'ambiente ha natura episodica, si possono separare gli stati terminali da quelli non terminali.
+		\item $n == \infty$ allora l'esecuzione è continua, la somma tende essa
+		      stessa a diventare infinita. Ciò porta all'introduzione del \fancyglitter{discount}.
+	\end{itemize}
+}
+
+\dfn{Discount}{
+	\[
+		R_t = \displaystyle\sum_{i = 0}^{\infty} \Gamma^i r_{t + i + 1}
+	\]
+}
+
+\paragraph{Un compito di RL che soddisfa la proprietà Markoviana è detto processo di decisione
+	Markoviano (MDP):}
+
+\begin{itemize}
+	\item Se l'insieme dei suoi stati e quello delle sue azioni sono finiti,
+	      si ha un MDP finito.
+	\item Un MDP finito è definito da:
+	      \begin{itemize}
+		      \item $S$ insieme degli stati.
+		      \item $A$ insieme delle azioni.
+		      \item $P^a_{s s'}$ probabilità di transizione.
+		      \item $R^a_{s s'}$ valore atteso del prossimo reward.
+	      \end{itemize}
+\end{itemize}
+
+\dfn{Funzione di Valutazione}{
+	Risolvere un problema di RL significa trovare una policy che permette di ottenere
+	compensi complessivi alti. Per gli MDP finiti è possibile costruire una simile politica
+	facendo sì che l'agente impari, con l'esperienza, a valutare correttamente gli stati.
+
+	\[
+		V^\pi (s) = \{\displaystyle\sum_{k = 0}^{\infty} \Gamma^k r_{t + k + 1} |s_t = s|\}
+	\]
+}
+
+\cor{Equazione di Bellman}{
+\[
+	V^\pi (s) = \displaystyle\sum_{a} \pi(s,a) \displaystyle\sum_{s'} P^a_{s s'} [R^a_{s s'} + \Gamma V^\pi (s')]
+\]
+
+}
+

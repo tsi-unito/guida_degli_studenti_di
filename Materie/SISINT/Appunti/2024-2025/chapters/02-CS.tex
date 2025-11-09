@@ -1,0 +1,738 @@
+\chapter{CSP e Rappresentazione della conoscenza}
+
+\section{Constraint Satisfaction Problem}
+
+\subsection{Introduzione}
+
+\dfn{Constraint Satisfaction Problem}{
+	Un constraint satisfaction problem (CSP) è definito
+	da:
+	\begin{itemize}
+		\item Un insieme di variabili $X_1, \dots, X_n$.
+		\item Un insieme di vincoli $C_1,\dots,C_m$.
+		\item In alcuni casi è richiesta la massimizzazione di una funzione obiettivo.
+	\end{itemize}
+}
+
+\cor{Stati}{
+	Gli stati di un CSP sono dati da tutti gli assegnamenti
+	possibili per le variabili del CSP.
+
+	Un assegnamento $X_{i1} = v_{i1}, X_{i2} = v_{i2}$ è un'attribuzione di valori a un sottoinsieme delle variabili del CSP.
+}
+
+\paragraph{Un assegnamento è detto:}
+
+\begin{itemize}
+	\item \fancyglitter{Completo:} se assegna valori a tutte le variabili del CSP.
+	\item \fancyglitter{Consistente:} se non viola alcun vincolo del CSP.
+	\item \fancyglitter{Soluzione:} se è completo e consistente.
+\end{itemize}
+
+\nt{Quando esiste una soluzione per un vincolo si dice anche che
+	esiste un mondo possibile che soddisfa il vincolo.
+
+	I vincoli binari possono essere rappresentati come archi di un grafo i cui nodi sono le variabili del CSP.
+}
+
+\paragraph{CSP come problemi di ricerca in uno spazio degli stati:}
+
+\begin{itemize}
+	\item \fancyglitter{Stato iniziale} = \{\} assegnamento vuoto.
+	\item \fancyglitter{Successore} = assegnamento di un valore a una
+	      delle variabili che non ce l’hanno facendo attenzione
+	      che non sorgano conflitti.
+	\item \fancyglitter{Test obiettivo} = assegnamento completo.
+	\item \fancyglitter{Costo} = ogni passo ha costo costante.
+\end{itemize}
+
+\subsection{Domini e Vincoli}
+
+\begin{itemize}
+	\item \fancyglitter{Domini finiti:} è possibile enumerare i vincoli mettendo in relazione i diversi valori.
+	\item \fancyglitter{Domini infiniti:} non è possibile enumerare i vincoli,
+	      si usano linguaggi di specifica.
+	\item \fancyglitter{Domini continui:} la programmazione lineare permette di risolvere CSP in cui i
+	      vincoli sono disuguaglianze lineari che specificano una
+	      regione convessa.
+\end{itemize}
+
+\paragraph{Arità dei vincoli:}
+
+\begin{itemize}
+	\item \fancyglitter{Unari:} coinvolgono una variabile e un valore.
+	\item \fancyglitter{Binari:} coinvolgono due variabili e possono essere rappresentati come
+	      archi di un grafo.
+	\item \fancyglitter{A tre o più variabili:} Vincoli a tre o più variabili
+	      coinvolgono un numero qualsiasi di variabili, possono essere
+	      rappresentati da ipergrafi\footnote{Grafi con archi che connettono più di due
+		      nodi.}.
+\end{itemize}
+
+\ex{Criptoaritmetica}{
+	La criptoaritmetica è un gioco in cui a ogni lettera corrisponde una
+	cifra diversa, bisogna trovare la sostituzione corretta.
+
+	\begin{center}
+		\includegraphics[scale=0.5]{02/ca.png}
+	\end{center}
+}
+
+\nt{Un altro problema è quello delle 8 regine.}
+
+\paragraph{Vincoli e criteri di preferenza:}
+
+\begin{itemize}
+	\item I vincoli possono essere più o meno \fancyglitter{rigidi}.
+	\item Si distingue tra vincoli veri e \fancyglitter{criteri di preferenza}.
+	\item Una soluzione deve soddisfare tutti i vincoli.
+	\item Una soluzione può violare uno o più criteri di
+	      preferenza.
+	\item Il soddisfacimento dei criteri di preferenza permette di
+	      ordinare le soluzioni identificando quelle preferibili e
+	      quelle meno preferibili.
+\end{itemize}
+
+\dfn{Generate-and-test}{
+	È un metodo di risoluzione di CSP molto semplice:
+	\begin{itemize}
+		\item Finché non si ha una soluzione:
+		      \begin{enumerate}
+			      \item Genera un assegnamento completo.
+			      \item Controlla se è consistente.
+			      \item Se è una soluzione, esci dal ciclo.
+			      \item Se non è una soluzione, torna al passo 1.
+		      \end{enumerate}
+		\item Se si ha una soluzione la si restituisce.
+		\item Altrimenti fallimento.
+	\end{itemize}
+}
+
+\nt{Però Generate-and-test è inefficiente.}
+
+\paragraph{Ricerca di una soluzione in profondità:}
+
+\begin{itemize}
+	\item Esploriamo lo spazio degli stati (dei possibili assegnamenti)
+	      utilizzando una ricerca depth-first con backtracking.
+	\item Ricerca non informata + vincoli per decidere quando potare un cammino.
+	\item La limitatezza dei cammini rende ragionevole la scelta della
+	      ricerca in profondità, tuttavia spesso si ha branching factor
+	      elevato.
+	\item Siano:
+	      \begin{itemize}
+		      \item $n$ = numero di variabili.
+		      \item $d$ = numero medio dei valori possibili per ciascuna
+		            variabile.
+		      \item Uno qualsiasi dei valori può essere assegnato a una
+		            qualsiasi delle variabili.
+	      \end{itemize}
+	\item Il branching factor sarà n*d al primo livello, (n-1)*d
+	      al secondo (perché una variabile è stata fissata),
+	      eccetera.
+	\item Quindi l'albero avrà $n! * d^n$ foglie.
+\end{itemize}
+
+\nt{Per migliorare si possono aggiungere euristiche generali.}
+
+\paragraph{Euristiche:}
+
+\begin{itemize}
+	\item \fancyglitter{Scelta della prossima variabile:}
+	      \begin{itemize}
+		      \item Euristica Minimum Remaining Values (o fail-first): sceglie una delle
+		            variabili con il minor numero di valori alternativi consistenti con l'assegnamento corrente.
+		      \item Euristica di grado: sceglie la variabile coinvolta con più vincoli.
+		      \item Euristica del valore meno vincolante: prediligere il valore che
+		            lascia più libertà alle variabili adiacenti sul grafo dei vincoli.
+
+	      \end{itemize}
+	\item \fancyglitter{Metodo di consistenza locale:}
+	      \begin{itemize}
+		      \item Forward checking: si percorrono gli archi che collegano il nodo, corrispondente alla
+		            variabile assegnata, con i suoi vicini diretti e si riduce il range dei
+		            possibili valori di tali vicini in maniera conforme al vincolo.
+		      \item Node consistency: riguarda singole variabili, vale quando i vincoli unari sono soddisfatti da
+		            tutti i valori dei domini delle rispettive variabili.
+		      \item Arc consistency: proprietà direzionale relativa a un vincolo binario,
+		            tutti i valori consistenti di una variabile x possono essere estesi a y tramite i vincoli.
+		      \item Path consistency: proprietà che lega una coppia di variabili a una terza tramite i vincoli.
+	      \end{itemize}
+\end{itemize}
+
+\paragraph{Vincoli speciali:}
+
+\begin{itemize}
+	\item \fancyglitter{Alldifferent($X_1,\dots,X_n$):} i valori delle variabili elencate devono essere tutti differenti.
+	\item \fancyglitter{Atmost($N, A_1,\dots,A_k$):} le attività $A_1, \dots, A_k$ possono impegnare complessivamente al più $N$ risorse.
+\end{itemize}
+
+\nt{Atmost si utilizza per domini su grandi numeri.}
+
+\subsection{AC-3}
+
+\dfn{AC-3}{
+	Algoritmo di arc consistency sviluppato nel 1977 da Alan
+	Macworth. Si può usare come preprocessing oppure a valle degli
+	assegnamenti per propagare le scelte fatte tramite i vincoli.
+	Quest’ultimo uso realizza l’algoritmo MAC (Maintaining Arc
+	Consistency).
+}
+\begin{figure}[h]
+	\centering
+	\includegraphics[scale=0.8]{02/AC3.png}
+	\caption{Algoritmo AC-3.}
+\end{figure}
+
+\paragraph{Arc consistency:}
+
+\begin{itemize}
+	\item La propagazione dei valori tramite arc consistency è un
+	      esempio di tecnica di inferenza.
+	\item Proprietà:
+	      \begin{itemize}
+		      \item Consente di ridurre i domini delle variabili di molti CSP.
+		      \item Quando riduce i domini di tutte le variabili a un solo valore trova
+		            anche una soluzione.
+		      \item Quando rende vuoto un dominio scopre che un particolare CSP
+		            non può essere risolto.
+		      \item Non è però generalmente sufficiente a determinare una
+		            soluzione o ad accorgersi dell’irresolvibilità di un CSP.
+	      \end{itemize}
+\end{itemize}
+
+\paragraph{Valutazione di AC-3:}
+
+\begin{itemize}
+	\item Un CSP con $n$ variabili e vincoli binari ha al più $n^2$ archi.
+	\item Sia $d$ il numero massimo di valori di una variabile: il tempo per la
+	      verifica della consistenza sarà nel caso peggiore $O(n^2d^3)$.
+	\item Più costoso della verifica forward ma più efficace.
+	\item AC-3 è incompleto: alcuni assegnamenti inconsistenti non vengono rilevati.
+\end{itemize}
+
+\subsection{K-consistency}
+
+\paragraph{La path consistency:}
+
+\begin{itemize}
+	\item È una proprietà più forte di arc consistency.
+	\item Identifica vincoli impliciti, inferiti da triplette di variabili.
+	\item Una coppia di variabili $\{X_1, X_2\}$ è path consistent rispetto a una
+	      terza variabile $X_3$ quando:
+	      \begin{itemize}
+		      \item Per ogni assegnamento $\{X_1=a, X_2=b\}$ consistente con i vincoli
+		            su $X_1$ e $X_2$.
+		      \item c’è un assegnamento di $X_3$ che soddisfa i vincoli esistenti sulle
+		            coppie di variabili $\{X_1, X_3\}$ e $\{X_2, X_3\}$.
+	      \end{itemize}
+\end{itemize}
+
+\dfn{K-consistency}{
+	Un CSP è k-consistent quando per ogni sottoinsieme costituito da k-1 delle sue variabili
+	e ogni loro assegnamento consistente, è possibile
+	individuare un assegnamento consistente per qualsiasi
+	k-ma variabile.
+}
+
+\paragraph{È la generalizzazione delle consistente viste in precedenza:}
+
+\begin{itemize}
+	\item 1-consistency: node consistency.
+	\item 2-consistency: arc consistency.
+	\item 3-consistency: path consistency.
+\end{itemize}
+
+\cor{CSP Fortemente K-consistent}{
+	Un CSP è fortemente k-consistent quando è:
+	\begin{itemize}
+		\item k-consistent.
+		\item (k-1)-consistent.
+		\item \dots
+		\item 1-consistent.
+	\end{itemize}
+}
+
+\paragraph{È dimostrato che un CSP fortemente k-consistent può essere risolto senza backtracking:}
+
+\begin{itemize}
+	\item In pratica:
+	      \begin{itemize}
+		      \item Poiché è 1-consistent basta iniziare da un valore consistente per una variabile $X_1$.
+		      \item Poiché è 2-consistent è possibile individuare un valore consistente per le variabili
+		            direttamente in relazione con $X_1$.
+		      \item Poiché è 3-consistente è possibile individuare un valore consistente per le variabili in
+		            relazione con coppie delle precedenti.
+	      \end{itemize}
+	\item Complessità temporale: $O(n*d)$ dove $n$ è il numero di variabili e $d$ è il numero di valori del dominio.
+	\item La complessità temporale per decidere se un CSP è fortemente k-consistent è esponenziale.
+\end{itemize}
+
+\subsection{Backjumping}
+
+\paragraph{Limiti del backtracking:}
+
+\begin{itemize}
+	\item Quando la ricerca con backtracking raggiunge un vicolo
+	      cieco, torna indietro alla variabile che era stata
+	      considerata al passo precedente (backtracking
+	      cronologico).
+	\item Non sfrutta i vincoli, ha i limiti delle strategie di ricerca blind.
+\end{itemize}
+
+\nt{Idea: fare backtracking a una variabile che potrebbe
+	risolvere il problema.}
+
+\dfn{Backjumping}{
+	Variante del backtracking che utilizza i conflict set
+	per decidere a quale variabile ritornare in caso di
+	vicolo cieco.
+}
+\cor{Conflict Set}{
+	Sia A un assegnamento parziale consistente, sia $X$ una
+	variabile non ancora assegnata. Se l’assegnamento A U
+	\{X=vi\} risulta inconsistente per qualsiasi valore vi
+	appartenente al dominio di $X$ si dice che A è un conflict set
+	di $X$.
+}
+
+\nt{Un conflict set per una variabile è minimo quando togliendo
+	uno qualsiasi degli assegnamenti che lo costituiscono non si
+	ottiene più un conflict set.}
+
+\paragraph{Il forward checking può essere modificato in modo da costruire gli insiemi dei conflitti per ogni variabile:}
+
+\begin{itemize}
+	\item Quando si assegna un valore a una variabile, FC
+	      propaga questa scelta attraverso i vincoli cancellando
+	      valori dai domini di altre variabili.
+	\item asta arricchire FC in modo che registri la relazione fra
+	      la variabile assegnata e quelle che hanno subito una
+	      riduzione di dominio.
+
+\end{itemize}
+
+\nt{FC rileva esattamente gli stessi conflitti rilevati da BJ,
+	quindi l’uso di BJ congiunto a FC è ridondante.}
+
+\cor{NOGOOD}{
+	Assegnamenti parziali che
+	non appartengono all’insieme delle possibili soluzioni.
+}
+
+\paragraph{Conflict-directed backjumping:}
+
+\begin{itemize}
+	\item Il conflitto dipende da due fattori:
+	      (1) dagli assegnamenti precedenti e
+	      (2) dalle variabili rimaste a cui dovremo assegnare valori in
+	      futuro.
+	\item È possibile calcolare i conflict set in modo in modo tale che
+	      guidino in modo più efficace il backtracking (evitando di
+	      considerare T=R da cui non dipende l’inconsistenza e
+	      saltando direttamente ai “colpevoli”veri)?
+\end{itemize}
+
+
+\paragraph{Backjump:}
+
+\begin{itemize}
+	\item Sia $X_j$ la variabile corrente.
+	\item Indichiamo con conf($X$) il conflict set della generica variabile $X$.
+	\item Se tutti i valori possibili di $X_j$ falliscono si fa un
+	      backjump alla variabile $X_i$ che è stata aggiunta a
+	      conf($X_j$) più di recente e si aggiorna conf($X_i$):
+
+	      \[
+		      conf(X_i) \leftarrow conf(X_i) \cup conf(X_j) - \{x_i\}
+	      \]
+\end{itemize}
+
+\clm{}{}{
+	\begin{itemize}
+		\item I vincoli forniscono una guida per evidenziare relazioni implicite fra le variabili.
+		\item Gli stati NOGOOD minimali possono essere
+		      registrati dall’algoritmo che potrà così evitare di
+		      ripetere questi assegnamenti in futuro.
+		\item Si tratta di una forma di \fancyglitter{apprendimento}.
+	\end{itemize}
+}
+
+\subsection{Applicazioni di CSP}
+
+\paragraph{Applicazioni reali di CSP:}
+
+\begin{itemize}
+	\item Sudoku.
+	\item Location of facilities (es. warehouses): dato un elenco di magazzini e date delle
+	      richieste fatte da clienti, identificare un percorso che permetta di soddisfare le
+	      richieste visitando i magazzini così da minimizzare i costi.
+	\item Job scheduling: supponiamo che una fabbrica produca un range di prodotti, ogni
+	      tipologia richiede la sequenzializzazione di determinate operazioni svolte da
+	      macchinari. Ogni operazione richiede un tempo di esecuzione. Lo scopo è trovare
+	      una sequenza di produzione che minimizzi i tempi di produzione.
+	\item Car sequencing: nell’industria automobilistica la catena di montaggio assembla
+	      automobili partendo da un modello base a cui sono aggiunte caratterizzazioni
+	      scelte dai clienti (es. Optional). Automobili diverse avranno insiemi di optional
+	      diversi. Le auto sono portate da un nastro trasportatore e gli optional sono
+	      montati in aree di lavoro, ognuna delle quali ha una capacità massima. Il
+	      problema consiste nel definire un ordine di costruzione tale da non eccedere le
+	      capacità delle aree di lavoro.
+	\item Cutting stock problem: un materiale deve essere tagliato
+	      in pezzi più piccoli per un cliente minimizzando lo spreco.
+	\item Vehicle routing: n clienti vengono riforniti da uno stesso
+	      deposito. Il problema consiste nel trovare il percorso di costo
+	      minimo.
+	\item Timetabling: costruzione automatica di orari (esempio per
+	      corsi di studi) tenendo conto dell’allocazione di risorse (aule,
+	      laboratori) e altri vincoli.
+	\item Rostering e crew scheduling: definizione di turni e di
+	      equipaggi (esempio: per compagnie aeree).
+	\item SAT solver: risolvono problemi a variabili booleane\footnote{Visto in "Logica per l'Informatica".}.
+	\item ASP: per programmare e risolvere CSP\footnote{Visto in "Intelligenza Artificiale e Laboratorio".}.
+\end{itemize}
+
+\section{Rappresentazione della Conoscenza}
+
+Ragionare vuol dire rendere esplicita della conoscenza che prima non lo era.
+
+\paragraph{Se so che:}
+
+\begin{itemize}
+	\item Tutti gli A hanno la proprietà B.
+	\item Tutti i B sono degli A.
+\end{itemize}
+
+\paragraph{Allora:}
+
+\begin{itemize}
+	\item Tutti i B hanno la proprietà A.
+\end{itemize}
+
+\nt{Il ragionamento lavora sulla forma delle affermazioni come se fossero \fancyglitter{schemi}, assumendone la verità.}
+
+\subsection{Introduzione}
+
+\paragraph{Il ragionamento è automatizzabile se:}
+
+\begin{itemize}
+	\item Si strutturano le affermazioni in modo standard (un linguaggio per rappresentare la conoscenza).
+	\item Si codificano le regole del ragionamento (quando si può dire che una certa affermazione è vera).
+	\item Si implementa un algoritmo che sa usare la conoscenza rappresentata e le regole di ragionamento.
+\end{itemize}
+
+\clm{Dati, Informazione e Conoscenza}{}{
+	\begin{itemize}
+		\item \fancyglitter{Dato:} una percezione, non ha significato di per sé.
+		\item \fancyglitter{Informazione:} è ciò che il dato rappresenta.
+		\item \fancyglitter{Conoscenza:} cattura le relazioni.
+	\end{itemize}
+}
+
+\dfn{Agenti Basati sulla Conoscenza}{
+	Sono agenti caratterizzati da:
+	\begin{itemize}
+		\item Knowledge Base (KB): un insieme di formule espresse in un linguaggio per
+		      la rappresentazione della conoscenza possedute dall’agente. Può cambiare
+		      nel tempo (non monotona). La conoscenza iniziale è detta background knowledge.
+		\item Tell (o assert): meccanismo per aggiungere nuove formule.
+		\item Ask (o query): meccanismo per effettuare interrogazioni.
+	\end{itemize}
+}
+
+\paragraph{Sia Ask che Tell possono attivare \fancyglitter{processi di inferenza} e devono soddisfare la proprietà:}
+
+\begin{itemize}
+	\item Ogni risposta a una ask deve deve essere una conseguenza delle asserzioni
+	      (tell) fatte e della conoscenza di background.
+\end{itemize}
+
+\paragraph{Programmazione di agenti basati sulla conoscenza:}
+
+\begin{itemize}
+	\item Si effettua specificando la KB che serve.
+	\item KB comprende la specifica delle azioni.
+	\item La KB è in \fancyglitter{forma dichiarativa} (COSA e non COME).
+\end{itemize}
+
+\dfn{Programmazione Dichiarativa}{
+	La programmazione dichiarativa è un paradigma di
+	programmazione in cui i programmi esprimono la logica di una
+	computazione senza esprimerne il flusso di controllo.
+}
+
+\nt{Esempi: XML, SQL, regular expressions.}
+
+\subsection{Logica}
+
+\dfn{Modello}{
+	Un modello è un mondo possibile. Fissa i valori di verità delle formule, quindi i modelli
+	possibili sono definiti da tutti i modi in cui è possibile assegnare
+	valori agli elementi che determinano il valore di verità delle
+	formule.
+}
+
+\nt{Quando l’universo di riferimento è fisico (reale), il modello è
+	un’astrazione matematica (simbolica) significativa di quella
+	realtà.}
+
+\dfn{Conseguenza Logica}{
+	Una conseguenza logica è una relazione fra due formule che
+	dice che in tutti i modelli in cui la prima formula è vera, è
+	vera anche la seconda, il fatto che da A consegue B è
+	denotato A $\vDash$ B
+}
+
+\cor{Implicazione Logica}{
+	Il fatto che B non sia sempre vera in tutti i modelli in cui è vera A non
+	vuol dire che B sia sempre falsa. Possono esistere modelli in cui B è vera e A falsa.
+}
+
+\begin{figure}[h]
+	\centering
+	\includegraphics[scale=0.8]{02/ins.png}
+	\caption{Visione insiemistica.}
+\end{figure}
+
+\cor{Equivalenza}{
+	A $\equiv$ se e solo se $A \vDash B$ e $B \vDash A$.
+}
+
+
+\paragraph{Una formula P è:}
+
+\begin{itemize}
+	\item \fancyglitter{Valida} (tautologia) se è vera in tutti i modelli (e.g. true).
+	\item \fancyglitter{Soddisfacibile} se esiste qualche modello in cui è vera.
+	\item \fancyglitter{Insoddisfacibile} (contraddizione) se è falsa in tutti i modelli (e.g. false).
+\end{itemize}
+
+\dfn{Inferenza}{
+	L'inferenza è il processo con il quale, da una proposizione accolta come vera, si passa a una seconda proposizione la cui verità è derivata dalla prima.
+}
+
+\cor{Regola di Inferenza: Modus Ponens}{
+	Da un'implicazione e dalla sua premessa si deriva la conseguenza.
+}
+
+\nt{Il modus ponens è il fondamento del ragionamento deduttivo.}
+
+\paragraph{Proprietà di un algoritmo di inferenza:}
+
+\begin{itemize}
+	\item \fancyglitter{Correttezza (soundness):} l'algoritmo deriva solo formule che sono anche conseguenze logiche.
+	\item \fancyglitter{Completezza (completness):} l'algoritmo permette di derivare tutte le formule che sono anche conseguenze logiche.
+\end{itemize}
+
+\dfn{Grounding}{
+	Cattura il legame fra la rappresentazione simbolica,
+	formale e l’ambiente reale che essa rappresenta.
+}
+
+\subsection{Logica Proposizionale}
+
+\dfn{Formule Atomiche}{
+	Ognuno rappresenta una formula che può
+	essere vera o falsa. Hanno un nome che inizia con una maiuscola.
+}
+
+\dfn{Formule Complesse}{
+	Sono costruite componendo altre formule
+	tramite gli operatori della logica:
+	\begin{itemize}
+		\item Negazione: il termine letterale indica formule atomiche eventualmente negate.
+		\item Congiunzione: le formule composte tramite questo operatore sono dette congiunti.
+		\item Disgiunzione: le formule composte tramite questo operatore sono dette disgiunti.
+		\item Implicazione: correla una formula detta premessa (o antecedente) a
+		      una formula detta conclusione (o conseguente).
+		\item Biimplicazione.
+	\end{itemize}
+}
+
+\paragraph{Grammatica:}
+
+\begin{itemize}
+	\item Formula $\rightarrow$ FormulaAtomica $|$ FormulaComplessa.
+	\item FormulaAtomica $\rightarrow$ True $|$ False $|$ Simbolo.
+	\item Simbolo $\rightarrow$ P $|$ Q $|$ R $|$ \dots
+	\item FormulaComplessa $\rightarrow$ $\neg$ Formula $|$ (Formula $\land$ Formula) $|$ (Formula $\lor$ Formula) $|$ (Formula $\Rightarrow$ Formula)$|$ (Formula $\Leftrightarrow$ Formula)
+\end{itemize}
+
+\nt{L'implicazione logica non è una relazione causale: dal falso si può derivare qualsiasi assurdità.}
+
+\paragraph{Esistono vari tipi di implicazione, oltre all'implicazione logica:}
+
+\begin{itemize}
+	\item Ragionamento ontologico.
+	\item Ragionamento temporale.
+	\item Ragionamento causale.
+\end{itemize}
+
+\qs{}{Come dimostrare KB $\vDash$ P?}
+
+\begin{itemize}
+	\item \fancyglitter{Model Checking:}
+	      \begin{itemize}
+		      \item Enumero i possibili modelli.
+		      \item Seleziono quelli in cui KB è vera.
+		      \item Verifico che in tutti questi P sia vera.
+		      \item \fancyglitter{Costoso:} dati $N$ simboli proposizionali esistono $2^N$ modelli.
+	      \end{itemize}
+	\item \fancyglitter{Theorem Proving:}
+	      \begin{itemize}
+		      \item Permette di usare regole di inferenza per cercare una
+		            derivazione, senza costruire i modelli (più efficiente
+		            perché ignora le proposizioni irrilevanti, che possono
+		            essere numerose).
+	      \end{itemize}
+\end{itemize}
+
+\paragraph{Due risultati fondamentali:}
+
+\begin{itemize}
+	\item \fancyglitter{Teorema di deduzione:} permette di rispondere vero se si dimostra l'equivalenza $(KB \vDash P) \equiv True$.
+	\item \fancyglitter{Dimostrazione per refutazione:} permette di rispondere vero se si dimostra l’equivalenza $(KB \land \neg P) \equiv False$.
+\end{itemize}
+
+\dfn{Teorema di Deduzione}{
+	Date due formule R e Q, $(R \vDash Q)$ se e solo se $(R \vDash Q)$ è valida.
+}
+
+\paragraph{Validità e Soddisfacibilità:}
+
+\begin{itemize}
+	\item A è valida se e solo se $\neg$ A è insoddisfacibile.
+	\item A è Soddisfacibile se e solo se $\neg$ A non è valida.
+\end{itemize}
+
+\dfn{Dimostrazione per Refutazione}{
+	Date due formule R e Q, $(R \vDash Q)$ se e solo se $(R \vDash \neg Q)$ è insoddisfacibile.
+}
+
+\nt{Anche detta dimostrazione \fancyglitter{per assurdo}.}
+
+\paragraph{Inferenza e dimostrazioni:}
+
+\begin{itemize}
+	\item Dalle premesse, applicare una sequenza di passi per
+	      raggiungere una determinata conclusione.
+	\item Formulazione come problema di ricerca:
+	      \begin{itemize}
+		      \item Stato iniziale: background knowledge.
+		      \item Azioni: regole di inferenza.
+		      \item Goal: stato che contiene la formula da dimostrare.
+	      \end{itemize}
+\end{itemize}
+
+\nt{In questo corso si fa riferimento solo a logiche monotone: aggiungere nuova conoscenza non invalida le conclusioni precenti.}
+
+\dfn{Risoluzione}{
+	La regola di risoluzione è una regola di inferenza che se unita a un qualsiasi algoritmo di ricerca completo produce un algoritmo di inferenza corretto e completo.
+}
+\pagebreak
+\begin{figure}[h]
+	\centering
+	\includegraphics[scale=0.6]{02/res.png}
+	\caption{Algoritmo di risoluzione.}
+\end{figure}
+
+\subsection{Formule Proposizionali e Clausole}
+
+\nt{La risoluzione può essere applicata solo a KB in forma normale congiuntiva}
+
+\dfn{Conjunctive Normal Form (CNF)}{
+	Data una qualsiasi formula proposizionale esiste una congiunzione di clausole equivalente.
+}
+
+\paragraph{Grammatica:}
+
+\begin{itemize}
+	\item FraseCNF $\rightarrow$ Clausola $\land$ \dots $\land$ Clausola.
+	\item Clausola $\rightarrow$ Letterale $\lor$ \dots $\lor$ Letterale.
+	\item Letterale $\rightarrow$ Simbolo $|$  $\neg$ Simbolo.
+	\item Simbolo $\rightarrow$ P $|$ Q $|$ \dots
+\end{itemize}
+
+\paragraph{Algoritmo di traduzione in clausole:}
+
+\begin{enumerate}
+	\item Eliminare la biimplicazione.
+	\item Eliminare l'implicazione.
+	\item Portare il not all'interno.
+	\item Distribuire l'or sull'and dove possibile.
+\end{enumerate}
+
+\thm{Completezza della Risoluzione}{
+	Se un insieme di clausole è insoddisfacibile la chiusura della
+	risoluzione contiene la clausola vuota.
+}
+
+\dfn{Clausola di Horn}{
+	Una clausola di Horn è una disgiunzione
+	di letterali di cui al più uno è positivo.
+}
+
+\nt{Se la clausola contiene esattamente un letterale positivo è detta clausola definita. }
+
+\clm{}{}{
+	\begin{itemize}
+		\item Le clausole di Horn sono la base della programmazione logica (e.g. prolog).
+		\item Su clausole di Horn è possibile applicare meccanismi di
+		      inferenza molto naturali per gli esseri umani.
+		\item Consentono di verificare la consequenzialità logica in un
+		      tempo che cresce linearmente con la dimensione della
+		      KB (quindi l’inferenza nel caso proposizionale è
+		      computazionalmente economica).
+	\end{itemize}
+}
+
+\dfn{Forward Chaining}{
+	Permette di derivare una query data da un singolo simbolo
+	proposizionale da una KB costituita da clausole di Horn.
+}
+
+\paragraph{Procedimento:}
+
+\begin{itemize}
+	\item Si parte dai fatti conosciuti.
+	\item Si applica il modus ponens,
+	      ragionamento deduttivo.
+	\item Se tutte le premesse di un’implicazione sono vere, si
+	      aggiunge il letterale implicato all’insieme dei fatti conosciuti.
+	\item Terminazione: o si ottiene la query (return true) o a un certo
+	      punto non si potranno fare altre inferenze (return false).
+\end{itemize}
+
+\clm{Forward Chaining}{}{
+	\begin{itemize}
+		\item Complessità lineare.
+		\item Completo: permette di derivare tutte le formule
+		      atomiche dimostrabili a partire dalla KB.
+		\item Inconscio: è guidato dai dati e non usa
+		      l’informazione relativa al goal.
+		\item È adeguato a risolvere problemi come per esempio il
+		      riconoscimento di oggetti.
+		\item Può attivare molte inferenze inutili ai fini della
+		      dimostrazione della formula in oggetto.
+	\end{itemize}
+}
+
+\dfn{Backward Chaining}{
+	Parte dalla formula da dimostrare (goal):
+	\begin{itemize}
+		\item Se risulta già vera termina restituendo true.
+		\item Altrimenti cerca clausole di Horn di cui la formula è conclusione e cerca di dimostrarne le premesse usando come informazione aggiuntiva i fatti noti.
+	\end{itemize}
+}
+
+\clm{Backward Chaining}{}{
+	\begin{itemize}
+		\item Realizza una forma di ragionamento guidato dagli obiettivi.
+		\item È usato nel theorem proving e nella
+		      programmazione logica come meccanismo di
+		      inferenza.
+		\item Spesso è più efficiente del forward chaining in
+		      quanto l’uso del goal focalizza la ricerca.
+		\item La complessità temporale è meno che lineare.
+	\end{itemize}
+}
