@@ -1,0 +1,381 @@
+\chapter{Logica del Prim'Ordine}
+
+\section{Introduzione alla Logica del Prim'Ordine}
+
+\paragraph{La logica proposizionale è \fancyglitter{dichiarativa}:}
+
+\begin{itemize}
+	\item Separa nettamente conoscenza da inferenza.
+	\item Consente di derivare fatti da fatti.
+	\item La sua semantica è data da una relazione di verità che
+	      collega formule e mondi possibili.
+\end{itemize}
+
+\nt{Però la logica proposizionale non permette rappresentazioni compatte e manca di espressività.}
+
+\paragraph{Altre logiche:}
+
+\begin{itemize}
+	\item Logica temporale: permette di rappresentare e ragionare sul tempo, esempio “A
+	      non è vero finché B non diventa vero”, “Quando A è vero subito
+	      dopo B sarà vero”.
+	\item Logica epistemica (della conoscenza): permette di esprimere relazioni come “l’agente i sa A”o “tutti
+	      sanno A”e di ragionare sulle implicazioni.
+	\item Logica deontica (normativa): permette di esprimere obblighi, permessi, proibizioni,
+	      commitment e di ragionare su di essi.
+	\item Logica fuzzy (a valori sfumati): introduce e ragiona su gradi di verità. I valori di verità
+	      appartengono all’intervallo \[0,1\].
+\end{itemize}
+
+\dfn{Logica del Prim'Ordine}{
+	Il mondo è fatto di oggetti in
+	relazione fra di loro, una relazione può essere verificata
+	oppure no.
+}
+
+\paragraph{Modelli:}
+
+\begin{itemize}
+	\item Proposizionale: attribuzione di valori di verità ai fatti (simboli proposizionali).
+	\item Prim'ordine: contiene un dominio, cioè l’insieme degli oggetti del mondo
+	      considerati, e delle relazioni fra tali oggetti.
+\end{itemize}
+
+\cor{Dominio di Riferimento}{
+	Un dominio di riferimento è astratto in:
+	\begin{itemize}
+		\item Un insieme di oggetti (ognuno caratterizzato dalla propria
+		      identità).
+		\item Un insieme di relazioni ognuna espressa come insieme di tuple.
+	\end{itemize}
+}
+
+\cor{Relazione}{
+	Una relazione è un insieme di tuple costituite da oggetti del
+	dominio.
+}
+
+\paragraph{Predicati e funzioni:}
+
+\begin{itemize}
+	\item Funzioni: dato un insieme di oggetti restituiscono un
+	      oggetto.
+	\item Predicati: dato un insieme di oggetti ne catturano una
+	      proprietà, restituiscono vero o falso.
+	\item Simboli:
+	      \begin{itemize}
+		      \item Costante.
+		      \item Predicato.
+		      \item Variabile.
+	      \end{itemize}
+\end{itemize}
+
+\nt{Tutti i simboli hanno un'\fancyglitter{interpretazione}.}
+
+\dfn{Interpretazione}{
+	Un modello è una coppia M = (D, I), dove D è il dominio del
+	discorso e I è un’interpretazione. L’interpretazione è il
+	fondamento per determinare il valore di verità delle formule. È
+	un’associazione fra i simboli e gli oggetti del dominio del discorso.
+}
+
+\ex{Interpretazione}{
+	\begin{itemize}
+		\item Oppressore $\rightarrow$ Entità che ne opprime un'altra.
+		\item Oppresso $\rightarrow$ Entità che viene oppressa.
+		\item Oppressione $\rightarrow$ Atto compiuto da un'entità che opprime nei confronti di un'entità oppressa.
+	\end{itemize}
+
+	Oppure:
+	\begin{itemize}
+		\item \sout{Oppressore} Israele $\rightarrow$ Entità che ne opprime un'altra.
+		\item \sout{Oppresso} Palestina $\rightarrow$ Entità che viene oppressa.
+		\item \sout{Oppressione} Genocidio $\rightarrow$ Atto compiuto da un'entità che opprime nei confronti di un'entità oppressa.
+	\end{itemize}
+
+
+}
+
+\nt{Se si cambiano coerentemente i simboli le formule non cambieranno valori di verità, ma se si cambia l'interpretazione dei simboli le formule potranno cambiare valore di verità.}
+
+\paragraph{Una formula è:}
+
+\begin{itemize}
+	\item È soddisfacibile quando esiste almeno
+	      un modello che la rende vera.
+	\item È valida quando è vera in tutti i modelli.
+	\item È insoddisfacibile quando non è mai vera.
+\end{itemize}
+
+\dfn{Termine Ground}{
+	Un termine è ground quando non contiene variabili.
+}
+
+\subsection{Quantificatori}
+
+\dfn{Quantificatori}{
+	I quantificatori permettono di esprimere proprietà di collezioni di oggetti. Fanno riferimento a generici oggetti che saranno identificati da variabili.
+}
+
+\paragraph{La logica del prim'ordine prevede:}
+
+\begin{itemize}
+	\item $\forall$: per ogni (\fancyglitter{quantificatore universale}).
+	\item $\exists$: esiste (\fancyglitter{quantificatore esistenziale}).
+\end{itemize}
+
+\cor{Quantificatore Universale}{
+	Si considerino una formula F e un modello M = (D,I). L’espressione $\forall$x
+	F è vera nel modello M se e solo se F è vera per qualsiasi
+	intepretazione di x in M.
+}
+
+\nt{La quantificazione universale può essere espressa come insieme di congiunzioni.}
+
+\cor{Quantificatore Esistenziale}{
+	Si considerino una formula F e un modello M = (D,I). L’espressione $\exists$x
+	F è vera nel modello M se e solo se F è vera per qualche
+	intepretazione di x in M.
+}
+
+\nt{La quantificazione esistenziale può essere espressa come insieme di disgiunzioni.}
+
+\paragraph{Quantificatori annidati:}
+
+\begin{itemize}
+	\item $\exists x \exists y F(x, y)$ è equivalente a $\exists y \exists x F(x,y)$.
+	\item $\forall x \forall y F(x, y)$ è equivalente a $\forall y \forall x F(x,y)$.
+	\item $\forall x \exists y F(x, y)$ per tutti esiste.
+	\item $\exists x \forall y F(x, y)$ esiste per ogni.
+\end{itemize}
+
+\nt{La semantica non è intuitiva, le formule sono troppo complesse.}
+
+\section{Interrogazione su KB FOL}
+
+\dfn{Database Semantics}{
+	Si tratta della semantica usata nella programmazione logica, si basa su tre assunti:
+	\begin{itemize}
+		\item Unicità dei nomi: assumiamo che costanti diverse si riferiscano a oggetti del dominio diversi.
+		\item Assunzione di mondo chiuso: assumiamo che le formule atomiche delle quali non si conosce la verità siano false.
+		\item Domain closure: un modello non contiene più elementi di quelli nominati dalle costanti.
+	\end{itemize}
+}
+
+\nt{
+	La database semantics può essere usata quando siamo sicuri dell’identità
+	di tutti gli elementi. Da notare che riduce il numero di modelli possibili,
+	rendendoli tipicamente finiti.
+}
+
+\paragraph{Le interrogazioni a una KB FOL sono dei due tipi:}
+
+\begin{itemize}
+	\item ask(KB, Re(John)): viene chiesto se una formula in
+	      cui compaiono solo termini ground sia vera o falsa.
+	      La risposta sarà true o false.
+	\item ask(KB, Re(x)): viene chiesto se esiste un qualche
+	      valore per la variabile x tale per cui la formula è
+	      vera.
+	      La risposta sarà false nel caso non esista tale valore,
+	      se invece esiste la riposta indicherà un termine
+	      ground che usato al posto di x rende vera la
+	      formula.
+\end{itemize}
+
+\dfn{Sostituzione}{
+	Una sostituzione $\theta$ è un insieme $\{x_1/g_1, x_2/g_2, \dots x_n/g_n\}$ dove le varie $x_i$ sono variabili e le varie $g_i$ sono termini ground.
+}
+
+\nt{
+	Data una formula F e una sostituzione $\theta$, la scrittura F/$\theta$
+	indica la formula ottenuta sostituendo le occorrenze
+	delle variabili indicate in $\theta$ con i relativi termini ground.
+}
+
+\subsection{Trasformazione in Formule Proposizionali}
+
+\dfn{Proposizionalizzazione}{
+	Data una KB:
+	\begin{itemize}
+		\item Applicare le regole di eliminazione dei quantificatori sostituendo
+		      le formule quantificate con le loro istanze del caso, costruite
+		      considerando il vocabolario dei possibili termini ground.
+		\item Applicare un algoritmo di inferenza completo per la logica
+		      proposizionale.
+	\end{itemize}
+}
+
+\nt{Si perde parte dell'espressività garantita dalla logica del prim'ordine.}
+
+\cor{Istanziazione Universale}{
+	Da una formula quantificata universalmente si
+	possono inferire tutte le formule ottenute
+	sostituendo un termine ground del vocabolario alla
+	variabile quantificata.
+
+	\[
+		\displaystyle\frac{\forall x \alpha}{
+			\text{SUBST}(\{x/g\}, \alpha)
+		}
+	\]
+}
+
+\nt{
+	La nuova KB ottenuta da un'istanziazione universale è logicamente equivalente alla KB originale.
+}
+
+\cor{Istanziazione Esistenziale}{
+	\[
+		\displaystyle\frac{\exists x \alpha}{
+			\text{SUBST}(\{x/k\}, \alpha)
+		}
+	\]
+
+	Con $k$ come costante nuova, non utilizzata in KB.
+	L’inferenza si limita a dare un nome a questo elemento.
+
+}
+
+\nt{
+	La nuova KB ottenuta da un'istanziazione esistenziale non è logicamente equivalente alla KB originale, ma è soddisfacibile se prima lo era.
+}
+
+\paragraph{Problemi delle funzioni:}
+
+\begin{itemize}
+	\item Una funzione può essere applicata ricorsivamente.
+	\item Le sostituzioni diventano potenzialmente infinite.
+\end{itemize}
+
+\thm{Teorema di Herbrand}{
+	Herbrand ha dimostrato che se una formula è conseguenza
+	logica della base di conoscenza originaria (del prim’ordine)
+	allora partendo dalla base di conoscenza proposizionalizzata
+	esiste una dimostrazione finita della sua verità.
+}
+
+\nt{Questo garantisce che se una formula è conseguenza logica della KB allora la si può dimostrare in un numero finito di passi.}
+
+\paragraph{FOL è semidecidibile:}
+
+\begin{itemize}
+	\item Completezza: se una
+	      formula consegue da una KB si troverà una
+	      dimostrazione finita della sua verità.
+	\item Se però l’non vale la consequenzialità, la presenza di
+	      funzioni applicabili ricorsivamente porterà l’inferenza su di
+	      un percorso infinito.
+\end{itemize}
+
+\paragraph{La proposizionalizzazione è inefficiente:}
+\begin{itemize}
+	\item Perde tempo a creare istanze ininfluenti dell'implicazione.
+	\item È possibile evitare la creazione di formule irrilevanti focalizzando
+	      la costruzione della sostituzione da considerare.
+\end{itemize}
+
+\subsection{Lifting di Risoluzione}
+
+\dfn{Modus Ponens Generalizzato}{
+	Il modus ponens generalizzato è una forma del modus ponens che richiede che l'antecedente sia una congiunzione.
+}
+
+\nt{
+	L’appellativo “generalizzato” deriva dall’avere “sollevato” la
+	regola dalla logica proposizionale a quella del prim’ordine.
+	Questo processo si chiama \fancyglitter{lifting}.
+}
+
+\cor{Unificazione}{
+	Un algoritmo per cui:
+	\begin{itemize}
+		\item Date due formule F1 e F2.
+		\item UNIFY(F1, F2) = $\theta$ tale che F1 $\theta$ = F2 $\theta$.
+	\end{itemize}
+}
+
+\nt{
+	Il risultato è una sostituzione (unificatore) che, applicata a entrambe le
+	formule, le rende identiche. Se ci sono più unificatori si calcola e si usa il \fancyglitter{Most General Unifier} (MGU).
+}
+
+\dfn{Clausole di Horn del Prim'Ordine}{
+	Disgiunzioni di letterali di cui al più uno è positivo:
+	\begin{itemize}
+		\item Atomici.
+		\item Implicazione il cui antecedente è costituito da letterali
+		      positivi.
+	\end{itemize}
+}
+
+\nt{Non tutte le KB possono essere tradotte in clausole di Horn ma molte
+	possono. A queste è possibile applicare il forward chaining (e il modus
+	ponens generalizzato) per fare inferenze.}
+
+\paragraph{KB con clausole di Horn:}
+
+\begin{itemize}
+	\item F(x): quantificazione universale.
+	\item F(Costante): fatto (ground).
+\end{itemize}
+
+\paragraph{Tradurre una KB FOL in CNF:}
+
+\begin{enumerate}
+	\item Eliminare l'implicazione.
+	\item Spostare la negazione all'interno.
+	\item Standardizzazione delle variabili.
+	\item Skolemizzazione (eliminazione degli esistenziali).
+	\item Cancellare i quantificatori universali (tutte le variabili sono universali).
+	\item Distribuire $\lor$ su $\land$.
+\end{enumerate}
+
+\dfn{Skolemizzazione}{
+	Sostituiamo ogni variabile quantificata esistenzialmente con una
+	funzione che ha per argomenti tutte le variabili quantificate
+	universalmente nel cui scope ricade:
+	\begin{itemize}
+		\item $\forall x_1, x_2, \dots [\exists y P(y, x_1, \dots) \dots \exists z Q(z, x_1, \dots)]$ diventa
+		\item $\forall x_1, x_2, \dots [P(S_1(x_1, x_2, \dots), \dots) \dots Q(S_2(x_1, x_2, \dots),\dots)]$
+	\end{itemize}
+
+	$S_1$ e $S_2$ sono dette funzioni di Skolem.
+}
+
+\nt{
+	Nel caso particolare in cui l’esistenziale non ricade nello scope di
+	alcun universale tali funzioni diventano \fancyglitter{costanti di Skolem}.
+}
+
+\dfn{Binary Resolution}{
+	Le clausole da risolvere non condividono variabili, per cui occorre fare il lifting della fattorizzazione: due letterali sono ridotti ad
+	uno non se sono uguali ma se sono unificabili. L’unificatore va applicato
+	alle clausole intere.
+}
+
+\nt{Binary resolution + fattorizzazione costituisce una regola di
+	inferenza completa.}
+
+\begin{figure}[h]
+	\centering
+	\includegraphics[scale=0.5]{03/fol.png}
+	\caption{Risoluzione FOL.}
+\end{figure}
+
+\paragraph{La risoluzione non è in grado di generare tutte le conseguenze
+	logiche di una KB ma è refutation-complete:}
+
+\begin{itemize}
+	\item Se una KB è insoddisfacibile, la resolution sarà sempre in grado
+	      di derivare una contraddizione.
+	\item Di conseguenza sarà in grado di derivare tutte le risposte a una
+	      query $Q(x)$ da KB a patto che KB $\land \neg Q(x)$ sia insoddisfacibile.
+\end{itemize}
+
+
+
+
+
+
+
