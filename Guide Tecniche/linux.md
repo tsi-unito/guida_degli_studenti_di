@@ -90,15 +90,14 @@ Il WM invece è solo il gestore delle finestre. Può essere:
 Se sei un power user, potresti voler usare solo un WM. 
 Ecco i più popolari:
 
-+ **X11**:
-- **i3**: Tiling WM leggero e configurabile. La porta d'ingresso nel mondo dei tiling WM.
-- **DWM**: Minimalista, veloce, da configurare in C. Per masochisti.
-
-- **AwesomeWM**: Potente e programmabile in Lua. Per veri nerd.
-- **Xmonad**: cheat per passare LPP.
-+ **Wayland**:
-- **Sway**: Come i3 ma per Wayland. Il futuro è qui.
-- **Niri**: Scrollable-tiling, veramente fantastico.
+- **X11**:
+  - **i3**: Tiling WM leggero e configurabile. La porta d'ingresso nel mondo dei tiling WM.
+  - **DWM**: Minimalista, veloce, da configurare in C. Per masochisti.
+  - **AwesomeWM**: Potente e programmabile in Lua. Per veri nerd.
+  - **Xmonad**: cheat per passare LPP.
+- **Wayland**:
+  - **Sway**: Come i3 ma per Wayland. Il futuro è qui.
+  - **Niri**: Scrollable-tiling, veramente fantastico.
 
 ## Package Manager e Software
 
