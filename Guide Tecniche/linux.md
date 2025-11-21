@@ -2,6 +2,7 @@
 
 ## Changelog
 
+- 21-11-2025: Aggiornamento della guida
 - 13-11-2024: Revisione completa della guida, rimossa tier list
 - 24-10-2023: update alla tier list
 
@@ -64,6 +65,7 @@ Il WM invece è solo il gestore delle finestre. Può essere:
 - **Floating**: le finestre "galleggiano" sullo schermo (come in Windows)
 - **Tiling**: le finestre sono organizzate in modo da occupare tutto lo spazio disponibile
 - **Dynamic**: un mix dei due precedenti
+- **Scrollable**: le finestre sono organizzate in una striscia orizzontale infinita.
 
 ### DE Consigliati
 
@@ -85,12 +87,18 @@ Il WM invece è solo il gestore delle finestre. Può essere:
 
 ### WM Standalone
 
-Se sei un power user, potresti voler usare solo un WM. Ecco i più popolari:
+Se sei un power user, potresti voler usare solo un WM. 
+Ecco i più popolari:
 
++ **X11**:
 - **i3**: Tiling WM leggero e configurabile. La porta d'ingresso nel mondo dei tiling WM.
-- **Sway**: Come i3 ma per Wayland. Il futuro è qui.
-- **AwesomeWM**: Potente e programmabile in Lua. Per veri nerd.
 - **DWM**: Minimalista, veloce, da configurare in C. Per masochisti.
+
+- **AwesomeWM**: Potente e programmabile in Lua. Per veri nerd.
+- **Xmonad**: cheat per passare LPP.
++ **Wayland**:
+- **Sway**: Come i3 ma per Wayland. Il futuro è qui.
+- **Niri**: Scrollable-tiling, veramente fantastico.
 
 ## Package Manager e Software
 
@@ -131,7 +139,8 @@ sudo pacman -Rns package  # Rimuove un pacchetto e le sue dipendenze
 
 ### Editor di Testo & IDE
 - **VSCode**: L'editor che tutti conoscono (usa la versione OSS)
-- **Neovim**: Per chi odia il mouse e ama la propria sanità mentale
+- **Neovim**: Per chi odia il mouse e ama la propria sanità mentale, ottimo ecosistem di plugins 
+- **Helix**: editor modale scritto in rust, simile a vim/Neovim ma con molte features out-of-the-box
 - **GNOME Text Editor**: Semplice ma efficace
 - **Kate**: Come notepad++ ma fatto bene
 - **JetBrains**: Per chi ha RAM da bruciare (e una licenza universitaria)
@@ -141,22 +150,26 @@ sudo pacman -Rns package  # Rimuove un pacchetto e le sue dipendenze
 - **Konsole**: Il terminale di KDE, veloce e personalizzabile
 - **Alacritty**: Veloce, GPU-accelerated, configurabile in YAML
 - **Kitty**: Come Alacritty ma con più feature
+- **foot**: Rust-based, carino da utilizzare
 - **WezTerm**: Rust-based, veloce, personalizzabile
 
 ### Shell
 - **Bash**: Il default, funziona
 - **Zsh**: Bash++ con plugin (oh-my-zsh ftw)
-- **Fish**: User friendly, default sane, _il mio preferito_
+- **Fish**: User friendly, default sane, non POSIX, _il mio preferito_
 - **Nushell**: Per chi vuole qualcosa di completamente diverso
 
 ### Utility
 - **htop/btop**: Task manager ma bello
-- **neofetch**: Per flex su r/unixporn
+- **bottom**: versione potenziata dei vari top
+- **fastfetch**: Per flex su r/unixporn
 - **timeshift**: Backup del sistema, salvati la vita
 - **flameshot**: Screenshot tool potente
 - **bat**: cat ma con syntax highlighting
-- **exa/lsd**: ls ma decente
+- **eza/lsd**: ls ma decente
 - **fzf**: Fuzzy finder per il terminale
+- **television**: TUI per Fuzzy finder
+- **gitui**: TUI per gestire i comandi di git
 - **ripgrep**: grep ma più veloce
 
 ## Tips & Tricks
@@ -287,6 +300,8 @@ Una chiavetta, un computer BARE METAL (non una VM, quindi) su cui installare la 
 - Cryptomator (Zero-trust encryption per il cloud)
 - FileZilla (FTP made easy)
 - Stremio (shh...)
+- rmpc (per la musica) 
+- yazi (terminal file manager)
 - RustDesk (TeamViewer ma FOSS)
 - qimgv (Visualizzatore di immagini veloce e leggero)
 - ImageMagick (Modifica di immagini, programma FONDAMENTALE)
@@ -310,7 +325,9 @@ Una chiavetta, un computer BARE METAL (non una VM, quindi) su cui installare la 
 
 ### Si, però, su Windows potevo giocare ad X senza troppi problemi
 
-Usa Lutris. git good.
+Usa Lutris. git gud.
+
+Inoltre è presente heroic launcher che permette di gestire le varie versioni di wine e forisce un punto in cui raccogliere i propri giochi.
 
 ### Si, però, mio cuggino mi ha detto che Linux ha un sacco di problemi e non va bene!!1
 
