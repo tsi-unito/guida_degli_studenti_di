@@ -51,6 +51,8 @@ Tabella di traduzione (per le sole materie presenti in questa directory) da sigl
 | [PROG1](./PROG1)         |                       Programmazione 1                        |
 | [PROG2](./PROG2)         |                       Programmazione 2                        |
 | [PROGMOB](./PROGMOB)     |                     Programmazione Mobile                     |
+| [RETI6](./RETI6)         |                            Reti (6 CFU)                       |
+| [RETI9](./RETI9)         |           Reti e Sicurezza delle Reti (9 CFU - INF0337)       |
 | [RETI2](./RETI2)         |                            Reti 2                             |
 | [RNDL](./RNDL)           |                 Reti Neurali e Deep Learning                  |
 | [SAS](./SAS)             |                Sviluppo Applicazioni Software                 |
