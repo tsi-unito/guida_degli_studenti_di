@@ -1,6 +1,10 @@
 # SCPD
 
-E' disponibile la relazione del progetto di:
-- Santimaria Marco e Samuele Fonio (AA 2022-2023). il codice e' disponibile [qua](https://github.com/alpha-unito/parallel-interior-point-solver).
+## Appunti
 
-Al seguente [link](https://github.com/marcoSanti/MpiBenchmark) un esempio di programmazione di benchmark in MPI fatta come esercizio durante il corso.
+- Appunti di Lorenzo Caresio (AA 2024-2025): [markdown](Appunti/lcaresio/appunti_scpd25.md) o [PDF](Appunti/lcaresio/appunti_scpd25.pdf).
+
+## Progetti ed esercizi
+
+- Relazione di progetto di Santimaria Marco e Samuele Fonio (AA 2022-2023): [codice](https://github.com/alpha-unito/parallel-interior-point-solver).
+- Esempio di programmazione di benchmark in MPI fatta come esercizio durante il corso: [codice](https://github.com/marcoSanti/MpiBenchmark).
