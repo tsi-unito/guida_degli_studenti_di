@@ -1,6 +1,6 @@
 # Architettura degli Elaboratori (Edizione RISC-V)
 Cartella contenente appunti, simulazioni ed 
-esercizi riguardanti il corso di Architetture degli elaboratori.
+esercizi riguardanti il corso di Architetture degli Elaboratori.
 
 ## Appunti
 Cartella contenente gli appunti riguardanti
@@ -34,4 +34,6 @@ Cartella contenente esercitazioni fatte nel laboratorio in RISC-V
   dell'AA 2023-2024
 
 ## Simulatori
-Durante le lezioni di laboratorio viene usato il simulatore [RARS](./laboratorio/simulatori). Inoltre, esiste il simulatore [RARSJS](https://rarsjs.vercel.app/) sviluppato da studenti del dipartimento e noto ai docenti del corso.
+A partire dall'a.a. 2025-26 è in uso il simulatore [ARES](https://ares-sim.github.io/).
+
+Fino all'a.a. 2024-25, invece, è stato utilizzato il simulatore [RARS](./laboratorio/lab_2023_2024/simulatori).
