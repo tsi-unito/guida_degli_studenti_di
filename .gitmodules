@@ -31,3 +31,6 @@
 [submodule "Materie/ALGCOMPL/AleCO"]
 	path = Materie/ALGCOMPL/AleCO
 	url = https://github.com/Altair-39/AleCO
+[submodule "Materie/SO/progetti/2024-2025/GolzioKukajNibizi"]
+	path = Materie/SO/progetti/2024-2025/GolzioKukajNibizi
+	url = https://github.com/serianoseri/ProgettoSOGolzioKukajNibizi2024-25
