@@ -1,0 +1,55 @@
+\chapter{Laboratorio 2}
+
+\section{Identificatori delle entità}
+
+Gli \textcolor{blue}{identificatori} delle entità servono per identificarle univocamente. Possono essere:
+\begin{itemize}
+    \item \textcolor{blue}{interni:} sono costituiti dagli attributi delle entità;
+    \item \textcolor{blue}{esterni:} sono costituiti da attributi delle entità più entità esterne, tramite associazioni.
+\end{itemize}
+
+Gli identificatori sono rappresentati come pallini pieni.
+
+\begin{center}
+    \begin{tikzpicture}[auto]
+
+  \node[entity] (studente) at (0,0) {Studente};
+    \tikzstyle{knode}=[circle,draw=black,thick,inner sep=2pt]
+    \tikzstyle{knode_i}=[circle,draw=black, fill = black,thick,inner sep=2pt]
+    \node (n1) at (0:1.5cm) [knode_i] {};
+    \node (n2) at (100:1.5cm) [knode] {};
+
+\path (n1) edge [above right] node {Matricola} (studente);
+\path (n2) edge [above right] node {Anno di iscrizione} (studente);
+    \end{tikzpicture}
+\end{center}
+
+Se sono necessari più attributi si rappresentano con una sbarra con pallino nero sopra gli attributi necessari.
+
+Ogni entità deve avere almeno un identificatore e ogni attributo che fa parte di un identificatore deve avere  cardinalità (1, 1).
+
+\section{Generalizzazione}
+
+La \textcolor{blue}{generalizzazione} mette in relazione una o più entità $E_1$, $E_2$, ..., $E_n$ con una entità E che le comprende come casi particolari:
+
+\begin{itemize}
+    \item E è \textcolor{blue}{generalizzazione} di $E_1$, $E_2$, ..., $E_n$;
+    \item $E_1$, $E_2$, ..., $E_n$ sono \textcolor{blue}{specializzazioni} di E;
+\end{itemize}
+
+Ogni occorrenza di $E_1$, $E_2$, ..., $E_n$ è anche occorrenza di E. Ogni proprietà di E è anche proprietà di $E_1$, $E_2$, ..., $E_n$.
+
+Una generalizzazione può essere:
+\begin{itemize}
+    \item \textcolor{blue}{totale} se ogni occorrenza dell'entità genitore è occorrenza di almeno una delle entità figlie;
+    \item \textcolor{blue}{parziale} se non è totale;
+    \item \textcolor{blue}{esclusiva} se ogni occorrenza dell'entità genitore è occorrenza di al più una delle entità figlie;
+    \item \textcolor{blue}{sovrapposta} se non è esclusiva.
+\end{itemize}
+
+\section{Documentazione schemi concettuali}
+
+\begin{itemize}
+    \item \textcolor{blue}{Descrizione di concetti:} dizionari per entità e associazioni;
+    \item \textcolor{blue}{Vincoli non esprimibili in ER:} di integrità o di derivazione.
+\end{itemize}

@@ -1,0 +1,691 @@
+\chapter{Microservizi}
+
+\section{Comunicazione Sincrona}
+
+\subsection{RPC-Style}
+
+\dfn{Comunicazione Sincrona}{
+	Un servizio client invoca un'operazione al provider di un servizio. Ci sono 2 tipi di operazioni:
+	\begin{itemize}
+		\item Queries: il client chiede al provider per informazioni.
+		\item Commands: il client chiede al provider di fare qualcosa.
+	\end{itemize}
+}
+
+\paragraph{Questo tipo di comunicazione è anche detto RPC-Style perché:}
+
+\begin{itemize}
+	\item L'esecuzione delle operazioni richieste deve iniziare immediatamente.
+	\item Il client è bloccato ad aspettare il risultato dell'operazione.
+\end{itemize}
+
+\paragraph{In questo contesto REST è un protocollo sincrono:}
+
+\begin{itemize}
+	\item REST è distante dalla nozione di procedura e si concentra sulla nozione di risorsa.
+	\item Tuttavia, \fancyglitter{a basso livello} la manipolazione di risorse è comunque un insieme di operazioni.
+	\item HTTP è un protocollo sincrono.
+	\item Ergo REST viene usato per fare comunicazione sincrona sui microservizi.
+\end{itemize}
+
+\subsection{gRPC}
+
+\dfn{gRPC}{
+	Si tratta di un'implementazione FOSS di RPC. Strutturata specificatamente pper la comunicazione inter-servizio nelle architetture a microservizi. Utilizza HTTP/2 o nuovi.
+}
+
+\paragraph{gRPC non può essere applicata alla comunicazione back-end/front-end:}
+
+\begin{itemize}
+	\item gRPC-web permette di effettuare alcune chiamate mediante HTTP/1.1 (che viene tradotto in HTTP/2 da un \fancyglitter{proxy}).
+	\item Si ppuò usare un \fancyglitter{sidecar}: un servizio addizionale che si attacca a un servizio per tradurre le chiamate.
+\end{itemize}
+
+\clm{}{}{
+	\begin{itemize}
+		\item HTTP/2 offre \fancyglitter{streams}: connessioni con continuo passaggio di dati.
+		\item gRPC permette la comunicazione \fancyglitter{unaria} (semplice richiesta).
+		\item Server streaming: il server deve mandare informazioni continuative al server.
+		\item Client streaming: come il server, ma al contrario.
+		\item Bidirezionale: tipicamente usato per le chat.
+
+	\end{itemize}
+}
+
+\begin{figure}[h]
+	\centering
+	\includegraphics[scale=0.4]{03/arch.png}
+	\caption{Architettura di gRPC.}
+\end{figure}
+
+\begin{itemize}
+	\item Si parte da una descrizione delle API.
+	\item Viene generato dal compilatore di gRPC uno stub per il client e uno stub per il service:
+	      \begin{itemize}
+		      \item Lato client: si chiamano funzioni e metodi come fossero locali.
+		      \item Lato server: si occupa di serializzare/deserializzare i dati che arrivano dal server.
+		      \item Client e server comunicano mediante \fancyglitter{protocol buffer}.
+	      \end{itemize}
+\end{itemize}
+
+\dfn{Protocol Buffer (Protobuf)}{
+	Formato serializzato per lo scambio di messaggi strutturati tra servizi in formato binario.
+
+	Il programmatore deve definire un protobuf schema.
+}
+
+\nt{
+	L'idea è quella di ottenere serializzazione/deserializzazione in modo efficiente ed essere sia backward che forward compatible.
+}
+
+\paragraph{Il protoc compiler genera codice per:}
+
+\begin{itemize}
+	\item Dichiarare tipi di dato secondo uno schema.
+	\item Creare strutture dati rappresentanti un messaggio.
+	\item Serializzare messaggi come data streams binari.
+	\item Deserilizzare un binario secondo un determinato schema per ottenere la struttura dati originale.
+\end{itemize}
+
+\paragraph{Sviluppare services e clients gRPC richiede:}
+
+\begin{itemize}
+	\item Compilatore gRPC per il linguaggio scelto.
+	\item Librerie gRPC per il linguaggio scelto.
+\end{itemize}
+
+\subsection{Temi e Patterns}
+
+\dfn{Service Discovery}{
+	Un servizio, per poterne interrogare un altro, deve sapere come raggiungerlo (indirizzo).
+	Questo tema fa un mapping tra il nome logico di un servizio e il suo IP (un DNS).
+}
+
+\begin{figure}[h]
+	\centering
+	\includegraphics[scale=0.4]{03/ppds.png}
+	\caption{Service Discovery.}
+\end{figure}
+
+\dfn{Stateless - Stateful}{
+	\begin{itemize}
+		\item Un microservizio stateless non trattiene informazioni tra richieste:
+		      \begin{itemize}
+			      \item Funzione pura: la computazione dipende solo dall'input.
+			      \item Condotte: questi servizi agiscono da intermediari tra altri servizi.
+		      \end{itemize}
+		\item Un microservizio stateful mantiene uno stato del processo di interazione:
+		      \begin{itemize}
+			      \item Scalabilità complessa: lo stato deve essere sincronizzato tra istanze di servizi.
+			      \item Poco tollerante ai fallimenti: lo stato può essere perso o diventare inconsistente ai fallimenti.
+		      \end{itemize}
+	\end{itemize}
+}
+
+\nt{La maggior parte delle attività "interessanti" hanno un concetto di stato.}
+
+\dfn{Network Failure}{
+	Problemi di rete:
+	\begin{itemize}
+		\item Può capitare che un utente se non riceve risposta ritenta una richiesta che però è avvenuta con successo (richieste duplicate).
+		\item Se è il sistema di pagamento a fallire si rischia di intasare il sistema (e.g. si rompe VISA e anche MASTERCARD non funziona).
+	\end{itemize}
+}
+
+\paragraph{Prevenire il fallimento a cascata:}
+
+\begin{itemize}
+	\item \fancyglitter{Meccanismi di fallback:}
+	      \begin{itemize}
+		      \item Vanno studiati caso per caso.
+		      \item Restituiscono un messaggio di errore, un valore di default o un valore pre-cached.
+	      \end{itemize}
+	\item Intra service (\fancyglitter{service meshes}:)
+	      \begin{itemize}
+		      \item Strato infrastrutturale che assegna a ogni servizio un proxy.
+		      \item Stabilisce timeout di rete.
+		      \item Limita il numero di richieste aperte.
+		      \item Implementa il \fancyglitter{circuit breaker pattern}.
+	      \end{itemize}
+\end{itemize}
+
+\begin{figure}[h]
+	\centering
+	\includegraphics[scale=0.4]{03/cb.png}
+	\caption{Circuit Breaker.}
+\end{figure}
+
+\subsection{Richieste Duplicate e Idempotenza}
+
+\qs{}{Un servizio o una procedura invocata è idempotente?}
+
+\begin{itemize}
+	\item Le operazioni read-only sono sempre idempotenti.
+	\item Le operazioni di scrittura possono o meno essere idempotenti.
+\end{itemize}
+
+\dfn{Deduplicazione}{
+	La strategia utilizzata è la deduplicazione:
+	\begin{itemize}
+		\item Logica basata su DB constrains:
+		      \begin{itemize}
+			      \item Il servizio ha una conoscenza logica sulle strutture dati e possono usare la chiave primaria in un DB per accorgersi di duplicati.
+			      \item E.g. se due pagamenti hanno lo stesso ordine id.
+		      \end{itemize}
+		\item Payload hashing:
+		      \begin{itemize}
+			      \item Se la duplicazione implica payload identici.
+			      \item Non funziona con timestamp o IDs random.
+			      \item Non funziona se due richieste hanno lo stesso payload.
+		      \end{itemize}
+		\item Chiavi di idempotenza:
+		      \begin{itemize}
+			      \item Una chiave univoca è generata per ogni richiesta del client.
+			      \item Il service provider distingue richieste duplicate da richieste diverse con lo stesso payload.
+		      \end{itemize}
+	\end{itemize}
+}
+
+\qs{}{
+	Chi genera la chiave di idempotenza?
+}
+
+\begin{itemize}
+	\item Il client non può generarla:
+	      \begin{itemize}
+		      \item Crea accoppiamento non necessario.
+		      \item Difficoltà di garanzia dell'unicità.
+	      \end{itemize}
+	\item È preferibile farla generare al server:
+	      \begin{itemize}
+		      \item Simile a token di sessione.
+		      \item Il server genera la chiave, la invia al client e il client usa la stessa chiave se deve ripetere una richiesta.
+		      \item Si usa un two-phase commit (agreement o handshake).
+	      \end{itemize}
+\end{itemize}
+
+
+
+\section{Comunicazione Asincrona}
+
+\subsection{Comunicazione Orientata ai Messaggi}
+
+\dfn{Message Broker}{
+	Servizio infrastrutturale che funziona da intermediario tra il mittente e i riceventi di un messaggio.
+}
+
+\clm{}{}{
+	\begin{itemize}
+		\item \fancyglitter{Fire \& Forget:} il mittente da il messaggio al broken e poi torna a farsi gli affari suoi.
+		\item \fancyglitter{Servizi disaccoppiati:} il messaggio non ha bisogno di essere gestito nell'immediato e il mittente non ha bisogno di conoscere l'organizzazione fisica o logica del ricevente.
+	\end{itemize}
+}
+
+\paragraph{Features del messaggio:}
+
+\begin{itemize}
+	\item Payload (il contenuto di business del messaggio) + headers (intestazione, le metainformazioni).
+	\item Spesso negli headers è presente il correlation ID, si usa per gestire messaggi di diversi servizi.
+	\item Solitamente i messaggi sono piccoli, se bisogna inviare grandi payloads si può usare un blob storage e inviare ai riceventi un link per scaricare il contenuto.
+\end{itemize}
+
+\cor{Point-to-Point}{
+	Il message broker mette in atto una coda tra un mittente e un destinatario. La coda tiene i messaggi e il destinatario lo leggerà e inviera un acknowledge al mittente.
+}
+
+\begin{figure}[h]
+	\centering
+	\includegraphics[scale=0.4]{03/ptp.png}
+	\caption{Point-to-Point.}
+\end{figure}
+
+\cor{Fan-In}{
+	Come il Point-to-Point, ma con multipli mittenti.
+}
+
+\begin{figure}[h]
+	\centering
+	\includegraphics[scale=0.3]{03/fi.png}
+	\caption{Fan-In.}
+\end{figure}
+
+\cor{Competing Consumers}{
+	Caso simmetrico del Fan-In. I vari consumers competono per il messaggio: solo uno leggerà effettivamente il messaggio.
+}
+
+\nt{Questo modello si usa quando si vuole suddividere il carico di lavoro.}
+
+\begin{figure}[h]
+	\centering
+	\includegraphics[scale=0.3]{03/cc.png}
+	\caption{Competing Consumers.}
+\end{figure}
+
+\cor{Publish \& Subscribe}{
+	Ci sono $n$ publisher e $m$ subscriber. Tra di loro è presente un canale/topic/bacheca che contiene i messaggi pubblici). I subscriber ricevono in una propria coda una copia dei messaggi pubblicati.
+}
+
+\begin{figure}[h]
+	\centering
+	\includegraphics[scale=0.3]{03/ps.png}
+	\caption{Publish \& Subscribe.}
+\end{figure}
+
+\paragraph{Error handling:}
+
+\begin{itemize}
+	\item \fancyglitter{Scadenza:} si aspetta un acknowledge ma si va in timeout. In questo caso si ritenta $n$ volte.
+	\item \fancyglitter{Rejected:} il consumer invia indietro un messaggio negativo (NACK).
+	\item \fancyglitter{Overflow:} la coda p piena.
+\end{itemize}
+
+\dfn{Dead Letter Queue (DLQ)}{
+	In caso di errori il message broken muove i messaggi in una DLQ. I consumers possono controllare la DLQ e decidere di rispondere ai messaggi.
+}
+
+\subsection{RabbitMQ}
+
+\dfn{RabbitMQ}{
+	RabbitMQ è un message broker:
+	\begin{itemize}
+		\item Producers si connettono a una RMQ per inviare messaggi.
+		\item Consumers si connettono a una RMQ per ricevere messaggi.
+	\end{itemize}
+}
+
+\nt{RabbitMQ è basato su AMQP 0-9-1 (Advance Message Queuing Protocol).}
+
+\paragraph{RabbitMQ è un servizio middleware:}
+
+\begin{itemize}
+	\item Nelle architetture a microservizi è solitamente hostato in un container di Docker.
+	\item Espone diverse porte, AMQP va sulla 5672.
+	\item Può essere associata a un utility di management, accessibile via HTTP sulla porta 15672.
+\end{itemize}
+
+\begin{figure}[h]
+	\centering
+	\includegraphics[scale=0.3]{03/core.png}
+	\caption{RabbitMQ.}
+\end{figure}
+
+\nt{RabbitMQ è scritto in Erlang.}
+
+\dfn{Erlang}{
+	Erlang è un linguaggio concorrente funzionale:
+	\begin{itemize}
+		\item È multiprocesso e usa processi concorrenti leggeri.
+		\item Ha un meccanismo di fault tolerance (let it crash) per cui quando un processo cade viene recuperato insieme al suo stato.
+		\item Ha un clustering interno che lo rende scalabile.
+		\item Aggiorna a nuove versioni in zero-downtime.
+		\item È resiliente.
+	\end{itemize}
+}
+
+\paragraph{Concetti chiave di RabbitMQ:}
+
+\begin{itemize}
+	\item Exchange: i producers inviano qua i loro messaggi. Sono il punto di smistamento dei messaggi.
+	\item Binding: collega queue a exchange.
+	\item Queue: viste solo dai consumers. Se ci sono più consumatori il messaggio verrà dato in modo round-robin (equo).
+\end{itemize}
+
+\paragraph{Default exchange:}
+
+\begin{itemize}
+	\item È un direct exchange.
+	\item Sempre attivo.
+	\item Quando una coda è dichiarata c'è un binding  tra il suo nome e la chiave di binding per accedere a essa.
+\end{itemize}
+
+\begin{figure}[h]
+	\centering
+	\includegraphics[scale=0.3]{03/de.png}
+	\caption{Direct Exchange.}
+\end{figure}
+
+\paragraph{Competing Consumers:}
+
+\begin{itemize}
+	\item Si vuole scalare:
+	      \begin{itemize}
+		      \item Molteplici repliche/istanze dello stesso servizio.
+		      \item Utile per il riutilizzo del codice.
+	      \end{itemize}
+	\item Si bilancia il carico:
+	      \begin{itemize}
+		      \item Applica round-robin.
+		      \item Salta un consumer se non risponde.
+	      \end{itemize}
+	\item QoL:
+	      \begin{itemize}
+		      \item Prefetch count: threshold dei messaggi prima di assumere che un consumer non risponda.
+		      \item Il default è 1, ma può essere configurato, specialmente per servizi che richiedono operazioni lunghe.
+	      \end{itemize}
+\end{itemize}
+
+
+\paragraph{Exchange types:}
+
+\begin{itemize}
+	\item Direct exchange.
+	\item Fanout exchange: broadcasting puro.
+	\item Topic exchange: permette Publish \& Subscribe sofisticato.
+\end{itemize}
+
+\paragraph{Gestione degli errori:}
+
+\begin{itemize}
+	\item ACK automatici (non ci sono acknowledge) o manuali (di default sono manuali).
+	\item Con gli ACK manuali i consumers possono inviare ack o nack.
+	\item I consumers possono configurare il prefetch time.
+	\item I producers possono decidere se un messaggio è persistente o meno.
+	\item Le queue possono essere durabili o meno.
+\end{itemize}
+
+\subsection{Temi}
+
+\dfn{Message Ordering \& Sharing}{
+	La code di messaggio sono FIFO, ma in caso di più consumers in competizione con differenti velocità i messaggi possono essere consumate out-of-order.
+}
+
+\paragraph{Possibile soluzione (\fancyglitter{sharding}):}
+
+\begin{itemize}
+	\item Scegliere una chiave nel payload del messaggio da usare come \fancyglitter{sharding key}.
+	\item La queue è divisa in \fancyglitter{shards}.
+	\item I messaggi vengono assegnati a ciascuna shard in maniera dipendente dalla chiave.
+	\item Ogni shard è gestita da un solo consumer.
+	\item In caso di scaling se un'istanza di un servizio va giù la sua shard viene riassegnata.
+\end{itemize}
+
+\nt{Nei casi in cui lo sharding non è supportato dal broker è possibile implementare uno sharding manuale (logico) tramite \fancyglitter{message routing}.}
+
+\begin{figure}[h]
+	\centering
+	\includegraphics[scale=0.4]{03/sharding.png}
+	\caption{Sharding.}
+\end{figure}
+
+\dfn{Message Duplication}{
+	I message broker solitamente garantiscono at-least-once delivery:
+	\begin{itemize}
+		\item Garantire esattamente una consegna è troppo costoso.
+		\item La duplicazione è spesso causata da una mancanza di acknowledgement alla ricezione.
+	\end{itemize}
+}
+
+\paragraph{Le possibili soluzioni sono:}
+
+\begin{itemize}
+	\item Se il message handler è idempotente la duplicazione non ha alcun effetto.
+	\item Altrimenti i messaggi possono essere deduplicati usando chiavi di idempotenza.
+\end{itemize}
+
+\dfn{Transactional Message}{
+	Aggiornamento atomico del DB e pubblicazione del messaggio.
+}
+
+\paragraph{Le transazioni distribuite non sono una soluzione:}
+
+\begin{itemize}
+	\item Non supportate dai DB NoSQL.
+	\item Non supportate dai moderni message broker (RabbitMQ, Kafka, etc.).
+	\item Sono una forma di comunicazione sincrona tra processi.
+\end{itemize}
+
+\paragraph{Pattern per gestire l'upgrade atomico del DB:}
+
+\begin{itemize}
+	\item \fancyglitter{Transactional outbox:} quando si aggiorna il DB si tiene una tabella con la coda dei messaggi che si vogliono inviare.
+	\item Questo sfrutta l'atomicità del DB.
+	\item Con un servizio a parte si vanno a leggere questi messaggi e li si invia.
+	\item Si scorpora l'intenzione dall'azione.
+\end{itemize}
+
+\subsection{Il Pattern SAGA}
+
+\thm{CAP}{
+	In un sistema distribuito sono garantite solo 2 delle seguenti proprietà:
+	\begin{itemize}
+		\item Partition-tolerance: il sistema davanti a un fallimento deve comunque rimanere in piedi.
+		\item Availability: ogni richiesta riceve una risposta.
+		\item Consistency: ogni richiesta riceve la risposta basata sui dati più recenti.
+	\end{itemize}
+}
+
+\nt{
+	La Partition-tolerance non è negoziabile.
+}
+
+\clm{}{}{
+	\begin{itemize}
+		\item Assicurare la consistenza vuol dire effettuare transazioni distribuite, riducendo di molto availability.
+		\item Le architetture microservizi prediligono l'availability sopra la consistenza.
+	\end{itemize}
+}
+
+\dfn{SAGA}{
+	Il pattern SAGA  è un modo di preservare l'availability garantendo un'eventuale consistenza.
+}
+
+
+\paragraph{Idea di base di SAGA:}
+
+\begin{itemize}
+	\item Si organizza il workflow in modo che sia composto da tre blocchi consecutivi di transazioni locali (LTs):
+	      \begin{itemize}
+		      \item Un blocco di transazioni compensabili: in cui è possibile fare rollaback.
+		      \item Un blocco pivot: l'ultima transazione che può fallire.
+		      \item Un blocco di transazioni ripetibili.
+	      \end{itemize}
+	\item Per ogni transazione compensabile:
+	      \begin{itemize}
+		      \item Se c'è un fallimento si invocano tutte le transazioni compensabili in ordine inverso (rollaback esplicito).
+	      \end{itemize}
+\end{itemize}
+
+\nt{Le saghe possono essere implementate sia come coreografia che come orchestrazione.}
+
+\paragraph{SAGA:}
+
+\begin{itemize}
+	\item Non è ACID.
+	\item È solo ACI.
+	\item Non esiste una soluzione reale, ma solo contromisure.
+\end{itemize}
+
+\section{Redis e Kafka}
+
+\subsection{Redis}
+
+\dfn{Redis}{
+	Redis è un data store tenuto in memoria basato su coppie (chiave, valore).
+}
+
+\paragraph{Redis è usato per:}
+
+\begin{itemize}
+	\item Salvare dati transienti.
+	\item Accesso rapido con caching.
+	\item Gestire lock distribuiti.
+	\item Messaging publisher-subscriber.
+\end{itemize}
+
+\nt{Non viene usato per salvare dati persistenti di business logic.}
+
+\paragraph{Persistenza di Redis:}
+
+\begin{itemize}
+	\item RDB (Redis DataBase): un dump che avviene ogni $N$ secondi.
+	      \begin{itemize}
+		      \item Veloce, files piccoli.
+		      \item Buono per: caching, quick restarts.
+	      \end{itemize}
+	\item AOF (Append Only File): operazione di logging.
+	      \begin{itemize}
+		      \item Sicuro, files grandi, lento rispetto a RDB.
+		      \item Buono per: perdita di dati minimale.
+	      \end{itemize}
+\end{itemize}
+
+\nt{
+	Spesso sono usati entrambi.
+}
+
+\paragraph{Rappresentazione dei dati:}
+
+\begin{itemize}
+	\item \fancyglitter{Chiavi:} stringhe.
+	      \begin{itemize}
+		      \item Create quando le si assegna un valore.
+		      \item Cancellate quando non servono più.
+	      \end{itemize}
+	\item \fancyglitter{Valori:} stringhe, liste, set, hash, set ordinati, stream.
+	      \begin{itemize}
+		      \item Per ogni tipo sono definite delle possibili operazioni (mutuamente esclusive tra tipi).
+		      \item Quando un valore è acceduto in scrittura si crea una chiave.
+		      \item Tutte le operazioni sono atomiche e sicure rispetto alla concorrenza.
+	      \end{itemize}
+\end{itemize}
+
+\paragraph{Quando usare Redis:}
+
+\begin{itemize}
+	\item Quando bisogna salvare nella memoria per gestire workflow o sessioni:
+	      \begin{itemize}
+		      \item Salvare stati di un servizio per renderlo stateful.
+		      \item Il servizio non può essere facilmente replicato.
+		      \item Il servizio diventa stateless: Redis gestisce gli accessi concorrenti.
+	      \end{itemize}
+	\item Redis può essere utilizzato se lo stato è:
+	      \begin{itemize}
+		      \item Ricalcolabile: può essere costruito a partire dal database.
+		      \item Usato da repliche del servizio.
+		      \item Effimero: non ha bisogno di vera persistenza.
+	      \end{itemize}
+\end{itemize}
+
+\subsection{Kafka}
+
+\begin{figure}[h]
+	\centering
+	\begin{minipage}{0.48\textwidth}
+		\dfn{Apache Kafka}{
+			Apache Kafka è un message broker distribuito:
+			\begin{itemize}
+				\item Adotta solo un approccio Publish/Subscribe.
+				\item Si basa sulla nozione di Event Streaming.
+				\item Permette uno storage persistente di Event Streams.
+			\end{itemize}
+		}
+		\nt{Garantisce esattamente una consegna mediante deduplicazione a tempo di pubblicazione.}
+	\end{minipage}
+	\hfill
+	\begin{minipage}{0.48\textwidth}
+		\centering
+		\includegraphics[scale=0.4]{03/kafka.png}
+	\end{minipage}
+\end{figure}
+
+\clm{Use Cases}{}{
+	\begin{itemize}
+		\item Tracking di attività su un website.
+		\item Monitoraggio e statistiche aggregate.
+		\item Logs.
+		\item Streaming di dati.
+		\item Sincronizzare istanze di database distribuiti.
+		\item \fancyglitter{Event Sourcing:}
+		      \begin{itemize}
+			      \item Pattern architetturale in cui tutti i cambiamenti di stato sono salvati come eventi.
+		      \end{itemize}
+	\end{itemize}
+}
+
+\paragraph{Un \fancyglitter{evento} è caratterizzato da:}
+
+\begin{itemize}
+	\item Una chiave (qualifica l'evento).
+	\item Valore (descrive l'evento).
+	\item Timestamp.
+	\item Meta-Headers.
+\end{itemize}
+
+\paragraph{Gli eventi sono pubblicati in \fancyglitter{topics}:}
+
+\begin{itemize}
+	\item I topics sono logs append-only.
+	\item I consumatori li leggono all'infinito.
+	\item Non è possibile cancellare eventi da un topic:
+	      \begin{itemize}
+		      \item Si può cancellare l'intero topic.
+		      \item È possibile compattare il topic e tenere solo gli ultimi eventi per ciascuna chiave.
+		      \item Cancellazione automatica in base a un \fancyglitter{retention time}.
+	      \end{itemize}
+\end{itemize}
+
+\begin{figure}[h]
+	\centering
+	\includegraphics[scale=0.35]{03/event streaming.png}
+	\caption{Event Streaming.}
+\end{figure}
+
+\nt{Kafka può essere eseguita come cluster di brokers per migliorare la disponibilità e la scalabilità. I topic possono essere partizionati.}
+
+\begin{figure}[h]
+
+	\centering
+	\includegraphics[scale=0.35]
+	{03/partition.png}
+	\caption{Partizionamento.}
+\end{figure}
+
+\paragraph{I consumers:}
+
+\begin{itemize}
+	\item Sono organizzati in gruppi.
+	\item È il gruppo a iscriversi al topic.
+	\item \fancyglitter{Fan Out:} tutti ricevono tutto.
+	\item Ogni partizione è assegnata a un solo consumer in ogni gruppo.
+\end{itemize}
+
+\cor{Offset}{
+	Ogni evento in una partizione è associato a uno specifico offset:
+	\begin{itemize}
+		\item Ogni evento in un topic viene indicizzato.
+		\item Univoco all'interno delle partizioni.
+	\end{itemize}
+}
+
+\paragraph{Kafka:}
+
+\begin{itemize}
+	\item Tiene traccia dell'offset di ogni consumer group in una data partizione:
+	      \begin{itemize}
+		      \item Quando un consumer legge da un topic Kafka fornisce l'offset successivo.
+		      \item Dopo aver processato un evento il consumer conferma la lettura.
+	      \end{itemize}
+	\item Usa gli offset per:
+	      \begin{itemize}
+		      \item Sapere la posizione di ogni consumer group.
+		      \item Dove un consumer deve riprendere dopo un crash.
+		      \item Quali consumers sono rimasti indietro.
+	      \end{itemize}
+\end{itemize}
+
+\qs{}{Come comunica Kafka?}
+
+\begin{itemize}
+	\item Kafka esegue come un cluster di nodi:
+	      \begin{itemize}
+		      \item \fancyglitter{Broker:}
+		      \item \fancyglitter{Controller}
+	      \end{itemize}
+	\item Comunica con il proprio protocollo TCP:
+	      \begin{itemize}
+		      \item PLAINTEXT.
+		      \item Le porte di default sono 9092 per publishers e subscribers e 9093 per controllo interno.
+	      \end{itemize}
+	\item
+\end{itemize}
+

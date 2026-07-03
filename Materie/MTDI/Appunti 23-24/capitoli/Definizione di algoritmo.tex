@@ -1,0 +1,43 @@
+\chapter{Definizione di algoritmo}
+
+\section{Cos'è un algoritmo?}
+
+\nt{Nelle seguenti definizioni si fa implicitamente riferimento al solo paradigma imperativo.}
+
+\dfn{Algoritmo}{
+Un \newfancyglitter{algoritmo}: 
+\begin{itemize}
+    \item necessità di una condizione di terminazione $\rightarrow$ termina sempre;
+    \item deve avere chiarezza e precisione nelle istruzioni $\rightarrow$ non si devono lasciare ambiguità.
+\end{itemize}
+}
+
+\cor{Proprietà di un algoritmo}{
+\begin{itemize}
+    \item Finitezza: termina in un numero finito di passi;
+    \item Precisione: ogni passo è precisamente definito;
+    \item I/O: un algoritmo ha 0+ input e ha 1+ output;
+    \item Fattibilità: un algoritmo deve essere effettivamente eseguibile;
+    \item Correttezza;
+    \item Efficienza.
+\end{itemize}
+}
+
+\nt{In una scuola secondaria bisogna utilizzare un linguaggio più semplice rispetto ai termini accademici. Inoltre per definire un algoritmo o uno pseudo-algoritmo è utile immaginare un'interprete meccanico che deve avere istruzioni per ogni caso possibile.}
+
+\dfn{Problemi computazionali}{Un \newfancyglitter{problema computazionale} è una collezione di domande, le istanze, per cui si sia stabilito un criterio astratto per riconoscere le risposte corrette.}
+
+\ex{Massimo comun divisore}{
+Ingressi:
+\begin{itemize}
+    \item Coppie di interi $a$, $b$ che non siano entrambi nulli. 
+\end{itemize}
+Uscite:
+\begin{itemize}
+    \item Un intero $c$ tale che:
+    \begin{itemize}
+        \item $c$ divide sia $a$ che $b$;
+        \item se $d$ divide $a$ e $b$ allora $d$ divide $c$.
+    \end{itemize}
+\end{itemize}
+}

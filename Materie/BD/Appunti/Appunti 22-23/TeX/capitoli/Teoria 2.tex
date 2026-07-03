@@ -1,0 +1,83 @@
+\chapter{Teoria 2}
+
+\section{Modelli logici}
+
+Ci sono principalmente tre tipi di modelli logici tradizionali: gerarchici, reticolari e relazionali. I modelli gerarchici e reticolari utilizzano puntatori tra record. Il modello relazionale (l'unico che vedremo in questo corso) è basato su valori.
+
+\subsection{Il modello relazionale}
+
+Il \textcolor{blue}{modello relazionale} fu proposto da E. F. Codd nel 1970, ma divento disponibile nei DBMS commerciali solamente nel 1981. Esso si basa sul concetto di relazione. Ci sono tre possibili accezioni di relazione: quella matematica, quella del modello relazionale e quella del modello ER (spesso tradotta come \textit{associazione}). Nelle relazioni matematiche la struttura è posizionale\footnote{I ruoli di ogni dominio sono distinti dalla posizione}, mentre la relazione del modello relazionale usa una struttura non posizionale.
+
+A ogni dominio viene associato un nome univoco chiamato \textcolor{blue}{attributo}. Inoltre le sequenze di n elementi sono chiamate \textcolor{blue}{tuple}.
+In una tabella che rappresenta una relazione l'ordine delle righe e delle colonne è irrilevante. Una tabella rappresenta una relazione se:
+\begin{itemize}
+    \item le righe sono diverse tra di loro;
+    \item le intestazioni delle colonne sono diverse tra di loro;
+    \item ogni colonna ha valori omogenei (sempre dello stesso tipo). 
+\end{itemize}
+
+I riferimenti tra i dati in relazioni diverse sono rappresentati con i valori dei domini delle tuple.
+
+\section{Strutture basate su valori}
+
+Una \textcolor{blue}{struttura basata su valori} è indipendente dalle strutture fisiche e rappresenta solo ciò che è rilevante dal punto di vista dell'applicazione. I dati sono facilmente \textcolor{blue}{portabili} da un sitema a un altro.
+
+Definizioni importanti: 
+\begin{itemize}
+    \item \textcolor{blue}{Schema di relazione}: un nome R con un insieme di attributi $A_1,...,A_n \rightarrow R(A_1,...,A_n)$. Es. Studenti(matricola, nome, cognome);
+    \item \textcolor{blue}{Schema di base di dati}: insieme degli schemi di relazione 
+    
+    R = $\{R_1(X_1),...,R_k(X_k)\}$. 
+    
+    Es.\{Studenti(matricola, nome, cognome), Esami(studente, voto, corso), Corsi(codice, titolo, docente)\};
+    \item \textcolor{blue}{Tupla}: su un insieme di attributi ($A_1,...,A_n$) associa a ciascun attributo $A_i$ un valore del dominio di $A_i$. t[$A_i$] è il valore della tupla t sull'attributo $A_i$. Es. Esami(studente, voto, corso), t=('3456',30,'04'), t[voto] = 30;
+    \item \textcolor{blue}{Istanza di relazione}: su uno schema di relazione R(X) dove X sono attributi è l'insieme r di tuple su X;
+    \item \textcolor{blue}{Istanza di base di dati}: su uno schema di base di dati \{$R_1(X_1), ..., R_h(X_h)$\} è l'insieme di relazioni \{$r_1,..,r_h$\}.
+\end{itemize}
+
+Le tuple costringono a usare determinati formati, ma in alcuni casi i valori potrebbero non essere disponibili. Es. Non tutti hanno un secondo nome. In questo caso si introduce un valore extra: il \textcolor{blue}{valore nullo} (NULL).
+
+\subsection{Tipi di valore nullo}
+
+\label{Valori nulli}
+
+Ci sono vari casi di valore nullo, ma i DBMS non fanno distinzioni:
+\begin{itemize}
+    \item valore sconosciuto: il valore esiste, ma non è noto. Es. il numero di telefono;
+    \item valore inesistente: il valore non esiste. Es. permesso di soggiorno;
+    \item valore senza informazione: il valore può essere sconosciuto o inesistente. Es. numero passaporto.
+\end{itemize}
+
+\section{Strutture nidificate}
+
+Le \textcolor{blue}{strutture nidificate } sono strutture che contengono altre strutture. Nei modelli relazionali i valori devono essere semplici e non relazioni, per cui non sono ammesse (\textit{prima forma normale}). Per rappresentare strutture nidificate si usano più tabelle per cui si possono rappresentare informazioni più precise.
+
+\section{Vincoli}
+\label{Vincoli}
+Un \textcolor{blue}{vincolo} è un predicato logico che associa a ogni istanza un valore di verità.
+
+\subsection{Vincoli di integrità}
+
+I \textcolor{blue}{vincoli di integrità} servono a garantire la correttezza dei dati. Se, dopo una modifica, il vincolo non risulta vero il DBMS rifiuta il cambiamento. Alcuni tipi di vincoli sono:
+\begin{itemize}
+    \item \textcolor{blue}{intrarelazionali}: che riguardano una sola relazione;
+    \item \textcolor{blue}{interrelazionali}: che riguardano più relazioni.
+\end{itemize}
+
+I \textcolor{blue}{vincoli di tupla} sono intrarelazionali ed esprimono condizioni sul valore di ciascuna tupla. Es. voto $\geq$ 18 AND voto $\leq$ 30.
+
+\subsection{Vincoli di integrità referenziale}
+
+I vincoli di integrità referenziale sono detti anche \textcolor{blue}{vincoli di foreign key} e servono per garantire la correttezza dei riferimenti tra tabelle. Questi vincoli hanno sempre un verso (es. X[tabella1] referenzia X[tabella2]). Se ci sono valori nulli i vincoli possono essere resi meno restrittivi modificando la base di dati. Alcune modifiche delle istanze possono essere gestite in questi modi:
+\begin{itemize}
+    \item eliminazione a cascata: se viene eliminata una tupla referenziata si eliminano anche le tuple che la referenziano;
+    \item introduzione di valori nulli: se viene eliminata una tupla referenziata si settano a NULL tutti i valori che la referenziano.
+\end{itemize}
+
+\subsection{Vincoli di chiave}
+
+\label{Vincoli di chiave}
+
+Una \textcolor{blue}{superchiave} è un insieme di attributi usati per identificare univocamente le tuple di una relazione. L'insieme di tutti gli attributi è sempre una superchiave. Una superchiave \textcolor{blue}{minimale} k è una superchiave a cui non è possibile rimuovere nessun attributo, altrimenti non sarebbe più una superchiave. k è una \textcolor{blue}{chiave (candidata)} se e solo se è una superchiave minimale. Tutte le chiavi sono superchiavi. Una \textcolor{blue}{chiave primaria} è una particolare chiave scelta come modo preferito per identificare le tuple. Ogni relazione ha una e una sola chiave primaria, ma può avere più superchiavi.
+
+L'esistenza delle chiavi permette di accedere a ciascun dato. In presenza di valori nulli\footnote{vedi \ref{Valori nulli}} i valori della chiave non permettono di identificare le tuple. La chiave primaria non può assumere valori nulli.

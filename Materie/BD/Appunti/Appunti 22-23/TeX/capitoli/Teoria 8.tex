@@ -1,0 +1,49 @@
+\chapter{Teoria 8}
+
+\section{Decomposizione senza perdita}
+
+Si possono \textcolor{blue}{decomporre} relazioni complesse in relazioni più semplici, mantenendo almeno un elemento in comune (per collegare le relazioni derivate).
+
+Per esempio: S(Matr, NomeS, Voto, Corso, CodC, Titolare) si può decomporre in S1(Matr, NomeS, Voto, Corso) e S2(Corso, CodC, Titolare).
+
+\subsection{Tuple spurie}
+
+Le \textcolor{blue}{tuple spurie} sono una perdita di informazioni quando si ricompongono le relazione. Ci sono delle tuple di troppo, scorrette che risultano indistinguibili dalle tuple corrette.
+
+\paragraph{Decomposizione senza perdita di informazioni:} Dato uno schema di relazione R(A), dati due
+sottoinsiemi di attributi $A_1 \in A$ e $A_2 \in A$, con $A_1 U A_2$ = A,
+$\{R_1(A_1), R_2(A_2)\}$ è una decomposizione senza perdita di informazione se e solo se per ogni istanza r(A) di R(A) vale
+\begin{center}
+    r(A) = $r_1(A_1) \bowtie r_2(A_2)$
+\end{center}
+
+dove
+\begin{itemize}
+    \item $r_1(A_1) = \pi_{A_1}(r(A))$;
+    \item $r_2(A_2) = \pi_{A_2}(r(A))$.
+\end{itemize}
+
+\paragraph{Teorema della decomposizione senza perdita:} Sia R(A) uno schema con dipendenze funzionali F decomposto in $\{R_1(A_1), R_2(A_2)\}$ dove $A_1 U A_2$ = A.
+La decomposizione di R(A) in  $\{R_1(A_1), R_2(A_2)\}$ è senza perdita di informazione per ogni istanza che soddisfa le dipendenze funzionali F se e solo se:
+
+\begin{center}
+    $A_1 \subseteq (A_1 \cup A_2)_F^+ \vee A_2 \subseteq (A_1 \cup A_2)_F^+$
+\end{center}
+
+\section{Decomposizione che conserva le dipendenze}
+
+Data una relazione R(A) con dipendenze funzionali F, decomposta in $R_1(A_1)$ con la restrizione $F_1$ e $R_2(A_2)$ con la restrizione $F_2$, la decomposizione $\{R_1,R_2\}$ conserva le dipendenze quando $F_1 U F_2 \Rightarrow F$.
+
+\section{BCNF}
+
+La BCNF\footnote{Boyce-Codd normal form} prende il nome da Boyce (uno degli inventori di SQL) e Codd (che ha definito il modello relazionale). Esiste un algoritmo per la BCNF (con complessità esponenziale) ma non verrà visto in questo corso.
+
+Data una relazione R(A) in 1NF e un insieme di dipendenze funzionali F, la relazione è in BCNF se e solo se per ogni $X \rightarrow Y \in F$ si verifica almeno una delle seguenti condizioni:
+
+\begin{itemize}
+    \item $Y \subseteq X$;
+    \item X è superchiave di R.
+\end{itemize}
+
+La BCNF evita le ridondanze perchè ogni antecedente di una dipendenza funzionale è superchiave. La BCNF evita le anomalie.
+Esistono schemi che vìolano la BCNF e per cui non esiste alcuna decomposizione in BCNF che conservi le dipendenze.

@@ -1,0 +1,198 @@
+\chapter{Programmare nel \texorpdfstring{$\mathcal{\lambda}$}--calcolo}
+
+\section{Semantica}
+
+\dfn{Valori booleani}{
+\begin{itemize}
+    \item TRUE = $\lambda x. \lambda y.x$;
+    \item FALSE = $\lambda x. \lambda y.y$;
+    \item IF = $\lambda z.z$
+\end{itemize}
+}
+
+\mprop{}{
+\begin{itemize}
+    \item IF TRUE $M N \Leftrightarrow M$;
+    \item IF TRUE $M N \Leftrightarrow N$.
+\end{itemize}
+}
+
+\dfn{Operatori logici}{
+\begin{itemize}
+    \item AND = $\lambda x.\lambda y.$IF $ x y$ FALSE;
+    \item OR = $\lambda x.\lambda y.$IF $x$ TRUE $y$;
+    \item NOT = $\lambda x.$IF $x$ FALSE TRUE.
+\end{itemize}
+}
+
+\dfn{Coppie}{
+\begin{itemize}
+    \item PAIR = $ \lambda x.\lambda y.\lambda z. z x y$;
+    \item FST = $\lambda p.p$ TRUE;
+    \item SND = $\lambda p.p$ FALSE.
+\end{itemize}
+}
+
+\mprop{}{
+\begin{itemize}
+    \item FST (PAIR $M N$) $\Leftrightarrow M$;
+    \item SND (PAIR $M N$) $\Leftrightarrow N$.
+\end{itemize}
+}
+
+\dfn{Numeri naturali (codifica di Church)}{Dato $k \in \bbN$ scriviamo $M^k N$ per $M (M ( ...(M N)))$ (k volte). In particolare:
+
+$M^0 N = N$.
+\begin{itemize}
+    \item $\underline{n} = \lambda f.\lambda x.f^n x$ (codifica del numero naturale n);
+    \item SUCC = $\lambda a.\lambda f.\lambda x.a f (f x)$ (funzione successore).
+\end{itemize}
+}
+
+\nt{Un numero naturale è un iteratore che itera una certa funzione n volte su un certo elemento}
+
+\section{Operazioni sui numeri naturali}
+
+\dfn{ADD, MUl e EXP}{
+\begin{itemize}
+    \item ADD = $\lambda a.\lambda b.b \text{SUCC} a$;
+    \item MUL = $\lambda a.\lambda b.b (\text{ADD} a) \underline{0}$;
+    \item EXP = $\lambda a.\lambda b. b (\text{MUL} a) \underline{1}$.
+\end{itemize}
+}
+
+\mprop{}{
+\begin{itemize}
+    \item ADD $\underline{m} \underline{n} \Leftrightarrow \underline{m + n}$;
+    \item MUL $\underline{m} \underline{n} \Leftrightarrow \underline{m * n}$;
+    \item EXP $\underline{m} \underline{n} \Leftrightarrow \underline{m^n}$.
+\end{itemize}
+}
+
+\dfn{NEXT e PRED}{
+\begin{itemize}
+    \item NEXT = $\lambda p.\text{PAIR } (\text{SND } p) (\text{SUCC }(\text{SND } p))$;
+    \item PRED = $\lambda a.\text{FST } (a \text{ NEXT } (\text{PAIR } \underline{0}\:\: \underline{0}))$.
+\end{itemize}
+}
+
+\mprop{}{
+\begin{itemize}
+    \item NEXT (PAIR $\underline{m}$ e $\underline{n}$) $\Leftrightarrow$ PAIR $\underline{n}\:\: \underline{n + 1}$;
+    \item PRED $\underline{n} \Leftrightarrow \begin{cases}
+        \underline{0}\:\:\:\:\:\:\:\:\text{ se } n = 0 \\
+        \underline{n -1} \text{ se } n > 0
+    \end{cases}$
+\end{itemize}
+}
+
+\dfn{ISZERO}{
+\begin{itemize}
+    \item ISZERO = $\lambda a.a (\lambda x.\text{FALSE TRUE})$.
+\end{itemize}
+}
+
+\mprop{}{
+\begin{itemize}
+    \item ISZERO $\underline{n} \Leftrightarrow \begin{cases}
+        \text{TRUE}\:\text{ se } n = 0 \\
+        \text{FALSE} \text{ se } n \not= 0
+    \end{cases}$
+\end{itemize}
+}
+
+\dfn{Punto fisso}{$x$ è un punto fisso di $F$ se $x = F(X)$}
+
+\dfn{Operatore di un punto fisso}{FIX = $\lambda f.(f(x \:\: x)) (\lambda x.f(x \:\: x)) $}
+
+\mprop{}{FIX $M \Leftrightarrow M (\text{FIX } M)$}
+
+\nt{FIX è utilizzato per definire funzioni ricorsive}
+
+\dfn{FACT}{FACT = FIX AUX, dove AUX =$\lambda f.\lambda a.$IF (ISZERO $a$) \underline{1} (MUL $a$ (f (PRED a)))}
+
+\nt{AUX "butta via" il punto fisso quando $a$ è zero (caso base), restituendo 1}
+
+\mprop{}{FACT $\Leftrightarrow \lambda a.$IF (ISZERO $a$) \underline{1} (MUL $a$ (FACT (PRED a)))}
+
+\section{Sintassi delle \texorpdfstring{$\mathcal{\lambda}$}--espressioni con booleani}
+
+\dfn{Estensione della sintassi}{\textbf{Espressioni } $M, N ::== $
+
+\begin{itemize}
+    \item x (variabile);
+
+    \item c (costante);
+
+    \item $\lambda x.M$ (astrazione);
+
+    \item $M \:\: N$ (applicazione);
+
+    \item if $M \:\: N_1 \:\: N_2$ (condizionale).
+\end{itemize}
+
+\textbf{Costanti}  c $\in$ \{False, True\}.
+
+\textbf{Riduzioni per if}
+
+\begin{itemize}
+    \item if true $M \:\: N \rightarrow M$; 
+    \item if false $M \:\: N \rightarrow N$. 
+\end{itemize}
+
+}
+
+\nt{Quest'estensione introduce possibili errori. Per catturarli si introduce il concetto di \textit{tipo}}
+
+\dfn{Sintassi dei tipi}{
+\textbf{Tipi} $t,\:s ::==$
+\begin{itemize}
+    \item Bool (booleani);
+    \item $t \rightarrow s$ (funzioni).
+\end{itemize}
+}
+
+\nt{Per cui esistono due tipi: Bool e freccia ($\rightarrow$)}
+
+\dfn{Contesto}{Un contesto $\Gamma$ è una funzione parziale da variabili a tipi}
+
+\mprop{}{
+\begin{itemize}
+    \item Scriviamo $dom(\Gamma)$ per il dominio di $\Gamma$;
+    \item Scriviamo $x\::t$ per il contesto $\Gamma$ tale che $dom(\Gamma) = \{x\}$ e $\Gamma(x) = t$;
+    \item Scriviamo $\Gamma$, $\Gamma'$ per l'unione di $\Gamma$ e $\Gamma'$ quando $do(\Gamma) = \{x\} \cap 
+    dom(\Gamma') = \emptyset$
+\end{itemize}
+}
+
+\subsection{Regole di tipo}
+
+\dfn{Regole di tipo}{Le regole di tipo hanno la forma:
+$$\frac{\text{Premessa$_1$ ... Premessa$_n$}}{\text{Conclusione}}$$
+
+Se le premesse sono vere, allora la conclusione è vera
+}
+
+\nt{Una regola senza premesse è detta \textit{assioma} ed è vero}
+
+\dfn{Regole di ripo per il $\lambda$-calcolo con costanti}{
+\begin{itemize}
+    \item $[\text{t-var}] =  \frac{}{\Gamma, x : t \vdash x : t}$;
+    \item $[\text{t-bool}] = \frac{}{\Gamma \vdash c : \text{ Bool }}$;
+    \item $[\text{t-lam}] = \frac{\Gamma, x : t \vdash M : s}{\Gamma \vdash \lambda x.M : t \rightarrow s}$;
+    \item $[\text{t-if}] = \frac{\Gamma\vdash M: \text{ Bool } \:\:\: \Gamma\vdash N_1 : t\:\:\: \Gamma\vdash N_2 : t}{\Gamma\vdash \text{ if } M\:N_1\:N_2 : t}$;
+    \item  ${\text{t-app}} = \frac{\Gamma \vdash M : t \rightarrow s\:\:\:\Gamma N : t}{\Gamma M\:N : s}$.
+\end{itemize}
+}
+
+\nt{Le regole vanno lette dalla conclusione fino alle premesse}
+
+\mlenma{Subject reduction}{Se $\Gamma\vdash M : t$ e $M \rightarrow N$, allora $\Gamma \vdash N : t$}
+
+\dfn{Valore}{Diciamo che $M$ è un \textit{valore} se $M$ è una costante o un'astrazione}
+
+\nt{Un valore è un risultato}
+
+\thm{Progresso}{Se $\vdash M : t$ e $M\Rightarrow N \not\rightarrow$ allora $N$ è un valore}
+
+\nt{Il teorema del progresso enuncia che se $M$ si riduce a $N$ in un certo numero di passi e $N$ non si può ridurre, allora $N$ è ben tipato}

@@ -1,0 +1,190 @@
+\chapter{Kubernetes}
+
+\section{Introduzione}
+
+\subsection{Cos'è Kubernetes?}
+\begin{figure}[h]
+	\centering
+	\includegraphics[scale=0.5]{04/k8.png}
+	\caption{Schema di Kubernetes.}
+\end{figure}
+
+
+\dfn{Kubernetes (K8)}{
+	Kubernetes si occupa di orchestrare le applicazioni a microservizi.
+}
+
+\paragraph{K8 nasce da google:}
+
+\begin{itemize}
+	\item Progetto open source scritto in Go\footnote{Che schifo.}.
+	\item La prima versione risale a Gennaio 2015.
+	\item È diventato la piattaforma per eseguire applicazioni a microservizi che eseguono nel cloud.
+\end{itemize}
+
+\subsection{Caratteristiche}
+
+\paragraph{Orchestrare i microservizi:}
+
+\begin{itemize}
+	\item Permette di farne i deploy.
+	\item Gestisce le interaazioni con l'ambiente.
+	\item Fornisce una parte dell'infrastruttura.
+	\item Rispondere a eventi in tempo reale:
+	      \begin{itemize}
+		      \item Scalabilità.
+		      \item Load balancing.
+		      \item Garantisce disponibilità e gestisce fallimenti.
+	      \end{itemize}
+	\item Logs e metriche numeriche.
+\end{itemize}
+
+\paragraph{K8 opera come \fancyglitter{modello dichiarativo}:}
+
+\begin{itemize}
+	\item Le configurazioni o \fancyglitter{manifest} descrivono cone l'applicazione deve essere quando è in esecuzione.
+	\item Si oppone al modello imperativo che specifica i comandi.
+	\item È responsabilità di K8 fare ciò che è necessario per rinconciliarsi con lo statpìo desiderato.
+\end{itemize}
+
+\dfn{Kubernetes Cluster}{
+	I vari elementi del cluster sono i nodi, ossia macchine virtuali che possono svolgere due diversi ruoli:
+	\begin{itemize}
+		\item Worker: quelli che svolgono effettivamente il lavoro.
+		\item Control Plane: i timonieri.
+	\end{itemize}
+}
+
+\begin{figure}[h]
+
+	\centering
+	\includegraphics[scale=0.5]{04/cluster.png}
+	\caption{Kubernetes Clusters.}
+\end{figure}
+
+\begin{figure}[h]
+	\centering
+	\includegraphics[scale=0.4]{04/cpn.png}
+	\caption{Control Plane Node.}
+\end{figure}
+
+\paragraph{High-Availability Control Plane:}
+
+\begin{itemize}
+	\item I control plane di K8:
+	      \begin{itemize}
+		      \item Sono più di 1.
+		      \item Uno è il leader, se fallisce un altro prende il suo posto.
+		      \item Si distribuiscono i nodi su più \fancyglitter{failure domains}.
+	      \end{itemize}
+	\item Le decisioni vengono prese a maggioranza:
+	      \begin{itemize}
+		      \item Per cui si ha sempre un numero dispari (solitamente 3 o 5).
+		      \item I control plane nodes che non sono nella maggioranza vanno in \fancyglitter{read-only mode}.
+		      \item 3 nodi tollerano 1 fallimento, 5 nodi tollerano 2 fallimenti.
+	      \end{itemize}
+
+\end{itemize}
+\begin{figure}[h]
+
+	\centering
+	\includegraphics[scale=0.4]{04/wn.png}
+	\caption{Worker Node.}
+\end{figure}
+
+\dfn{Pods}{
+	I pods sono l'unità atomica di scheduling in K8:
+	\begin{itemize}
+		\item Impacchettano i containers.
+		\item Fare il deploy di un pod è un'operazione atomica.
+	\end{itemize}
+}
+
+\paragraph{Un Pod è un ambiente di esecuzione:}
+
+\begin{itemize}
+	\item Offre un ulteriore livello di isolamento.
+	\item Espone localmente un IP.
+	\item Sono localhost tra di loro.
+	\item Possono montare volumi condivisi.
+\end{itemize}
+
+\begin{figure}[h]
+
+	\centering
+	\includegraphics[scale=0.5]
+	{04/pod.png}
+	\caption{Ciclo di vita di un pod.}
+\end{figure}
+
+\section{Deployment}
+
+\subsection{Come Avviene il Deploy}
+
+\paragraph{Deployment in K8:}
+
+\begin{itemize}
+	\item È un controller associato al pod che esprime lo stato desiderato tramite manifest YAML.
+	\item Il control plane si occupa di creare repliche.
+	\item Quando è in esecuzione può:
+	      \begin{itemize}
+		      \item Permettere di scalare (cambiare il numero di repliche).
+		      \item Aggiornare l'immagine con 0 downtime.
+		      \item Fare rollback alle versioni precedenti.
+	      \end{itemize}
+\end{itemize}
+
+\nt{Il deployment è stateless.}
+
+\paragraph{App-Level Controllers:}
+
+\begin{itemize}
+	\item Un deployment è un tipo di controller.
+	\item Loop che controlla per deviazioni dallo stato desiderato e tende a ritornarci.
+	\item Se usato con stateful app (RabbitMQ) non si ha scaling.
+	\item Supporta un sub-controller chiamato \fancyglitter{ReplicaSet} che controlla il numero di repliche desiderato.
+\end{itemize}
+
+\paragraph{Altri controller:}
+
+\begin{itemize}
+	\item StatefulSet.
+	\item DaemonSet.
+	\item Job.
+	\item CronJon.
+\end{itemize}
+
+\subsection{Comunicazione Interna}
+
+\paragraph{Nel deployment possiamo dichiarare servizi, in questo modo il controller:}
+
+\begin{itemize}
+	\item Rende l'applicazione raggiungibile tramite DNS.
+	\item Il servizio ha un IP stabile.
+	\item Redirige la connessione alle repliche per il load balancing.
+\end{itemize}
+
+\paragraph{Headless Services:}
+
+\begin{itemize}
+	\item Non redirigono e non fanno load balancing.
+	\item Permette di collegarsi usando i nomi invece che gli IP.
+\end{itemize}
+
+\qs{}{
+	Come comunica il mondo esterno con l'applicazione deployata con K8?
+}
+
+\begin{itemize}
+	\item Si espone il servizio su una porta dell'host:
+	      \begin{itemize}
+		      \item Si specifica la host port.
+		      \item Tutte le richieste vengono rediretteal servizio.
+	      \end{itemize}
+	\item Usa cloud provider service.
+	\item Si usano ingress resources (tipo REST API).
+\end{itemize}
+
+\dfn{Minikube}{
+	Istanza locale per imparare k8 o per testing.
+}

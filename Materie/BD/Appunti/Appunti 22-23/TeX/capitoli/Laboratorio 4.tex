@@ -1,0 +1,75 @@
+\chapter{Laboratorio 4}
+
+\section{Progettazione logica}
+
+La \textcolor{blue}{progettazione logica} è la fase successiva alla progettazione concettuale. 
+
+Dati in ingresso: 
+\begin{itemize}
+    \item schema concettuale;
+    \item informazioni sul carico applicativo;
+    \item modello logico che si vuole adottare.
+\end{itemize}
+
+Dati in uscita: 
+\begin{itemize}
+    \item schema logico;
+    \item vincoli di integrità;
+    \item Documentazione associata.
+\end{itemize}
+
+Si può dividere in due sottofasi: la ristrutturazione dello schema concettuale (ER) e la traduzione verso il modello logico con relative ottimizzazioni.
+
+\section{Ristrutturazione dello schema ER}
+
+La \textcolor{blue}{ristrutturazione dello schema ER} serve a semplificare la traduzione nel modello logico e a ottimizzare le prestazioni. Si usano due indicatori per tenere traccia delle prestazioni: il tempo (numero di occorrenze visitate per un'operazione nel DB) e lo spazio (quantità di memoria per rappresentare i dati). Per poter valutare questi parametri si ha bisogno di alcune informazioni: il volume dei dati (numero di occorrenze e dimensione degli attributi) e le caratteristiche delle operazioni (se interattive o di batch, la frequenza e il numero di entità/associazioni coinvolte). Queste informazioni  vengono rappresentate su apposite tavole.
+
+Per la ristrutturazione dello schema concettuale si possono seguire i seguenti passi.
+
+\subsection{Analisi delle ridondanze}
+
+Una \textcolor{blue}{ridondanza} è un'informazione significativa, ma ricavabile da altre informazioni. Si deve decidere se eliminare le ridondanze o mantenerle, con un calcolo. Le ridondanze rendono più efficienti le operazioni di interrogazione/lettura dei dati, ma rendono meno efficiente l'inserimento e la modifica dei dati, inoltre occupano spazio in memoria.
+
+\subsection{Eliminazione delle generalizzazioni}
+
+Le generalizzazioni non sono rappresentabili nel modello relazionale per cui vanno sostituite con entità, associazioni o regole aziendali (\textit{business rules}). In generale si hanno tre modi per eliminare una generalizzazione:
+
+\begin{itemize}
+    \item si accorpano i figli della generalizzazione nel genitore ("uccidendo" le entità figlie);
+    \item si accorpa il genitore della generalizzazione nei figli ("uccidendo" l'entità genitore);
+    \item si sostituisce la generalizzazione con associazioni, aggiungendo eventuali business rules.
+\end{itemize}
+
+Si possono anche adottare soluzioni ibride.
+
+\subsection{Partizionamento di concetti}
+
+Si separano attributi di uno stesso concetto ai quali si accede in operazioni diverse e si accorpando attributi di concetti diversi a cui si accede con le medesime operazioni. Spesso è possibile rimandare questo problema alla fase di progettazione fisica (che non è argomento di questo corso).
+
+\subsection{Scelta degli identificatori principali}
+
+Si devono scegliere gli identificatori che diventeranno chiave primaria seguendo alcuni criteri:
+
+\begin{itemize}
+    \item assenza di opzionalità;
+    \item semplicità;
+    \item utilizzo nelle operazioni più frequenti/importanti.
+\end{itemize}
+
+Se nessun identificatore rispetta questi criteri si devono introdurre nuovi attributi (per esempio codici) che serviranno da chiave primaria.
+
+\subsection{Attributi composti e attributi multivalore}
+
+Si possono trasformare gli attributi multivalore, reificando l’attributo e aggiungendo un’associazione. Gli attributi composti non sono rappresentabili direttamente in relazionale e devono essere trasformati.
+
+\section{Traduzione verso il modello relazionale}
+
+Le idee di base sono due:
+\begin{itemize}
+    \item le entità diventano relazioni con gli stessi attributi delle entità;
+    \item Le associazioni diventano relazioni con attributi delle associazioni + gli identificatori delle entità coinvolte
+\end{itemize}
+
+Si devono dare nomi più espressivi agli attributi della chiave della relazione che rappresenta l’associazione. 
+
+La traduzione non riesce a tener conto delle cardinalità minime delle associazioni molti a molti. La traduzione dell’associazione uno a molti riesce a rappresentare efficacemente la cardinalità minima della partecipazione che ha 1 come cardinalità massima (se è 0 ammette valori nulli, se è uno non ammette valori nulli). L’identificazione esterna è sempre su un’associazione uno a molti o un’associazione uno a uno.

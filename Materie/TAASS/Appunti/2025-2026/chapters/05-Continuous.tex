@@ -1,0 +1,187 @@
+\chapter{Continuous Integration, Delivery \& Deployment}
+
+
+\section{Introduzione}
+
+\subsection{Continuous Integration}
+
+\dfn{Continuous Integration (CI)}{
+	La continuous integration si riferisce all'integrazione costante del codice prodotto da più persone per fare building e testing automatici.
+}
+
+\nt{
+	Introdotta da Martin Fowler nei primi anni 2000.
+}
+
+\paragraph{Idee base di Fowler:}
+
+\begin{itemize}
+	\item Integrazioni frequenti nel progetto principale (commit e pull).
+	\item Test e build automatici in ambiente pulito.
+	\item Tenere una build \fancyglitter{green}: la build principale deve sempre essere funzionante.
+	\item Aggiustare immediatamente:
+	      \begin{itemize}
+		      \item Fix forward.
+		      \item Revert back.
+	      \end{itemize}
+\end{itemize}
+
+\paragraph{Strumenti}
+
+\begin{itemize}
+	\item Jenkins: self-hosted, complesso.
+	\item GitHub Action/GitLab CI/CD: integrati nei rispettivi servizi.
+	\item Argo Workflows.
+	\item Bitbucket Pipelines.
+	\item TeamCity.
+	\item Azure Pipelines.
+\end{itemize}
+
+\subsection{CI Classica vs Contemporanea}
+
+\paragraph{Classica CI:}
+
+\begin{itemize}
+	\item Trunk-Based Development:
+	      \begin{itemize}
+		      \item Si ha un main (il trunk) come riferimento e i rami hanno vita corta (poche ore, al massimo un paio di giorni).
+		      \item L'integration avviene nel trunk.
+		      \item La strategia preferenziale è il revert back.
+	      \end{itemize}
+	\item Pipeline Model:
+	      \begin{itemize}
+		      \item Sequenza lineare di passaggi (visione Tayloristica): l'output di una fase e l'input della successiva.
+		      \item L'ordine dei passaggi è deterministico.
+		      \item I guasti bloccano la linea.
+		      \item Commit $\rightarrow$ build $\rightarrow$ test $\rightarrow$ integrate (o revert).
+	      \end{itemize}
+\end{itemize}
+
+\paragraph{Contemporary CI:}
+
+\begin{itemize}
+	\item Features branches: nuove features sono sviluppate indipendentemente.
+	\item Quando il branch è pronto si effettua una pull (merge) request.
+	\item Building e testing avvengono su una simulazione del merge.
+	\item Importante:
+	      \begin{itemize}
+		      \item Possono comunque accadere conflitti.
+		      \item Due PR "verdi" possono andare in conflitto tra di loro.
+		      \item Le features branches violano i principi CI.
+	      \end{itemize}
+	\item Modello di Workflow:
+	      \begin{itemize}
+		      \item Multiple pipelines.
+		      \item Eventi o dipendenze possono scatenare pipeline.
+		      \item Oppure pipelines eseguite se si verifica una certa condizione.
+	      \end{itemize}
+\end{itemize}
+
+\paragraph{CI \& Microservices:}
+
+\begin{itemize}
+	\item In una MSOA la CI viene effettuata a livello di microservizio.
+	\item Le applicazioni sono troppo complesse e lente per essere testate in un CI runner envinronment.
+	\item Tipi di tests:
+	      \begin{itemize}
+		      \item Unit tests: non richiedono collaborazioni esterne.
+		      \item Component tests: si testa un servizio con un mock di tutti i collaboratori.
+		      \item Service integration tests: un servizio ma con collaboratori reali.
+		      \item Contract tests: le API e i messaggi rispettano i contratti condivisi?
+	      \end{itemize}
+\end{itemize}
+
+\paragraph{L'idea dei contratti:}
+
+\begin{itemize}
+	\item Testare l'interfaccia del servizio:
+	      \begin{itemize}
+		      \item Comunicazione sincrona: data una richiesta la risposta è quella attesa?
+		      \item Comunicazione asincrona: dato un messaggio consumato vengono inviati dei messaggi appropriati?
+	      \end{itemize}
+	\item Two-Sided contract:
+	      \begin{itemize}
+		      \item Consumer-Provider: cosa il consumer si aspetta di ricevere.
+		      \item Producer-Provider: cosa il producers promette di provvedere.
+	      \end{itemize}
+	\item Due utilizzi:
+	      \begin{itemize}
+		      \item I produttori testano la loro compliance ai contratti come parte della CI pipeline.
+		      \item I consumatori usano i contratti per fare mock dei providers.
+	      \end{itemize}
+\end{itemize}
+
+\dfn{CI Runner}{
+	Il runner è la macchina in quale il CI manda il job per costruire ed eseguire i test.
+}
+
+\paragraph{Runners:}
+
+\begin{itemize}
+	\item Macchine virtuali effimere.
+	\item Docker container.
+	\item Self-hosted
+\end{itemize}
+
+\nt{Il runner è un ambiente a meta tra dev e prod.}
+
+\section{Continuous Delivery \& Deployment}
+
+\subsection{Introduzione}
+
+\dfn{Continuous Delivery (CD)}{
+	Il continuous delivery si riferisce all'automatizzazione dei passaggi per trasformare gli artefatti di CI in un'applicazione deployable.
+}
+
+\paragraph{Fasi:}
+
+\begin{itemize}
+	\item Packaging.
+	\item Pubblicazione su repository shared.
+	\item Scanning statico.
+	\item Staging: si prendono i pezzi e li si compongono in un ambiente simile a quello di produzione in cui si effettuano i vari test (system-integration, API-level, UI/e2e, performance).
+	\item Approval Gates:
+	      \begin{itemize}
+		      \item Automatici.
+		      \item Manuali.
+	      \end{itemize}
+\end{itemize}
+
+\nt{Se non c'è un essere umano di mezzo si ha \fancyglitter{Continuous Deployment} (CD).}
+
+\subsection{Infrastracture as Code}
+
+\dfn{Infrastracture as Code}{
+	Si tratta di una serie di file di configurazione che descrivono come comporre l'infrastruttura.
+}
+
+\clm{}{}{
+	\begin{itemize}
+		\item Questo permette versioning, testing, riproducibilità, rollback, etc.
+		\item Nella CI le infrastrutture possono essere verificate formalmente.
+		\item Infrastracture as Code permette CD.
+		\item Fornisce orchestrazione automatica, scalabilità e bilanciamento.
+		\item Il rollback non si limita ad andare indietro a una versione precedente dell'applicativo, ma si va alla versione precedente dell'infrastruttura.
+	\end{itemize}
+}
+
+\paragraph{Strategie per il deployment:}
+
+\begin{itemize}
+	\item Blue/Green deployment: due ambienti paralleli e identici. Blue è la versione precente, Green è la versione attuale.
+	\item Rolling deployment: rimpiazzamento graduale delle repliche.
+	\item Canary release: rilasciare nuove versioni per incrementare gradualmente la percentuale di traffico.
+	\item Shadow deployment: ambiente di produzione separato non esposto a traffico reale (simulazione pre-deployment).
+	\item Features Flags: nuove features possono essere attivate o disattivate in base a flags, questo permette fine tuning.
+\end{itemize}
+
+\paragraph{Osservabilità del sistema:}
+
+\begin{itemize}
+	\item Logs: discreti, registrano eventi.
+	\item Metriche: misure numeriche prese regolarmente.
+	\item Tracce: seguono richeste end-to-end tra microservizi e l'infrastruttura di comunicazione.
+\end{itemize}
+
+\nt{L'osservabilità è la chiave per l'implementazione di strategie di deployment.}
+

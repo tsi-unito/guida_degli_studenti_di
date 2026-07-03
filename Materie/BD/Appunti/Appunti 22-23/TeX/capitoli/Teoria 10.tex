@@ -1,0 +1,15 @@
+\chapter{Teoria 10}
+
+\section{Rapporto tra normalizzazione e schemi ER}
+
+ER produce relazioni in BCNF, soffrendo delle sue limitazioni, per cui si può decidere di passare alla 3NF. Si può utilizzare la normalizzazione per verificare la qualità di uno schema ER, verificando se rispetta le d. f.. Nelle slide del corso sono presenti più costrutti, ma non sono stati trattati nel corso della lezione. Per gli esempi sulla verifica delle qualità fare riferimento alle slide sulla Normalizzazione IV.
+
+\paragraph{Entità.} Un entità E con identificatore I e attributo A diventa $R_E(\underline{I}, A)$. L'entità E rappresenta la d. f. $I \rightarrow A$.
+
+\paragraph{Associazione molti a molti.} Da $E_1$ si ha $I_1 \rightarrow I_2$ e dà E2 si ha $I_2 \rightarrow A_2$. Dall'associazione A si ha che ogni sua occorrenza (e del suo attributo B) è individuata dalla coppia di occorrenze di $E_1$ e $E_2$, per cui $I_1 I_2 \rightarrow B$.\\ La traduzione è: $R_{E_1}(\underline{I_1}, A_1), R_{E_2}(\underline{I_2}, A_2), R_{A}(\underline{I_1}, \underline{I_2}, B)$.
+
+\paragraph{Associazione uno a molti.} Da $E_1$ si ha $I_1 \rightarrow I_2$ e dà E2 si ha $I_2 \rightarrow A_2$.  Dall'associazione A si ha che ogni sua occorrenza (e del suo attributo B) è individuata dalla coppia di occorrenze di $E_1$ e $E_2$, per cui $I_1 I_2 \rightarrow B$. A causa della cardinalità dell'associazione uno a molti (1,1) si ha $I_1 \rightarrow B I_2$. \\La traduzione è: $R_{E_1}(\underline{I_1}, A_1, B, I_2), R_{E_2}(\underline{I_2}, A_2)$.
+
+\paragraph{Identificazione esterna.} Da $E_1$ si ha $I_1 \rightarrow I_2$ e da E2 si ha $I_2 \rightarrow A_2$. Da $E_3$ abbiamo che, considerando l’identificazione esterna, preso un determinato valore di $I_3$ abbinato a una coppia di occorrenze di $E_1$ e di $E_2$, troviamo un determinato valore di $A_3$. Quindi $I_1 I_2 I_3 \rightarrow A_3$.\\ La traduzione è: $R_{E_1}(\underline{I_1}, A_1), R_{E_2}(\underline{I_2}, A_2), R_{E_3}(\underline{I_1}, \underline{I_2}, \underline{I_3}, A_3)$.
+
+\paragraph{Generalizzazione.} Non è considerata dato che viene eliminata nella ristrutturazione dello schema ER.

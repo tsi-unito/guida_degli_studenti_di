@@ -1,9 +1,9 @@
 # Materie
 
 Ai link seguenti trovi l'elenco completo degli insegnamenti della
-laurea [triennale](http://laurea.educ.di.unito.it/index.php/offerta-formativa/insegnamenti/elenco-completo/elenco-completo/)
+laurea [triennale](https://laurea.informatica.unito.it/do/home.pl/View?doc=Insegnamenti.html)
 e della
-laurea [magistrale](http://magistrale.educ.di.unito.it/index.php/offerta-formativa/insegnamenti/elenco-completo/elenco-completo/)
+laurea [magistrale](https://magistrale.informatica.unito.it/do/home.pl/View?doc=Insegnamenti.html)
 .
 
 Sotto la tabella trovi le informazioni su come contribuire.
@@ -15,6 +15,7 @@ Tabella di traduzione (per le sole materie presenti in questa directory) da sigl
 | SIGLA                    |                         Nome Completo                         |
 |--------------------------|:-------------------------------------------------------------:|
 | [AAUT](./AAUT)           |                   Apprendimento Automatico                    |
+| [AG](./AG)               |                   Algebra lineare e Geometria                 |
 | [AINT](./AINT)           |                      Agenti Intelligenti                      |
 | [ALGCOMPL](./ALGCOMPL)   |                    Algoritmi e Complessità                    |
 | [ARCH](./ARCH)           |                Architetture degli Elaboratori                 |
@@ -25,6 +26,7 @@ Tabella di traduzione (per le sole materie presenti in questa directory) da sigl
 | [BD](./BD)               |                         Basi di Dati                          |
 | [BIOINF](./BIOINF)       |                        Bioinformatica                         |
 | [CALCCOMPL](./CALCCOMPL) |                  Calcolabilità & Complessità                  |
+| [CMRO](./CMRO)           |             Calcolo Matriciale e Ricerca Operativa            |
 | [COMPLAP](./COMPLAP)     |             Complementi di Analisi e Probabilità              |
 | [DBM](./DBM)             |                   Basi di Dati Multimediali                   |
 | [DIRITTO](./DIRITTO)     |                            Diritto                            |
@@ -32,6 +34,7 @@ Tabella di traduzione (per le sole materie presenti in questa directory) da sigl
 | [ELIVA](./ELIVA)         |        Elaborazione di Immagini e Visione Artificiale         |
 | [EPS](./EPS)             |             Elementi di Probabilità e Statistica              |
 | [ESP](./ESP)             |                   Etica, Società e Privacy                    |
+| [FDA](./FDA)             |                   Fondamenti dell'informatica                 |
 | [GR](./GR)               |                      Gestione delle Reti                      |
 | [IALAB](./IALAB)         |            Intelligenza Artificiale e Laboratorio             |
 | [INFTHEORY](./INFTHEORY) |                   Teoria dell'Informazione                    |
@@ -42,9 +45,14 @@ Tabella di traduzione (per le sole materie presenti in questa directory) da sigl
 | [METNUM](./METNUM)       |                        Metodi Numerici                        |
 | [MFI](./MFI)             |               Metodi Formali per l'Informatica                |
 | [MODSEM](./MODSEM)       |         Modellazione Concettuale per il Web Semantico         |
+| [MTDI](./MTDI)           |    Metodologie e tecnologie didattiche per l'informatica      |
 | [OC](./OC)               |                  Ottimizzazione Combinatoria                  |
+| [PPOO](./PPOO)           |       Principi di Programmazione Orientata agli Oggetti       |
+| [PROG1](./PROG1)         |                       Programmazione 1                        |
 | [PROG2](./PROG2)         |                       Programmazione 2                        |
 | [PROGMOB](./PROGMOB)     |                     Programmazione Mobile                     |
+| [RETI6](./RETI6)         |                            Reti (6 CFU)                       |
+| [RETI9](./RETI9)         |           Reti e Sicurezza delle Reti (9 CFU - INF0337)       |
 | [RETI2](./RETI2)         |                            Reti 2                             |
 | [RNDL](./RNDL)           |                 Reti Neurali e Deep Learning                  |
 | [SAS](./SAS)             |                Sviluppo Applicazioni Software                 |

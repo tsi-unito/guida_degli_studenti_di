@@ -1,0 +1,386 @@
+\chapter{Appendice - SQL}
+
+In questo capitolo verranno messi tutti i concetti della parte di laboratorio su SQL. Tutte le nozioni di seguito sono applicabili a PostgreSQL, ma non tutte sono applicabili ad altri fornitori (es. Oracle).
+
+\paragraph{SQL come linguaggio dichiarativo.}   In SQL l'utente deve definire \textit{cosa} vuole ottenere e il DBMS si occupa del \textit{come} ottenerlo. Una query SQL viene analizzata da un ottimizzatore del DBMS e trasformata per essere eseguita in modo efficiente (ragion per cui non ci si preoccuperà troppo dell'efficienza della scrittura delle query).
+
+\section{Sintassi}
+
+La struttura essenziale è la seguente:
+
+\begin{lstlisting}[style=SQL, caption=Struttura base di una query]
+SELECT ListaAttributi
+
+[FROM ListaTabelle]
+
+[WHERE Condizione];
+\end{lstlisting}
+
+Questo comando restituisce una tabella con gli attributi di \textit{ListaAttributi} del prodotto cartesiano delle tabelle in \textit{ListaTabelle} che rispettino la \textit{Condizione} (che è opzionale). Nella clausola select si possono scrivere espressioni riguardo qualsiasi attributo. Di seguito alcuni esempi di comandi con relative spiegazioni.
+
+\paragraph{Esempio semplice:} Dà come risultato una tabella con tutti gli attributi di \textit{Tabella} utilizzando le sue tuple.
+
+\begin{lstlisting}[style=SQL, caption=Semplice query]
+SELECT *
+
+FROM Tabella;
+\end{lstlisting}
+
+\paragraph{Esempio selezione:} Dà come risultato una tabella con tutti gli attributi dopo aver applicato una selezione\footnote{vedi \ref{Selezione}} in base all'attributo A3.
+
+\begin{lstlisting}[style=SQL, caption=Semplice selezione]
+SELECT *
+
+FROM Tabella
+
+WHERE A3 <= 20;
+\end{lstlisting}
+
+\paragraph{Esempio proiezione:} Dà come risultato una tabella con le stesse tuple di \textit{Tabella} a cui è stata apllicata una proiezione\footnote{vedi \ref{Proiezione}} su A1 e A2. 
+
+\begin{lstlisting}[style=SQL, caption=Semplice proiezione]
+SELECT A1, A2
+    
+FROM Tabella;
+\end{lstlisting}
+
+\section{Definizione di Dati}
+
+Ci sono una serie di domini per definire i dati, inoltre è possibile definire dei propri domini (semplici, solamente a scopo di astrazione).
+
+\paragraph{Stringhe.}
+
+\begin{itemize}
+    \item lunghezza fissa: char(length). Per esempio char(20) è una stringa lunga \textit{\textbf{esattamente}} 20 caratteri;
+    \item lunghezza variabile: varchar (max\_length). varchar(20) è una stringa lunga \textit{\textbf{al massimo}} 20 caratteri.
+\end{itemize}
+
+\paragraph{Numeri esatti.}
+
+\begin{itemize}
+    \item numeri decimali: decimal(precisione, scala)/numeric(precisione, scala). La precisione è il numero totale di cifre decimali, la scala è il numero di cifre decimali dopo la virgola (sono entrambe opzionali);
+    \item numeri interi: smallint (almeno 16 bit, con segno)/integer (almeno 32 bit, con segno)/bigint (almeno 64 bit, con segno).
+\end{itemize}
+
+\paragraph{Numeri approssimati.}
+
+\begin{itemize}
+    \item float(precisione). La precisione è il numero di cifre binarie per la mantissa (opzionale);
+    \item real/double precision.
+\end{itemize}
+
+\paragraph{Istanti temporali.}
+
+\begin{itemize}
+    \item date: si usa \textit{date} che comprende year, month, day;
+    \item orari: si usa \textit{time}(precisione) che comprende hour, minute, second;
+    \item Per specificare data e orario si usa \textit{timestamp} (precisione) che comprende year, month, day, hour, minute, second.
+\end{itemize}
+
+\paragraph{Intervalli.}
+
+\begin{itemize}
+    \item durate in anni: interval year;
+    \item durate in anni e mesi: interval year to month;
+    \item durate in giorni, ore, minuti, secondi e centesimi di secondo: interval day to second (2),
+    \item alcune durate in cui non è possibile passare in modo preciso non sono permesse (per esempio non si può passare da mesi a giorni perchè i mesi hanno durate diverse).
+\end{itemize}
+
+\paragraph{Ulteriori domini.}
+
+\begin{itemize}
+    \item vero/falso: boolean;
+    \item immagini, video, file: blob;
+    \item lunghi file di testo: clob.
+\end{itemize}
+
+\section{Definizione di tabelle}
+
+La sintassi per la creazione di una tabella è la seguente;
+
+\begin{lstlisting}[style=SQL, caption=Creazione tabella]
+CREATE TABLE NomeTabella (
+    
+    NomeAttributo1 Dominio1 [ValoreDefault1][Vincoli1]
+
+    NomeAttributo2 Dominio2 [ValoreDefault2][Vincoli2]
+
+    ...
+
+    NomeAttributoN DominioN [ValoreDefaultN][VincoliN]
+    
+);
+\end{lstlisting}
+
+Il ValoreDefault è un valore opzionale che verrà usato, se nel momento dell'inserimento, di una tupla non viene specificato alcun valore. Se non viene scelto un ValoreDefault si utilizza NULL.
+
+Alcuni vincoli sono particolari:
+
+\begin{itemize}
+    \item \textbf{not null}: indica che il valore NULL non è ammesso (l'attributo è obbligatorio). Se l'attributo non viene specificato in fase di inserimento (e non è presente un ValoreDefault) l'operazione è annullata;
+    \item \textbf{unique}: il valore di un attributo o di una superchiave deve essere unico. Eccezzione per il valore NULL. Sintassi su più attributi: unique (A1, A2,...,AN);
+    \item \textbf{primary key}: un attributo o un insieme di attributi che fungono da chiave primaria. Questi attributi non possono essere NULL e può esserci solo un vincolo primary key per tabella;
+    \item \textbf{Vincolo di integrità referenziale}: crea un vincolo tra i valori di uno (o più) attributi della tabella (interna) su cui è definito e uno (o più) attributi di un’altra tabella (esterna).
+\end{itemize}
+
+Sintassi del vincolo di integrità referenziale:
+
+\begin{lstlisting}[style=SQL, caption=Integrità referenziale]
+A1, Dominio1,
+    
+A2, Dominio2,
+    
+...
+
+foreign key (A1, A2,...)
+
+references NomeTabellaEsterna (B1, B2,...)
+\end{lstlisting}
+
+Ci sono casi in cui viene violata l'integrità (inserimento, modifica, cancellazione). Alcuni casi rifiutano l'operazione (se cambia la tabella interna), altri casi prevedono varie possibilità di reazione:
+
+\begin{itemize}
+    \item \textbf{cascade}: il nuovo valore dell’attributo della tabella esterna viene riportato in tutte le corrispondenti
+righe della tabella interna (in caso di modifica) o tutte le righe della tabella interna corrispondenti alla riga cancellata nella tabella esterna vengono cancellate (in caso di cancellazione);
+\item \textbf{set null}: all’attributo referente della tabella interna viene assegnato il valore NULL;
+\item \textbf{set default}: all’attributo referente della tabella interna viene assegnato il valore di default;
+\item \textbf{no action}: la modifica/cancellazione è rifiutata.
+\end{itemize}
+\pagebreak
+\paragraph{Sintassi per la modifica (subito dopo il vincolo):} si usa update.
+
+\begin{lstlisting}[style=SQL, caption=]
+ON UPDATE Reazione
+\end{lstlisting}
+
+\paragraph{Sintassi per la cancellazione (subito dopo il vincolo):}  si usa delete
+
+\begin{lstlisting}[style=SQL, caption=]
+ON DELETE Reazione
+\end{lstlisting}
+
+Inoltre, si può dare il nome a un vincolo (per i dettagli sui vincoli vedere \ref{Vincoli}): 
+
+\begin{lstlisting}[style=SQL, caption=]
+CONSTRAIN NomeVincolo DefinizioneVincolo
+\end{lstlisting}
+
+In SQL è possibile modificare definizioni di tabelle, domini e vincoli introdotti precedentemente usando i comandi \textbf{alter} (modifica), \textbf{drop} (cancellazione), \textbf{add} (aggiunta).
+Per inserire nuove righe in una tabella si usa il comando \textbf{insert}.
+
+\begin{lstlisting}[style=SQL, caption=Inserire nuove righe in una tabella]
+INSERT INTO Tabella(A1, ..., AN) values
+        (ValoreAttributo1, ..., ValoreAttributoN);
+\end{lstlisting}
+
+Se un attributo non viene inserito, non ha specificato un ValoreDefault e non è \textit{nullable} l'operazione viene rifiutata. Se si specificano i valori per tutte le colonne, la lista di attributi può essere omessa.
+Per cancellare (con condizione) delle righe si usa il comando \textbf{delete}.
+\begin{lstlisting}[style=SQL, caption=Cancellare righe in una tabella]
+DELETE FROM Tabella WHERE Condizione
+\end{lstlisting}
+
+\paragraph{La clausola where.} La clausola where è costituita da un'espressione boolean in logica proposizionale.
+
+Per confrontare stringhe è possibile usare l'operatore \textbf{like}, avendo accesso a caratteri speciali:
+\begin{itemize}
+    \item \_ (trattino basso): un carattere qualsiasi;
+    \item \% (percentuale): una sequenza di caratteri qualsiasi maggiore o uguale a zero;
+\end{itemize}
+
+Per esempio: \_\%@gmail.\_\_\% può essere usato per identificare un indirizzo mail con almeno un carattere precedente @ e con un dominio di almeno 2 caratteri.
+
+\paragraph{Ordinamento dei risultati.} Per ordinare i risultati di una query si usa la clausola \textbf{order by}. Specificando più attributi, a parità di primo attributo, vengono ordinate con il secondo attributo e così via. Si possono aggiungere asc (crescente )e desc (decrescente). Esempio:
+
+\begin{lstlisting}[style=SQL, caption=Ordinare i risultati in una query]
+ORDER BY A1 [asc / desc], 
+A2 [asc / desc], ...
+\end{lstlisting}
+
+Le righe con valore NULL sono messe tutte insieme (o all'inizio o alla fine).
+
+\paragraph{Gestione dei valori nulli.} Un attributo NULL è diverso da 0, stringa vuota o \textit{blank}. Un confronto con il valore NULL dà sempre Unknow nella logica a tre valori\footnote{vedi \ref{Logica a tre valori}}. Per cui si utilizzano i predicati \textbf{is null} e \textbf{is not null}. In alcuni casi è meglio trttare i valori NULL com 0, per cui si usa la funzione \textbf{coalesce}. Esempio:
+
+\begin{lstlisting}[style=SQL, caption=I valori nulli]
+SELECT A1, COALESCE (A2, 0)
+FROM A;
+\end{lstlisting}
+
+\paragraph{Commenti.} I commenti su una riga iniziano con -- (doppio trattino). Per i commenti su più righe si usa /* commento */.
+
+\section{DML: tipi di Join} 
+
+Per eseguire interrogazioni che riguardano più tabelle si deve usare il join\footnote{vedi \ref{Join i} e \ref{Join e}}. La congiunzione avviene sui valori in comune tra le tabelle. Con il join, in SQL si possono avere righe duplicate (al contrario dell'algebra relazionale che prevede l'unicità delle tuple). Per evitare ciò si deve ricorrere alla parola chiave \textbf{distinct} subito dopo \textbf{select}. 
+Il join inizia eseguendo il prodotto cartesiano sulle tabelle nella clausola \textbf{from} e vengono eliminate quelle che non rispettano la clausola \textbf{where}.
+Ci sono tre modi per usare un join in SQL di seguito elencati tramite esempi.
+
+\subsubsection{Join e clausola from.}
+
+\begin{lstlisting}[style=SQL, caption=]
+SELECT A1, A2, B1, C1, C2
+
+FROM A, B, C;
+\end{lstlisting}
+
+\subsubsection{Join e clausola where.}
+
+\begin{lstlisting}[style=SQL, caption=]
+SELECT A1, A2, B1, C1, C2
+
+FROM A, B, C
+
+WHERE (A1 = B1 OR A1 = C1) AND A2 <= C2; 
+\end{lstlisting}
+
+\subsubsection{Join come parola riservata.}
+
+\begin{lstlisting}[style=SQL, caption=Join]
+SELECT *
+
+FROM A [INNER] JOIN B ON A1 = B2
+
+WHERE A3 = 'IT'  AND A2 = 25; 
+\end{lstlisting}
+
+La parola inner è opzionale, inoltre è possibile mettere in join più tabelle. Si possono anche effettuare join esterni mettendo prima di join left, right o full. 
+
+Si può effettuare il join di una tabella con sè stessa (self join), ricordandosi di specificare degli alias per gli attributi. Esempio:
+
+\begin{lstlisting}[style=SQL, caption=Self-Join]
+\begin{center}
+SELECT ...
+
+FROM A JOIN A_1 ON A.A1 = A_1.A1
+
+A.A2 <= A_1.A2 ... 
+\end{lstlisting}
+
+\section{DML: funzioni aggregate}
+
+In SQL è possibile valutare proprietà e condizioni su gruppi di righe. Le funzioni aggregate prendono in considerazione gruppi di righe e danno come risultato un unico valore per gruppo. Non è possibile usare funzioni aggregate (che
+considerano gruppi di righe) direttamente nella clausola where (che viene valutata per ogni riga). Non è possibile combinare funzioni aggregate (che restituiscono un unico valore) con attributi non aggregati che possono assumere valori diversi nello stesso gruppo. Di solito si usano conteggio, somma, massimo e minimo.
+
+\textbf{count(*)} conta il numero di righe (compresi valori NULL e valori duplicati). Si può specificare un nome per la colonna di questa interrogazione. Esempio:
+
+\begin{lstlisting}[style=SQL, caption=Count]
+SELECT COUNT(*) Nome
+
+FROM A
+
+WHERE A1 = 'UK';
+\end{lstlisting}
+
+\textbf{count(Attr)} conta il numero di valori non NULL per l'attributo Attr (si può usare il distinct per eliminare i duplicati). PostgreSQL non supporta count(distinct *).
+
+\paragraph{Altre funzioni.}
+
+\begin{itemize}
+    \item sum(Attr): somma dei valori nella colonna Attr;
+    \item avg(Attr): media dei valori nella colonna Attr;
+    \item max(Attr): massimo dei valori nella colonna Attr;
+    \item min(Attr): minimo dei valori nella colonna Attr.
+\end{itemize}
+
+\paragraph{Query con raggruppamento.} È possibile suddividere le righe di una tabella in più gruppi e applicare la funzione aggregata a ogni gruppo. È possibile considerare più di un attributo per formare raggruppamenti più specializzati. Per fare ciò si scrive al fondo \textbf{group by} e i nomi degli attributi, rispettando la seguente sintassi.
+
+\begin{lstlisting}[style=SQL, caption=Query con raggruppamento]
+SELECT SottinsiemeAttributiDiscriminanti,
+    
+FunzioneAggregata(AltroAttributo)
+
+FROM Tabelle
+
+WHERE Condizione
+
+GROUP BY AttributiDiscriminanti;
+\end{lstlisting}
+
+\paragraph{Clausola having.} Nella clausola \textbf{having} vanno messe solo condizioni in cui compaiono funzioni aggregate (essa viene scritta dopo il \textbf{group by}. Esempio:
+
+\begin{lstlisting}[style=SQL, caption=Having]
+SELECT A1
+    
+FROM A
+
+WHERE A2>=20
+
+GROUP BY A1
+
+HAVING COUNT(*) >= 2;
+\end{lstlisting}
+
+\section{DML: operatori insiemistici}
+
+SQL mette a disposizione gli operatori insiemistici union, intersect, except corrispondenti agli operatori di unione, intersezione e differenza dell’algebra relazionale\footnote{vedi \ref{Op ins}}. Questi operatori rimuovono i duplicati. Se si vogliono mantenere si deve aggiungere la parola chiave \textbf{all}.
+
+\subsubsection{Sintassi unione.}
+
+\begin{lstlisting}[style=SQL, caption=Union]
+SELECT EspressioneListaAttributi1
+    
+FROM ListaTabelle1
+
+WHERE Condizioni1
+
+UNION [ALL]
+
+SELECT EspressioneListaAttributi2
+
+FROM ListaTabelle2
+
+WHERE Condizioni2;
+\end{lstlisting}
+
+\subsubsection{Sintassi intersezione.}
+
+\begin{lstlisting}[style=SQL, caption=Intersect]
+SELECT EspressioneListaAttributi1
+    
+FROM ListaTabelle1
+
+WHERE Condizioni1
+
+INTERSECT [ALL]
+
+SELECT EspressioneListaAttributi2
+
+FROM ListaTabelle2
+
+WHERE Condizioni2;
+\end{lstlisting}
+
+\subsubsection{Sintassi differenza.}
+
+\begin{lstlisting}[style=SQL, caption=Except]
+SELECT EspressioneListaAttributi1
+    
+FROM ListaTabelle1
+
+WHERE Condizioni1
+
+EXCEPT [ALL]
+
+SELECT EspressioneListaAttributi2
+
+FROM ListaTabelle2
+
+WHERE Condizioni2;
+\end{lstlisting}
+
+\section{DML: query nidificate}
+
+In SQL si possono annidare sottoquery in query, ciò è utile per risolvere sottoproblemi. 
+Esistono due tipologie di sottoquery:
+\begin{itemize}
+    \item semplici (o stratificate): è possibile valutare prima l’interrogazione più interna (una volta per tutte), poi, sulla base del suo risultato, valutare l’interrogazione più esterna;
+    \item correlate (o incrociate): se l’interrogazione più interna fa riferimento a una delle tabelle appartenenti all’interrogazione più esterna. Per ciascuna riga candidata alla selezione nell’interrogazione più esterna, è necessario valutare nuovamente la sottoquery.
+\end{itemize}
+
+Se la sottointerrogazione restituisce più di un valore, per effettuare il confronto è necessario utilizzare uno dei quantificatori seguenti:
+\begin{itemize}
+    \item \textbf{any}: il predicato deve essere soddisfatto da almeno una riga restituita dalla sottointerrogazione;
+    \item \textbf{all}: il predicato deve essere soddisfatto da tutte le righe restituite dalla sottointerrogazione, ma non viene quasi mai utilizzato perchè in presenza di valori NULL restituisce una query vuota.
+\end{itemize}
+
+\paragraph{IN e NOT IN.} Per verificare che un valore sia presente o meno in un insieme si usano le condizioni \textbf{in} e \textbf{not in}.
+
+\paragraph{Sottointerrogazioni correlate.} SQL permette all’interrogazione annidata di fare riferimento al contesto relativo all’interrogazione più esterna (\textit{passaggio di binding}), permettendo di valutare un'espressione di una riga esaminata dalla query più esterna. Bisogna che gli attributi in query distinte siano visibili (dichiarati in select). In queste sottointerrogazioni si possono usare i costrutti \textbf{exist} (la riga in esame nella query più esterna soddisfa il predicato exists se la query annidata non restituisce l’insieme vuoto) e \textbf{not exist} (la riga in esame nella query più esterna soddisfa il predicato not exists se la query annidata restituisce l’insieme vuoto).

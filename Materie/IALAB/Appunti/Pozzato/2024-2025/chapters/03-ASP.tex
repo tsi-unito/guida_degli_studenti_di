@@ -1,0 +1,113 @@
+\chapter{Answer Set Programming}
+
+\section{Introduzione}
+
+Durante la cosiddetta "War of Semantics" nasce l'esigenza di dare una semantica alla negazione per fallimento adottata dagli interpreti PROLOG.
+
+\dfn{Answer Set Programming}{
+  Paradigma di programmazione in cui le soluzioni sono i \newfancyglitter{modelli} (Answer Set), non più le prove
+}
+
+\nt{Con PROLOG ha in comune solo la sintassi, per il resto è tutt'altra cosa.}
+
+\paragraph{L'Answer Set Programming (ASP):}
+
+\begin{itemize}
+  \item È particolarmente utile per risolvere problemi combinatori (soddisfacimento di vincoli, planning).
+  \item ASP solvers molto efficienti sviluppati per supportare questa metodologia (DLV, smodels, \fancyglitter{CLINGO}, Cmodels,\dots).
+\end{itemize}
+
+\nt{Un ASP solvers è l'equivalente di un interprete PROLOG.}
+
+\paragraph{Codice ASP:}
+
+\begin{itemize}
+  \item Insieme finito di regole: $a :- b_1, b_2, \dots, b_n, not c_1, not c_2, \dots, not c_m$. 
+  \item $a, b_i, c_j$ sono letterali nella forma $p$ on $- p$:
+    \begin{itemize}
+      \item - è la negazione classica. 
+      \item $not$ è la negazione per fallimento.
+    \end{itemize}
+  \item $a$ è opzionale, senza si ha \fancyglitter{integrity constrain} (regole senza testa): 
+    \begin{itemize}
+      \item $:- a_1, a_2, \dots, a_k$.
+      \item È inconsistente che siano tutti veri\dots
+      \item Serve per filtrare/buttare via dei modelli.
+    \end{itemize}
+  \item Si applica ai soli programmi logici proposizionali. 
+  \item La maggior parte dei tool per ASP consente per
+comodità di usare variabili, ma le clausole devono poter
+essere trasformate in un numero finito di clausole ground.
+\end{itemize}
+
+\paragraph{ASP vs. PROLOG:}
+
+\begin{itemize}
+  \item In ASP l’ordine dei letterali non ha alcuna importanza. 
+  \item Prolog è goal-directed, ASP no. 
+  \item La SLD-risoluzione del Prolog può portare a loop,
+mentre gli ASP solver non lo consentono. 
+\item PROLOG ha il cut(!), ASP no.
+\end{itemize}
+
+\subsection{Negazione}
+
+\begin{itemize}
+  \item \fancyglitter{Classica}: 
+    \begin{itemize}
+      \item attraversa :- treno. 
+      \item Si attraversa solo se si può derivare che il treno non è in
+arrivo.
+    \end{itemize}
+  \item \fancyglitter{Per fallimento}: 
+    \begin{itemize}
+      \item attraversa :- not treno. 
+      \item Si può attraversare in assenza di informazione esplicita sul treno in
+arrivo.
+    \end{itemize}
+  \item Un letterale negato -p non ha nessuna proprietà particolare. 
+  \item Viene considerato come se fosse un nuovo atomo positivo,
+aggiungendo il vincolo :- p, -p.
+\end{itemize}
+
+\clm{}{}{
+  CLINGO: 
+  \begin{itemize}
+    \item Fornisce modelli e indica se sono \fancyglitter{SATISFIABLE} (soddisfacibili) o \fancyglitter{UNSATISFIABLE} (insoddisfacibili). 
+    \item Se si aggiunge il parametro "0" vengono mostrati tutti i modelli (ATTENZIONE: potrebbero essere migliaia, è sconsigliato metterlo di default).
+  \end{itemize}
+}
+
+\section{Semantica}
+
+\dfn{Answer Set}{
+  Un Answer Set è un modello minimale (stabile).
+}
+
+\nt{Un programma ASP privo di letterali $not p_i$ ha un unico modello minimale che è il suo answer set.
+
+Potrebberò esserci più answer set, ma interessa solo quello minimale.}
+
+\qs{}{Che succede se è presente la negazione per fallimento?}
+
+\dfn{Ridotto}{
+  Il \newfancyglitter{ridotto} $P^S$ rispetto a un insieme di atomi S: 
+  \begin{itemize}
+    \item Rimuove ogni regola il cui corpo contiene $not L$, per $L \in S$. 
+    \item Rimuove tutti i $not L$ dai corpi delle restanti regole.
+  \end{itemize}
+
+  $P^S$ non contiene atomi con negazione per fallimento: 
+  \begin{itemize}
+    \item Ha un unico answer set. 
+    \item Se tale answer ser coincide con S, allora S è un answer set per P.
+  \end{itemize}
+}
+
+\nt{In ASP si può usare \#show/cardinalità per mostrare solo alcune parti dei modelli.}
+\begin{figure}[h]
+    \centering
+    \includegraphics[scale=0.2]{03/show.png}
+    \caption{"Show" or something idk.}
+\end{figure}
+

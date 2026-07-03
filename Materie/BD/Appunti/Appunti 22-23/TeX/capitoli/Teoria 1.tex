@@ -1,0 +1,84 @@
+\chapter{Teoria 1}
+
+\section{Introduzione}
+
+Le \textcolor{blue}{basi di dati} sono un insieme di \textcolor{blue}{dati} utilizzati per il supporto allo svolgimento di attività.
+
+Per esempio, in ambito universitario, bisogna tenere memorizzate grandi quantità di dati relativi a ogni studente. Per fare ciò non si possono usare array, alberi, liste, etc. perchè la memoria principale non può gestire velocemente tanti dati. 
+
+All'interno delle basi di dati i dati sono \textcolor{blue}{integri, flessibili} e con una \textcolor{blue}{ridondanza controllata}, ma hanno costantemente bisogno di \textcolor{blue}{manutenzione}.
+
+\subsection{Sistemi informativi}
+
+\label{Sistemi informativi}
+
+I \textcolor{blue}{sistemi informativi} gestiscono le informazioni di interesse. Ogni organizzazione ha un sistema informativo, esplicito o meno ed è indipendente dall'automazione (es. I banchieri fiorentini nel '500). Esso si occupa di:
+\begin{itemize}
+    \item raccolta e acquisizione dei dati;
+    \item archiviazione e conservazione;
+    \item elaborazione, trasformazione e produzione;
+    \item distribuzione, comunicazione e scambio.
+\end{itemize}
+
+Un \textcolor{blue}{dato} è qualcosa di immediatamente percepibile, mentre un'\textcolor{blue}{informazione} è costituita da dati uniti tramite delle interpretazioni. 
+
+\section{DBMS}
+
+Le basi di dati devono essere gestite da un \textcolor{blue}{DBMS}\footnote{\textit{Database management system}} che è esterno alle applicazioni. Alcuni esempi sono MySQL\footnote{Inizialmente libero, ma poi acquisito da Oracle}, MariaDB\footnote{Versione opensource di MySQL} e PostgreSQL. I DBMS sono persistenti poichè la loro vita è indipendente dalle applicazioni che li utilizzano, sono condivisibili in modo da ridurre eventuali ridondanze (informazioni ripetute) e incoerenze (allineamento scorretto dei dati). Tuttavia la condivisibilità delle basi di dati produce concorrenza (accesso contemporaneo a stessi dati) che deve essere regolamentata al fine di salvaguardare l'integrità. I DBMS garantiscono anche la privatezza mediante vari tipi di autorizzazione. 
+
+Inoltre sono affidabili, ovvero resistenti a malfunzionamenti, tramite la \textcolor{blue}{gestione delle transazioni}. Una transazione\footnote{vedi \ref{Transazioni}} è un'operazione atomica (indivisibile) i cui risultati sono permanenti. Se si verifica un errore \textit{durante} lo svolgimento di una transazione i risultati vengono anullati.
+
+\section{Modello di dati}
+
+Un \textcolor{blue}{modello di dati} serve a organizzare e descrivere i dati. In ogni base di dati esistono:
+\begin{itemize}
+    \item schema: descrive la struttura;
+    \item istanza: i valori effettivi in un determinato istante.
+\end{itemize}
+
+Un \textcolor{blue}{modello concettuale} serve per progettare una base di dati a un livello astratto. Di solito si usa il modello \textcolor{blue}{\textit{entity-relationship (ER)}}\footnote{\textit{Modello entità-associazione}}.
+
+I \textcolor{blue}{modelli logici} sono utilizzati dai programmi. In questo corso useremo il modello \textcolor{blue}{\textit{relazionale}}.
+Per rappresentare il modello logico si usano:
+\begin{itemize}
+    \item schema logico: la descrizione base di dati nel modello logico;
+    \item schema esterno: descrizione di parte della base di dati in un modello logico;
+    \item schema interno (o fisico): rappresenta lo schema logico tramite strutture di memorizzazione (es. record di puntatori).
+\end{itemize}
+
+Il livello logico è indipendente da quello fisico. In questo corso si vedrà solo il livello logico.
+
+L'accesso ai dati avviene solo tramite il livello esterno (che può coincidere con quello logico), generando due forme di indipendenza:
+\begin{itemize}
+    \item logica: Il livello esterno è indipendente da quello logico;
+    \item fisica: Il livello logico e quello esterno sono indipendenti da quello fisico. 
+\end{itemize}
+
+\section{Linguaggi per basi di dati}
+
+Si hanno diversi linguaggi:
+\begin{itemize}
+    \item \textcolor{blue}{interfacce grafiche}: senza un linguaggio testuale;
+    \item \textcolor{blue}{SQL}: linguaggio testuale interattivo;
+    \item \textcolor{blue}{comandi SQL}: si possono usare in vari linguaggi;
+    \item \textcolor{blue}{SQL in linguaggi ad hoc}: linguaggi propri di un DBMS.
+\end{itemize}
+
+Oltre a questo i linguaggi si dividono in due macrocategorie: 
+\begin{itemize}
+    \item \textcolor{blue}{DML}\footnote{\textit{Data manipulation language}}: servono per interrogare e aggiornare le istanze del DBMS;
+    \item \textcolor{blue}{DDL}\footnote{\textit{Data definition language}}: definiscono schemi ed eseguono operazioni generali. 
+\end{itemize}
+
+\section{Persone che interagiscono con un DBMS}
+
+Breve elenco di alcune categorie che interagiscono con i DBMS:
+
+\begin{itemize}
+    \item Progettisti e realizzatori di DBMS;
+    \item DBA\footnote{Amministratori della base di dati};
+    \item Progettisti della base di dati;
+    \item Progettisti e programmatori di applicazioni;
+    \item Utenti finali: categoria di utenti che eseguono transazioni;
+    \item Utenti casuali: categoria di utenti che eseguono operazioni diverse da transazioni.
+\end{itemize}

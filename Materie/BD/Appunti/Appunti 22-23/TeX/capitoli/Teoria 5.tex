@@ -1,0 +1,72 @@
+\chapter{Teoria 5}
+
+\section{Ottimizzazione delle interrogazioni}
+
+\textcolor{blue}{Ottimizzare} significa rendere più efficiente un'implementazione. 
+
+Poichè i DBMS sono molto grandi sono memorizzati in memoria secondaria e, quindi, se un'applicazione richiede una tupla bisogna portare in memoria la pagina in cui è memorizzata. Per ottimizzare \textcolor{blue}{il tempo} si deve minimizzare il numero di pagine da trasportare in memoria primaria (\textit{buffer}). 
+L'ottimizzazione si svolge in due passaggi:
+\begin{itemize}
+    \item Ottimizzazione logica;
+    \item Ottimizzazione fisica.
+\end{itemize}
+
+\subsection{Ottimizzazione fisica}
+
+L’ottimizzatore \textcolor{blue}{fisico} entra nei nodi (\textit{operatori}) dell’albero sintattico, li esamina e in base alle strutture fisiche sceglie
+l’algoritmo ottimale per eseguire ogni nodo. Si vedrà più in dettaglio nella magistrale.
+
+\subsection{Ottimizzazione logica}
+
+L'ottimizzazione \textcolor{blue}{logica} prende in input l’albero sintattico dell’interrogazione e lo trasforma sfruttando le proprietà dell’algebra relazionale.
+
+Il principio su cui si basa l'ottimizzatore logico è: ridurre il numero di tuple coinvolte dall'interrogazione, mantenendo lo stesso risultato. In quasi tutte le operazioni di un sistema informativo si lavora su poche tuple per volta, compiendo una selezione\footnote{vedi \ref{Operatore di selezione}}.
+
+Per ottimizzare si utilizza la proprietà distributiva della selezione. I predicati p della selezione sono in forma congiuntiva (si può ricondurre qualsiasi predicato a una congiunzione di disgiunzioni):
+\begin{enumerate}
+    \item Si decompongono gli \textbf{AND}: $\sigma_p (r(A) \bowtie_\theta s(B))\rightarrow \sigma_p (r(A)) \bowtie_\theta s(B)$, che è valida solo se gli attributi coinvolti da p sono contenuti solo in A;
+    \item Si trasferiscono le \textcolor{blue}{selezioni} verso le foglie finché è possibile con le proprietà distributive della selezione;
+    \item Si traferiscono le \textcolor{blue}{proiezioni} verso le foglie finché è possibile con le proprietà distributive della proiezione;
+    \item L’ottimizzatore ricompone insieme le selezioni multiple, applicando una sola selezione con una congiunzione di predicati;
+    \item Si traforma la selezione + prodotto cartesiano in un $\bowtie_\theta$ (perchè è meglio nell'ottimizzazione fisica);
+    \item Ricondurre a un’unica proiezione le proiezioni multiple;
+    \item Si esaminano le varianti dell’albero sintattico dovute alle proprietà associative scegliendo la variante di costo minimo.
+\end{enumerate}
+
+\section{Aspetti quantitativi nelle interrogazioni}
+I DBMS hanno un dizionario di dati in cui vengono memorizzare varie informazioni:
+\begin{itemize}
+    \item \textbf{CARD(r) = $|r|$} : è la cardinalità della relazione;
+    \item \textbf{SIZE(t)} : ampiezza della tupla in byte;
+    \item \textbf{VAL($A_i$,r)} : numero di valori distinti che appaiono nella colonna $A_i$ all'interno della tabella r;
+    \item \textbf{MIN($A_i$,r)} : il valore minimo di $A_i$ contenuto in r;
+    \item \textbf{MAX($A_i$,r)} : il valore massimo di $A_i$ contenuto in r;
+    \item \textbf{NPAGE(r)} : il numero di pagine occupate da r. 
+    
+    $\textbf{NPAGE(r)} = \frac{\textbf{CARD(r)}}{\textit{fattore di bloccaggio}}$. Il \textit{fattore di bloccaggio} è il numero massimo di tuple contenute in una pagina.
+\end{itemize}
+
+\section{Analisi dei costi delle interrogazioni}
+
+L'analisi quantitativa dell'interrogazione permette di predire a priori il risultato della cardinalità della relazione, senza eseguirla.
+
+\subsection{Stima del costo della selezione}
+
+Data la selezione $\sigma_p (r)$, conoscendo l’intervallo di variabilità della selezione $\sigma_p (r)$:
+$0 \leq |\sigma_p (r)| \leq |r|$, si può modellare la cardinalità della selezione $\sigma_p (r)$ con un \textcolor{blue}{\textit{fattore di selettività}} $f_p$ per la cardinalità di r $|\sigma_p (r)| = f_p X |r|$.
+Il fattore di selettività $f_p$ è legato al solo predicato p di selezione e varia tra 0 e 1.
+
+Il fattore di selettività $f_p$ può essere interpretato come la probabilità che una tupla in r soddisfi il predicato di selezione p, ovvero la stima della percentuale di tuple che soddisfano il predicato di selezione. Per stimare $f_p$ si assumono una \textit{distribuzione uniforme} e \textit{un'assenza di correlazione} tra attributi diversi.
+
+\subsection{Stima della cardinalità del join}
+
+Per stimare $|r(A)\bowtie_{A_i = B_j} s(B)|$, consideriamo prima una singola tupla
+$t' \in r$ per cui $t'[A_i]=v$ (v è una costante):
+\begin{itemize}
+    \item la probabilità che una singola tupla $t'' \in s$ sia tale che $t''[B_j]=v$ è $\frac{1}{\textbf{VAL}(B_j, s)}$;
+    \item considerando tutta la relazione s, ci saranno $\frac{1}{\textbf{VAL}(B_j, s)}$ × \textbf{CARD(s)} tuple t'' per cui t''$[B_j]=v$.
+\end{itemize}
+
+Se non esiste un vincolo di integrità referenziale, sappiamo che la stima precedente è ottimistica, perché potrebbe non esserci nessuna tupla in s tale che t''$[B_j]=v$.
+
+Si possono fare due stime, entrambe ottimistiche, quindi si deve prendere quella minore: $|r(A) \bowtie_{A_i=B_j} s(B)|$ = min \{$\frac{1}{\textbf{VAL}(A_i, r)}$ , $\frac{1}{\textbf{VAL}(B_j, r)}$ \} × \textbf{CARD}(r) × \textbf{CARD}(s).

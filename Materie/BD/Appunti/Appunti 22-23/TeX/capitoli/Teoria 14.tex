@@ -1,0 +1,126 @@
+\chapter{Teoria 14}
+
+\section{Gestore del ripristino}
+
+Il \textcolor{blue}{gestore del ripristino} si occupa dell'affidabilità dei dati (tranne nei casi di guasti hard) a seguito di guasti o anomalie.
+
+\paragraph{Guasti soft (più comuni):}
+
+\begin{itemize}
+    \item Crash di sistema: guasto di natura hardware, software o di rete durante una transazione;
+    \item Errori di programma o di sistema: una transazione viene interrotta da un utente o fallisce a causa di un errore o di un bug;
+    \item Eccezioni gestite dalla transazione: non sono errori, perchè previsti dallo sviluppatore (esempio: saldo insufficiente in un conto corrente);
+    \item Rollback di transazioni forzate dal gestore della transazione e dal serializzatore: per uscire da un deadlock.
+\end{itemize}
+
+\paragraph{Guasti hard (meno comuni):}
+
+\begin{itemize}
+    \item Guasti delle periferiche di storage;
+    \item Eventi catastrofici: furtii, incendi, allagamenti, etc..
+\end{itemize}
+
+Il gestore del ripristino si occupa anche di atomicità e durabilità.
+
+\section{Log}
+
+Il \textcolor{blue}{file di log} è un diario di bordo in cui il DBMS tiene traccia delle operazioni effettuate sulla BD tramite transazioni. Un file di log è sequenziale append-only\footnote{Si va solo avanti con la scrittura} memorizzato su storage, quindi non può essere affetto dai guasti soft, ma solo dai guasti hard. Periodicamente ne viene fatto il \textcolor{blue}{backup}. Esso rende possibile UNDO e REDO.
+
+Quando si ha un guasto si annullano tutte le operazioni non committed e si ripristinano quelle committed.
+
+\subsection{Struttura del file di log}
+
+Per ogni transazione si tiene traccia dei comandi start transaction / commit transaction / abort transaction. Per ogni operazione (insert/delete/update) effettuata sul DB $<T_i, X, BS(X), AS(X)>$, che contiene:
+
+\begin{itemize}
+    \item l'identificativo $T_i$ della transazione;
+    \item l'oggetto X su cui è stata eseguita l'operazione;
+    \item before state (BS(X)), lo stato precedente a X, tranne in caso di insert;
+    \item after state (AS(X)), lo stato successivo a X, tranne in caso di delete.
+\end{itemize}
+
+\subsection{Undo e Redo}
+
+Le operazioni di Undo e Redo sono \textcolor{blue}{idempotenti}\footnote{undo(undo(X)) = undo(X) e redo(redo(X)) = redo(X)}
+\paragraph{Undo di una azione su x:}
+
+\begin{itemize}
+    \item update, delete: si scrive nell'oggetto il valore di BS;
+    \item insert: si elimina X.
+\end{itemize}
+
+\paragraph{Redo di una azione su x:}
+
+\begin{itemize}
+    \item update, insert: si scrive nell'oggetto il valore di AS;
+    \item delete: si elimina X.
+\end{itemize}
+
+Il processo di ripristino può fallire e in quel caso deve essere rieseguito.
+
+Tutte le modifiche al file di log avvengono in memoria primaria e successivamente vengono portate in memoria secondaria. Questo causa alcuni problemi (esempio: una insert(X) viene scritta su storage ma avviene un crash prima che il log venga scritto su storage).
+
+\subsection{Regole fondamentali}
+
+\begin{itemize}
+    \item Write-Ahead Log: BS dei record di log deve essere scritto prima dei corrispondenti record della base di dati (garantisce UNDO);
+    \item Commit-Precedenza: AS dei record di log deve essere scritto prima di effettuare il commit (garantisce REDO).
+\end{itemize}
+
+\paragraph{Scrittura dei record di commit:} quando una transazione richiede il commit, il DBMS sceglie in modo atomico e indivisibile tra abort e commit e scrive sul log in modo sincrono/atomico (\textit{primitiva force}) il record di commit. Se il guasto avviene prima del commit si procede con l'UNDO, se avviene dopo con il REDO.
+
+Se $T_i$ richiede un rollback, il DBMS impone un abort o la transazione richiede un commit e almeno un vincolo non è soddisfatto: il DBMS esegue UNDO($T_i$) che annulla tutte le azioni di $T_i$. Al termine di questo processo viene memorizzato nel log il record $<T_i$, abort$>$ seguito da \textbf{FORCE LOG} per forzare la scrittura del log su storage.
+
+\section{Ripristino}
+
+Per fare un REDO si esplora il file di log in avanti. Per fare un UNDO si esplora il file di log a ritroso.
+
+\subsection{Algoritmo di ripristino}
+
+Quando avviene un crash e il sistema riparte senza transazioni si esegue in ripristino:
+
+\begin{enumerate}
+    \item AT := insieme delle transazioni non terminate;
+    \item CT := insieme delle transazioni che hanno raggiunto il commit;
+    \item UNDO(AT);
+    \item REDO(CT);
+\end{enumerate}
+
+Nei grossi sistemi informativi, il file di log può contenere centinaia di migliaia di record e, se avvenisse un crash di sistema, il ripristino risulterebbe estremamente costoso. I crash possono avvenire in qualsiasi momento, anche in pieno orario di attività ed è necessario ridurre al minimo i tempi necessari al ripristino, perchè il ripristino richiede il blocco dell'attività transazionale.
+
+\subsection{Checkpoint}
+
+Periodicamente avviene un processo di \textcolor{blue}{checkpoint}:
+
+\begin{enumerate}
+    \item si sospendono le transazioni;
+    \item si costruisce il record di checkpoint contenente l’elenco delle transazioni che in quel momento sono attive col relativo puntatore alla posizione dello start della transazione nel file di log;
+    \item si esegue un FORCE LOG;
+    \item si esegue un FORCE delle pagine delle transazioni committed;
+    \item si aggiunge un flag di OK nel record di checkpoint e si esegue un nuovo FORCE LOG;
+    \item si riavviano le transazioni.
+\end{enumerate}
+
+\paragraph{Hot restart (ripresa a caldo):}
+
+\begin{enumerate}
+    \item trova l'ultimo checkpoint;
+    \item recupera la lista AT dellee transazioni ancora attive durante il crash;
+    \item recupera la lista CT delle transazioni che hanno raggiunto il commit dopo l'ultimo checkpoint;
+    \item UNDO(AT);
+    \item REDO(CT).
+\end{enumerate}
+
+\subsection{Ripristino dopo eventi catastrofici}
+
+In questo caso si deve fare riferimento a memorie secondarie stabili (esenti da guasti, ma sono impossibili). Per approssimare una memoria secondaria a una memoria stabile si può fare un backup con informazioni di dimensioni contenute tenuto al sicuro.
+
+Il \textcolor{blue}{dump} è una copia completa della BD salvata in memoria stabile. Quando si fa il dump si svuota il file di log e si aggiunge un record di dump.
+
+\paragraph{Cold restart (ripresa a freddo):}
+
+\begin{enumerate}
+    \item si ripristinano i dati a partire dai backup (restore);
+    \item si legge tutto il log e si effettua il REDO(CT);
+    \item si effettua la hot restart.
+\end{enumerate}

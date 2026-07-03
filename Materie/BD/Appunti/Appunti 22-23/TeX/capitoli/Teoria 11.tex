@@ -1,0 +1,41 @@
+\chapter{Teoria 11}
+
+\section{Transazioni}
+
+\label{Transazioni}
+
+In una base di dati si possono effettuare operazioni di \textcolor{blue}{inserimento} (INSERT), \textcolor{blue}{cancellazione} (DELETE) e \textcolor{blue}{aggiornamento} (UPDATE). Il DBMS accetta modifiche solo se rispettano i vincoli \footnote{vedi \ref{Vincoli}}, altrimenti le rifiuta. 
+
+I vincoli possono bloccare istruzioni singole. La soluzione è consentire al DBMS di eseguire quelle istruzioni e attendere l'arrivo di altre istruzioni che pongano rimedio alla violazione dei vincoli. Questo ragionamento è alla base del concetto di \textcolor{blue}{transazione}. 
+
+Una transazione è: 
+\begin{itemize}
+    \item un'unità di programma che inizia con \textbf{\textit{begin transaction}} che comunica al DBMS la richiesta di interazione da parte dell'applicazione;
+    \item il DBMS identifica l'inizio della transazione $T_i$ e la abbina in modo univoco con l'utente/applicazionec che ne ha fatto richiesta;
+    \item il DBMS riceve dei comandi DML in sequenza e li abbina alla transazione;
+    \item solitamente breve (buona pratica);
+    \item se la transazione va a buon fine si termina con il comando \textbf{\textit{commit work}};
+    \item se la transazione fallisce si termina con il comando \textbf{\textit{rollback work}}.
+\end{itemize}
+
+\section{Ciclo di vita di una transazione}
+
+Con stato 1 si indica la transazione attiva, con stato 2 si indica la transazione fallita e con stato 3 si indica la transazione parzialmente terminata. I due stati finali sono aborted e committed. Questa simbologia serve per una rappresentazione mediante un DFA\footnote{come visto nel corso di LFT} del ciclo di vita di una transazione.
+
+\begin{enumerate}
+    \item La transazione ha inizio (Stato 1);
+    \item Finchè la transazione riceve comandi di inserimento, cancellazione e modifica rimane in questo stato (Stato 1). Se fallisce va al punto 3 (Stato 2), se va a buon fine va al punto 4 (Stato 3);
+    \item Dopo il rollback la transazione può solo raggiungere lo stato finale di \textbf{aborted};
+    \item Dopo il commit se la transazione rispetta i vincoli passa allo stato finale di \textbf{committed}, altrimenti passa al punto 3 (Stato 2);
+\end{enumerate}
+
+\section{Proprietà delle transazioni}
+
+Una transazione (in una base di dati relazionale) ha le seguenti proprietà (dette ACID):
+
+\begin{itemize}
+    \item \textcolor{blue}{atomica}: una transazione avviene o per intero o non avviene affatto. La BD non può essere lasciata in uno stato intermedio. Per garantire questa proprietà si usano comandi di UNDO o REDO, più file di log;
+    \item \textcolor{blue}{consistente (coerente)}: l'esecuzione di una transazione non deve violare i vincoli;
+    \item \textcolor{blue}{isolata}: per garantire l'esecuzione concorrente come se ogni operazione venisse eseguita singolarmente;
+    \item \textcolor{blue}{durabile (persistente)}: tutte le modifiche devono rimanere, anche se sono presenti guasti.
+\end{itemize}

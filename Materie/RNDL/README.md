@@ -8,6 +8,9 @@
 - Appunti di Desislav Ivanov, annata 20-21, disponibili [qui](https://desislav.dev/uni/rndl/)
 - Appunti di Davide Giosa (20-21)
 - Riassunto di Davide Zago (21-22), disponibile [qui](https://transno.com/doc/3y-nWb7O0Jl)
+- Appunti di Lorenzo Caresio (25-26):
+    - [Versione ipertestuale](Appunti/lcaresio/index.md)
+    - [Singolo file Markdown](Appunti/lcaresio/appunti_rndl26_complete.md) o [singolo file PDF](Appunti/lcaresio/appunti_rndl26_complete.pdf)
 
 ## Nota
 

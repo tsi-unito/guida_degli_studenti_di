@@ -1,0 +1,337 @@
+\chapter{Rappresentazioni di Significato}
+
+\section{Modelli Probabilistici}
+
+\qs{}{Perché assegnare una probabilità a una frase:}
+
+\begin{itemize}
+  \item Traduzione. 
+  \item Correzione di spelling. 
+  \item Speech recognition. 
+  \item Summarization. 
+  \item Q\&A.
+\end{itemize}
+
+\dfn{Modello Probabilistico del Linguaggio (LM)}{
+  Un modello che assegna probabilità a una sequenza di parole. 
+}
+
+\subsection{Ngrams}
+
+\paragraph{Il modello più semplice è \fancyglitter{n-grams}, ossia sequenze di $n$ word:}
+
+\begin{itemize}
+  \item 2-gram (bigramma): sequenza di due parole. 
+  \item 3-gram (trigramma): sequenza di tre parole.
+\end{itemize}
+
+\nt{Gli n-grams possono essere usati per stimare la probabilità dell'ultima parola date le parole precedenti assegnando una probabilità all'intera sequenza.}
+
+\paragraph{Questa probabilità può essere stimata contando:}
+
+\begin{itemize}
+  \item Dato un corpus molto grande contare il numero di volte in cui si vede una determinata parola. 
+  \item Predire una parola $w$ data una storia $h$ equivale a calcolare $P(w|h)$. 
+  \item Rappresentiamo la probabilità di una variabile casuale $X_i$ assumendone il valore. E.g. "the" rappresentato come $P($the$)$ e non come $P(X_i = $the$)$.
+  \item Una sequenza di N parole può essere rappresentata come $w_1\dots w_n$ e la relativa probabilità come $P(w_1\dots w_n)$.
+\end{itemize}
+\qs{}{Come calcolare le probabilità per un'intera sequenza?}
+
+$$
+P(X_1, \ldots, X_n) = P(X_1)P(X_2 \mid X_1)P(X_3 \mid X_{1:2}) \cdots P(X_n \mid X_{1:n-1}) = \prod_{k=1}^{n} P(X_k \mid X_{1:k-1})
+$$
+
+\nt{Tuttavia il linguaggio è creativo e quindi una particolare contesto potrebbe non essersi mai presentato.}
+
+\paragraph{Intuizione:} 
+
+\begin{itemize}
+  \item La storia può essere approssimata considerando solo le ultime poche parole (assunzione di Markov). 
+  \item $P(w_n \mid w_{1:n-1}) \approx P(w_n \mid w_{n-1})$
+\end{itemize}
+
+
+\dfn{Bigramma}{
+  In un bigramma la storia è ristretta solo alla parola precedente. 
+$$P(w_1 w_2\mid w_i) = P(w_1) \times P(w_2|w_1) \times \dots \times P(w_i|w_{i-1})$$
+
+La probabilità condizionale è: $P(w_i|w_{i-1}) = \frac{|w_{i-1}*w_i|}{|w_{i-1}|}$.
+
+}
+
+\paragraph{Generazione di sequenze:}
+
+\begin{itemize}
+  \item Solo specifiche sequenze possono essere costruite con un modello di linguaggio senza ridurre le probabilità a 0. 
+  \item Sequenze che compaiono nel training set. 
+  \item Si possono generare sequenze di lunghezza arbitraria ma non c'è garanzia che saranno grammaticalmente corrette.
+\end{itemize}
+
+\dfn{Maximum Likehood Estimation}{
+  Si ottiene un conteggio da un corpus e lo si normalizza tra 0 e 1. Le frequenze relative sono un mezzo per stimare le probabilità.
+}
+
+\paragraph{Conoscenza Sintattica:}
+
+\begin{itemize}
+  \item Le probabilità  raccolgono le regolarità sintattiche. Esempio: "to" ha un'alta probabilità di essere seguito da un verbo. 
+\end{itemize}
+
+\nt{Dai bigrammi si può passare a trigrammi, tetragrammi, etc.}
+
+\paragraph{Log probabilities:}
+
+\begin{itemize}
+  \item Le probabilità sono minori o uguali a 1 quindi più probabilità moltiplichiamo assieme più il prodotto diventa piccolo (rischio di underflow). 
+  \item Per cui vengono impiegate le probabilità logaritmiche (sommare è più veloce che moltiplicare): $p_1 \times p_2 = log(p\_1) + log(p_2)$.
+\end{itemize}
+
+\subsection{Valutare un LM}
+
+\paragraph{Tipi di valutazione:}
+
+\begin{itemize}
+  \item \fancyglitter{Valutazione Estrinseca:} usare gli LMs in applicazioni e vedere come cambiano le performance. 
+  \item \fancyglitter{Valutazione Intrinseca:} misurare la qualità di un modello indipendentemente da una data applicazione: 
+    \begin{itemize}
+      \item Le probabilità di un ngram sono acquisite da un training set e la sua qualità può essere testata su un test set. 
+      \item Questo tipo di valutazione implica il partizionamento dei dati in due sets distinti e comparare quanto il modello allenato si adatti al test set.
+    \end{itemize}
+\end{itemize}
+
+\dfn{Perplessità}{
+  La perplessità (perplexity) misura quanto bene un modello linguistico predice una sequenza di parole non vista. 
+  
+  Consideriamo una sequenza di parole di lunghezza $k$: 
+  \[
+  W = \{w_1, w_2, \dots, w_k\}
+  \]
+  
+  Dato un modello linguistico $\text{LM}$, la probabilità della sequenza $W$ è:
+  \[
+  \text{LM}(W) = \prod_{i=1}^{k} \text{LM}(w_i \mid w_{1:i-1})
+  \]
+
+  La log-probabilità media è:
+  \[
+  \frac{1}{k} \sum_{i=1}^{k} \log \text{LM}(w_i \mid w_{1:i-1})
+  \]
+
+  La perplessità della sequenza $W$ è quindi definita come:
+  \[
+  \text{PPL}(\text{LM}, W) = \exp\left\{ -\frac{1}{k} \sum_{i=1}^{k} \log \text{LM}(w_i \mid w_{1:i-1}) \right\}
+  \]
+
+}
+
+\nt{Valori di PPL più bassi indicano che il modello è più abile nel predire la sequenza, ovvero assegna probabilità più alte alle parole corrette.}
+
+\subsection{Smoothing}
+
+\qs{}{Cosa succede se delle parole sono nel nostro vocabolario, ma appaiono in un test set in un nuovo contesto?}
+
+\nt{Si vuole impedire che quelle parole abbiano zero probabilità.}
+
+\dfn{Laplace Smoothing}{
+  La \textbf{Laplace smoothing} è una tecnica di smoothing che consiste nell’aggiungere uno a ciascun conteggio prima della normalizzazione in probabilità.
+
+  Per i \textbf{unigrammi}, la stima di massima verosimiglianza per la probabilità della parola $w_i$ è:
+  \[
+  P(w_i) = \frac{c_i}{N}
+  \]
+  dove $c_i$ è il conteggio della parola $w_i$ e $N$ è il numero totale di token.
+
+  Con la Laplace smoothing, si aggiunge 1 a ogni conteggio, e si regola il denominatore per tener conto delle $V$ parole nel vocabolario:
+  \[
+  P_{\text{Lap}}(w_i) = \frac{c_i + 1}{N + V}
+  \]
+
+  In alternativa, si può descrivere l'effetto dello smoothing attraverso un \textit{conteggio corretto}:
+  \[
+  c_i^* = (c_i + 1) \cdot \frac{N}{N + V}
+  \]
+
+  Questo conteggio corretto viene poi normalizzato su $N$ per ottenere una nuova probabilità:
+  \[
+  P_i^* = \frac{c_i^*}{N}
+  \]
+
+  Lo smoothing può anche essere visto come una forma di \textbf{discounting}, cioè una riduzione di alcuni conteggi per redistribuire la massa di probabilità anche su eventi precedentemente con probabilità nulla. Il \textit{discount relativo} $d_c$ è:
+  \[
+  d_c = \frac{c^*}{c}
+  \]
+}
+
+\cor{Normalizzazione}{
+  Le probabilità dei bigrammi si ottengono normalizzando ciascun conteggio di bigramma rispetto al conteggio del primo elemento del bigramma:
+  \[
+  P(w_n \mid w_{n-1}) = \frac{C(w_{n-1} w_n)}{C(w_{n-1})}
+  \]
+
+  Con la \textbf{Laplace smoothing} (add-one), si aggiunge 1 al numeratore e si incrementa il denominatore con $V$, il numero di parole distinte nel vocabolario:
+  \[
+  P_{\text{Lap}}(w_n \mid w_{n-1}) = \frac{C(w_{n-1} w_n) + 1}{C(w_{n-1}) + V}
+  \]
+
+  Questo garantisce che nessun bigramma abbia probabilità nulla, anche se non è stato osservato nel corpus di addestramento.
+
+  \textit{Esempio:} se $V = 1446$, ogni conteggio unigramma nel denominatore sarà aumentato di 1446.
+}
+
+\section{Rappresentazioni Vettoriali}
+
+\subsection{Modello di Spazio Vettoriale}
+
+\paragraph{Alcuni termini:}
+
+\begin{itemize}
+  \item \fancyglitter{Documento:} un'unità di testo indicizzata nel sistema e disponibile per la ricerca. 
+  \item \fancyglitter{Collezione:} un insieme di documenti utilizzati per soddisfare le richieste dell'utente. 
+  \item \fancyglitter{Termine:} l'elemento che occorre nella collezione. 
+  \item \fancyglitter{Interrogazione:} la richiesta dell'utente espressa come insieme di termini. 
+\end{itemize}
+
+\dfn{Vector Space}{
+  Il vector space è una collezione di vettori con una certa dimensione. La loro dimensione è $|V|$, ossia la dimensione del vocabolario di riferimento.
+}
+
+\paragraph{Information Retrieval:}
+
+\begin{itemize}
+  \item Le matrici term-document sono state sviluppate per trovare documenti simili\footnote{Che contengono parole simili.}. 
+  \item Task: trovare il documento $d$ nella collezione $D$ che matchi al meglio una query $q$. 
+  \item Per risolvere questo task bisogna comparare quanto siano simili due vettori\footnote{Sono molto sparsi (pieni di 0) quindi si possono trovare modi efficienti per salvarli.}
+\end{itemize}
+
+\subsection{Confrontare Vettori}
+
+\dfn{Cosine Similarity}{
+  La metrica più comune è la similarità del coseno. Si basa sul dot product: $v \cdot w = \displaystyle\sum_{i = 1}^{N} v_i w_i$. 
+
+  Tuttavia questa metrica tende a favorire i vettori lunghi mentre noi vogliamo una metrica che sia valida a prescindere dalla lunghezza. Introduciamo quindi il vettore lunghezza: $|v| = \sqrt{\displaystyle\sum_{i=1}^N v_i^2}$. 
+
+  La similarità del coseno normalizza il prodotto scalare per le lunghezze dei vettori:
+  \[
+  \cos(v, w) = \frac{v \cdot w}{|v| \, |w|} = \frac{\displaystyle\sum_{i=1}^{N} v_i w_i}{\sqrt{\displaystyle\sum_{i=1}^{N} v_i^2} \sqrt{\displaystyle\sum_{i=1}^{N} w_i^2}}
+  \]
+
+  Il valore risultante è compreso tra $-1$ e $1$, dove $1$ indica che i vettori hanno la stessa direzione, $0$ che sono ortogonali, e $-1$ che puntano in direzioni opposte. Tuttavia le frequenze non possono essere negative.
+}
+
+\nt{Il dot product tende a essere alto quando i vettori sono alti nelle stesse dimensioni.}
+
+\paragraph{Per attribuire il gisuto peso ai termini sono necessari due fattori:}
+
+\begin{itemize}
+  \item La frequenza in un documento. 
+  \item La non frequenza in un intera collezione.
+\end{itemize}
+
+\dfn{Inverse Document Frequency}{
+  L'idea di base è che i termini presenti in pochi documenti sono utili per distinguere quei documenti dal resto della collezione. L'Inverse Document Frequency (IDF) è definito per mezzo del rapporto $\frac{N}{n_i}$ dove $N$ è il numero totale di documenti nella collezione e $n_i$ è il numero di documenti in cui il termine $i$ occorre. 
+
+  Dato l'elevato numero di documenti in varie collezioni il rapporto è schiacciato con una funzione logaritmica: $idf_i = log(\frac{N}{n_i})$. 
+
+  Utilizzando lo schema tf-idf il peso del termine $i$ nel vettore del documento $j$ è calcolato come il prodotto della sua frequenza totale in $j$ per il logaritmo $idf$ nella collezione: 
+
+  \[
+\mathrm{sim}(\vec{q}, \vec{d}) = \frac{\sum_{w \in q, d} \mathrm{tf}_{w, q} \cdot \mathrm{tf}_{w, d} \cdot (\mathrm{idf}_{w})^{2}}{\sqrt{\sum_{q_{i} \in q} (\mathrm{tf}_{q_{i}, q} \cdot \mathrm{idf}_{q_{i}})^{2}} \times \sqrt{\sum_{d_{i} \in d} (\mathrm{tf}_{d_{i}, d} \cdot \mathrm{idf}_{d_{i}})^{2}}}
+\]
+}
+
+\nt{I termini che ricorrono in tutti i documenti non sono utili: stopo words.}
+
+\subsection{Il Metodo di Rocchio}
+
+Alcuni classificatori lineari consistono in un profilo esplicito della categoria. 
+
+\dfn{Centroidi}{
+  Un centroide di un insieme di $X$ vettori di termini è definito come: 
+
+  \[
+\vec{t_{X}} := \frac{1}{|X|} \sum_{t_{d}^{i} \in X} \vec{t_{d}^{i}}
+\]
+}
+
+\paragraph{Un classificatore costruito usando il metodo di Rocchio ricompensa:}
+
+\begin{itemize}
+  \item La vicinanza di un documento di test al centroide degli esempi di training positivi. 
+  \item La distanza di un documento di test dal centroide degli esempi di training negativi.
+\end{itemize}
+
+\dfn{Metodo di Rocchio}{
+Il vettore della classe è definito come:
+\[
+\vec{c_i} = \langle f_{1i}, \ldots, f_{|T|i} \rangle
+\]
+
+\begin{itemize}
+\item Per ogni classe \(c_i\) (con \(i\) che varia tra le classi) calcoliamo il peso della \(k\)-esima feature \(f\) come:
+\[
+f_{ki} = \beta \cdot \sum_{d_j \in POS_i} \frac{w_{kj}}{|POS_i|} - \gamma \cdot \sum_{d_j \in NEG_i} \frac{w_{kj}}{|NEG_i|}
+\]
+dove:
+\[
+POS_i = \{ d_j \in Tr \mid \Phi(d_j, c_i) = Vero\}
+\]
+\[
+NEG_i = \{ d_j \in Tr \mid \Phi(d_j, c_i) = Falso\}
+\]
+
+\item \(\beta\) e \(\gamma\) sono parametri di controllo che permettono di regolare l'importanza relativa degli esempi positivi e negativi.
+
+\item Se \(\beta\) è impostato a 1 e \(\gamma\) a 0, il profilo di \(c\) corrisponde al centroide dei suoi esempi di training positivi.
+\end{itemize}
+}
+
+\subsection{WordToVec}
+
+\dfn{Embeddings}{
+Gli Embeddings sono vettori: 
+\begin{itemize}
+  \item Corti: $d$ compresa tra 50 e 1000. 
+  \item Densi: invece che essere pieni di 0.
+\end{itemize}
+}
+
+\clm{}{}{
+  \begin{itemize}
+    \item I vettori densi funzionano meglio in ogni task NLP rispetto ai vettori sparsi. 
+    \item Un possibile motivo è che uno spazio minore contribuisce a evitare l'overfitting.
+  \end{itemize}
+}
+
+\dfn{Skip-Gram}{
+ Gli Skip-Gram mirano a imparare rappresentazioni numeriche che catturano le ipotesi di distribuzione. L'obiettivo del training è predirre il contesto in cui una determinata parola è probabile che occorra.
+}
+
+\cor{Skip-Gram with Negative Sampling (SGNS)}{
+  L'idea è quella che usiamo i testi come dati per il training supervisionato implicito:
+
+  \begin{enumerate}
+    \item Tratta la parola target e i suoi vicini come esempi positivi. 
+    \item Vengono scelte casualmente altre parole fuori dal vicinato per ottenere esempi negativi. 
+    \item Si utilizza la regressione logistica per addestrare un classificatore per distinguere i due casi precedenti. 
+    \item Viene utilizzato per apprendere i pesi degli embeddings.
+  \end{enumerate}
+}
+
+\subsection{Altri Embeddings}
+
+\paragraph{Problemi di word2vec:}
+
+\begin{itemize}
+  \item word2vec non ha buoni modi di gestire le parole sconosciute. 
+  \item Un altro problema è la sparsità delle parole.
+\end{itemize}
+
+\dfn{Fasttext}{
+  Fasttext è un estensione di word2vec. Utilizza un modello si sottoparole rappresentando ogni parola come sé stessa più un insieme di n-grams. Uno skipgram è appreso per ognuno di questi n-grams e le parole sono rappresentate dalla somma di tutti gli embeddings.
+}
+
+\nt{Un altro embedding molto utilizzato è \texttt{GloVe}.}
+
+
+
+

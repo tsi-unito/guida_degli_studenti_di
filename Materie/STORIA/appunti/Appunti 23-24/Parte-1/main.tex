@@ -1,0 +1,29 @@
+\documentclass{report}
+
+\input{enviroment/preamble}
+\input{enviroment/macros}
+\input{enviroment/letterfonts}
+
+\renewcommand{\contentsname}{Indice}
+
+\title{\Huge{Storia dell'informatica - Prima parte}}
+\author{\huge{Luca Barra}}
+\date{Anno accademico 2023/2024}
+
+\begin{document}
+
+\maketitle
+\newpage% or \cleardoublepage
+% \pdfbookmark[<level>]{<title>}{<dest>}
+\pdfbookmark[section]{\contentsname}{toc}
+\afterpage{\blankpage}
+\pagenumbering{Roman}
+\tableofcontents
+\cleardoublepage\pagenumbering{arabic}
+\pagebreak
+\afterpage{\blankpage}
+\include{capitoli/Storia arch}
+\include{capitoli/Storia ling}
+\include{capitoli/Storia S. O.}
+
+\end{document}

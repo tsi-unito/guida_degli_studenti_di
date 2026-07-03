@@ -1,0 +1,72 @@
+\chapter{Teoria 6}
+
+\section{Calcolo relazionale sulle tuple con dichiarazione di range}
+
+Il \textcolor{blue}{Calcolo relazionale sulle tuple con dichiarazione di range} è la base teorica di SQL. In questo calcolo le variabili denotano tuple e bisogna specificare un \textit{range} di valori possibili. Le sue interrogazioni sono composte da tre parti:
+
+$\\$
+$\{T|L|F|\}$
+
+\begin{itemize}
+    \item \textit{Target (T)}: specifica gli attributi che compaiono nel risultato;
+    \item \textit{Range list (L)}: specifica il dominio delle variabili non quantificate in F;
+    \item \textit{Formula (F)}: specifica un'espressione logica che deve essere soddisfatta dal risultato.
+\end{itemize}
+
+Il risultato è dato da:
+\begin{itemize}
+    \item l’insieme dei valori degli attributi T;
+    \item presi dalle tuple nelle variabili in L;
+    \item che rispettano la formula in F.
+\end{itemize}
+
+\subsection{Target list}
+
+La \textcolor{blue}{target list} è l’elenco delle informazioni che si vogliono avere in uscita. Le variabili usate nella target list devono essere dichiarate nella Range list. Ci sono diverse sintassi possibili:
+\begin{itemize}
+    \item variabile.Attributo1, variabile.attributo2,...;
+    \item variabile.(Attributo1,Attributo2,...);
+    \item variabile.*\footnote{Restituisce tutti gli attributi};
+    \item Nome: variabile.attributo.
+\end{itemize}
+
+Esempio: p.Nome, p.Cognome significa che nel risultato compariranno nomi e cognomi.
+
+\subsection{Range list}
+
+La \textcolor{blue}{range list} è l'introduzione di variabili abbinate a relazioni di base. 
+
+nome\_variabile(nome\_relazione\_di\_base)
+$\\$
+Esempio: p(Pazienti) significa che la variabile p assume valori nella relazione Pazienti. Ed è una qualunque tupla di pazienti.
+
+\subsection{Formula}
+
+La \textcolor{blue}{formula} è un predicato di logica del primo ordine che vincola le variabili della range list. Quindi si possono applicare i soliti operatori della logica proposizionale (AND, OR, NOT, etc.) e i quantificatori esitenziali e universali.
+
+Esempio: p.Residenza='TO' significa che, data una tupla p, perché questa faccia parte del risultato, l’attributo Residenza di p deve valere ‘TO’.
+
+La formula è un predicato del primo ordine che può contenere sia variabili libere che quantificate (vincolate).
+Tutte le variabili libere presenti nella formula devono essere dichiarate nella range list.
+
+$\exists$variabile(Relazione)(formula)
+
+$\forall$variabile(Relazione)(formula)
+
+\subsection{Limitazioni}
+
+Nel calcolo relazionale sulle tuple con dichiarazione di range non è possibile esprimere l'unione. Infatti nella range list ogni variabile ha come dominio una sola relazione, mentre l’unione richiede che il risultato venga da una relazione o da un’altra. SQL (che è basato su questo calcolo) prevede un operatore esplicito di unione, ma non tutte le versioni prevedono intersezione e differenza.
+Inoltre manca il concetto di ricorsione, per cui non è possibile esprimere alcune query. 
+Esempio: discendente(Persona1,Persona2) esprime tutte le discendenze e richiederebbe una chiusura transitiva\footnote{Le chiusure transitive sono implementate nelle ultime versioni di SQL}.
+
+\section{Calcolo relazionale e SQL}
+
+Il calcolo relazionale è direttamente correlato alla sintassi di SQL. 
+
+\begin{itemize}
+    \item La target list corrisponde alla SELECT;
+    \item La range list corrisponde alla FROM;
+    \item La formula corrisponde alla WHERE.
+\end{itemize}
+
+Tuttavia in SQL non è presente il quantificatore universale per cui si ricorre al NOT e al quantificatore esistenziale.

@@ -1,0 +1,104 @@
+\chapter{Java 8}
+
+A un certo punto, nella storia di Java, si è deciso di effettuare un 
+"\textit{restiling}" delle collection\footnote{Implementazioni delle
+strutture dati più comuni, come liste, insiemi, mappe, etc.}. Per cui si
+sono introdotti:
+\begin{itemize}
+    \item i metodi di default;
+    \item lambda-espressioni: rendono il codice più compatto, modulare e
+    leggibile.
+\end{itemize}
+
+\section{Lambda-espressioni}
+
+\dfn{Lambda-espressione}{Una lambda-espressione è una funzione anonima
+che può essere passata come parametro ad un metodo o ad un costruttore.
+La sintassi è la seguente:
+\begin{itemize}
+    \item (parameters) $\rightarrow$ expression;
+    \item (parameters) $\rightarrow$ \{ statements; \}.
+\end{itemize}
+}
+
+\cor{Identità}{
+L'Identità $\lambda x\: : \: \text{int}.x$ è:
+\begin{itemize}
+    \item $(x\: : \: \text{int}) \rightarrow x$;
+    \item $(x\: : \: \text{int}) \rightarrow \{ \text{return}\: x; \}$.
+\end{itemize}
+}
+
+\nt{In alcuni casi si può omettere il tipo dei parametri, in quanto
+Java è in grado di inferirlo (raramente)}
+
+\qs{}{Qual è il tipo dell'Identità?}
+
+\dfn{Interfacce funzionali}{In Java 8 sono state introdotte le interfacce
+funzionali, ovvero interfacce che hanno un solo metodo astratto. Esse
+rappresentano il tipo delle lambda-espressioni. Per esempio, l'Identità
+ha tipo Int che ritorna Int (quindi Int $\rightarrow$ Int, in Haskell)
+}
+
+\nt{Esistono interfacce funzionali già pronto, come per esempio
+\textit{Predicate}, \textit{Consumer}, \textit{Function}, etc.}
+
+\dfn{Method reference}{
+Un method reference è un modo per riferirsi a un metodo. Aumenta la leggibilità
+del codice.
+La sintassi è la seguente: Type::methodName
+}
+
+\section{Compatibilità e metodi di default}
+
+\dfn{Binary compatibility}{
+Due versioni di una libreria sono binariamente compatibili se i file
+binari continuano a funzionare anche con la nuova versione
+}
+
+\nt{
+Se si modifica un software bisogna tener conto della backward compatibility,
+ovvero la compatibilità con le versioni precedenti
+}
+
+\dfn{Source compatibility}{
+Due versioni di una libreria sono sorgente compatibili se un programma esistente
+continua a funzionare anche dopo essere stato ricompilato con la nuova versione
+}
+
+\dfn{Behavioural compatibility}{
+Due versioni di una libreria sono behavioural compatibili se un programma
+esistente continua a produrre lo stesso output con lo stesso input
+}
+
+\nt{Per mantenere la source compatibility tra Java 7 e Java 8, si è deciso
+di introdurre i metodi di default}
+
+\dfn{Metodi di default}{
+I metodi di default sono metodi che possono essere implementati all'interno
+di un'interfaccia. Essi permettono di aggiungere nuove funzionalità alle
+interfacce senza rompere la compatibilità con le versioni precedenti. Per
+fare ciò vengono aggiunti metodi opzionali (che possono essere implementati o meno).
+Se non vengono implementati, viene usata l'implementazione di default
+}
+
+\nt{
+I metodi di default vengono usati per modificare molte interfacce di Java collections
+per rendere più semplice l'uso delle lambda-espressioni e mantenere la backward compatibility
+}
+
+\section{L'interfaccia Function}
+
+\dfn{Function$\langle$T, R$\rangle$}{
+L'interfaccia Function$\langle$T, R$\rangle$ è un'interfaccia funzionale
+che rappresenta una funzione che prende un parametro di tipo T e ritorna
+un parametro di tipo R. Essa ha un solo metodo astratto:
+\begin{itemize}
+    \item R apply(T t).
+\end{itemize}
+Oltre a questo presenta il metodo di default:
+\begin{itemize}
+    \item Function$\langle$T, R$\rangle$ andThen(Function$\langle$? super R, ? extends V$\rangle$ after) che 
+    ritorna una funzione che prima applica la funzione corrente e poi la funzione after.
+\end{itemize}   
+}

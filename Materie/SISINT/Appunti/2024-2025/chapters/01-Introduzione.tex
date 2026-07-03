@@ -1,0 +1,1128 @@
+\chapter{Introduzione}
+
+\nt{DISCLAIMER: questi appunti sono stati scritti da una persona che ha dovuto dare questo esame in magistrale (yeah, l'ho skippato in triennale e ora mi tocca darlo): essendo che ho dato molti esami che dipendono da questo insegnamento e possibile che in alcune sezioni dia per scontato delle cose.}
+
+\section{Che Cos'è l'Intelligenza Artificiale?}
+
+Nell'immaginario l'intelligenza artificiale viene solitamente assimilata a quella di un robot antropomorfo che risolve problemi complessi e impara da essi.
+
+\begin{center}
+	\begin{minipage}{0.45\textwidth}
+		\centering
+		\includegraphics[scale=0.45]{01/ia.png}
+	\end{minipage}%
+	\hfill
+	\begin{minipage}{0.45\textwidth}
+		\centering
+		\includegraphics[scale=0.45]{01/ia2.png}
+	\end{minipage}
+\end{center}
+
+\paragraph{Però esistono altri tipi di IA:}
+
+\begin{itemize}
+	\item Servizi di streaming: portali per l'accesso a molti files. Utilizzano meccanismi di personalizzazione.
+	\item Social network.
+	\item Assistenti virtuali.
+	\item Macchine fotografihche/Smartphone.
+\end{itemize}
+
+\subsection{Un Inizio}
+
+\dfn{Intelligenza}{Complesso di facoltà psichiche e mentali che
+	consentono all’uomo di pensare, comprendere o
+	spiegare i fatti o le azioni, elaborare modelli astratti
+	della realtà, intendere e farsi intendere dagli altri,
+	giudicare, e lo rendono insieme capace di adattarsi a
+	situazioni nuove e di modificare la situazione stessa
+	quando questa presenta ostacoli all’adattamento;
+	propria dell’uomo, in cui si sviluppa gradualmente a
+	partire dall’infanzia e in cui è accompagnata dalla
+	consapevolezza e dall’autoconsapevolezza, è
+	riconosciuta anche, entro certi limiti (memoria
+	associativa, capacità di reagire a stimoli interni ed
+	esterni, di comunicare in modo anche complesso, ecc.),
+	agli animali.}
+\nt{Artificiale indica che non è naturale.}
+
+\paragraph{Prospettiva storica:}
+
+\begin{itemize}
+	\item 1936: Alan Turing formalizza la Turing Machine.
+	\item 1940: ENIAC: primo computer "moderno".
+	\item 1950: Test di Turing, quando un computer può dirsi intelligente?
+	\item Il dubbio nasce dal contesto bellico in cui vennerò sviluppati i primi computer: all'epoca solo poche persone istruite riuscivano a fare i calcoli necessari.
+	\item 1956: Nasce l'intelligenza artificiale.
+\end{itemize}
+
+\paragraph{Breve storia dell'automazione:}
+
+\begin{itemize}
+	\item \fancyglitter{Automazione del calcolo:} metà anni '50, pochi dati, molti calcoli.
+	\item \fancyglitter{Automazione di procedure amministrative e contabili:} metà anni '60, pochi calcoli, grandi molti di dati alfanumerici.
+	\item \fancyglitter{Automazione di fabbrica:} metà anni '70, primi robot industriali, ambiente predeterminato.
+	\item \fancyglitter{Automazione di ufficio:} metà anni '80, primi PC, primi strumenti per utenti non esperti.
+	\item \fancyglitter{Automazione della ricerca delle informazioni:} fine anni '90, internet, WEB, motori di ricerca.
+\end{itemize}
+
+\qs{}{L'automazione è intelligenza?}
+
+\paragraph{Ragionando:} la calcolatrice è automatica, ma non si può dire intellingente. Una lavatrice è automatica, ha diversi programmi e si adatta. Un rover che gira su Marte effettua esperimenti e si adatta, ha una certa autonomia. Infine, gli LLM eseguono un programma e hanno la capacità di comunicare mediante linguaggio naturale.
+
+\subsection{Test di Turing}
+
+\qs{}{Quando un programma può dirsi intelligente?}
+
+\dfn{Turing Test (The Imitation Game)}{
+	Un'intervistatore deve capire se un'entità misteriosa è umana o è una macchina. Può fare tutte le domande che vuole su qualsiasi argomento e l'entità deve rispondere (il tutto per scritto). Al termine l'intervistatore enuncia il suo verdetto. Se dice uomo ed era macchina, la macchina ha superato il test.
+}
+
+\paragraph{AI:}
+
+\begin{itemize}
+	\item Data e luogo di nascita:
+	      \begin{itemize}
+		      \item Darthmouth Conference (USA), 1956.
+		      \item Nome scelto da John McCarthy.
+	      \end{itemize}
+	\item In precedenza:
+	      \begin{itemize}
+		      \item Una macchina può pensare ed essere considerata intelligente?
+		      \item Vari approcci: cybernetica, teoria degli automi, etc.
+		      \item Turing test.
+	      \end{itemize}
+	\item Successivamente:
+	      \begin{itemize}
+		      \item Scacchi.
+		      \item Giochi.
+		      \item Dimostrazioni automatiche.
+	      \end{itemize}
+\end{itemize}
+
+\qs{}{Basta produrre gli output attesi per dire che vi è comprensione?}
+
+\begin{itemize}
+	\item Si può dare una risposta "giusta" avendo certe conoscenze e ragionamento.
+	\item Ma si può dare una risposta "giusta" anche tirando a caso.
+\end{itemize}
+
+\dfn{Esperimento della Stanza Cinese}{
+	Una persona interagisce con un computer, programmato per rispondere con certi
+	ideogrammi cinesi ad altri ideogrammi cinesi ricevuti in input. Il computer parla cinese? Lo capisce?
+}
+
+\begin{figure}[h]
+	\centering
+	\includegraphics[scale=0.4]{01/cinese.png}
+	\caption{Esperimento di Searle.}
+\end{figure}
+
+\nt{Ma supponiamo che una persona chiusa in una
+	stanza ha istruzioni per rispondere con certi ideogrammi cinesi in risposta ad altri ideogrammi cinesi. Parla cinese? Lo capisce?}
+
+\begin{figure}[h]
+	\centering
+	\includegraphics[scale=0.35]{01/cinese2.png}
+	\caption{Esperimento di Searle.}
+\end{figure}
+
+\dfn{Test di Turing Inverso}{
+	Usati per intercettare bot che cercano di accedere a form o a dati (C.A.P.T.C.H.A.).
+}
+
+\nt{Una variante di questo test è usata in "Ma gli androidi sognano pecore elettriche?" (Blade Runner).}
+
+\subsection{Strong e Weak AI}
+
+\paragraph{Due tipi di intelligenza:}
+
+\begin{itemize}
+	\item \fancyglitter{Strong AI:} è possibile riprodurre l'intelligenza umana?
+	\item \fancyglitter{Weak AI:} è possibile trovare dei modi per risolvere problemi che, se risolti dagli esseri umani richiederebbero intelligenza?
+\end{itemize}
+
+
+\paragraph{Obiettivo della weak AI:}
+
+\begin{itemize}
+	\item Programmare un agente artificiale in grado di:
+	      \begin{itemize}
+		      \item Rilevare ostacoli.
+		      \item Rilevare oggetti in movimento.
+		      \item Costruire un piano d'azione.
+		      \item Rilevare segnali significativi.
+	      \end{itemize}
+	\item In un ambiente che è:
+	      \begin{itemize}
+		      \item Complesso.
+		      \item Parzialmente prevedibile.
+		      \item Parzialmente collaborativo.
+	      \end{itemize}
+\end{itemize}
+
+\nt{Nasce il binomio Agente-Ambiente.}
+
+\dfn{Agente}{
+	Un agente è un'astrazione che rappresenta un qualsiasi sistema che percepisce il proprio ambiente tramite i sensori e agisce su di esso tramite degli attuatori.
+}
+
+\clm{Caratteristiche dell'ambiente}{}{
+	\begin{itemize}
+		\item Completamente osservabile: in ogni istante i sensori danno accesso a
+		      tutti gli aspetti dell’ambiente rilevanti per
+		      la scelta dell’azione.
+		\item Parzialmente osservabile: i sensori danno accesso solo a parte
+		      dell’informazione rilevante (cause:
+		      sensori imprecisi oppure non in grado di
+		      rilevare alcuni dati).
+		\item Deterministico: lo stato successivo è determinato dallo
+		      stato corrente e dall’azione applicata.
+		\item Stocastico: applicando più volte una stessa azione in
+		      uno stesso stato si possono raggiugnere
+		      stati diversi. Si dice strategico quando è
+		      stocastico solo per quanto riguarda le
+		      azioni degli altri agenti.
+		\item Epistodico: l’esperienza degli agenti è divisa in
+		      episodi atomici: un episodio è dato da
+		      una percezione seguita da una singola
+		      azione (esempio: classificazione).
+		\item Sequenziale: attività composta da più passi ognuno dei
+		      quali in generale influenzerà i successivi.
+		\item Statico: l'ambiente non cambia mentre l'agente "pensa".
+		\item Dinamico: l'ambiente cambia mentre l'agente "pensa".
+		\item Discreto: possono essere discreti stato, tempo,
+		      percezioni, azioni (esempio: gli scacchi
+		      hanno stati, percezioni, azioni discreti).
+		\item Continuo: possono essere continui stato, tempo,
+		      percezioni, azioni (esempio: gli scacchi
+		      hanno tempo continuo).
+		\item Singolo agente: viene modellata come agente una sola
+		      entità.
+		\item Multi agente: vengono modellate come agenti più
+		      entità
+	\end{itemize}
+}
+
+\paragraph{Paradigmi di programmazione:}
+
+\begin{itemize}
+	\item Approccio tradizionale:
+	      \begin{itemize}
+		      \item Imperativo.
+		      \item A oggetti.
+		      \item \fancyglitter{Non è AI:} risolve un singolo compito ed è strutturato come una sequenza di passi.
+		      \item Descrivono il COME.
+	      \end{itemize}
+	\item Approccio dichiarativo:
+	      \begin{itemize}
+		      \item Separa una descrizione del COSA da un programma generale.
+		      \item Lo stesso programma è applicato a diverse descrizioni per risolvere problemi diversi.
+	      \end{itemize}
+\end{itemize}
+
+\subsection{Esempi}
+
+\dfn{Mondo dei Blocchi}{
+	Tipico Toy Problem in ambito AI. Si hanno un tavolo con $n$ posizioni e $m$ blocchi. L'obiettivo è passare da uno stato iniziale a uno stato finale. Un agente può spostare un blocco per volta seguendo determinate regole.
+}
+
+\begin{figure}[!h]
+	\centering
+	\includegraphics[scale=0.35]{01/blocchi.png}
+	\caption{Mondo dei blocchi.}
+\end{figure}
+
+\paragraph{L'agente:}
+
+\begin{itemize}
+	\item Percepisce la situazione iniziale.
+	\item Costruisce i passi per andare dalla situazione iniziale alla situazione finale.
+	\item Deve determinare quali azioni lo avvicinano al \fancyglitter{goal}.
+\end{itemize}
+
+\begin{figure}[!h]
+	\centering
+	\includegraphics[scale=0.45]{01/delibera.png}
+	\caption{Meccanismo di deliberazione.}
+\end{figure}
+
+\qs{}{Come scegliere le mosse?}
+
+\begin{itemize}
+	\item Dipende dal tipo di problema.
+	\item A volte basta la prima mossa, a volte si vuole trovare una soluzione ottima.
+\end{itemize}
+
+\subsection{Definire AI}
+
+\dfn{Automazione}{
+	Si deve programmare la macchina per fare ogni passo: è applicabile in domini fortemente ripetitivi.
+}
+
+\dfn{Autonomia}{
+	Un agente artificiale riceve compiti ad alto livello, l'utente demanda all'agente la risoluzione.
+}
+
+\paragraph{Un agente autonomo:}
+
+\begin{itemize}
+	\item Riceve solo compiti ad alto livello.
+	\item Ragiona ed esplora alternative (molte mosse possibili a ogni istante).
+	\item Riconosce quando non si può andare avanti su una strada \footnote{nota aggiuntiva: non proprio, dipende dal tipo di agente e dal suo control loop.}.
+	\item Riconosce che si è già stati in quella situazione.
+	\item Prima si ragiona e poi si agisce.
+\end{itemize}
+
+\nt{
+	In AI gli agenti autonomi sono un modo di concepire
+	i programmi, in cui controllo e logica (o modello) sono
+	chiaramente separati.
+
+	Un agente fa sempre ciò che è programmato a fare\footnote{No Terminator, sorry :'(}.
+}
+
+\qs{}{Cosa vuol dire fare la cosa giusta?}
+
+\dfn{Funzione Deliberativa}{
+	La funzione deliberativa di un agente determina le azioni che saranno eseguite. In termini informali un agente è razionale quando “fa la cosa giusta”, cioè opera per conseguire il “successo”.
+}
+
+\nt{Occorre quindi definire una \fancyglitter{misura di prestazione}.}
+
+\paragraph{Il comportamento razionale di un agente dipende da 4 fattori:}
+
+\begin{enumerate}
+	\item Azioni nelle facoltà dell'agente.
+	\item Misura di prestazione.
+	\item Conoscenza dell'ambiente.
+	\item Percezione.
+\end{enumerate}
+
+\cor{Agente Razionale}{
+	Un agente razionale dovrebbe scegliere sempre un’azione
+	che massimizza la misura di prestazione attesa, data la
+	particolare sequenza percettiva in oggetto e le informazioni
+	derivabili dalla conoscenza dell’ambiente.
+}
+
+\paragraph{Definizioni di AI:}
+
+\begin{itemize}
+	\item Sistemi che pensano come esseri umani:
+	      \begin{itemize}
+		      \item Haugeland, 1985.
+		      \item Bellman, 1978.
+	      \end{itemize}
+	\item Sistemi che agiscono come esseri umani:
+	      \begin{itemize}
+		      \item Kuzweil, 1990.
+		      \item Rich e Knight, 1991.
+	      \end{itemize}
+	\item Sistemi che pensano razionalmente:
+	      \begin{itemize}
+		      \item Charniak e McDermott, 1985.
+		      \item Winston, 1992.
+	      \end{itemize}
+	\item Sistemi che agiscono razionalmente:
+	      \begin{itemize}
+		      \item Poole et al., 1998.
+		      \item Nilsson, 1998.
+	      \end{itemize}
+\end{itemize}
+
+\qs{}{Quali problemi per l'AI:}
+
+\begin{itemize}
+	\item Non è adatta per:
+	      \begin{itemize}
+		      \item Modelli matematici precisi.
+		      \item Metodi algoritmici specifici.
+	      \end{itemize}
+	\item È utile/necessaria per:
+	      \begin{itemize}
+		      \item Problemi non deterministici.
+		      \item Più soluzioni.
+		      \item Dati non numerici.
+		      \item Grandi Knowledge Base (KB).
+		      \item Interazione con ambiente ed esseri umani.
+	      \end{itemize}
+\end{itemize}
+
+\section{Risoluzione Automatica di Problemi}
+
+In questa parte si affronta la problematica di come definire il concetto di problema e di soluzione,
+di distinguere tra soluzione e soluzione ottima. Sono studiati tre approcci alla risoluzione di
+problemi: ricerca nello spazio degli stati, ricerca in spazi con avversario (giochi ad informazione
+completa), risoluzione di problemi mediante soddisfacimento di vincoli.
+
+\subsection{I Problemi}
+
+\begin{itemize}
+	\item La realtà che definisce un problema può essere astratta in un insieme di stati.
+	\item La realtà transisce da uno stato ad un altro tramite l’esecuzione di azioni (o operazioni).
+\end{itemize}
+
+\paragraph{Caratteristiche:}
+
+\begin{itemize}
+	\item \fancyglitter{Stati discreti} (o dentro o fuori, non ci sono stati graduali).
+	\item Effetto \fancyglitter{deterministico} delle azioni.
+	\item \fancyglitter{Dominio statico} (non cambia durante l'esecuzione delle azioni).
+\end{itemize}
+
+\paragraph{Esempio non deterministico:}
+
+\begin{itemize}
+	\item Eseguendo più volte la stessa azione si possono avere conseguenze diverse.
+	\item Si hanno \fancyglitter{stati continui}.
+\end{itemize}
+
+\dfn{Obiettivo}{
+	Un obiettivo (goal) è un risultato verso il quale gli sforzi sono diretti. È una condizione data in termini di:
+	\begin{itemize}
+		\item Situazione.
+		\item Prestazione.
+	\end{itemize}
+}
+
+\nt{L'insieme degli stati obiettivo sono tutti gli stati in cui vale la condizione che li definisce.}
+
+\dfn{Algoritmo di Ricerca}{
+	L’algoritmo di ricerca determina una soluzione
+	che, a partire da uno stato iniziale, permette di
+	raggiungere un dato stato obiettivo. Usa:
+	\begin{itemize}
+		\item Una descrizione del problema.
+		\item Un metodo di ricerca attraverso lo spazio degli stati.
+	\end{itemize}
+}
+
+\cor{Soluzione}{
+	Una soluzione è un percorso nello spazio degli stati.
+}
+
+\paragraph{Un problema di ricerca può essere definito come una tupla di 4 elementi:}
+
+\begin{enumerate}
+	\item Stato iniziale: cattura la situazione a partire dalla quale viene computata la soluzione.
+	\item Funzione successore: dato uno stato e un'azione legale in esso calcola lo stato a cui si transisce eseguendo quell'azione in quello stato.
+	\item Test obiettivo: determina se lo stato a cui è applicato è lo stato goal: può verificare
+	      una proprietà o verificare l’appartenenza dello stato all’insieme degli
+	      stati target.
+	\item Funzione di costo del cammino: dato un percorso possibile gli assegna un costo numerico.
+\end{enumerate}
+
+\paragraph{Alcune astrazioni:}
+
+\begin{itemize}
+	\item \fancyglitter{Stati:} occorre rappresentare solo l'informazione rilevante alla soluzione del problema.
+	\item \fancyglitter{Azioni:} occorre rappresentare solo gli aspetti funzionali alla soluzione del problema.
+	\item \fancyglitter{Toy problem:} un problema artificiale avente lo scopo di
+	      illustrare o mettere alla prova dei metodi di risoluzione.
+	      Ha una formulazione precisa e univoca. Utile per
+	      confrontare metodi diversi
+	\item \fancyglitter{Real-world problem:} problemi concreti, effettivi. Spesso
+	      non hanno una formulazione unica.
+\end{itemize}
+
+\nt{E.g. di toy problems: problema dell'aspirapolvere, gioco dell'8, problema delle 8 regine.}
+
+\paragraph{Possibili approcci:}
+
+\begin{itemize}
+	\item \fancyglitter{Blind:} usano esclusivamente la struttura del problema per cercare una soluzione.
+	\item \fancyglitter{Informati:} usano la struttura del problema e ulteriore conoscenza per guidare la ricerca.
+\end{itemize}
+
+\subsection{Metodi di Ricerca non Informati (Blind Search)}
+
+\dfn{Albero di Ricerca}{
+	Un albero di ricerca è una struttura dati usata per trovare una soluzione a un problema di ricerca:
+	\begin{itemize}
+		\item Ogni nodo corrisponde a uno stato.
+		\item I nodi figli sono costruiti tramite la funzione successore.
+		\item Ogni nodo ha un riferimento al nodo padre (per ricostruire le
+		      soluzioni).
+		\item L’albero è costruito a partire dal nodo corrispondente allo stato
+		      iniziale.
+		\item L’albero diventa un grafo quando lo stesso nodo (NB: non lo stesso
+		      stato) può essere raggiunto tramite più percorsi.
+		\item Un percorso che porta dal nodo iniziale a un nodo obiettivo è una
+		      soluzione.
+	\end{itemize}
+}
+
+\nt{Gli alberi sono un caso specifico dei grafi.}
+
+\paragraph{Formalizzando:}
+
+\begin{itemize}
+	\item Un \fancyglitter{grafo di ricerca} $G = (\{n_i\}, \{e_{i j}\})$ è costituito da un insieme di nodi $n_i$ e di archi $e_{i j}$.
+	\item $e_{pq} \in \{e_{i j}\}$ rappresenta l'esistenza di un arco dal nodo $n_p$ al nodo $n_q$, quindi $n_q$ è successore di $n_p$.
+	\item Ciascun arco $e_{i j}$ ha associato un costo $c_{i j}$.
+	\item L'esistenza di $e_{i j}$ non implica l'esistenza di $e_{j i}$.
+\end{itemize}
+
+\begin{figure}[!h]
+	\centering
+	\includegraphics[scale=0.45]{01/8.png}
+	\caption{Esempio con il gioco dell'8.}
+\end{figure}
+
+\qs{}{Se le strategie sono tante ve ne è una migliore?
+	Come le confronto?}
+
+\paragraph{Criteri di valutazione:}
+
+\begin{itemize}
+	\item \fancyglitter{Completezza:} garanzia di trovare una soluzione, se esiste.
+	\item \fancyglitter{Ottimalità:} garanzia di trovare una soluzione ottima (a costo
+	      minimo)\footnote{Corso di "Algoritmi e Complessità}.
+	\item \fancyglitter{Complessità temporale:} quanto tempo occorre per trovare una soluzione.
+	\item \fancyglitter{Complessità spaziale:} quanta memoria occorre per effettuare la ricerca.
+\end{itemize}
+
+\qs{}{Come si valuta la complessità?}
+
+\begin{itemize}
+	\item \fancyglitter{Complessità computazionale:} dato un problema esistono infiniti algoritmi che lo risolvono.
+	\item \fancyglitter{Termine di paragone:}
+	      \begin{itemize}
+		      \item Tempo.
+		      \item Spazio.
+	      \end{itemize}
+	\item \fancyglitter{Criterio di preferenza:} economicità.
+\end{itemize}
+
+\nt{
+	Per astrarre dal calcolatore utilizzato lo spazio e il tempo non sono metrici, ma parametrici. E.g. Numero di nodi creati o visitati.
+
+	È interessante vedere l'andamento del costo al variare della dimensione del problema.
+}
+
+\subsection{Lista di Strategie}
+
+\dfn{Ricerca in Ampiezza}{
+	La ricerca espande il nodo radice, poi tutti i suoi successori, poi
+	tutti i discendenti di secondo livello, ecc.
+
+	Si realizza gestendo la frontiera come una coda FIFO.
+}
+\begin{center}
+	\begin{minipage}{0.45\textwidth}
+		\centering
+		\includegraphics[scale=0.5]{01/amp.png}
+	\end{minipage}%
+	\hfill
+	\begin{minipage}{0.45\textwidth}
+		\centering
+		\includegraphics[scale=0.5]{01/fifo.png}
+	\end{minipage}
+\end{center}
+
+\paragraph{Valutazione:}
+
+\begin{itemize}
+	\item \fancyglitter{Completezza:} se esiste un nodo obiettivo a una profondità finita $d$, la
+	      ricerca in ampiezza lo troverà a patto che il fattore di ramificazione $b$
+	      (cioè il numero di figli che un nodo può avere) sia finito.
+	\item \fancyglitter{Ottimalità:} la soluzione trovata è ottima solo se il costo del cammino
+	      è una funzione monotona crescente della profondità (es. tutte le azioni
+	      hanno lo stesso costo).
+	\item \fancyglitter{Complessità temporale:} $O(b^{d + 1})$.
+	\item \fancyglitter{Complessità spaziale:}  $O(b^{d + 1})$, perché bisogna tenere in memoria sia la frontiera che gli antenati.
+\end{itemize}
+
+\dfn{Ricerca a Costo Uniforme}{
+	Nella ricerca a costo uniforme:
+	\begin{itemize}
+		\item Ogni nodo ha associato il costo del cammino con cui è stato raggiunto.
+		\item La frontiera è mantenuta ottimale.
+		\item A ogni iterazione espande il nodo appartenente a un cammino di costo minimo.
+	\end{itemize}
+}
+
+\nt{Quando i costi sono tutti uguali diventa una ricerca in ampiezza.}
+
+\clm{}{}{
+	\begin{itemize}
+		\item Costo $\not = $ Numero dei passi: il numero dei passi effettuati non conta, conta solo il costo dei cammini.
+		\item Quando trova il nodo obiettivo non si ferma subito, prima controlla se vi sono cammini aperti di costo inferiore e nel caso prova a espanderli.
+	\end{itemize}
+}
+
+\paragraph{Valutazione:}
+
+\begin{itemize}
+	\item \fancyglitter{Completezza:} garantibile solo se tutti i passi hanno costo $\geq \epsilon > 0$. È il costo minimo delle operazioni.
+	\item \fancyglitter{Ottimalità:} garantibile solo se tutti i passi hanno costo $\geq \epsilon > 0$. Non sa gestire la nozione di guadagno unita a quella di costo.
+	\item \fancyglitter{Complessità temporale e spaziale:} ordine del branching factor elevato al numero di passi del percorso ottimale se i costi dei passi fossero uniformi ($O(b^{1 + LC^* / \epsilon})$).
+\end{itemize}
+
+\dfn{Ricerca in Profondità}{
+	La ricerca in profondità espande sempre uno dei nodi più profondi della frontiera, cioè uno dei più lontani dalla radice. L'espansione produce tutti i successori di un nodo. Quando la ricerca tenta di espandere un nodo che non ha
+	successori, l’effetto è che il nodo viene rimosso e si “torna indietro”
+	nell’albero per esplorare eventuali alternative.
+}
+
+\nt{Può essere con Backtracking o senza Backtracking\footnote{Meglio visto in "Intelligenza Artificiale e Laboratorio"}.}
+
+\begin{figure}[!h]
+	\centering
+	\includegraphics[scale=0.5]{01/profondità.png}
+	\caption{Ricerca in profondità.}
+\end{figure}
+
+\paragraph{Valutazione:}
+
+\begin{itemize}
+	\item \fancyglitter{Completezza:} garantibile solo se tutti i cammini sono finiti.
+	\item \fancyglitter{Ottimalità:} in generale non è garantita.
+	\item \fancyglitter{Complessità temporale:} nel caso peggiore vengono percorsi tutti i nodi dell'albero ($O(b^m)$), dove $b$ è il branching factor e $m$ è la profondità massima.
+	\item \fancyglitter{Complessità spaziale:}
+	      \begin{itemize}
+		      \item Senza Backtracking: $O(b*m)$, perché occorre mantenere tutti i nodi del cammino esplorato più tutti i loro fratelli.
+		      \item Con Backtracking: $O(m)$
+	      \end{itemize}
+\end{itemize}
+
+\cor{Ricerca in Profondità Limitata}{
+	Per evitare di entrare in branch infiniti viene introdotto un limite artificiale $l$ (punto di taglio):
+	\begin{itemize}
+		\item Un nodo viene espanso solo se la sua profondità $p \leq l$.
+		\item Altrimenti viene trattato come un nodo privo di successori.
+	\end{itemize}
+}
+
+\nt{Tutti i cammini saranno lunghi al più $l$.}
+
+\paragraph{Problemi:}
+
+\begin{itemize}
+	\item Si riduce la completezza, perché una soluzione potrebbe trovarsi a profondità maggiore di $I$.
+	\item Se $l >> d$ si perde efficienza.
+\end{itemize}
+
+\dfn{Iterative Deepening}{
+	Esegue una ricerca in profondità limitata, con iterazioni successive in cui la profondità massima viene aumentata via via.
+}
+
+\begin{figure}[!h]
+	\centering
+	\includegraphics[scale=0.5]{01/it.png}
+	\caption{Iterative Deepening.}
+\end{figure}
+
+\paragraph{Valutazione:}
+
+\begin{itemize}
+	\item Combina ampiezza e profondità.
+	\item È preferito quando lo spazio di ricerca è ampio e la profondità della
+	      soluzione non prevedibile.
+	\item Ha una complessità spaziale modesta.
+	\item La complessità temporale è alta.
+	\item È completo se $b$ è finito.
+	\item È ottimo quando il costo è funzione non decrescente della profondità.
+\end{itemize}
+
+\dfn{Ricerca Bidirezionale}{
+	Composta da due ricerche:
+	\begin{itemize}
+		\item Forward dallo stato iniziale.
+		\item Backward dallo stato obiettivo.
+	\end{itemize}
+	Termina quando le due ricerche si incontrano, quando le frontiere hanno intersezione non vuota.
+}
+
+\nt{Se lo stato obiettivo non è unico si può introdurre uno stato fittizzio raggiungibile da tutti gli stati obiettivo reali.}
+
+\paragraph{Sono possibili due andamenti:}
+
+\begin{itemize}
+	\item \fancyglitter{A fronte d'onda:} quando non si ha informazione aggiuntiva si esplorano tutte le possibili operazioni.
+	\item \fancyglitter{A cono:} quando si ha informazione aggiuntiva si esplora parte delle operazioni.
+\end{itemize}
+
+\section{Ricerca Informata}
+
+\qs{}{Le strategie di ricerca blind non sono efficienti. E’ possibile rendere la ricerca più
+	efficiente utilizzando della conoscenza sul problema? La conoscenza permette di
+	focalizzare la ricerca verso le direzioni più promettenti?}
+
+\dfn{Funzione di Valutazione}{
+	Una strategia di ricerca informata ordina la frontiera sulla base
+	di una funzione di valutazione $f(n)$ applicata ai nodi:
+	\begin{itemize}
+		\item In base a $f(n)$ si ottengono strategie differenti.
+		\item $f(n)$ comprende una componente $h(n)$ che restituisce una stima del minimo tra i costi che congiungono lo stato corrispondente al nodo $n$ a uno stato goal.
+		\item $h(n)$ è detta euristica.
+	\end{itemize}
+}
+
+\nt{La strategià generale è detta \fancyglitter{best-first search} e comprende greedy, A* e RBFS.}
+
+\dfn{Ricerca Greedy}{
+	Viene scelto il nodo stimato più vicino a quello
+	obiettivo ($f(n) = h(n)$).
+}
+
+\paragraph{Problemi:}
+
+\begin{itemize}
+	\item Rischio di loop per vicoli ciechi.
+	\item Stessi difetti della ricerca in profondità.
+\end{itemize}
+
+\paragraph{Intuizione:}
+
+\begin{itemize}
+	\item È possibile combinare la ricerca a costo uniforme con la ricerca greedy.
+	\item \fancyglitter{Costo uniforme:} espande per primi i nodi il cui
+	      raggiungimento dalla radice costa meno (guarda al
+	      passato).
+	\item \fancyglitter{Greedy:} espande per primi i nodi che promettono di raggiungere l'obiettivo spendendo meno (guarda al futuro).
+\end{itemize}
+
+\subsection{A*}
+
+\dfn{A*}{
+	A* considera grafi, generati a partire da un singolo nodo iniziale,
+	in cui un sottoinsieme T di nodi è costituito da nodi obiettivo (T
+	sta per target). Dato un qualsiasi nodo n del grafo, un obiettivo t è detto
+	preferito per n se e solo se il costo del cammino ottimo $h(n, t) \leq$ costo di qualsiasi altro cammino da n verso qualsiasi altro nodo
+	di T.
+}
+
+\paragraph{$f(n) = g(n) + h(n)$:}
+
+\begin{itemize}
+	\item $g(n)$: costo minimo di tutti i percorsi, visti fino a ora, che
+	      consentono di raggiungere il nodo n a partire dallo stato iniziale
+	      s.
+	\item $h(n)$: stima del costo minimo del proseguimento di percorso
+	      che consente di raggiungere un goal preferito di n.
+	\item $f(n)$: stima del costo minimo per raggiungere un goal
+	      preferito di n partendo da s.
+\end{itemize}
+
+\paragraph{$f^*(n) = g^*(n) + h^*(n)$:}
+
+\begin{itemize}
+	\item $g^*(n)$:costo minimo per raggiungere il nodo n a partire dallo
+	      stato iniziale s (calcolato considerando tutti i cammini possibili).
+	\item $h^*(n)$: costo minimo reale del proseguimento di percorso che
+	      consente di raggiungere un goal preferito a partire dal nodo n.
+	\item $f^*(n)$: costo minimo per raggiungere un goal preferito di n da
+	      s.
+\end{itemize}
+
+\nt{Se si sono esplorate tutte le alternative $f(x) = f*(n)$.}
+
+\paragraph{Algoritmo di A*:}
+
+\begin{enumerate}
+	\item Sia s il nodo iniziale.
+	\item Sia T l'insieme dei nodi obiettivo.
+	\item Segna s come aperto e calcola $f(s)$.
+	\item Seleziona il nodo aperto n avente valutazione minima.
+	\item Se n appartiene a T, marca n chiuso e termina.
+	\item Altrimenti marca n chiuso e applica l’operatore successore a n
+	      e:
+	      \begin{itemize}
+		      \item Calcola il valore di $f$ per tutti i successori n'.
+		      \item Marca come aperti quei successori n' che non risultano già chiusi.
+		      \item Rimarca come aperti quei successori n' che erano chiusi ma per cui è
+		            stato calcolato un valore f più basso di quello calcolato in precedenza
+		            (cioè sono stati raggiunti tramite un percorso migliore).
+	      \end{itemize}
+\end{enumerate}
+
+\dfn{Euristica Ammissibile}{
+	Un'euristica h è detta ammissibile quando
+
+	\[
+		\forall n, h(n) \leq h^*(n)
+	\]
+	dove $h^*(n)$ è il costo minimo reale per raggiungere il nodo goal a partire dal nodo n.
+}
+
+\nt{Intuitivamente un'euristica è ammissibile quando non fa mai stime per eccesso.}
+
+\cor{Ottimalità di A*}{
+	Se:
+	\begin{itemize}
+		\item Un'euristica h è ammissibile.
+		\item Tutti i passi hanno costo maggiore di 0.
+	\end{itemize}
+	Allora:
+	\begin{itemize}
+		\item $A^*$ termina e trova una soluzione ottima.
+		\item In questo caso $A^*$ è completa e ottimale.
+	\end{itemize}
+}
+
+\clm{}{}{
+	Perché manchi l’ottimalità deve accadere che durante la
+	ricerca l’algoritmo:
+	\begin{itemize}
+		\item Scelga un nodo obbiettivo sub-ottimo.
+		\item Al posto di un nodo.
+		\item Che si trova su un cammino ottimo.
+	\end{itemize}
+}
+
+\nt{Vedere dimostrazione su slides.}
+
+\cor{Euristica Monotona}{
+	Un'euristica ammissibile è monotona quando
+	\[
+		\forall n h(n) \leq c(n, a, n') + h(n')
+	\]
+	dove $c$ è la funziona costo per andare da $n$ a $n'$ mediante l'azione $a$.
+}
+
+\nt{Tuttavia ammissibile non vuol sempre dire informativa: $h(n) = 0$ è ammissibile, ma non informativa.}
+
+\paragraph{Valutazione:}
+
+\begin{itemize}
+	\item A* è ottimameente efficiente per qualsiasi euristica: non esiste alcun altro algoritmo ottimo che garantisca
+	      di espandere meno nodi di quelli espansi da A*.
+	\item Il numero di nodi espansi aumenta
+	      esponenzialmente con la profondità della soluzione
+	      ottima.
+	\item A* mantiene in memoria tutti i nodi generati (è una
+	      ricerca in ampiezza).
+\end{itemize}
+
+\paragraph{Funzioni euristiche nel gioco dell'8:}
+
+\begin{itemize}
+	\item In media occorrono 22 mosse per arrivare alla soluzione.
+	\item Il branching factor è pari a 3.
+	\item Albero esaustivo di ricerca: contiene $3^22$ nodi.
+	\item Grafo esaustivo di ricerca: 180000 nodi.
+	\item Ma se si passa al problema del 15 il grafo \fancyglitter{esplode}: $10^23$.
+\end{itemize}
+
+\begin{figure}[h]
+	\centering
+	\includegraphics[scale=0.3]{01/exp.png}
+	\caption{Il grafo be like.}
+\end{figure}
+
+\subsection{Approfondimento su Euristiche}
+
+\paragraph{Possibili euristiche per A*:}
+
+\begin{itemize}
+	\item h1 (numero di tessere fuori posto): è ammissibile perché ogni tessera fuori posto deve
+	      essere spostata almeno una volta.
+	\item h2 (\fancyglitter{distanza di Manhattan}): è la somma della distanza di
+	      una tessera dalla sua posizione
+	      desiderata, contata in numero di tessere
+	      attraversate (originariamente di isolati
+	      attraversati) sulle ascisse più numero di
+	      tessere attraversate sulle ordinate.
+	      È ammissibile perché ogni mossa può spostare una
+	      tessera al più di una posizione più vicina al goal.
+\end{itemize}
+
+\paragraph{Qualità delle euristiche:}
+
+\begin{itemize}
+	\item La qualità di un’euristica può essere calcolata computando il
+	      branching factor effettivo b*.
+	\item b* = branching factor di un albero uniforme di profondità d che
+	      contiene N+1 nodi.
+	\item Le \fancyglitter{euristiche migliori} hanno b* bassi, vicini a 1.
+\end{itemize}
+
+\dfn{Problemi Rilassati}{
+	Un problema ne rilassa un altro
+	quando toglie qualche vincolo. Il grafo degli stati di un problema rilassato è un supergrafo di
+	quello del problema originario perché include transizioni che i
+	vincoli di quest’ultimo non consentono (meno vincoli, più
+	transizioni possibili\footnote{Magari fosse così ovunque.}).
+}
+
+\begin{figure}[h]
+	\centering
+	\includegraphics[scale=0.45]{01/relax.png}
+	\caption{Rilassamento di un grafo.}
+\end{figure}
+
+\cor{Absolver II}{
+	Absolver II è un esempio di programma che è in grado di
+	generare automaticamente euristiche ammissibili per
+	astrazione:
+
+	\begin{itemize}
+		\item Ha scoperto la prima euristica ammissibile per il cubo di
+		      Rubik.
+		\item Ha scoperto un’euristica ammissibile per il problema
+		      dell’8 che è migliore di quelle precedentemente proposte
+	\end{itemize}
+}
+
+\nt{Gli studi sulla generazione di euristiche continua oggi
+	soprattutto nell’area di planning.}
+
+\dfn{Recursive Best First Search}{
+	RBFS trasforma la ricerca in ampiezza di A* in una ricerca in profondità.
+}
+
+\section{Strategie di Ricerca con Avversario}
+
+\paragraph{Ambiente competitivo:}
+
+\begin{itemize}
+	\item Multi-agente.
+	\item Ogni agente ha \fancyglitter{obiettivi}.
+	\item Gli obiettivi di agenti diversi sono conflittuali, cioè il conseguimento
+	      degli obiettivi di un agente impedisce il conseguimento degli
+	      obiettivi degli altri agenti.
+	\item I problemi di ricerca con avversario sono anche detti \fancyglitter{giochi}.
+\end{itemize}
+
+\paragraph{Tipologie di giochi:}
+
+\begin{itemize}
+	\item \fancyglitter{Condizioni di scelta:}
+	      \begin{itemize}
+		      \item Informazione perfetta: gli stati del gioco sono
+		            totalmente espliciti per tutti gli agenti.
+		      \item Informazione imperfetta: gli stati del gioco sono solo parzialmente esplicitati.
+	      \end{itemize}
+	\item \fancyglitter{Effetti della scelta:}
+	      \begin{itemize}
+		      \item \fancyglitter{Deterministici:} gli stati sono determinati unicamente
+		            dalle azioni degli agenti.
+		      \item \fancyglitter{Stocastici:} gli stati sono determinati anche da fattori
+		            esterni (es: dadi).
+	      \end{itemize}
+\end{itemize}
+
+\begin{figure}[h]
+	\centering
+	\includegraphics[scale=0.5]{01/giochi.png}
+	\caption{Tipi di giochi.}
+\end{figure}
+
+\subsection{Teoria delle Decisioni}
+
+\paragraph{Elementi delle decisioni:}
+
+\begin{itemize}
+	\item \fancyglitter{Andamenti:} non controllabili, dipendono da dinamiche esterne.
+	\item \fancyglitter{Scelte:} se ne può fare una sola.
+	\item \fancyglitter{Payoff:} ossono essere guadagno o
+	      perdite ma anche riferirsi ad altre misure
+	      (esempio: tempo, risorse). Sono specifici
+	      del problema.
+\end{itemize}
+
+\paragraph{Sono possibili tre approcci:}
+
+\begin{itemize}
+	\item Approccio maximax (ottimistico): Guarda i payoff più alti per ogni possibile scelta e fa la scelta che promette di più
+	      in assoluto: il massimo dei massimi. È ottimistica perché non ha
+	      garanzie che le dinamiche esterne faranno salire il fondo scelto.
+	\item Approccio maximin (pessimistico): Questo approccio guarda le perdite maggiori legate a ciascuna scelta e poi esegue
+	      l’azione che minimizza le perdite (il massimo dei minimi).
+	\item Approccio minimax (pentimento): best payoff - real payoff.
+\end{itemize}
+
+\paragraph{Guadagno e giochi con avversario:}
+
+\begin{itemize}
+	\item Non sappiamo come evolverà l’ambiente, non
+	      sappiamo quale scelta farà l’avversario.
+	\item Dobbiamo far bastare la conoscenza dello stato corrente e
+	      delle mosse a disposizione.
+\end{itemize}
+
+\paragraph{Caratteristiche del gioco:}
+
+\begin{itemize}
+	\item Due giocatori.
+	\item Ciascun giocatore non sa quali mosse farà l’altro ma le mosse possibili
+	      sono note e sono calcolabili i successori che produrranno una volte
+	      applicate a qualche stato.
+	\item Osservabilità:
+	      \begin{itemize}
+		      \item \fancyglitter{Totale:} giochi con turno, i giocatori conoscono i risultati
+		            delle mosse precedenti.
+		      \item \fancyglitter{Parziale:} giochi ad azione simultanea: i giocatori non
+		            conoscono le mosse che i giocatori eseguono simultaneamente alla loro.
+	      \end{itemize}
+	\item Partendo da uno stato iniziale è possibile sviluppare un albero di possibili
+	      evoluzioni (\fancyglitter{albero di gioco}), applicando le azioni eseguibili e calcolando
+	      così gli stati successori.
+	\item Alcuni stati sono terminali, quando uno di essi è raggiunto la partita
+	      termina.
+	\item I giocatori si avvalgono del calcolo dell’utilità degli stati.
+	\item I giocatori devono tener conto dell’avversario quindi il calcolo
+	      dell’utilità comprende una valutazione del punto di vista
+	      dell’avversario.
+	\item Giocatori pessimisti: suppongono che l’avversario faccia sempre
+	      la mossa che gli porta il guadagno maggiore.
+\end{itemize}
+
+\dfn{Strategia Ottima per un Agente}{
+	Sequenza di mosse che porta a uno stato terminale
+	corrispondente alla vittoria dell’agente.
+}
+
+\nt{L’agente non sa come muoverà l’altro, può solo
+	“immedesimarsi”.}
+
+\dfn{Minimax}{
+	Un algoritmo che rappresenta la strategia ottima per un agente è minimax in cui:
+	\begin{itemize}
+		\item Il max rappresenta l'agente che vuole massimizzare la propria utilità.
+		\item Il min rappresenta l'avversario che vuole minimizzare l'utilità dell'agente.
+	\end{itemize}
+}
+
+\paragraph{Valutazione di minimax:}
+
+\begin{itemize}
+	\item Effettua una visita in profondità completa quindi la
+	      complessità temporale è esponenziale e quella spaziale
+	      è lineare.
+	\item È completo in grafi finiti.
+	\item È ottimale se MAX e MIN giocano in modo ottimale.
+\end{itemize}
+
+\cor{Potatura Alfa-Beta}{
+	Per ridurre i tempi di ricerca si può fare pruning sui rami meno promettendi:
+	\begin{itemize}
+		\item $\alpha$ = massimo lower bound delle soluzioni possibili.
+		\item $\beta$ = minimo upper bound delle soluzioni possibili.
+	\end{itemize}
+
+	Ha senso esplorare un nodo se e solo se il suo valore stimato N è compreso tra i due estremi.
+}
+
+\paragraph{Minimax e Alpa-Beta Pruning sono equivalenti:}
+
+\begin{itemize}
+	\item Trovano la stessa mossa ottima.
+	\item Attribuiscono alla radice la stessa valutazione.
+\end{itemize}
+
+\nt{Alfa-Beta ha complessità temporale $O(b^{m/2})$ contro $O(b^m)$.}
+
+\clm{}{}{
+	\begin{itemize}
+		\item Alpha-beta pruning è più o meno efficace a seconda dell’ordine con
+		      cui i successori di ciascun nodo sono considerati.
+		\item Se il successore più promettente è l’ultimo a essere considerato non
+		      è possibile evitare di esplorare i sottoalberi dei suoi fratelli.
+		\item Quando l’ordinamento dei successori non è possibile, la
+		      complessità diventa $O(b^{3m/4})$.
+		\item \fancyglitter{Killer move:} espandere i figli più promettenti per primi.
+	\end{itemize}
+}
+
+\qs{}{
+	Come trovare le killer move?
+}
+
+\begin{itemize}
+	\item Tramite \fancyglitter{apprendimento} per cui il sistema ricorda le esperienze passate e le usa per scegliere la mossa più promettente.
+	\item Combinazione della potatura alfa-beta con iterative
+	      deepening.
+	\item Uso di \fancyglitter{tabelle di trasposizione} (talvolta in aggiunta ad alfa-
+	      beta + iterative deepening)
+\end{itemize}
+
+\dfn{Trasposizione}{
+	In alcuni problemi, eseguendo un certo insieme di mosse, è possibile
+	ottenere sempre uno stesso risultato anche se le mosse sono ordinate
+	differentemente. I diversi ordinamenti sono detti trasposizioni.
+}
+
+\nt{Quando lo spazio degli stati è grande riconoscere le trasposizioni è
+	importante per evitare di esplorare più volte gli stessi stati.}
+
+\cor{Tabella di Trasposizione}{
+	Una hash table che contiene tutte le trasposizione: ogni volta che si genera un nuovo stato si controlla
+	se corrisponde a uno stato già generato da una trasposizione. Se sì non
+	viene esplorato.
+}
+
+\paragraph{Alfa-Beta in contesti real-time:}
+
+\begin{itemize}
+	\item Alfa-beta concentra la ricerca su una porzione limitata dello
+	      spazio degli stati ma deve comunque arrivare agli stati
+	      terminali.
+	\item Può diventare troppo lento nel produrre la risposta quando il
+	      nodo terminale è situato a grande profondità (esempio:
+	      scacchi).
+	\item In questo caso è necessario introdurre dei test di “\fancyglitter{cutoff}” per
+	      produrre una decisione prima di raggiungere il nodo
+	      terminale.
+\end{itemize}
+
+\dfn{Funzione di Valutazione}{
+	Una funzione di valutazione fa una stima della bontà di uno
+	stato intesa come percentuale di presenza degli stati che portano
+	alla vittoria rispetto agli altri. Calcola la probabilità di essere in uno stato che porta a vittoria conoscendo solo la classe di appartenenza dello stato.
+}
+
+\nt{Ma nel mondo reale non sempre è immediato capire come impostare una funzione di valutazione.}
+
+\dfn{Problema dell'Orizzonte}{
+	L'algoritmo non vede oltre il punto di taglio, ma in alcune fasi il gioco si può capovolgere il fretta o, in
+	altri termini, la funzione di valutazione è instabile. Tagliare in questi punti è prematuro perché rischioso:
+	l’avversario potrebbe successivamente forzare un forte
+	cambiamento della valutazione.
+}
+
+\dfn{Quiescenza}{
+	La nozione di quiescenza concerne la permanenza della negatività (o
+	positività) della valutazione. Si taglieranno nodi la cui valutazione è quiescente mentre quelli non
+	quiescenti richiederanno un po’ di esplorazione ulteriore dei sottoalberi
+	che li vedono come radici.
+}
+
+\subsection{Programmi che Giocano}
+
+\dfn{DeepBlue}{
+	Primo calcolatore a vincere una partita a scacchi contro un
+	Campione del Mondo in carica, Garry Kasparov, con cadenza di
+	tempo da torneo.
+}
+
+\paragraph{Grande potenza computazionale:}
+
+\begin{itemize}
+	\item Un computer a parallelismo massivo a 30 nodi basato su
+	      RS/6000, supportato da 480 processori specifici VLSI
+	      progettati per il gioco degli scacchi.
+	\item Algoritmo in C.
+	\item È capace di calcolare 200 milioni di posizioni al secondo.
+\end{itemize}
+
+\dfn{AlphaGo}{
+	Sviluppato da google, primo programma che ha battuto senza handicap
+	a go un maestro umano, su un goban di dimensioni standard.
+}
+
+\paragraph{Nelle 500 partite disputate contro altri programmi ha vinto:}
+
+\begin{itemize}
+	\item Tutte le partite meno una quando eseguito su un solo computer.
+	\item Tutte le partite quando eseguito su di un cluster che impiegava
+	      1202 CPU e 176 GPU, circa 25 volte in più rispetto all'hardware del
+	      computer singolo.
+	\item La versione cluster ha battuto la versione su singolo computer nel
+	      77\% delle partite.
+\end{itemize}
+
+\nt{Utilizza deep learning neural networks e ricerca su alberi. Le reti
+	neurali sono state addestrate su un dataset di 30.000.000 di mosse
+	e poi raffinate giocando contro se stesse.}

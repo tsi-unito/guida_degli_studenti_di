@@ -11,3 +11,4 @@
 ## Progetti
 
 - [Progetto Porta-Sciandra](https://github.com/stefa168/sas-project) (Cat&Ring) (AA 2019-20)
+- [Occhipinti-Cardona](https://github.com/eduardz1/Cat_e_Ring) (Cat&Ring) (AA 2021-22)

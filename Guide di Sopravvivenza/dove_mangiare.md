@@ -1,0 +1,63 @@
+# Come non morire di fame al Dipartimento di Informatica
+
+Nei pressi del dipartimento d'informatica ci sono due posti principali in cui è possibile sedersi e gustarsi un buon pranzo con calma:
+
+- [Doc Self Service](https://goo.gl/maps/mTabRSiVfAXWj3726): sulla via da cui si accede al dipartimento, si trova sulla sinistra arrivando da corso svizzera
+- [Dubai Coffee Lounge](https://g.page/Dubaicoffeelounge): all'interno del Pier della Francesca, ci si accede girando a destra prima dei tornelli dei laboratori
+
+Esistono due tipi di formule principali per il pasto:
+
+- **RIDOTTO**: comprende un primo e un contorno oppure un secondo e un contorno + acqua, pane e un frutto o yogurt
+- **INTERO**: comprende primo, secondo, contorno + acqua, pane, frutta o yogurt o dolce
+
+## Costi
+
+### Tariffe agevolate
+
+EDISU Piemonte mette a disposizione un servizio di tariffe agevolate: richiedendo il servizio, verrete piazzati in una **fascia** a seconda del vostro ISEE: più è bassa, più costa di meno il pasto.
+Al seguente [link](https://www.edisu.piemonte.it/it/servizi/ristorazione/formule-e-tariffe-di-pasto/richiedere-il-servizio) potete vedere le fasce, e come richiedere il servizio ristorazione (vi servirà avere lo [SPID](https://www.spid.gov.it/) e un ISEE universitario per compilare la domanda).
+
+Su [questa](https://www.edisu.piemonte.it/it/servizi/ristorazione/scarica-i-materiali-che-ti-servono) pagina potrete poi scaricare i PDF per vedere gli attuali costi e altre informazioni utili.
+
+### Menù studenti
+
+Entrambe le mense offrono anche un menù studenti ridotto, diverso però dalle tariffe agevolate EDISU:
+
+- 5,5€ per il Dubai
+- 5€ per il Doc
+
+## Come si paga
+
+- **Tariffe agevolate EDISU**: Da quest'anno è possibile pagare solo attraverso la  "fantastica" App [Campus Piemonte ID Meal](https://www.edisu.piemonte.it/it/notizie/avvisi/app-campus-piemonte-id-meal), ricaricabile esclusivamente online attraverso PagoPa o carta di credito
+
+
+- **Menù studenti**: Pagando in contanti o con carta alla cassa.
+
+### Ho richiesto la borsa di studio EDISU, devo fare altro per avere il servizio ristorazione?
+
+No, facendo la domanda di borsa viene effettuata in automatico la domanda per il servizio ristorazione.
+
+### È meglio il Doc o il Dubai?
+
+Doc:
+
+- Possibilità di mangiare pizza e focaccia (bella unta)
+- Possibilità di avere acqua e bibite illimitate utilizzando il bicchiere
+- Buona varietà dei pasti, abbondanti nelle porzioni, alle volte di media qualità
+- Leggermente meno coda del Dubai nelle ore di punta
+- Possibilità di prendere la pizza (medio bassa qualità)
+
+Dubai:
+
+- Possibilità di mangiare insalate, piatti pronti misti e risotti freddi
+- Viene inclusa una sola bevanda nel pasto, non ricaricabile
+- Ottima varietà dei pasti, normali nelle porzioni, con una buona qualità generale. Alle volte i contorni possono essere deludenti, ma con ottime scelte di secondi piatti.
+- Coda alta nelle ore di punta
+- Possibilità di rimanere anche per lavorare al PC senza prendere nulla (con prese sparse in giro)
+- ENORME scelta al bar di dolce e salato, panini, piadine, croissant (dolci e salati farciti), cheesecake...
+- Prende solo TIM, e pure male, all'interno
+- C'è più spazio tra i tavoli
+
+### Non ci ho capito niente/manca qualcosa
+
+Ti consigliamo di creare un issue su questa repo, così ti possiamo aiutare meglio e possiamo migliorare ulteriormente questa guida!

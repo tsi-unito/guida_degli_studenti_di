@@ -4,6 +4,7 @@
 
 - [Appunti Pensa](Appunti/Sgaramella%20-%20Appunti%20Pensa.pdf) (by Sgaramella): una buonissima carrellata di appunti della parte di privacy del corso
 - [Appunti](Appunti/Dispensa_Privacy_LorenzoSciandra.pdf) di Lorenzo Sciandra (AA 2021-22)
+- [Appunti](Appunti/Caresio_2022-2023/index.md) di Lorenzo Caresio (AA 2022-23)
 - [Appunti dei libri](Appunti/Appunti%20libri%20Boella%20-%20Grandi.pdf) di Boella
 
 ## Esame

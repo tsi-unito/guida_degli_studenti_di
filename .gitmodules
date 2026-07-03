@@ -1,0 +1,36 @@
+[submodule "Tesi/template-tesi-typst"]
+	path = Tesi/template-tesi-typst
+	url = https://github.com/eduardz1/UniTO-typst-template
+[submodule "Materie/ASD/Progetti/2022/Eduard-Occhipinti"]
+	path = Materie/ASD/Progetti/2021-2022/Occhipinti-Molica-Solaih
+	url = https://github.com/eduardz1/Laboratorio-Algoritmi
+[submodule "Materie/BD/Progetti/2022/Eduard-Occhipinti"]
+	path = Materie/BD/Progetti/2021-2022/Occhipinti-Molica-Solaih
+	url = https://github.com/eduardz1/Home-Booking/
+[submodule "Materie/LFT/Progetti/2022/Eduard-Occhipinti"]
+	path = Materie/LFT/Progetti/2021-2022/Occhipinti
+	url = https://github.com/eduardz1/Progetto-LFT/
+[submodule "Materie/PROG3/Progetti/2022-2023/Eduard-Occhipinti"]
+	path = Materie/PROG3/Progetti/2022-2023/Occhipinti-Frattarola-Molica
+	url = https://github.com/eduardz1/Jmail/
+[submodule "Materie/SAS/Progetti/2021-2022/Occhipinti-Cardona"]
+	path = Materie/SAS/Progetti/2021-2022/Occhipinti-Cardona
+	url = https://github.com/eduardz1/Cat_e_Ring
+[submodule "Materie/SO/Progetti/2021-2022/Eduard-Occhipinti"]
+	path = Materie/SO/progetti/2021-2022/Eduard-Occhipinti
+	url = https://github.com/eduardz1/Simulazione-Transazioni
+[submodule "Materie/SO/ESERCIZI-LABORATORIO-SISTEMI-OPERATIVI-TURNO1-2024-2025"]
+ 	path = Materie/SO/esercizi/laboratorio_2024_2025_t1
+ 	url = https://github.com/MircoDeAndreis/ESERCIZI-LABORATORIO-SISTEMI-OPERATIVI-TURNO1-2024-2025
+[submodule "Materie/SO/esercizi/laboratorio_2024_2025_t1"]
+	path = Materie/SO/esercizi/laboratorio_2024_2025_t1
+	url = https://github.com/MircoDeAndreis/ESERCIZI-LABORATORIO-SISTEMI-OPERATIVI-TURNO1-2024-2025.git
+[submodule "Materie/SO/progetti/2021-2022/Eduard-Occhipinti"]
+	path = Materie/SO/progetti/2021-2022/Eduard-Occhipinti
+	url = https://github.com/eduardz1/Simulazione-Transazioni.git
+[submodule "Materie/ALGCOMPL/AleCO"]
+	path = Materie/ALGCOMPL/AleCO
+	url = https://github.com/Altair-39/AleCO
+[submodule "Materie/SO/progetti/2024-2025/GolzioKukajNibizi"]
+	path = Materie/SO/progetti/2024-2025/GolzioKukajNibizi
+	url = https://github.com/serianoseri/ProgettoSOGolzioKukajNibizi2024-25

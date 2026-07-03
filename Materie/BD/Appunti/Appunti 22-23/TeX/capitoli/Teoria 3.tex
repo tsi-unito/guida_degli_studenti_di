@@ -1,0 +1,168 @@
+\chapter{Teoria 3}
+
+\section{Algebra relazionale}
+
+L'\textcolor{blue}{algebra relazionale} manipola relazioni per ottimizzare le \textit{query}\footnote{Elenco dei passi da eseguire per rispondere a un'interrogazione}. Ogni passo è definito attraverso gli operatori algebrici: selezione, proiezione, unione, intersezione, differenza, prodotto cartesiano, ridenominazione, join, quoziente. Ogni operatore riceve in input un argomento (una relazione) e produce in output una relazione virtuale. La \textcolor{blue}{cardinalità} di una relazione virtuale è definita su un intervallo ed è il numero di tuple che la relazione contiene.
+
+\section{Operatori algebrici}
+
+\subsection{Selezione}
+
+\label{Operatore di selezione}
+
+\label{Selezione}
+
+In una relazione r su uno schema A, $\sigma_p(r(A))$, l’operatore di \textcolor{blue}{selezione} produce come risultato:
+\begin{itemize}
+    \item schema: A;
+    \item istanza: le tuple della relazione r che soddisfano il predicato p.
+\end{itemize}
+
+Esempio: seleziona i pazienti con la residenza a Torino 
+
+($\sigma_{residenza=Torino}$(Pazienti)).
+
+La cardinalità della relazione virtuale dell'operatore di selezione è: 
+
+$0 \leq |\sigma_p(r(A))| \leq |r(A)|$
+
+0 se il predicato è falso per tutte le tuple, $|r(A)|$ se il predicato è vero per tutte le tuple.
+
+\paragraph{Proprietà:} 
+\begin{itemize}
+    \item distributiva rispetto a proiezione, unione, intersezione, differenza, join, prodotto cartesiano;
+    \item selezione multipla;
+    \item sostituzione degli operatori.
+\end{itemize}
+
+\subsection{Proiezione}
+
+\label{Proiezione}
+
+In una relazione r su uno schema A, $\pi_{A_i, A_j,..., A_k}(r(A))$, l’operatore di \textcolor{blue}{proiezione} produce come risultato:
+\begin{itemize}
+    \item schema: \{$A_i, A_j,..., A_k$\};
+    \item istanza: tutte le tuple della relazione argomento, ma solo rispetto agli attributi $A_i, A_j,..., A_k$.
+\end{itemize}
+
+Esempio: i cognomi di tutti i pazienti 
+
+($\pi_{cognome}$(Pazienti)).
+
+La cardinalità della relazione virtuale dell'operatore di proiezione è: 
+
+$0 \leq |\pi_{A_i, A_j,..., A_k}(r(A))| \leq |r(A)|$
+
+Se gli attributi proiettati $A_i, A_j,..., A_k$ formano una superchiave della relazione argomento allora $$|\pi_{A_i, A_j,..., A_k}(r(A))| = |r(A)|$$
+
+\paragraph{Proprietà:} 
+\begin{itemize}
+    \item distributiva rispetto a unione, join, prodotto cartesiano;
+    \item proiezione multipla.
+\end{itemize}
+
+\subsection{Unione, intersezione e differenza}
+\label{Op ins}
+Gli \textcolor{blue}{operatori insiemistici} (unione, intersezione e differenza) richiedono che gli schemi dei loro argomenti siano uguali.
+Il risultato dell’operatore insiemistico sulle relazioni argomento $r_1$(A) e $r_2$(A) è una relazione che ha:
+\begin{itemize}
+    \item schema: lo stesso schema A delle relazioni argomento;
+    \item istanza unione: $r_1$(A) U $r_2$(A);
+    \item istanza intersezione: $r_1 \cap r_2$
+    \item istanza differenza: $r_1$(A) - $r_2$(A).
+\end{itemize}
+
+La cardinalità della relazione virtuale dell'operatore di unione è:
+
+$max{|r_1(A)|,|r_2(A)|} \leq |r_1(A) U r_2(A)| \leq |r_1(A)|+|r_2(A)|$
+
+La cardinalità della relazione virtuale dell'operatore di intersezione è:
+
+$0 \leq |r_1(A) \cap r_2(A)| \leq min{|r_1(A)|,|r_2(A)|}$
+
+La cardinalità della relazione virtuale dell'operatore di differenza è:
+
+$0 \leq |r_1(A) - r_2(A)| \leq |r_1(A)|$
+
+L'intersezione può essere ricavata dalla differenza: $r_1(A) \cap r_2(A)$ := $r_1(A) - (r_1(A) - r_2(A))$
+
+\subsection{Prodotto cartesiano}
+
+Date due relazioni $r_1$(A) e $r_2$(B) con $A \cap B = \emptyset$ (i due schemi non hanno attributi in comune), il \textcolor{blue}{prodotto cartesiano} $r_1$(A) X $r_2$(B) produce come risultato una relazione r' con:
+\begin{itemize}
+    \item schema: R' composto dall’unione degli schemi A U B;
+    \item istanza: combinazione di tutte le tuple di $r_1$(A) con tutte le tuple di $r_2$(B).
+\end{itemize}
+
+La cardinalità della relazione virtuale dell'operatore di prodotto cartesiano è: 
+
+$0 \leq |r_1(A) X r_2(B)| \leq |r_1(A)| \cdot |r_2(B)|$
+
+Il prodotto cartesiano non ha utilità pratica di per sè, ma viene usato per definire altri operatori.
+
+\paragraph{Proprietà:} 
+\begin{itemize}
+    \item associativa;
+    \item commutativa.
+\end{itemize}
+
+\subsection[\texorpdfstring{\\}{ }Ridenominazione]{Ridenominazione}
+
+Il compito dell'operatore di \textcolor{blue}{ridenominazione} è quello di cambiare il nome di alcuni o tutti gli attributi della relazione argomento. 
+
+$\sigma_{B_i, B_j, ...} \leftarrow  _{A_i, A_j, ...}(r)$
+
+\begin{itemize}
+    \item schema: A' = ${A_1, ..., B_i, B_j, ..., A_n}$;
+    \item istanza: le tuple non vengono modificate.
+\end{itemize}
+
+\section{Join interni}
+\label{Join i}
+\subsection{Theta-join}
+
+Date due relazioni $r_1$(A) e $r_2$(B) con $A \cap B = \emptyset$ (i due schemi non hanno attributi in comune) e una condizione (predicato) $\theta$ di join (tipicamente $\theta$ è una formula proposizionale con confronti tra attributi del tipo $A_i \phi B_j$ o confronti tra attributi e valori $A_i \phi$ costante dove $\phi$ è un simbolo di confronto) il $\theta$-join (\textcolor{blue}{theta-join}) è definito come una selezione in base al prodotto cartesiano:
+
+$r_1(A) \bowtie_\theta r_2(B) := \sigma_\theta ( r_1(A) X r_2(B) )$
+
+La cardinalità della relazione virtuale dell'operatore di theta-join è:
+
+$0 \leq |r_1(A) \bowtie_\theta r_2(A)| \leq |r_1(A)| \cdot |r_2(B)|$
+
+Può essere utile eseguire una proiezione per rimuovere eventuali attributi derivati in eccesso. Se si vuole fare un join su schemi non disgiunti occorre ridenominare alcuni attributi.
+
+\paragraph{Proprietà:} 
+\begin{itemize}
+    \item associativa ristretta;
+    \item commutativa.
+\end{itemize}
+
+\subsection{Equi-join}
+
+L'\textcolor{blue}{equi-join} ($\theta_e$) è un caso particolare del theta-join in cui i confronti sono solo uguaglianze.
+
+La cardinalità della relazione virtuale dell'operatore di equi-join è:
+
+$0 \leq |r_1(A) \bowtie_{\theta_e} r_2(A)| \leq |r_1(A)|$
+
+\subsection{Natural-join}
+
+Il \textcolor{blue}{natural-join} serve a confrontare attributi con lo stesso nome in tabelle diverse. Esso è un equi-join che è sempre vero.
+
+\subsection{Semi-join} 
+
+Il \textcolor{blue}{semi-join} è un filtro sulla prima relazione usando la seconda, una proiezione che prende in considerazione gli attributi della prima relazione dopo aver fatto un join tra le due.
+
+\section{Composizione di operatori}
+
+L’algebra relazionale è composizionale, quindi si possono costruire espressioni complesse componendo operatori.
+
+Esempio: $\pi_{Cod, Nome}(\sigma_{Residenza='TO' \vee Residenza='VC'}(Pazienti)$
+
+\section{Dot notation}
+
+La \textcolor{blue}{dot notation} serve per evitare di scrivere operazioni molto lunghe. Essa è un'operazione di ridenominazione sottintesa. Nella parte prima del punto va indicata la relazione e in quella dopo il punto va indicato l'attributo.
+
+$\sigma_{MEDICI.Cognome,MEDICI.Nome,MEDICI.Residenza,MEDICI.Reparto} \leftarrow $
+
+$\leftarrow_{Cognome,Nome,Residenza,Reparto}(Medici)$

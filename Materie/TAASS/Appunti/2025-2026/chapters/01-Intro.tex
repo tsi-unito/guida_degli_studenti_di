@@ -1,0 +1,1120 @@
+\chapter{Introduzione}
+
+\section{Intro al Corso}
+
+\paragraph{Parole chiave:}
+
+\begin{itemize}
+	\item Web Apps.
+	\item Mission Critical.
+	\item DevOps.
+	\item Cloud Native.
+
+\end{itemize}
+
+\dfn{Mission Critical Applications}{
+	Un'applicazione o sistema le cui operazioni sono fondamentali per una compagnia o un'istituzione.
+}
+
+\clm{}{}{
+	\begin{itemize}
+		\item Enfasi sui requisiti non funzionali: i requisiti funzionali sono la baseline, ma ci si aspetta di più per rimanere competitivi.
+		\item Da non confondere con life critical: non muore nessuno.
+	\end{itemize}
+}
+
+\dfn{Enterprise Application Integration (EAI)}{
+	Tutto l'insieme di pratiche architetturali, tecnologie, patterns, frameworks e strumenti che consentono la comunicazione e la condivisione tra diverse applicazioni nella stessa organizzazione.
+}
+
+\paragraph{Si ha enfasi sull'infrastruttura:}
+\begin{itemize}
+	\item \fancyglitter{Data Integration:} combinare dati da più moduli diversi (coinvolge database).
+	\item \fancyglitter{Process Integration:} le interazioni tra più moduli.
+	\item \fancyglitter{Functional Integration:} si vuole fornire una nuova funzionalità sfruttando funzionalità già esistenti.
+\end{itemize}
+\pagebreak
+\subsection{Esempio e Requisiti Non Funzionali}
+
+\begin{figure}[h]
+	\centering
+	\includegraphics[scale=0.4]{01/crm.png}
+	\caption{Esempio di e-commerce.}
+\end{figure}
+
+\paragraph{Commento dell'esempio:}
+
+\begin{itemize}
+	\item Ci sono tre livelli:
+	      \begin{itemize}
+		      \item Top Layer: moduli che si rivolgono al cliente.
+		      \item Middle Layer: gestione della comunicazione tra cliente e azienda.
+		      \item Bottom Layer: moduli interni aziendali.
+	      \end{itemize}
+\end{itemize}
+
+\paragraph{Requisiti non funzionali:}
+
+\begin{itemize}
+	\item High availability/zero downtime: l'applicativo deve essere sempre o quasi sempre disponibile.
+	\item Affidabilità: in caso di interruzione di workflow si deve far sì che non ci siano stati danni (e.g. un'interruzione durante una transazione).
+	\item Consistenza dei dati.
+	\item Integrità dei dati.
+	\item Low latency: per avere una buona performance, tutto deve essere fluido.
+	\item Scalabilità.
+	\item Sicurezza.
+	\item Resilienza: capacità di reagire agli errori.
+	\item Mantenibilità: quanto un pezzo di software sia mantenibile o riutilizzabile.
+	\item Osservabilità: per comprendere eventuali problemi in un sistema distribuito.
+	\item Auditability: le verifiche di qualità fatte su software\footnote{Meglio visto in "Etica, Società e Privacy".}.
+\end{itemize}
+
+\section{Panoramica Storica}
+
+\subsection{Dagli Anni '70 al 2000}
+
+\dfn{Waterfall}{
+	Le metodologie a cascata\footnote{Viste a "Sviluppo delle Applicazioni Software".} sono metodologie in cui ci sono fasi ben distinte e separate tra loro.
+}
+
+\nt{È un modello prevedibile, ma lento a gestire i cambiamenti.}
+
+\clm{}{}{
+	\begin{itemize}
+		\item Software on the shelf: una volta acquistato è proprio.
+		\item Software custom: prodotto su richiesta, ha bisogno di tutto un servizio di manutenzione.
+	\end{itemize}
+}
+
+\dfn{Lean}{
+	Metodologie nate negli anni '50 alla Toyota, verranno applicate al software dagli anni '90. Si basa su tre principi:
+	\begin{itemize}
+		\item Muda\footnote{JOJO'S Reference} (waste): si deve stare sui requisiti, non mettere troppe funzioni non necessarie.
+		\item Mura (unevenness): è necessaria consinstenza per aumentare la prevedibilità.
+		\item Muri (overburden): non sovraccaricare le persone o le macchine. Non progettare software utilizzando strumenti greedy di risorse.
+	\end{itemize}
+}
+
+\nt{Lo strumento fondamentale è il \fancyglitter{kanban}: la lavagna, per organizzare il lavoro.}
+
+\dfn{Siloed}{
+	Organizzazione aziendale a silos: si comunica poco e male. Ci sono 4 gruppi:
+	\begin{itemize}
+		\item BA Team: relazioni con gli stakeholders, requisiti, specifiche, documentazione.
+		\item Dev Team: programma e fa un minimo di unit testing.
+		\item Test Team: testa e decide se il sistema è pronto.
+		\item Ops Team: si occupa del deployement.
+	\end{itemize}
+}
+
+\nt{I vari team si parlano in maniera molto limitata.}
+
+\dfn{Transaction Processing Monitor}{
+	I TP monitor erano il primo esempio di soluzione middleware. Usata nei sistemi di mainframe erano: centralizzati, monolitici, mission critical, con accesso da vari terminali.
+}
+
+\cor{Middleware}{
+	Software nel mezzo tra applicazioni e infrastrutture. Permette alle applicazioni di utilizzare le infrastrutture per farle comunicare tra di loro.
+}
+
+\paragraph{Obiettivi:}
+
+\begin{itemize}
+	\item Performance: si occupa di transazioni rispettando le proprietà ACID.
+	\item Scalabilità: se un programma crasha ne avvia un'altra istanza.
+	\item Affidabilità.
+	\item Consistenza dei dati.
+\end{itemize}
+
+\paragraph{Limiti:}
+
+\begin{itemize}
+	\item Proprietario.
+	\item Tight coupling.
+	\item Costosi.
+	\item Complessi.
+\end{itemize}
+
+\qs{}{Cosa rimane dei TP monitors?}
+
+\begin{itemize}
+	\item \fancyglitter{Gestione delle transazioni e coordinazione:}
+	      \begin{itemize}
+		      \item Soluzioni basate su 2PC (2 Phase Commit).
+		      \item Le proprietà ACID, attualmente supportate internamente da molti database.
+		      \item Proprietà BASE:
+		            \begin{itemize}
+			            \item Basically: risposte basiche.
+			            \item Available: si accetta che si possa non avere il dato più aggiornato.
+			            \item State: la consistenza potrebbe non essere rispettata.
+			            \item Eventually: prima o poi si riceverà il dato corretto.
+		            \end{itemize}
+	      \end{itemize}
+	\item \fancyglitter{Pool di connessioni}.
+	\item \fancyglitter{Distribuzione del carico:}
+	      \begin{itemize}
+		      \item Le richieste vengono distribuite su varie istanze.
+		      \item In caso di fallimento l'applicazione riparte.
+	      \end{itemize}
+\end{itemize}
+
+\dfn{Remote Procedure Call}{
+	Si chiama una funzione da una macchina remota come se fosse locale. È indipendente dal linguaggio e a una struttura silos. RIchiede aggiunte sia nello sviluppo che a runtime.
+}
+
+\begin{figure}[h]
+	\centering
+	\includegraphics[scale=0.55]{01/rpc1.png}
+	\caption{Remote Procedure Call - Development.}
+\end{figure}
+
+\begin{itemize}
+	\item Serializzazione: trasformare i dati in qualcosa che può essere comunicato.
+	\item Marshalling: usa la serializzazione e inserisce meta-dati per permettere la ricostruzione della struttura dati.
+\end{itemize}
+
+\begin{figure}[h]
+	\centering
+	\includegraphics[scale=0.55]{01/rpc2.png}
+	\caption{Remote Procedure Call - Runtime.}
+\end{figure}
+
+\dfn{Common Object Request Broker Architecture (CORBA)}{
+	Evoluzione di rpc pensata per gli oggetti. Si possono creare oggetti in un server che possono rispondere a chiamate remote.
+}
+
+\nt{Più successo lo ha avuto RMI (Remote Method Invocation) che è CORBA, ma solo con Java.}
+
+\paragraph{Limiti:}
+
+\begin{itemize}
+	\item Nascondere le cose al programmatore: si ha un falso senso di disaccoppiamento e i programmatori tendono a non vedere la rete.
+	\item La programmazione sembra semplice perché i problemi vengono sottovalutati.
+\end{itemize}
+
+\dfn{Message Oriented Middleware}{
+	Invece di chiamarsi a vicenda le applicazioni si inviano messaggi a vicenda:
+	\begin{itemize}
+		\item Sincronizzazione tra operazioni in applicazioni diverse.
+		\item Notifiche di eventi.
+		\item Non c'è necessità di conoscere il ricevente.
+	\end{itemize}
+}
+
+\paragraph{Due modelli di comunicazione:}
+
+\begin{itemize}
+	\item Point-to-Point: il mittente manda un messaggio nella coda del middleware, il ricevente lo consuma.
+	\item Publish and Subscribe: c'è una bacheca su cui chiunque può pubblicare un evento.
+\end{itemize}
+
+\dfn{Enterprise Service Bus (ESB)}{
+	Un middleware coscente della logica di business. Si occupa di tradurre protocolli e dati.
+}
+
+\nt{Caduto totalmente in disuso.}
+
+\subsection{Dal 2000 ai Giorni Nostri}
+
+\dfn{AGILE}{
+	Metodologie fondate su itertività e incrementalità.
+}
+
+\cor{XP - Xtreme Programming}{
+	Si concentra sul codice, lo sviluppo di software si fa in team. Si dà importanza ai feedback sia dai clienti che dagli sviluppatori (small release, test-driven development, on-site customer).
+}
+
+\paragraph{Principi di XP:}
+
+\begin{itemize}
+	\item Comunicazione.
+	\item Semplicità.
+	\item Feedback.
+	\item Coraggio.
+	\item Rispetto.
+\end{itemize}
+
+\dfn{Scrum}{
+	Prassi di organizzazione dell'attività lavorativa degli sviluppatori, si concentra sulla comunicazione:
+	\begin{itemize}
+		\item Organizzazione: esiste una lista del lavoro che deve essere svolto (Product Backlog e PDI), un'iterazione di lavoro di massimo 4 settimane (sprint) e deve esserci un incremento (valore percepibile dal cliente).
+		\item Ruoli: ci si organizza in piccoli teams per ogni modulo.
+	\end{itemize}
+}
+
+\paragraph{Ruoli in Scrum:}
+
+\begin{itemize}
+	\item Product owner: persona che gestisce il Backlog, in contatto con i clienti (non è il capo).
+	\item Scrum master: organizza le riunioni, fa da mediatore.
+	\item Development team.
+\end{itemize}
+
+\paragraph{Eventi per ogni sprint:}
+
+\begin{itemize}
+	\item Sprint panning: riunione in cui si decide cosa fare.
+	\item Daily scrum: meeting in piedi, deve durare poco.
+	\item Sprint review: alla fine dello sprint, si mostra l'incremento agli stakeholders.
+	\item Sprint retrocspective: dopo la review, è una riunione interna al team.
+\end{itemize}
+
+\dfn{Kanban}{
+	Si vuole mantenere il flusso di lavoro. Non si mette più lavoro di quello che si riesce a fare.
+}
+
+\paragraph{Principi di Kanban:}
+
+\begin{itemize}
+	\item Visualizzazione: si vede il proprio lavoro attraverso delle lavagne su cui vengono appiccicati post-it.
+	\item WIP limit: si fanno un certo numero di cose contemporaneamente (non più di 3-4).
+	\item Pull system\footnote{Gacha moment.}: le cose vengono spostate dal to do al doing quando si libera un posto.
+	\item Continuous delivery: si integra la feature implementata e la si consegna.
+\end{itemize}
+
+\paragraph{Board:}
+
+\begin{itemize}
+	\item Backlog.
+	\item To do: roba da fare.
+	\item Doing (WIP limit): roba che si sta facendo.
+	\item Done: roba fatta.
+\end{itemize}
+
+\dfn{Scrumban}{
+	Scrum: ha i ruoli, il product Backlog e PBI, daily meeting, sprints.
+
+	Kanban: il flusso è pull-based e usa i WIP limit, le lavagne e i Continuous
+	delivery.
+}
+
+\paragraph{Siloed evoluta:}
+
+\begin{itemize}
+	\item Biz team: relazioni con gli stakeholders, marketing e vendite.
+	\item Dev team: requisiti, sviluppo, testing e comunicazione con il biz team.
+	\item Ops team: deploy, setting, validazioni.
+\end{itemize}
+
+\nt{La divisione c'è ancora, ma c'è più comunicazione tra i vari team.}
+
+\dfn{Service-Oriented Architecture}{
+	Si inizia a ragionare sul fatto che l'integrazione debba avvenire mediante moduli che forniscono servizi l'uno all'altro.
+}
+
+\qs{}{Cos'è un servizio?}
+
+\cor{Servizio}{
+	Un servizio è una capacità di business autocontenuta che viene esposta secondo un contratto standard (un'interfaccia).
+}
+
+\paragraph{I servizi:}
+
+\begin{itemize}
+	\item \fancyglitter{Coarse-grained:} ogni servizo implementa tutto (più pesanti dei microservizi).
+	\item Condivide dati e funzioni attraverso interfacce (o API).
+	\item \fancyglitter{Scopribili:} i servizi si scoprono attraverso nomi e non IP.
+\end{itemize}
+
+\paragraph{SOA:}
+
+\begin{itemize}
+	\item Comunicazione attraverso applicazioni apposta o protocolli basati su HTTP.
+	\item Le infrastrutture hanno un ruolo importante nel comporre i servizi in funzioni.
+	\item Deployment centralizzato.
+\end{itemize}
+
+\dfn{Web Services}{
+	Istanza di Service-Oriented Architecture che stabilisce:
+	\begin{itemize}
+		\item Protocollo di comunicazione (SOAP):
+		      \begin{itemize}
+			      \item XML su HTTP.
+			      \item Consente sia comunicazione sincrona che asincrona.
+		      \end{itemize}
+		\item Service registry: UDDI
+		      \begin{itemize}
+			      \item Elenco di servizi registrati secondo le loro features generali.
+			      \item Consente ai servizi di essere scopribili.
+			      \item Comunicazione mediante SOAP.
+		      \end{itemize}
+		\item Contratto (WSDL, Web Service Description Language):
+		      \begin{itemize}
+			      \item Fornisce informazioni per contattare effettivamente un servizio.
+			      \item La struttura dei messaggi.
+			      \item Le strutture dati.
+			      \item Protocollo e indirizzo.
+		      \end{itemize}
+	\end{itemize}
+}
+
+\clm{Sui Web Services}{}{
+	Idealmente:
+	\begin{itemize}
+		\item Il client cerca il servizio su UDDI.
+		\item Ottiene il link dal WSDL del servizio.
+		\item Utilizzando WSDL collega dinamicamente il servizio alle operazioni.
+	\end{itemize}
+	In Pratica:
+	\begin{itemize}
+		\item La scoperta di servizi "in tempo reale"  era impraticabile.
+		\item I WSDL erano in maggioranza statici.
+		\item Le informazioni venivano salvate in file di configurazione.
+	\end{itemize}
+}
+
+\subsection{JavaEE e Cloud}
+
+\dfn{Enterprise Java Beans (EJB)}{
+	Gli EJB sono oggetti resi disponibili dinamicamente. Offrivano:
+	\begin{itemize}
+		\item Gestione del lifecycle.
+		\item RMI.
+		\item Sicurezza basata sui ruoli.
+		\item Persistenza tramite Object-relational mapping (ORM).
+		\item Gestione delle transazioni ACID.
+	\end{itemize}
+}
+
+\paragraph{I Java Beans erano pesanti:}
+
+\begin{itemize}
+	\item Oggetti collegati alla JVM (al container).
+	\item Molto accoppiati all'ambiente di esecuzione.
+	\item Necessitavano un java application server.
+	\item Molto codice boiler-plate.
+	\item Annotazioni XML.
+	\item Non portabili.
+\end{itemize}
+
+\nt{Tutto questo fino al 2006 in cui la terza edizione di EJB li fa diventare più leggeri:
+	\begin{itemize}
+		\item Annotazioni Java al posto di XML.
+		\item POJOs (Plain Old Java Objects).
+		\item JPA (Java Persistence).
+		\item Si integrano con web service.
+		\item Introduzione della \fancyglitter{dependency injection}: design pattern per collegare due o più moduli tramite l'ambiente di sviluppo stesso.
+	\end{itemize}
+}
+
+\dfn{Cloud}{
+	Insieme di risorse sia comptazionali, sia di storage, sia di networking. Queste risorse sono rese disponibili come servizi mediante API.
+}
+
+\clm{}{}{
+	\begin{itemize}
+		\item Il cloud è un'astrazione che nasconde la struttura fisica delle macchine.
+		\item C'è un livello simile a un OS.
+		\item I servizi sono offerti su base dichiarativa: diventa possibile avere un servizio che si conformi alle proprie necessità.
+	\end{itemize}
+}
+
+\paragraph{Modelli:}
+
+\begin{itemize}
+	\item \fancyglitter{Infrastructure as a Service (IaaS):} l'azienda mette a disposizione macchine virtuali, di storage o sottoreti visibili a chi compra il servizio.
+	\item \fancyglitter{Platform as a Service (PaaS):} si acquista una piattaforma che nasconde cose e ottimizza.
+	\item \fancyglitter{Function as a Service (FaaS):} si carica su una piattaforma una serie di funzioni e si sviluppa solo il front end.
+\end{itemize}
+
+\paragraph{Applicazioni native sul cloud:}
+
+\begin{itemize}
+	\item Moduli molto leggeri e loosely-coupled.
+	\item Deployment contenerizzato (impacchettato e Platform independent), orchestrazione (ignorante rispettto all'architettura ma che può operare su essa) e elasting scaling (cambiare il livello dei servizi).
+	\item Dev Cycle features: integrazione continua, continuous delivery, deploy, infrastrutture dichiarative, consistenza tra dev/test/prod, anticipare i test sulla sicurezza, l'applicazione deve essere osservabile.
+	\item NFRs: scalabilità, portabilità, sicurezza, evoluzione, mantenibilità, affidabilità.
+\end{itemize}
+
+\dfn{DevOps}{
+	Gestione del sistema mediante l'utilizzo di tools e pratiche basato sui principi Lean.
+}
+
+\section{Analisi dei Requisiti}
+
+\subsection{Architetture Monolitiche}
+
+\qs{}{Ma ci serve un'architettura a microservizi?}
+
+\dfn{Architettura Monolitica}{
+	Un'architettura monolitica è semplice da sviluppare, non è distribuita, non ha integrazioni complesse, è facile da deployare e scalare, non  ha coupling ed è facile da scalare.
+}
+
+\nt{Può essere utile se piccola (non è vero, ma facciamo finta che lo sia). Il threshold è da 5 a 10 persone.}
+
+\cor{Monolithic Hell}{
+	Il monolithic hell  è un termine utilizzato per descrivere i rischi di un'applicazione monolitica.
+}
+
+\paragraph{Monolithic Hell:}
+
+\begin{itemize}
+	\item Teams che crescono e la coordinazione diventa ingestibile.
+	\item Frammentazione della conoscenza: nessuno comprende tutto il sistema.
+	\item I cambiamenti diventano rischiosi e costosi.
+	\item All-or-Nothing update: o si cambia tutto o non si cambia nulla.
+	\item I deployement possono essere lenti e causare downtime.
+	\item Un fail su una funzione può buttare giu tutto il sistema.
+\end{itemize}
+
+\begin{figure}[h]
+	\centering
+	\includegraphics[scale=0.4]{01/SvM.png}
+	\caption{SOA vs. Microservizi.}
+\end{figure}
+
+\paragraph{Microservizi e Miniservizi:}
+
+\begin{itemize}
+	\item I microservizi propriamente detto dovrebbe implementare una sola funzione.
+	\item I miniservizi svolgono un'unità funzionale coesa e coerente, ma non necessariamente una sola funzione.
+\end{itemize}
+
+\nt{Per chi fa questa distinzione quelli che vedremo nel corso sono considerati miniservizi.}
+
+\subsection{Microservizi e DevOps}
+
+\begin{figure}[h]
+	\centering
+	\includegraphics[scale=0.4]{01/mDev.png}
+	\caption{Microservizi e DevOps.}
+	\label{fig:mDev}
+\end{figure}
+
+\paragraph{Nella figura \ref{fig:mDev}:}
+
+\begin{itemize}
+	\item L'architettura a microservizi permette un'organizzazione autonoma e teams polifunzionali.
+	\item L'organizzazione in questi teams permette a sua volta il continuous delivery e il continuos deployement.
+	\item I teams devono essere piccoli in modo che possano essere eventualmente riorganizzati.
+	\item In sostanza: dividere un'app in microservizi (invece che monolitica) consente un deployement costante. Per gestire i microservizi si fa affidamento su piccoli teams autonomi, che vanno a rinforzare il DevOps.
+\end{itemize}
+
+\dfn{API}{
+	Le API sono un insieme di regole e protocolli che permettono a software diversi di "parlare" tra di loro.
+}
+
+\paragraph{Architettura a microservizi:}
+
+\begin{itemize}
+	\item Normalmente viene eseguita su un server che espone al cliente delle cose (per esempio user interface).
+	\item C'è un modulo dedicato che funge da gateway. Il front-end si collega a un indirizzo web tramite esso.
+	\item Ogni servizio espone un API REST.
+\end{itemize}
+
+\begin{figure}[h]
+	\centering
+	\includegraphics[scale=0.4]{01/api.png}
+	\caption{API}
+\end{figure}
+
+\dfn{Conway's Law}{
+	Le organizzazioni che producono softwares sono obbligate a produrre softwares che sono copie delle strutture comunicative dell'azienda.
+}
+
+\cor{Inverse Conway Maneuver}{
+	L'idea è quella di strutturare la propria organizzazione in modo tale che la struttura rispecchi la propria architettura a microservizi. Così facendo i dev teams sono debolmente collegati ai servizi.
+}
+
+\nt{"Spesso i softwares delle organizzazioni pubbliche come l'università non è granché", \textit{citazione necessaria}.}
+
+\paragraph{Sfide dei microservizi:}
+
+\begin{itemize}
+	\item Complessità: un'architettura a microservizi è un sistema distribuito.
+	\item Richiede ristrutturazione dell'organizzazione aziendale.
+	\item Deve tenere conto della performance della rete:
+	      \begin{itemize}
+		      \item Evitare \fancyglitter{chatty service}: servizi che si scambiano tanti piccoli messaggi.
+		      \item Evitare messaggi enormi.
+		      \item Minimizzare la latenza.
+	      \end{itemize}
+	\item Misure di sicurezza per ogni servizio.
+\end{itemize}
+
+\subsection{Domain-Driven Design}
+
+\dfn{Domain-Driven Design (DDD)}{
+	Il Domain-Driven Design è un approccio al design software che nasce intorno alla nozione di "modello di dominio":
+	\begin{itemize}
+		\item Il modello di dominio cattura in una maniera formale, ma concettuale, i concetti rilevanti, le entità, le relazioni e le regole di uno specifico business.
+		\item Il modello di dominio è l'output dell'analisi dei requisiti ed è l'input della fase di design.
+		\item Si utilizza un approccio AGILE.
+	\end{itemize}
+}
+
+\nt{L'idea di questo approccio: tutto il DevOps ha un'idea chiara del dominio e delle sue regole.}
+
+\begin{figure}[h]
+	\begin{center}
+		\includegraphics[width=0.7\textwidth]{01/ddd.png}
+	\end{center}
+	\caption{Dal problema alla soluzione.}
+\end{figure}
+
+\dfn{Ubiquitous Language}{
+	Un linguaggio comune costruito insieme e condiviso dagli esperti del dominio e dal development team. Deve essere usato:
+	\begin{itemize}
+		\item Nel glossario.
+		\item In tutta la documentazione.
+		\item Nel codice.
+	\end{itemize}
+}
+
+\begin{figure}[h]
+	\begin{center}
+		\includegraphics[width=0.7\textwidth]{01/ddd2.png}
+	\end{center}
+	\caption{Connessione tra problema e soluzione.}
+\end{figure}
+
+\clm{}{}{
+	\begin{itemize}
+		\item Non ci si può aspettare che un modello di dominio rifletta completamente il mondo reale.
+		\item È una rappresentazione selettiva della prospettiva del problema che si cerca di risolvere.
+		\item Astrazioni, confini e conoscenza condivisa.
+		\item "Tutti i modelli sono sbagliati, ma alcuni sono utili".
+	\end{itemize}
+}
+
+\begin{figure}[h]
+	\begin{center}
+		\includegraphics[width=0.7\textwidth]{01/ddd3.png}
+	\end{center}
+	\caption{Quando si utilizza DDD.}
+\end{figure}
+
+\subsection{Modeling Practice}
+
+\dfn{Event Storming}{
+	L'event storming è una tecnica di modellazione collaborativa in cui si esplora un dominio, si scrivono gli eventi rilevanti su dei post-it e li si attacca alla parete. Dopo di che si creano delle sequenze cronologiche per far capire quali sono i flussi.
+}
+\nt{Ciò permette di chiarire eventuali ambiguità o fraintendimenti.}
+
+\dfn{Value Streams}{
+	Un value stream è una sequenza end-to-end di attività che un'organizzazione effettua per portare un valore a un cliente o a uno stakeholder.
+}
+
+\nt{Deve mostrare chiaramente il valore, essere comprensibile alle altre entità coinvolte e deve essere in terza persona.}
+
+\cor{Support Streams}{
+	Come i value streams ma interni all'azienda, non riguardano direttamente il cliente finale.
+}
+
+\dfn{User Stories}{
+	Una user story è una breve narrativa che descrive un processo o un goal dal punto di vista di un solo attore. Cattura le motivazioni, le azioni e il risultato desiderabile.
+}
+
+\nt{Una variante sono le AGILE user stories che sono composte da una sola frase (As a [actor], I want [goal], so that [reason]).}
+
+\dfn{CRC Cards}{
+	Le Class/Responsability/Collaborator (CRC) cards sono carte che:
+	\begin{itemize}
+		\item Catturano le entità rilevanti e le loro relazioni.
+		\item Possono essere introdotte in diversi stadi del processo.
+		\item Inizialmente sono usate per fare brainstorming.
+		\item L'obiettivo è quello di far emergere termini chiavi usati negli ubiquitous languages.
+		\item Un tipo di entità $\rightarrow$ Una carta.
+	\end{itemize}
+}
+
+\paragraph{CRC:}
+
+\begin{itemize}
+	\item \fancyglitter{Classe:} il tipo di entità, classe concettuale.
+	\item \fancyglitter{Responsability:} quale entità di questo tipo \newfancyglitter{conosce} o \newfancyglitter{fa}.
+	\item \fancyglitter{Collaborators:} altre entità con cui si interagisce per soddisfare le responsability.
+\end{itemize}
+
+\paragraph{Il processo:}
+
+\begin{itemize}
+	\item \fancyglitter{Identificare} le entità rilevanti in una storia. Gli NPC contano come entità mente MC no. Per ognuno si fa una carta con il nome e le responsabilities.
+	\item \fancyglitter{Role-Play} la storia con gli altri membri del team per:
+	      \begin{itemize}
+		      \item Scoprire le relazioni.
+		      \item Trovare responsabilities mancanti.
+		      \item Trovare entità mancanti.
+	      \end{itemize}
+	\item Se un'entità diventa troppo grande:
+	      \begin{itemize}
+		      \item Si splitta in due entità.
+		      \item Si stanno confondendo più punti di vista di un'entità.
+	      \end{itemize}
+\end{itemize}
+
+\section{Strategic e Tactical DDD}
+
+\begin{figure}[h]
+	\begin{center}
+		\includegraphics[width=0.7\textwidth]{01/st.png}
+	\end{center}
+	\caption{Strategic DDD vs. Tactical DDD.}
+\end{figure}
+
+\subsection{Strategic DDD}
+
+\dfn{Subdomains}{
+	Dipartimenti diversi possono avere modelli di dominio o linguaggi diversi. Differenti subdomains possono:
+	\begin{itemize}
+		\item Utilizzare lo stesso nome per entità concettuali diverse.
+		\item Utilizzare nomi diversi per la stessa entità concettuale.
+		\item Considerare la stessa entità concettuale da punti di vista diversi.
+		\item Considerare  relazioni diverse tra le stesse entità.
+	\end{itemize}
+}
+
+\paragraph{I subdomains possono essere:}
+
+\begin{itemize}
+	\item Core: il "cuore" delle attività delle aziende, attività che non offrono altre aziende.
+	\item Generic: molto comuni nelle aziende (e.g. parte finanziaria, gestione clienti). Possono essere "acquistate" da pacchetti già esistenti.
+	\item Supporting: nel mezzo, abilitano il core business e hanno complessità variabile.
+\end{itemize}
+
+\dfn{Bounded Context}{
+	Un bounded context rappresenta un'area all'interno di un modello in cui il linguaggio è univoco e consistente, la logica è coerente ed è possibile immagazzinare al suo interno una parte della business logic esponendo degli endpoints.
+}
+
+\clm{}{}{
+	I subdomains sono il punto di partenza:
+	\begin{itemize}
+		\item one-to-one: un subdomain è legato a un bounded context.
+		\item many-to-one: un bounded context è legato a più subdomains:
+		      \begin{itemize}
+			      \item La maggior parte delle operazioni richiede una stretta interazione tra funzioni in subdomains diversi.
+			      \item C'è un overlapping tra data models.
+			      \item Scelte tecnologiche.
+		      \end{itemize}
+		\item one-to-many:
+		      \begin{itemize}
+			      \item Dall'analisi emerge la possibilità di fare decoupling.
+			      \item La tecnologia permette uno split: front-end vs. back-end.
+		      \end{itemize}
+	\end{itemize}
+}
+
+\nt{I bounded context sono legati da \fancyglitter{pattern di dinamiche di potere}.}
+
+\dfn{Separate Ways}{
+	Non ci sono interazioni tra due bounded context.
+}
+
+\begin{figure}[h]
+	\begin{center}
+		\includegraphics[width=0.4\textwidth]{01/sw.png}
+	\end{center}
+	\caption{Separate Ways.}
+\end{figure}
+
+\dfn{Partnership}{
+	Due bounded context che lavorano in stretto contatto.
+}
+
+\begin{figure}[h]
+	\begin{center}
+		\includegraphics[width=0.4\textwidth]{01/p.png}
+	\end{center}
+	\caption{Partnership.}
+\end{figure}
+
+\dfn{Customer Supplier}{
+	Un bounded context fornisce dei servizi a un altro.
+}
+
+\begin{figure}[h]
+	\begin{center}
+		\includegraphics[width=0.4\textwidth]{01/cs.png}
+	\end{center}
+	\caption{Customer Supplier.}
+\end{figure}
+
+\dfn{Conformist}{
+	Il customer si deve adeguare al supplier.
+}
+
+\begin{figure}[h]
+	\begin{center}
+		\includegraphics[width=0.4\textwidth]{01/c.png}
+	\end{center}
+	\caption{Conformist.}
+\end{figure}
+
+\nt{
+	Conformist è tipico dell'utilizzo di API di librerie di terze parti.
+}
+
+\dfn{Shared Kernel}{
+	Patterns che assuomono che due bounded context abbiano un modello di dominio indipendente:
+	\begin{itemize}
+		\item Crea tight coupling tra i due bounded context.
+		\item È necessario avere una comprensione dei concetti chiave tra i due teams.
+		\item Ci deve essere disponibilità tra due teams a collaborare (partnership).
+		\item La parte condivisa deve evolversi lentamente.
+	\end{itemize}
+}
+
+\begin{figure}[h]
+	\begin{center}
+		\includegraphics[width=0.3\textwidth]{01/shared kernel.png}
+	\end{center}
+	\caption{Shared Kernel.}
+\end{figure}
+
+\dfn{Anti-Corruption Layer}{
+	Un livello di traduzione tra il bounded context e altri modelli esterni:
+	\begin{itemize}
+		\item Evita contaminazioni da altri bounded contest o fornitori esterni.
+		\item Difesa contro Conformist: un team non deve più fare design sulle scelte dell'altro.
+		\item È molto costosa come scelta.
+	\end{itemize}
+}
+
+\begin{figure}[h]
+	\begin{center}
+		\includegraphics[width=0.3\textwidth]{01/anti-corruption layer.png}
+	\end{center}
+	\caption{Shared Kernel.}
+\end{figure}
+
+\paragraph{Tre tipi di Front-Ends:}
+
+\begin{itemize}
+	\item Front-End specifico di uno specifico bounded context:
+	      \begin{itemize}
+		      \item L'utente interagisce solo con un singolo bounded context e ne usa l'ubiquitous languages.
+		      \item Il front-end è solo questioni di scelte tecnologiche.
+	      \end{itemize}
+	\item Portale/Federazione, multi bounded context:
+	      \begin{itemize}
+		      \item Ogni bounded context ha le sue capacità.
+		      \item Il front-end deve fornire un container uniforme.
+		      \item Per esempio il portale dell'ateneo (bleah!).
+	      \end{itemize}
+	\item Orchestratore:
+	      \begin{itemize}
+		      \item Il front-end orchestra un processo che interagisce con multipli bounded context.
+		      \item Il front-end è un bounded context di suo.
+	      \end{itemize}
+\end{itemize}
+
+\dfn{Mockups}{
+	Disegno che mostra la UI e come gli utenti possono interagire con essa.
+}
+
+\paragraph{I primi Mockups:}
+
+\begin{itemize}
+	\item Seguono user stories.
+	\item Mostrano le interazioni.
+	\item Testano i bounded context.
+\end{itemize}
+
+\subsection{Tactical DDD}
+
+\dfn{Tactical DDD}{
+	Il Tactical DDD si occupa di implementare un subdomain model in un bounded context.
+}
+
+\paragraph{Il Tactical DDD:}
+
+\begin{itemize}
+	\item È agnostico rispetto all'implementazione:
+	      \begin{itemize}
+		      \item Non c'è un commitment verso uno specifico linguaggio.
+		      \item Descriviamo il COSA, non il COME.
+	      \end{itemize}
+	\item Diagrammi UML con specifici stereotypes DDD:
+	      \begin{itemize}
+		      \item Ruoli delle classi in un bounded context.
+		      \item Possono essere rappresentati in UML come stereotypes.
+	      \end{itemize}
+\end{itemize}
+
+\paragraph{Parti del Tactical DDD:}
+
+\begin{itemize}
+	\item Entity: un concetto definito dalla sua identità piuttosto che dai suoi attributi. Rappresenta un qualcosa che persiste e cambia nel corso del tempo:
+	      \begin{itemize}
+		      \item Implemtazione anemica: ha solo ed esclusivamente i dati.
+		      \item Implemtazione ricca: include le responsabilità.
+	      \end{itemize}
+	\item Value Object: un concetto di dominio immutabile definito dai suoi attributi. Gli attributi sono impostati alla creazione del concetto e non possono cambiare.
+	\item Aggregato: un insieme di oggetti che deve essere tenuto consistente e trattato come un'unità:
+	      \begin{itemize}
+		      \item Un'entità viene scelta come root aggregate che permette l'accesso alle entità.
+		      \item Il root aggregate è responsabile delle regole di business.
+	      \end{itemize}
+\end{itemize}
+
+\paragraph{Patterns in DDD:}
+
+\begin{itemize}
+	\item Factory: si usa quando la creazione di un oggetto non può essere delegata all'oggetto stesso perché bisogna tenere conto di regole che riguardano più oggetti. Si crea un \fancyglitter{factory object}.
+	\item Repository: un livello di astrazione che permettee di fare decoupling tra il dominio di business e la sua rappresentazione di persistenza. Permette di cambiare il modo in cui vengono gestiti i files (e.g. passare da files a database).
+	\item Service: un orchestratore che sa come gestire le varie operazioni sulle entity.
+\end{itemize}
+
+\section{Ripasso su Spring Boot e React}
+
+\nt{DISCLAIMER: è il mio primo approccio alla programmazione web (dato che sono specializzata in robe teoriche e/o a basso livello) per cui potrei fare qualche imprecisione, sorry.}
+
+\subsection{Maven}
+
+Dato che gli IDE moderni consumano un sacco di batteria e risorse includo anche una mini guida per setuppare un progetto java con Maven (in questo modo potete usare vim, gedit o nano se vi va). Se usate Intell*J, Vs C*de o altro potete saltare\footnote{Questi IDE possono utilizzare anche Maven, ma lo gestiscono loro.}.
+
+\dfn{Maven}{
+	Maven è un tool per creare automaticamente delle build di progetti java. Permette di compilare codice, fare testing, packaging, etc.
+}
+
+\nt{Maven utilizza il \fancyglitter{Project Object Model (POM)} per descrivere la configurazione di un progetto e gestire le dipendenze.}
+
+\qs{}{Come si crea un progetto con Maven?}
+
+\begin{lstlisting}[language=bash, caption={Creazione di un progetto Maven}]
+mvn archetype:generate \
+    -DgroupId=com.example \
+    -DartifactId=myapp \
+    -DarchetypeArtifactId=maven-archetype-quickstart \
+    -DinteractiveMode=false
+\end{lstlisting}
+
+\paragraph{Nello specifico:}
+
+\begin{itemize}
+	\item \texttt{DgroupID} indica il nome di una compagnia o di un'organizzazione.
+	\item \texttt{DartifactId} indica il nome del progetto.
+	\item \texttt{DarchetypeArtifactId} indica il template (in questo caso un semplice HelloWorld java).
+\end{itemize}
+
+\paragraph{Per renderlo un progetto Spring Boot è necessario apportare le seguenti modifiche al \texttt{pom.xml}:}
+
+\begin{lstlisting}[language=xml, caption={Esempio di pom.xml per Spring Boot}]
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0
+         http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <parent>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-starter-parent</artifactId>
+        <version>3.3.4</version>
+        <relativePath/>
+    </parent>
+
+    <groupId>com.example</groupId>
+    <artifactId>myapp</artifactId>
+    <version>1.0.0-SNAPSHOT</version>
+    <packaging>jar</packaging>
+    <name>myapp</name>
+
+    <properties>
+        <java.version>24</java.version>
+    </properties>
+
+    <dependencies>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-web</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-test</artifactId>
+            <scope>test</scope>
+        </dependency>
+    </dependencies>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-maven-plugin</artifactId>
+            </plugin>
+        </plugins>
+    </build>
+</project>
+\end{lstlisting}
+\paragraph{Spiegazione:}
+\begin{itemize}
+	\item Il \texttt{parent} imposta la versione di Spring Boot e le configurazioni di default.
+	\item Le \texttt{dependencies} includono il modulo web e quello per i test.
+	\item Il plugin \texttt{spring-boot-maven-plugin} permette di eseguire l'app con \texttt{mvn spring-boot:run}.
+\end{itemize}
+\subsection{Gradle}
+
+Per alcune persone può essere più facile utilizzare Gradle (inclusa me), quindi aggiungo qualcosa anche per questo.
+
+\dfn{Gradle}{
+	Come Maven, Gradle è un tool per creare automaticamente progetti java, C/C++, kotlin, etc. A livello di base ha le stesse funzionalità di Maven, le differenze principali sono il linguaggio utilizzato (Maven è basato su xml, Gradle su Groovy), velocità (Gradle è più veloce per build incrementali), etc.
+}
+
+\qs{}{Come si crea un progetto Spring Boot con Gradle?}
+
+\begin{lstlisting}[language=bash, caption={Creazione di un progetto Spring Boot con Gradle}]
+curl https://start.spring.io/starter.tgz \
+         -d type=gradle-project \
+         -d dependencies=web \
+         -d groupId=com.example \
+         -d artifactId=test \
+         -d name=test \
+         -d packageName=com.example.test \
+         -o test-gradle.tgz
+   tar -xvf test-gradle.tgz
+   cd test
+\end{lstlisting}
+
+\paragraph{Alcune osservazioni importanti:}
+
+\begin{itemize}
+	\item Di default il progetto creato usa java 17, per cambiarlo basta andare nel file \texttt{build.gradle}.
+	\item Inizialmente darà errore perché non si sono definiti endpoint.
+\end{itemize}
+
+\paragraph{Esecuzione del progetto:}
+
+\begin{lstlisting}[language=bash, caption={Avvio del progetto Spring Boot con Gradle}]
+# Su Linux/macOS
+./gradlew bootRun
+
+# Su Windows
+gradlew.bat bootRun
+\end{lstlisting}
+
+\nt{Al primo avvio Gradle scaricherà tutte le dipendenze necessarie. Una volta completato, l'app sarà disponibile su \texttt{http://localhost:8080/}.
+	Se non hai ancora definito controller o endpoint, vedrai la \textit{Whitelabel Error Page}.}
+
+
+\subsection{SpringBoot}
+
+\nt{Non descriverò come fare un progetto su IntelliJ, se non ci riuscite è skill issue.}
+
+\dfn{SpringBoot}{
+	SpringBoot è un frameworks open-source per la programmazione di webapp.
+}
+
+\paragraph{Spring usa il pattern MVC:}
+
+\begin{itemize}
+	\item \fancyglitter{Controller:} punto di ingresso delle richieste esterne.
+	\item \fancyglitter{Model:} consultato dal controller quando arriva una richiesta.
+	\item \fancyglitter{View:} prodotta dal controller.
+\end{itemize}
+
+\qs{}{Come si fa a fare un controller in spring?}
+
+\dfn{Annotazioni java}{
+	Modo per aggiungere metadati nel codice java. Forniscono informazioni extra al compilatore.
+}
+
+\paragraph{Annotazioni in spring:}
+
+\begin{itemize}
+	\item \texttt{@RestController:} fa capire a spring che è un controller e quindi deve stare in attesa di richieste HTTP.
+	\item \texttt{@RequestMapping(\dots):} specifica dove devono arrivare le URL. Per esempio in una classe \texttt{TavoliController} può esserci l'annotazione \texttt{@RequestMapping("/tavoli")}.
+	\item \texttt{@GetMapping(\dots):} handler per le varie richieste. Il suo contenuto viene aggiunto dopo la root string specificata da \texttt{@RequestMapping(\dots)}. Per esempio \texttt{@GetMapping(\{id\})} indica che si vuole un tavolo con un determinato menu.
+	\item \texttt{@PathVariable:} si mette nella signature dei metodi per passare i parametri presi dal \texttt{@GetMapping(\dots)}. Per esempio \texttt{ResponseEntity$<$Tavolo$>$ getTavoli(@PathVariable int id)} va a utilizzare l'id specificato in precedenza. Questo porta a due casi:
+	      \begin{itemize}
+		      \item Se l'id c'è si restituisce una \texttt{ResponseEntity.ok(\dots)}.
+		      \item Se non c'è viene restituito \texttt{ResponseEntity.notFound().build()}\footnote{Il famigerato 404.}. Il \texttt{notFound()} non dà una risposta definitiva, ma permette di aggiungere  altre caratteristiche (è il \texttt{build()} che formula la risposta HTTP).
+		            \begin{figure}[h]
+			            \begin{center}
+				            \includegraphics[width=0.7\textwidth]{01/404.png}
+			            \end{center}
+			            \caption{Not found.}
+		            \end{figure}
+	      \end{itemize}
+	\item \texttt{@PostMapping(\dots):} il controller si aspetta che la richiesta abbia un body. Per esempio \texttt{@PostMapping("crea")} si occupa di creare un ordine.
+	\item \texttt{@RequestBody:} si aspetta un body (quindi si usa nelle \texttt{@PostMapping(\dots)}), per cui un oggetto JSON che può essere deserializzato. Questo può portare a:
+	      \begin{itemize}
+		      \item \texttt{ResponseEntity.badRequest().build():} significa che l'utente ha sbagliato qualcosa nella richiesta (e.g. chiedere di entità che non esistono).
+		      \item \texttt{ResponseEntity.InternalServerError().build():} errore nell'esecuzione per cui il server non riesce a soddisfare la richiesta.
+	      \end{itemize}
+	\item \texttt{@Service:} l'istanza dell'oggetto viene creata automaticamente da spring. Viene creata a partire da un costruttore.
+	\item \texttt{@PostConstruct:} metodi che vanno invocati subito dopo la costruzione del \texttt{@Service}.
+	\item \texttt{@RestControllerAdvice:} per il \texttt{GlobalErrorHandler}, la gestione di errori di alto livello.
+	\item \texttt{@ExceptionHandler(\dots):} quando arriva un'eccezione la gestiscono.
+\end{itemize}
+
+\paragraph{Jakarta (persistence), per gestire i database:}
+
+\begin{itemize}
+	\item \texttt{@Entity:} la classe corrisponde a una tabella del database.
+	\item \texttt{@Table(\dots):} per specificare il nome della tabella (di default è il nome della classe).
+	\item \texttt{@Id/@EmbeddedId:} campo chiave.
+	\item \texttt{@GeneratedValue(\dots):} per scegliere la strategia di generazione e altri parametri.
+	\item \texttt{@Column(\dots):} una colonna della tabella, si possono specificare varie opzioni come lunghezza o nullable.
+	\item \texttt{@JoinColumn(\dots):} per effettuare join, va inoltre specificto il tipo di relazione con un'altra annotazione (\texttt{@ManyToOne(\dots)}, \texttt{@OneToOne}, etc.).
+	\item \texttt{@MapsId(\dots):} quando ci sono più id che indicano la stessa cosa.
+	\item \texttt{@Enumerate(\dots):} di default gli enum vengono tradotti come numeri, con questa annotazione si possono specificare altri tipi come String.
+\end{itemize}
+
+\nt{È importante che sia presente un costruttore vuoto per l'entità.}
+
+\paragraph{Per avere corrispondenza tra gli oggetti e le entità del database si devono definire dei repositories:}
+
+\begin{itemize}
+	\item Sono interfacce che estendono \texttt{JpaRepository$<>$}.
+	\item Si specificano il tipo di oggetto e il tipo di id.
+	\item Si può utilizzare l'annotazione \texttt{@Repository}, ma non ha sostanzialmente effetto.
+	\item Questi repositories sono connessi ai services.
+	\item \texttt{@Transactional:} importante per tenere traccia delle modifiche. Si usa nei metodi dei services.
+\end{itemize}
+
+\dfn{Applicazione Headless}{
+	Un'applicazione che non restituisce delle pagine, ma dei JSON. I files JSON possono essere intesi come view nel pattern MVC.
+}
+
+\paragraph{Spring Security:}
+
+\begin{itemize}
+	\item Appena inserito lo starter viene creato un utente fittizzio.
+	\item Da questo momento tutte le operazioni necessitano un'autenticazione, se non la si ha viene restituito 401 - Unauthorized.
+	\item I metodi POST sono soggetti a Cross-Site Request Forgery (CSRF), per prevenire richieste false da parte di malintenzionati. Per risolvere bisogna configurare la Security.
+	\item Si aggiunge al progetto la classe SecurityConfig con l'annotazione \texttt{@Configuration}.
+	\item Il metodo \texttt{filterChain} è annotato come \texttt{Bean}, ossia un \fancyglitter{singleton}.
+	\item \texttt{@EnableMethodSecurity:} i controlli verranno fatti nel controller.
+	\item \texttt{@PreAuthorize(\dots):} va a specificare condizioni tipo se l'user ha un ruolo specifico. Se non è presente i metodi sono accessibili a chiunque sia autenticato.
+\end{itemize}
+
+\subsection{React}
+
+\dfn{React}{
+	React è un framework javascript per fare user interface. Segue il pattern MVVM.
+}
+
+\nt{PS. usate typescript e non javascript.}
+
+\cor{MVVM}{
+	Il pattern Model-View ViewModel in cui è presente il ViewModel che è strettamente collegato alla view.
+}
+
+\dfn{npm}{
+	npm è un package manager per javascript. Gestisce le dipendenze dei progetti. Con il comando \texttt{npm install} vengono inserite le dipendenze in una cartella "node\_modules".
+}
+
+\paragraph{Files:}
+
+\begin{itemize}
+	\item \texttt{index.html:} il punto di ingresso dell'applicazione.
+	\item \texttt{main:} il file deciso nell'index.
+	\item \texttt{app:} l'effettiva app che contiene tutti i componenti di react.
+\end{itemize}
+
+\nt{I componenti di react sono in \texttt{tsx} che permette di unire typescript e HTML.}
+
+\paragraph{I componenti React:}
+
+\begin{itemize}
+	\item Sono definiti andando a definire la loro funzione di rendering.
+	\item Si tratta di HTML sottoposto a interpolazione con espressioni javascript/typescript.
+	\item Si possono mettere dei tag con dei componenti, andando a creare gli alberi di componenti.
+	\item Lo stato è trattenuto internamente da react e viene chiamato nelle funzioni di rendering.
+	\item Le funzioni devono essere pure (no side-effect, haskell-like).
+	\item Le props sono gli input delle funzioni.
+\end{itemize}
+
+
+
+
+

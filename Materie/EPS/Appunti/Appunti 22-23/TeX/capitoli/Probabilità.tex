@@ -1,0 +1,172 @@
+\chapter{Probabilità}
+
+La \textcolor{purple}{probabilità} è una parte recente della matematica (natta alla fine dell'800) che si basa sull'analisi ed è strettamente legata al gioco d'azzardo. Un \textcolor{purple}{evento probabilistico} P è casuale e non prevedibile a priori, perchè la complessità delle leggi fisiche che lo regolano rende impraticabile una lettura deterministica. 
+
+\section{Richiami di teoria degli insiemi}
+
+\dfn{Insieme}{Un insieme è una collezione di oggetti che vengono detti \textcolor{purple}{elementi} dell'insieme.
+
+Dato S = \{ $x_1, x_2, x_3, ..., x_n\}$
+
+$x \in S$ vuol dire che x appartiene all'insieme S.
+
+$x \notin S$ vuol dire che x non appartiene all'insieme S.}
+
+\nt{S può essere \textcolor{purple}{finito} (se ha cardinalità non infinita), \textcolor{purple}{numerabile} (se ha la stessa cardinalità dell'insieme dei numeri naturali) o \textcolor{purple}{più che numerabile} (se ha la stessa cardinalità dell'insieme dei numeri naturali)}
+
+\evidence{Operazioni:}
+
+\begin{itemize}
+    \item complementare: $A^c = {x | x \notin A}$;
+    \item unione: A U B = $\{x | x \in A \vee x \in B$;
+    \item intersezione: $A \cap B = \{x | x \in A \wedge x \in B\}$.
+\end{itemize}
+
+\dfn{Partizione}{Dato un insieme S, una \textcolor{purple} {partizione} di S è una collezione di insiemi ($A_i$)$_i^\infty$ = 1 se:
+\begin{itemize}
+    \item $A_i \cap A_j = \emptyset \; \forall A_i, A_j;$
+    \item $\bigcup_{i = 1}^\infty A_i = S.$
+\end{itemize}}
+
+\evidence{Leggi di De Morgan:}
+\begin{itemize}
+    \item ($\bigcup_{i = 1}^\infty A_i)^c = \bigcap_{i = 1}^\infty A_i^c$;
+    \item ($\bigcap_{i = 1}^\infty A_i)^c = \bigcup_{i = 1}^\infty A_i^c$.
+\end{itemize}
+
+\section{Modelli probabilistici}
+
+I \textcolor{purple}{modelli probabilistici} sono oggetti matematici che vogliono essere rappresentazioni astratte di un esperimento probabilistico.
+
+\dfn{Modello probabilistico}{Un modello probabilistico è una coppia di oggetti che identifichiamo con ($\Omega, \prob$).}
+
+\nt{$\Omega$ è letto come \textcolor{purple}{spazio campionario} ed è un insieme che contiene una rappresentazione di tutti i possibili esiti di un esperimento probabilistico. Questa rappresentazione non è univoca}
+
+\ex{}{Esempio: lancio una volta un dado a 6 facce:
+
+\begin{center}
+    $\Omega = \{1, 2, 3, 4, 5, 6\}$
+
+    $\Omega' = \{ f_1, f_2, f_3, f_4, f_5, f_6\}$
+\end{center}
+}
+$\\$
+\prob è la \textcolor{purple}{misura di probabilità} ed è una funzione.
+
+\subsubsection{Proprietà della misura di probabilità}
+
+\prob è positiva: $\forall A \in P(\Omega) \Rightarrow \prob(A) \geq 0$
+$\\$
+\prob è finita: $\prob(\Omega) = 1$
+$\\$
+\prob è additiva: 
+\begin{equation}
+\begin{cases}
+
+A, B \in P(\Omega) con A \cap B = \emptyset
+\\
+\prob(A U B) = \prob(A) + \prob(B)
+
+\end{cases}
+\end{equation}
+ Per cui si giunge alla conclusione che $\Omega$ è l'evento certo e $\emptyset$ è l'evento impossibile.
+
+ Ma se A $\subset \Omega$ (contenuto propriamente) e A $\not= \Omega$, \prob(A) = 1 è quasi certo. Se B $\subset \Omega $ e B $\not= \emptyset$, \prob(B) = 0 è quasi impossibile.
+
+ \dfn{Legge uniforme discreta}{ Se lo spazio campionario è finito e l'esperimento probabilistico è equo (non truccato), \prob(A) = (numero casi favorevoli) / (numero casi totali)}
+
+ \subsection{Altre proprietà}
+
+Si possono dedurre alcune proprietà. Siano A, B, C eventi (sottoinsiemi di $\Omega$):
+
+\begin{itemize}
+    \item se A $\subseteq$ B $\Rightarrow \prob(A) \leq \prob(B)$ (\textcolor{purple}{monotonia di \prob});
+    \item \prob(A U B) = \prob(A) + \prob(B) - $\prob(A \cap B)$;
+    \item \prob(A U B) $\leq$ \prob(A) + \prob(B);
+    \item \prob(A U B U C) = $\prob(A) + \prob(B) + \prob(C) - \prob(A \cap B) - \prob(A \cap C) - \prob(B \cap C) + \prob(A U B U C)$.
+\end{itemize}
+
+\section{Probabilità condizionata}
+
+\dfn{Probabilità condizionata}{La \textcolor{purple}{probabilità condizionata} è la probabilità che riguarda eventi che includono informazioni parziali.
+
+\begin{center}
+    \prob($A | B$) è la probabilità che si verifichi A sapendo che si è verificato B
+\end{center}
+}
+
+\nt{Per ciascun $A \subseteq \Omega$ la $\prob(A | B) $ è $\frac{\prob(A \cap B)}{\prob(B)}$. \prob(B) è detto \textcolor{purple}{evento condizionante} (deve essere diverso da zero), mentre  $\prob(A | B) $ è detto \textcolor{purple}{evento condizionato}}
+
+Di seguito alcune formule che possono risultare utili con la probabilità condizionata.
+
+\evidence{Regola della moltiplicazione:} 
+
+$\\\prob(A \cap B \cap C) = \prob (C|A \cap B) * \prob (B|A) * \prob (A)$
+
+\evidence{Formula delle probabilità totali:}
+
+$\\\prob(B) = \sum_{i = 1}^{n} \prob (B|A_i) * \prob (A_i) = \sum_{i = 1}^{n} \prob (B \cap A_i)$
+
+\evidence{Formula di Bayes:} 
+
+$\\\prob (A|B) * \prob (B) = \prob (B|A) * \prob (A)$
+
+\subsection{Estrazioni senza reimbussolamento}
+
+\ex{Estrazioni senza reimbussolamento}{Esempio: si estraggono 3 carte (da un mazzo di 52), senza rimetterle nel mazzo. Calcolare la probabilità che nessuna di esse sia cuori. Ci sono due modi equivalenti di procedere.
+
+\evidence{In blocco:} come se venissero estratte tutte e tre insieme.
+
+\begin{center}
+    \prob(A) = $\frac{\binom{13}{0}\cdot\binom{39}{3}}{\binom{52}{3}}$
+\end{center}
+
+\evidence{Estrazioni successive:} come se venisserò estratte una dopo l'altra.
+
+\begin{center}
+    $\prob(A_1) = \frac{39}{52}, \prob(A_2 | A_1) = \frac{38}{51}, \prob(A_3 | A_1 \cap A_2) = \frac{37}{50}$
+\end{center}
+
+Dopo di chè si applica la regola della moltiplicazione.}
+
+\section{Costruzioni di misure di probabilità su prodotti cartesiani}
+
+Se in un esperimento aleatorio una o più probabilità di eventi è truccata non si può applicare la legge uniforme discreta.
+
+\ex{lancio di due dadi a 4 facce truccati}{
+
+\begin{itemize}
+    \item Dado 1: il 4 esce con probabilità $\frac{1}{2}$, gli altri numeri con probabilità $\frac{1}{6}$;
+    \item Dado 2: 1 esce con probabilità $\frac{1}{2}$, gli altri numeri con probabilità $\frac{1}{6}$
+\end{itemize}
+
+Dado 1, $\Omega^1$ = \{ 1, 2, 3, 4\}
+
+$\prob^1(\{1\}) = \prob^1(\{2\}) = \prob^1(\{3\}) = \frac{1}{6}$
+
+$\prob^1(\{4\} = \frac{1}{2}$
+
+Dado 2, $\Omega^2$ = \{ 1, 2, 3, 4\}
+
+$\prob^2(\{4\}) = \prob^2(\{2\}) = \prob^2(\{3\}) = \frac{1}{6}$
+
+$\prob^2(\{1\}) = \frac{1}{2}$
+
+Quindi $\Omega = \Omega^1 X \Omega^2$ e $\prob(\{i, j\}) = \prob^1(\{i\}) X \prob^2(\{j\})$}
+
+\section{Indipendenza}
+
+\dfn{Indipendenza}{Due eventi A e B sono \textcolor{purple}{indipendenti} se $\prob(A | B) = \prob(A)$, quindi $\prob(A \cap B) = \prob(A) \cdot \prob(B)$}
+\cor{}{Se A e B sono indipendenti allora anche le seguenti coppie sono indipendenti:
+
+\begin{itemize}
+    \item A e $B^c$;
+    \item $A^c$ e B;
+    \item $A^c$ e $B^c$.
+\end{itemize}}
+
+\dfn{Indipendenza a due a due}{Data la collezione di eventi $(A_i)_{i = 1}^n$ diciamo che gli eventi sono \textcolor{purple}{a due a due indipendenti} se $$\forall i \not= j, \prob(A_i \cap A_j) = \prob(A_i) \cdot \prob (A_j)$$}
+
+\dfn{Mutua indipendenza}{Data la collezione di eventi $(A_i)_{i = 1}^n$ diciamo che gli eventi sono \textcolor{purple}{mutuamente indipendenti} se $$\forall S \subset \{1, 2, 3, ..., n\}, \prob(\bigcap\limits_{i \in S} A_i) = \prod\limits_{i \in S} \prob(A_i)$$}
+
+\nt{Due eventi mutuamente indipendenti sono anche a due a due indipendenti, ma due eventi a due a due indipendenti possono non essere mutuamente indipendenti}

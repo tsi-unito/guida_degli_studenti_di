@@ -1,0 +1,47 @@
+\chapter{Introduzione}
+
+\section{Tipi di paradigmi di programmazione}
+
+\begin{center}
+    \begin{tabular}{ | l | p{7cm} | p{5cm} |}
+    \hline
+    \textbf{Paradigma}      
+& \textbf{Un programma è}
+& \textbf{Esempi} \\ \hline\hline
+Imperativo
+& Sequenza di azioni (esecuzione $\Rightarrow$ nuovo stato)
+& C, C++, Pascal, Java, Scala, Python, Scheme\\ \hline
+Object-oriented
+& Oggetti che comunicano (interazione $\Rightarrow$ nuovo stato)
+& Smalltalk, C++, OCaml, Java, Scala, Python \\ \hline
+Funzionale
+& Espressione (valutazione $\Rightarrow$ risultato)
+& Haskell, OCaml, Scala, Erlang, Scheme \\
+    \hline
+    \end{tabular}
+\end{center}
+
+\noindent Per il paradigma \textit{imperativo} un programma è una sequenza di azioni che modificano lo stato attuale del calcolatore. Per il paradigma \textit{object-oriented} un programma è un insieme di oggetti che comunicano tra loro tramite uno scambio di messaggi. Per il paradigma \textit{funzionale} un programma è una grande espressione in cui compaiono funzioni. Un programma funzionale si \textit{valuta}, non si esegue.
+Quasi tutti i linguaggi attuali sono \textit{multi-paradigma}, ossia hanno caratteristiche di due o più paradigmi.
+
+\section{I linguaggi funzionali}
+
+\subsection{Il \texorpdfstring{$\mathcal{\lambda}$}--calcolo}
+
+La programmazione \textit{funzionale} risale agli anni '30, prima della costruzione dei primi calcolatori elettronici. Il \textit{$\lambda$-calcolo}\footnote{Il "$\lambda$" nasce da un errore tipografico, doveva essere un accento circonflesso sull'argomento} è un piccolo linguaggio che parte dall'idea di calcolare con le funzioni come si calcola con i numeri. Le uniche cose che si possono scrivere sono espressioni di funzioni (tutto è funzione). Si possono definire funzioni senza dare loro un nome, per esempio, la funzione identità (accetta un argomento x e produce x come risultato): $$\lambda x.x$$
+
+\nt{Tutte le funzioni sono a un solo argomento (\textit{currying)}, ma si possono avere funzioni di ordine superiori usando delle funzionni come argomento. Il $\lambda$-calcolo è un modello di calcolo computazionalmente completo, ossia è abbastanza potente da esprimere tutti i programmi concepibili.}
+
+\subsection{LISP, FP e ML}
+
+Negli anni '50 viene sviluppato il primo linguaggio di programmazione funzionale (in parte imperativo), \textit{LISP}\footnote{Dalla contrazione di LISt Processor}, in cui le liste hanno un ruolo chiave. Inizialmente era concepito per l'elaborazione non numerica in cui era possibile definire funzioni anonime con notazione prefissa (abbondante uso di parentesi). Il LISP fu il primo \textit{garbage collector}\footnote{La gestione della memoria non ricade sul programmatore}.
+
+Negli anni '70 John Backus, ideatore del FORTRAN, vince il premio Turing. Nella sua lezione d'onore\footnote{Lezione data da un vincitore del premio Turing in cui si racconta il perchè si è vinto il premio} Backus critica il FORTRAN e il paradigma imperativo introducendo successivamente \textit{FP}. In FP vengono incorporate le idee della programmazione funzionale (tuttavia non avrà mai successo).
+
+\textit{ML}\footnote{Meta language} fu il primo linguaggio funzionale moderno. Esso fu concepito da Robin Milner come "spin-off" di LCF\footnote{Logic for Computable Function}, ma divento un linguaggio a sè stante (OCamel si fonda su ML). Si fonda su \textit{type inference} (il programmatore poteva non specificare i tipi) e fu il primo con \textit{polimorfismo parametrico}. Inoltre è possibile definire tipi e viene introdotto il \textit{pattern matching} (per analizzare le strutture dati). Infine era dotato di un sistema di moduli per scomporre programmi di grandi dimensioni. 
+
+\subsection{I linguaggi Lazy e Haskell}
+
+Negli anni '80 si svilupparono i linguaggi funzionali \textit{lazy}, in cui gli argomenti non vengono valutati se la funzione non ne ha davvero bisogno. SASL introduce le guardie e il currying. KRC introduce un precursore delle liste comprehension. Miranda introduce le sezioni (ossia funzioni in cui si applica un'operazione n-aria a un solo operando).
+
+Negli anni '90 si organizzò un comitato per standardizzare i linguaggi lazy. \textit{Haskell} è un linguaggio di programmazione funzionale puro in cui si usano i tipi per separare I/O, stati, etc.. Si hanno classi di tipo per implementare l'overloading. Nel 2005 si stavano raggiungendo i limiti della velocità dei processori, per cui si sviluppano architetture multi-core. Il \textit{calcolo parallelo} è difficile a causa dei linguaggi imperativi, ma Haskell, essendo puro, può facilmente essere usato. 

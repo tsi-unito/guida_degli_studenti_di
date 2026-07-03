@@ -1,0 +1,33 @@
+\documentclass{report}
+
+\input{enviroment/preamble}
+\input{enviroment/macros}
+\input{enviroment/letterfonts}
+
+\renewcommand{\contentsname}{Indice}
+
+\title{\Huge{Elementi di probabilità e statistica}}
+\author{\huge{Luca Barra}}
+\date{Anno accademico 2022/2023}
+
+\begin{document}
+
+\maketitle
+\newpage% or \cleardoublepage
+% \pdfbookmark[<level>]{<title>}{<dest>}
+\pdfbookmark[section]{\contentsname}{toc}
+\afterpage{\blankpage}
+\pagenumbering{Roman}
+\tableofcontents
+\cleardoublepage\pagenumbering{arabic}
+\pagebreak
+\afterpage{\blankpage}
+\include{capitoli/Probabilità}
+\include{capitoli/Variabili aleatorie}
+\include{capitoli/Statistica descrittiva}
+\include{capitoli/Statistica inferenziale}
+\afterpage{\blankpage}
+\include{capitoli/Esempi noti}
+\include{capitoli/Formule}
+
+\end{document}

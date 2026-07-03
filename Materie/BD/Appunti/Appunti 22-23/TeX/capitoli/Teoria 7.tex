@@ -1,0 +1,102 @@
+\chapter{Teoria 7}
+
+\section{Forme normali}
+
+Una \textcolor{blue}{forma normale} è una proprietà di una base di dati relazionale che ne garantisce la qualità, cioè l’assenza di determinati difetti. Solitamente è definita nel modello relazionale. Se non è presente possono esserci anomalie durante operazioni di inserimento, cancellazione o modifica e ridondanze. 
+
+A una forma normale può essere associato un algoritmo di normalizzazione, che specifica come decomporre uno schema relazionale per renderlo in forma normale. In questo corso verranno trattate solo le 2 più usate: Boyce-Codd Normal Form (BCNF) e Terza forma normale (3NF).
+
+\section{Normalizzazione}
+
+La \textcolor{blue}{normalizzazione} consiste nella decomposizione di uno schema di relazione in modo da ottenere più schemi che rispettino una forma normale e minimizzino le anomalie.
+ Può essere usata come tecnica di verifica dei risultati della progettazione di una base di dati. Nelle sezioni successive si userà il seguente esempio: 
+
+ESAMI(\underline{MATR}, NomeS, IndirizzoS, CAPS, CodiceFiscaleS, DataNascitaS, \underline{Corso}, Voto, Lode, DataEsame, CodProf, NomeProf, Qualifica, TipoUfficio)
+
+Supponiamo che ESAMI sia l’unica relazione che descrive il sistema informativo.
+
+\subsection{Anomalie di inserimento}
+
+Un nuovo studente deve immatricolarsi, dato che non ha superato nessun esame non può essere inserito perchè Corso non può essere NULL, dato che è chiave primaria\footnote{vedi \ref{Vincoli di chiave}}.
+
+Lo stesso errore si verifica con l'inserimento di un nuovo docente.
+
+\subsection{Anomalie di cancellazione}
+
+Si vogliono cancellare gli esami degli studenti laureati. Se un professore non ha esami di studenti che devono ancora laurearsi, viene cancellato anche ogni riferimento al professore anche se è ancora in servizio.
+
+\subsection{Anomalie di aggiornamento}
+
+Se uno studente cambia indirizzo bisogna cambiarlo in ogni sua tupla e ciò causa una criticità di efficienza.
+
+\subsection{Dipendenze funzionali}
+
+Presa una coppia di tuple della relazione ESAMI, se queste tuple coincidono sul valore della matricola, anche tutti gli altri attributi relativi allo studente devono coincidere.
+
+Dati una relazione r(A) e due sottoinsiemi X e Y di attributi di A (X,Y $\subseteq$ A), il vincolo di dipendenza funzionale
+
+\begin{center}
+    X $\rightarrow$ Y (X determina Y)
+\end{center}
+
+è soddisfatto solo se $\forall t_1, t_2 \in r(t_1[X] = t_2[X] \Rightarrow t_1[Y] = t_2[Y])$
+
+Le dipendenze funzionali vengono raccolte attraverso un’analisi attenta della realtà e non esiste un modo univoco per rappresentarle. Per ogni relazione r abbiamo un insieme F di dipendenze funzionali. Due basi di dati, una progettata con i vincoli F’ e un’altra progettata con i vincoli F’’, se F’ e F’’ sono equivalenti, evolvono nello stesso modo.
+
+\section{Teoria di Armstrong}
+
+La \textcolor{blue}{teoria di Armstrong} fornisce una serie di regole (assiomi) per gestire le dipendenze funzionali. Usare gli assiomi di Armstrong equivale a ragionare con le definizioni di dipendenza funzionale.
+
+\subsection{Correttezza e completezza}
+
+La teoria di Armstrong è:
+
+\begin{itemize}
+    \item corretta, perchè dato un insieme di dipendenze funzionali F, se è possibile dedurre $X \rightarrow Y$ tramite gli assiomi di Armstrong, allora è possibile ricavare $X \rightarrow Y$ tramite la definizione di dipendenza funzionale;
+    \item completa, perchè dato un insieme di dipendenze funzionali F, se è possibile ricavare $X \rightarrow Y$ tramite la definizione di dipendenza funzionale, allora è possibile dedurre $X \rightarrow Y$ tramite gli assiomi di Armstrong.
+\end{itemize}
+
+\subsection{Assiomi di Armstrong}
+
+Non sono propriamente assiomi, in quanto sono dimostrabili.
+
+\paragraph{Riflessività:} se $Y \subseteq X$, allora $X \rightarrow Y$.
+
+\paragraph{Unione:} se $Y \rightarrow Y$ e $Y \rightarrow Z$ allora $X \rightarrow YZ$, dove YZ = Y U Z.
+
+\paragraph{Transitività:} se $X \rightarrow Y$ e $Y \rightarrow Z$, allora $X \rightarrow Z$.
+
+\subsection{Regole aggiuntive}
+
+Queste regole si possono ricavare dagli assiomi.
+
+\paragraph{Espansione:} dati una dipendenza funzionale $X \rightarrow Y$ e un insieme di attributi W, allora $WX \rightarrow WY$.
+
+\paragraph{Decomposizione:} se $X \rightarrow YZ$, allora $X \rightarrow Y$ e $X \rightarrow Z$.
+
+\paragraph{Pseudo-transitività:} se $X \rightarrow Y$ e $WY \rightarrow Z$, allora $WX \rightarrow Z$.
+
+\paragraph{Prodotto:} date le dipendenze funzionali $X \rightarrow Y$ e $W \rightarrow Z$, allora vale $XW \rightarrow YZ$.
+
+\section{Chiusure}
+
+\subsection{Chiusura di un insieme F}
+
+Si possono utilizzare le regole della teoria di Armstrong per dimostrare che due insiemi di dipendenze funzionali siano equivalenti. La \textcolor{blue}{chiusura} di un insieme di dipendenze funzionali F è l’insieme $F^+$ di tutte le dipendenze funzionali derivabili da F. Due insiemi di dipendenze funzionali sono equivalenti solo se l'insieme di tutte le dipendenze funzionali derivabili sono uguali. Tuttavia, il tempo per questo calcolo è esponenziale.
+
+\subsection{Chiusura di un insieme di attributi}
+
+Dato un insieme di attributi R su cui è definito l’insieme di dipendenze funzionali F, dato un sottoinsieme $X \subseteq R$,
+la chiusura $X_F^+$ di X (o semplicemente $X^+$ se non ci sono ambiguità) è definita come:
+\begin{center}
+$X_F^+ = \{A | X \rightarrow A \in F^+\}$
+\end{center}
+
+Questo algoritmo è sia completo che corretto. Il tempo per questo calcolo è polinomiale.
+
+\section{Nuova definizione di superchiave}
+
+Dato uno schema di relazione R(A) con un insieme di dipendenze funzionali F, un insieme di attributi K $\subseteq$ A è
+\textcolor{blue}{superchiave} se e solo se A = $K_F^+$ (cioè se e solo se in $F^+$ si trova il vincolo di dipendenza funzionale K $\rightarrow$ A).
+
+\paragraph{Proprietà:} Se due progettisti identificano, su una medesima base di dati, due insiemi di dipendenze funzionali F e G equivalenti, i due progettisti arriveranno alle stesse identiche chiavi candidate.

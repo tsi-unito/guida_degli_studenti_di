@@ -14,7 +14,7 @@ jobs:
           echo "::set-output name=files::$(cat .github/workflows/files.txt)"
       - uses: docker://pandoc/latex:2.9
         with:
-          args: -V geometry:margin=1in --output=output/result.pdf ${{ steps.files_list.outputs.files }}
+          args: -V geometry:margin=1in --pdf-engine=xelatex --output=output/result.pdf ${{ steps.files_list.outputs.files }}
       - uses: actions/upload-artifact@master
         with:
           name: output

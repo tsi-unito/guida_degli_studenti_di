@@ -42,6 +42,14 @@ In ogni caso, dei PDF col testo selezionabile vanno più che bene.
 
 Per maggiori informazioni sull'aggiunta di appunti, ti invito a leggere [le indicazioni nella sezione materie](Materie#come-contribuire).
 
+#### Progetti
+
+Nel caso voleste condividere progetti dopo la sessione, aggiungeteli come git submodule. Ad esempio per aggiungere un progetto di [ASD](Materie/ASD) relativo all'anno accademico 2022/2023, potete fare:
+
+```bash
+git submodule add <url_del_repo> Materie/ASD/2022-2023/<cognomi_studenti>
+```
+
 #### Prove d'esame
 
 Come per gli appunti, anche le prove d'esame sono ben accette! Come prima, ti invito a
@@ -78,6 +86,14 @@ Per adesso abbiamo pensato ad alcune linee guida "base" che è suggerito tenere 
   materiale per un corso, un file README nella directory va più che bene.
 - All'upload degli appunti di una nuova materia, inserirli dentro una apposita cartella `Appunti` creata nella root.
 - Non sarà accettato materiale dei docenti (slides loro, senza appunti o simili di uno studente)
+
+#### Inizializzare i submodules
+
+Per inizializzare i submodules, dopo aver clonato il repository, è sufficiente eseguire il seguente comando:
+
+```bash
+git submodule update --init --recursive
+```
 
 Per favore, qualunque suggerimento, issue o pull request che vi venga in mente fatela!
 

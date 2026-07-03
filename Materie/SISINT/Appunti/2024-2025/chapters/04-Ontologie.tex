@@ -1,0 +1,458 @@
+\chapter{Ontologie e Agenti}
+
+\qs{}{
+	Quali sono gli aspetti fondamentali della costruzione e del
+	mantenimento delle KB?
+}
+
+\begin{itemize}
+	\item Il mondo reale non è fatto di formule, è fatto di oggetti.
+	\item Le persone concettualizzano tali oggetti e le relazioni che questi intrattengono gli uni con gli altri.
+\end{itemize}
+
+\section{Tassonomie e Categorie}
+
+\subsection{introduzione}
+
+\dfn{Categorie}{
+	Gli esseri umani interpretano la realtà per categorie. Una parte consistente dell’apprendimento consiste nel definire
+	e ridefinire categorie.
+}
+
+\nt{È necessario standardizzare la
+	rappresentazione di categorie, introdurre relazioni fra
+	categorie e implementare meccanismi di eredità di
+	proprietà fra categorie.}
+
+\dfn{Tassonomia}{
+	Organizzazione gerarchica di categorie o concetti.
+}
+
+
+\paragraph{Predicati:}
+
+\begin{itemize}
+	\item Member(P, C) è un predicato che restituisce
+	      vero se P è un elemento della categoria C (in
+	      questo caso P è detto istanza di C).
+	\item is-a(C1, C2) è una relazione tra due categorie con C1 sottocategoria di C2.
+\end{itemize}
+
+\paragraph{Due categorie:}
+
+\begin{itemize}
+	\item \fancyglitter{Sono disgiunte:} quando non hanno istanze in comune.
+	\item \fancyglitter{Costituiscono una decomposizione esaustiva:} quando tutte e
+	      istanze della sovracategoria appartengono necessariamente ad
+	      almeno una delle categorie considerate (che potranno avere anche
+	      istanze comuni).
+	\item \fancyglitter{Costituiscono una partizione:} quando sono disgiunte e
+	      costituiscono una decomposizione esaustiva.
+\end{itemize}
+
+\paragraph{Vengono definite le seguenti proprietà:}
+
+\begin{itemize}
+	\item S è un insieme disgiunto di categorie:
+	      $$\text{Disjoint}(S) \Rightarrow \forall X_i, X_j \in S, X_i \not = X_j \Rightarrow \text{Intersection}(X_i, X_j) = \{\}$$
+	\item S è una decomposizione esaustiva di C:
+	      $$\text{ExhaustiveDec}(S, C) \Rightarrow \forall I (\text{Member}(I, C) \Leftrightarrow \exists X_i \text{is-a}(X_i, C) \land \text{Member}(I, X_i)) $$
+	\item S è una partizione di C:
+	      $$\text{Partition}(S, C) \Leftrightarrow \text{Disjoint}(S) \land \text{ExhaustiveDec}(S, C)$$
+\end{itemize}
+
+\subsection{Proprietà}
+
+\cor{Part-Of}{
+	Indica che alcuni oggetti sono parti di altri. Gode della proprietà transitiva:
+
+	\[
+		\text{Part-of}(X, Y) \land \text{Part-of}(Y, Z) \Rightarrow \text{Part-of}(X, Z)
+	\]
+
+}
+
+\cor{Bunch-Of}{
+	A volte è comodo indicare che un oggetto è composto da parti
+	senza specificare le relazioni fra queste ultime. Per far ciò si utilizza la nozione di bunch:
+
+	\[
+		\forall x \text{In}(x, s) \Rightarrow \text{Part-of}(x, \text{Bunch-of}(s))
+	\]
+
+}
+
+\section{Ontologie}
+
+\subsection{Introduzione}
+
+\dfn{Ontologia}{
+	Una KB descrittiva di un dominio può assumere forma più generale
+	di quella tassonomica. L’insieme dei concetti e delle loro relazioni prende in questo caso il
+	nome di ontologia (rete semantica).
+}
+
+\begin{figure}[h]
+	\centering
+	\includegraphics[scale=0.4]{04/ont.png}
+	\caption{Ontologia.}
+\end{figure}
+
+\paragraph{Modi di interrogare un'ontologia:}
+
+\begin{itemize}
+	\item Un'istanza appartiene a una categoria?
+	\item Un'istanza gode di una proprietà?
+	\item Differenza tra categorie?
+	\item Identificare varie istanze.
+\end{itemize}
+
+\dfn{Semantic Web}{
+	Da World-Wide Web a Semantic
+	Web: estensione del WWW in cui
+	il materiale pubblicato è
+	arricchito da metadati che
+	abilitano l’interpretazione,
+	l’inferenza, l’interrogazione,
+	l’elaborazione automatica.
+}
+
+\cor{Resource Description Framework (RDF)}{
+	Si tratta di un linguaggio di rappresentazione. È la base dei linguaggi OWL e SKOS che permettono di scrivere ontologie e FOAF (Friend of a Friend) per applicazioni sociali.
+}
+
+\clm{}{}{
+	\begin{itemize}
+		\item In RDF la conoscenza è espressa da statement, cioè triple soggetto –
+		      predicato – oggetto: il predicato mette in relazione soggetto e
+		      oggetto.
+		\item Soggetto, predicato e oggetto sono IRI (internationalized resource
+		      identifier, per esempio degli URL).
+		\item RDFS (RDF Schemas) permette di realizzare tassonomie
+		      appoggiandosi a RDF.
+		\item Un insieme di triple costituisce un grafo RDF.
+	\end{itemize}
+}
+
+\begin{figure}[h]
+	\centering
+	\includegraphics[scale=0.4]{04/pr.png}
+	\caption{Relazione tra soggetto e oggetto.}
+\end{figure}
+
+\cor{Ontology Web Language(OWL)}{
+	Linguaggio dichiarativo del semantic web ideato per definire ontologie tramite specifica di classi (categorie), proprietà, individui e valori.
+}
+
+\nt{Le ontologie OWL possono essere pubblicate sul web e
+	riferite da altre ontologie, per costruire KB più complesse
+	e raffinate.}
+
+\paragraph{OWL prevede tre elementi:}
+
+\begin{itemize}
+	\item \fancyglitter{Entità:} elementi usati per riferirsi a oggetti del mondo
+	      reale. Sono elementi atomici che possono essere usati
+	      negli assiomi.
+	\item \fancyglitter{Assiomi:} affermazioni (statement) di base espressi da
+	      un’ontologia OWL.
+	\item \fancyglitter{Espressioni:} combinazioni di entità che costituiscono
+	      descrizioni complesse sulla base di altre.
+\end{itemize}
+
+
+\paragraph{Come costruire un'ontologia}
+
+\begin{itemize}
+	\item \fancyglitter{Identificazione dei concetti:}
+	      \begin{itemize}
+		      \item Elencare tutti i concetti riferiti nel DB di partenza.
+		      \item I concetti sono solitamente catturati da sostantivi.
+		      \item Definire per ciascuno un’etichetta e una breve descrizione.
+		      \item Successivamente si identificano le sottoclassi.
+	      \end{itemize}
+	\item \fancyglitter{Identificazione delle proprietà:}
+	      \begin{itemize}
+		      \item Elencare tutte le relazioni catturate nel DB di partenza.
+		      \item Le relazioni tipicamente sono esprimibili come verbi.
+		      \item Definire per ciascuna un’etichetta e una breve descrizione.
+	      \end{itemize}
+\end{itemize}
+
+\subsection{Allineamento Ontologico}
+
+Un problema frequente è combinare concettualizzazioni sviluppate
+separatamente e indipendentemente.
+
+\dfn{Matching di Ontologie}{
+	Date due ontologie $O_1$ e $O_2$ costruire un
+	allineamento individuando le relazioni fra concetti corrispondenti.
+}
+
+\nt{La corrispondenza, in generale, sarà imperfetta.}
+
+\dfn{FIPA Ontology}{
+	Postula la presenza di un agente dedicato a gestire ontologie e che fornisce fra i suoi servizi:
+	\begin{itemize}
+		\item Discovery di ontologie pubbliche.
+		\item Traduzione di espressioni in ontologie differenti.
+		\item Rispondere a query relative alle differenze fra termini o
+		      ontologie.
+	\end{itemize}
+}
+
+\begin{figure}[h]
+	\centering
+	\includegraphics[scale=0.6]{04/allineamento.png}
+	\caption{Allineamento ontologico.}
+\end{figure}
+
+\paragraph{Relazioni tra ontologie:}
+
+\begin{itemize}
+	\item \fancyglitter{Identiche:} $O_1$ e $O_2$ sono la stessa ontologia.
+	\item \fancyglitter{Equivalenti:} condividono vocabolario e assiomatizzazione, ma sono espresse in linguaggi differenti.
+	\item \fancyglitter{Estensioni:} $O_1$ estende $O_2$ quando tutti i simboli definiti in $O_2$ sono preservati in $O_1$ insieme alle loro proprietà e relazioni ma non vale il viceversa.
+	\item \fancyglitter{Weakly-Translatable:} siano $O_{\text{source}}$ e $O_{\text{dest}}$ due ontologie, è possibile tradurre espressioni $O_{\text{source}}$ in espressioni $O_{\text{dest}}$ con perdita di informazione.
+	\item \fancyglitter{Strongly-Translatable:} $O_{\text{source}}$ è Strongly-Translatable in $O_{\text{dest}}$ quando:
+	      \begin{itemize}
+		      \item Il suo vocabolario è totalmente mappabile in $O_{\text{dest}}$.
+		      \item L'assiomatizzazione di $O_{\text{source}}$ vale in $O_{\text{dest}}$.
+		      \item Non c'è perdita di informazione.
+		      \item Non si introducono inconsistenze.
+	      \end{itemize}
+	\item \fancyglitter{Approx-Translatable:} quando è Weakly-Translatable e possono essere introdotte delle inconsistenze.
+\end{itemize}
+
+\paragraph{Applicazioni delle ontologie:}
+
+\begin{itemize}
+	\item Beni culturali.
+	\item Applicazioni legali.
+	\item Curricula transnazionali (Erasmus).
+	\item DB (tenendo presente che nei DB si fa assunzione di mondo chiuso e nelle ontologie di mondo aperto).
+\end{itemize}
+
+\section{Planning}
+
+Molte applicazioni dei sistemi di inferenza concernono il decidere
+quali azioni eseguire, tipicamente per raggiungere un obiettivo
+
+\dfn{Pianificare}{
+	Pianificare significa costruire una sequenza di azioni per
+	soddisfare un certo fine.
+}
+
+\cor{Problema di Pianificazione}{
+	Un problema di pianificazione include la specifica degli elementi
+	di interesse del mondo, delle azioni a disposizione, degli obiettivi.
+}
+
+\subsection{Rappresentare le Azioni}
+
+\dfn{Planning Domain Definition Language (PDDL)}{
+	PDDL è un linguaggio per esprimere un insieme di variabili. Uno stato è una congiunzione di atomi ground, in cui non
+	compaiono funzioni. Le azioni sono descritte in maniera schematica e hanno un impatto
+	limitato sul mondo. In generale, in un certo stato solo un sottoinsieme delle azioni sarà
+	applicabile e di queste solo una sarà applicata. Se l’azione scelta viene applicata realmente subito nel mondo
+	reale potrebbe non esserci possibilità di backtracking.
+}
+
+
+
+\paragraph{Situation Calculus:}
+
+\begin{itemize}
+	\item \fancyglitter{Azione:} qualcosa che viene compiuto e influenza il mondo.
+	\item \fancyglitter{Situazione:} stati derivanti dall’esecuzione di qualche azione.
+	\item \fancyglitter{Fluente:} proprietà che può cambiare valore (fluire).
+	\item \fancyglitter{Predicato atemporale (esterno):} sono funzioni o predicati il cui
+	      calcolo non è influenzato dalle azioni.
+\end{itemize}
+
+\dfn{Fluente}{
+	Relazione o proprietà che può cambiare valore con
+	l’esecuzione di azioni.
+}
+
+\nt{Viene specificata fra i suoi parametri la situazione.}
+
+\ex{Fluente}{
+	\begin{itemize}
+		\item Adjacent$(R_1,R_2, s)$: $R_1$ e $R_2$ sono adiacenti nella situazione $s$.
+		\item Holds$($At$(R, Loc), s)$: $R$ si trova in posizione $Loc$ nella situazione $s$.
+	\end{itemize}
+}
+
+\dfn{Azione}{
+	Rappresenta qualcosa che viene compiuto. In un contesto mono-agente non occorre indicare chi sia l’attore.
+}
+
+\nt{ Quindi un’azione è intesa come un oggetto intangibile, prodotto da
+	una funzione (nell’esempio ternaria).}
+
+\paragraph{Stato vs. Situazione:}
+\begin{itemize}
+	\item A uno stato non importa la sequenza di azioni con cui lo si è raggiunnto.
+	\item Per una situazione invece è importante.
+\end{itemize}
+
+\dfn{Do}{
+	Do(Azioni, S): funzione che restituisce la situazione raggiunta,
+	applicando la sequenza di azioni indicate a partire dallo stato indicato:
+	\begin{itemize}
+		\item Do($[]$, s) = s.
+		\item Do($[$head $|$ tail$]$, s) = Do(tail, Risultato(head, s)).
+	\end{itemize}
+}
+\nt{Due situazioni sono identiche esclusivamente se sono originate
+	dallo stesso stato iniziale applicando la stessa sequenza di azioni. In altri
+	termini una situazione è identificata dalla storia che l’ha prodotta.}
+
+\paragraph{Tramite Do un agente può fare \fancyglitter{proiezione}:}
+
+\begin{itemize}
+	\item \fancyglitter{Verificare} se un corso d'azione attraversa situazioni che godono di determinate proprietà.
+	\item \fancyglitter{Pianificare} un corso d'azione: quale sequenza di azioni
+	      permette di raggiungere una situazione che gode di una
+	      specifica proprietà?
+\end{itemize}
+
+\paragraph{Obiettivi:}
+
+\begin{itemize}
+	\item Raggiungere: ci si prefigge di raggiungere un goal.
+	\item Mantenimento: in tutti gli stati bisogna mantenere una certa proprietà.
+\end{itemize}
+
+\subsection{Assiomi}
+
+\dfn{Assioma di Applicabilità}{
+
+	\[
+		\forall\text{params}, s \text{Applicable(Action(params), $s$)} \Leftrightarrow \text{Precond(params, $s$)}
+	\]
+
+	\begin{itemize}
+		\item Applicable è un nuovo predicato che lega un'azione a una situazione.
+		\item Params è un insieme di oggetti.
+		\item Action(params) indica l'applicazione dell'azione agli oggetti.
+		\item Precond è una formula che rappresenta le precondizioni dell'azione.
+	\end{itemize}
+
+	Definisce che un'azione può (fisicamente) essere applicata in una
+	situazione se e solo se valgono determinate precondizioni.
+}
+
+\dfn{Assioma di Effetto}{
+	\[
+		\forall\text{params}, s \text{Applicable(Action(params), $s$)} \Leftrightarrow \text{Effects(params, Result(Action(params), $s$))}
+	\]
+	\begin{itemize}
+		\item Effects è una formula vera nello stato risultante
+		      dall’esecuzione dell’azione.
+		\item Result è una funzione che denota lo stato in cui si va
+		      eseguendo l’azione in $s$.
+	\end{itemize}
+	Specifica gli effetti di un’azione sulla situazione in cui è eseguita.
+}
+
+\cor{Frame Problem}{
+	Dalla conoscenza di stato iniziale, assiomi di applicabilità e assiomi
+	di effetto non è possibile derivare tutti i fatti che
+	ci aspettiamo.
+
+	Normalmente le azioni hanno un impatto limitato: come
+	rappresentare ciò che non viene modificato da un’azione?
+}
+
+\dfn{Assioma di Frame}{
+	\[
+		\forall\text{params, vars}, s \text{fluent(vars, $s$)} \land \text{params} \not = \text{vars} \Rightarrow \text{fluent(vars, Result(Action(params), $s$))}
+	\]
+
+	Per ogni azione viene definito un'assioma di questo tipo per ogni
+	fluente.
+
+}
+
+\nt{
+	Introduciamo un modo per dire al sistema inferenziale che ciò che
+	non è specificamente espresso come effetto è inteso rimanere
+	immutato.
+}
+
+
+\dfn{Assioma di Stato Successore}{
+	Questo assioma esprime il modo in cui le situazioni si evolvono
+	l’una dall’altra a seguito dell’esecuzione delle azioni. In particolare
+	dice quali parti di una situazione sono ereditati dalla precedente.
+}
+
+\qs{}{Ma come gestire goal complessi (unione di sotto-obiettivi)?}
+
+\dfn{Anomalia di Sussman}{
+	Non sempre il perseguimento degli obiettivi è sequenzializzabile,
+	anzi alcune volte il perseguimento di un sottogoal può disfare passi
+	effettuati per raggiungerne un altro. Quindi si può fare del lavoro inutile.
+}
+
+\paragraph{Considerazioni:}
+
+\begin{itemize}
+	\item Il situation calculus permette di usare FOL per problemi di
+	      pianificazione.
+	\item È stato fondamentale per definire il problema di pianificazione.
+	\item Nella pratica non è molto usato perché non esistono euristiche
+	      efficienti che guidino la ricerca della soluzione.
+\end{itemize}
+
+\section{Agenti}
+
+\subsection{Introduzione}
+
+\dfn{Agente}{
+	Un agente è astrazione che rappresenta un qualsiasi sistema che
+	percepisce il proprio ambiente tramite dei sensori e agisce su di
+	esso tramite degli attuatori.
+}
+
+\cor{Sequenza Percettiva}{
+	La sequenza percettiva è la storia completa delle percezioni di un agente. Un agente sceglie la prossima azione sulla base della situazione in
+	cui si trova, cioè di quanto ha percepito fino a quel momento.
+}
+
+\paragraph{Razionalità vs. Onniscienza:}
+
+\begin{itemize}
+	\item \fancyglitter{Onniscienza:} ottimizza il risultato reale. Non possono intercorrere fattori ignoti
+	      o imprevedibili.
+	\item \fancyglitter{Razionalità:} ottimizza il risultato atteso. Possono intercorrere fattori ignoti
+	      o imprevedibili che impediscono di
+	      conseguire il risultato atteso.
+\end{itemize}
+
+\paragraph{Tipologie di agente:}
+
+\begin{itemize}
+	\item Reattivi semplici: percepiscono qualcosa e reagiscono. Regole del tipo IF \dots THEN \dots ELSE \dots
+	\item Reattivi basati su modello: hanno una conoscenza su come il mondo evolve e sugli effetti delle azioni.
+	\item Guidati dagli obiettivi (goal-driven): sceglie l’azione da eseguire sulla base dei propri obiettivi, cioè
+	      l’azione deve avvicinarlo ai suoi obiettivi o farglieli raggiungere. La decisione può coinvolgere il solo passo successivo (passo singolo) o
+	      guardare in avanti per più passi (piano).
+	\item Guidati dall'utilità (utility-driven): utilizza una funzione di utilità da massimizzare.
+	\item Capaci di apprendere, hanno una parte aggiuntiva:
+	      \begin{itemize}
+		      \item Modulo critico: valuta il livello di prestazione dell’agente decidendo se è il caso
+		            di attivare l’apprendimento.
+		      \item Un modulo di apprendimento che modifica la conoscenza dell’agente.
+		      \item Un generatore di problemi che causa l’esecuzione di azioni esplorative, il cui fine
+		            è esporre l’agente a nuove esperienze.
+	      \end{itemize}
+\end{itemize}
+
+
+
+
+
+

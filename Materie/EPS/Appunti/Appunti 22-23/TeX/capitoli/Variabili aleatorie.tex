@@ -1,0 +1,190 @@
+\chapter{Variabili aleatorie}
+
+Una \textcolor{purple}{variabile aleatoria} è un funzione di $\Omega$ in $\mathbb{R}$.
+
+\ex{}{Si è interessati a studiare i voti di maturità degli studenti del primo anno del CDL di informatica. Quindi si estrae uno studente (parte casuale) e lo si associa al suo voto di maturità (misurazione).}
+
+Le variabili aleatorie possono essere:
+
+\begin{itemize}
+    \item \textcolor{purple}{discrete}: se l'immagine è numerabile.
+    \item \textcolor{purple}{continue}: se l'immagine è sottoinsieme di $\mathbb{R}$
+\end{itemize}
+
+\section{Variabili aleatorie discrete}
+
+L'esempio del paragrafo precedente è una variabile aleatoria discreta dato che il voto di maturità è espresso in centesimi, quindi con un intero.
+
+\begin{center}
+    $X(\omega) = x$
+\end{center}
+
+\begin{itemize}
+    \item $X$ è la funzione che viene applicata.
+    \item $\omega$ è il valore di $\Omega$.
+    \item $x$ è il punto di $\mathbb{R}$
+\end{itemize}
+
+$Im(X) = \{ x \in \mathbb{R} | \exists \omega \in \Omega$ t. c. $X(\omega) = x \}$
+
+\subsection{Probability mass-function (PMF)}
+
+\dfn{PMF}{La \textcolor{purple}{funzione della massa di probabilità} è la funzione così definita:
+
+$\prob_x : Im(X) = \mathbb{R}$
+
+$x \rightarrow \prob(x) = \prob(X = x) = \prob( x \in \mathbb{R} | X(\omega) = x \}) $}
+
+\subsection{Variabili aleatorie note}
+
+\dfn{Bernoulli}{
+Esperimento probabilistico: con esito binario, descritto da due etichette (S/F, 1/0, V/F, etc.)
+
+Immagine: Im(x) = \{0, 1\}
+
+PMF: $\prob_X(x) =  1 - p $ se x = 0,  $\prob_X(x) =  p $ se x = 1. $p \in \{0, 1\}$
+
+Media:$ E(x) = p$
+
+Varianza: $E(x) = p * (1 - p)$
+}
+\dfn{Binomiali}{
+Esperimento probabilistico: n prove identiche ripetute.
+
+Immagine: Im(x) = $\{(w_1, w_2, ..., w_n), w_i \in \{s, f\}\}$
+
+PMF: $\prob_X(x) =  \binom{n}{k} * p^k * (1- p)^{n-k}$
+\begin{itemize}
+    \item k = 0, 1, 2, ..., n (numero di successi).
+    \item p = probabilità di successo.
+    \item n = numero di prove.
+\end{itemize}
+
+Media: $E(x) = n * p$
+
+Varianza = $var(x) = n * p * (1-p)$
+}
+\dfn{Geometriche}{
+
+Esperimento probabilistico: prove identiche ripetute fino a quando non si ottiene il primo successo.
+
+Immagine: Im(x) = $\{1, 2, 3, ...\}$
+
+PMF: $\prob_X(x) =  (1 - p)^{x - 1} * p$
+
+Media: $E(x) = \frac{1}{p}$
+
+Varianza: $var(x) = \frac{1 - p}{p^2}$
+}
+\dfn{Iper geometriche}{
+
+Esperimento probabilistico: estrazioni senza reimbussolamento da una scatola composta da C elementi con una determinata caratteristica e N - C senza quella caratteristica.
+
+Immagine: Im(x) = \{0, 1, 2, ..., min\{N, C\}\}
+
+PMF: $\prob_X(x) =  \frac{\binom{C}{k} * \binom{N - C}{n - k}}{\binom{N}{n}}$
+
+\begin{itemize}
+    \item $\binom{C}{k}$ = numero di possibili estrazioni di k elementi con C;
+    \item $\binom{N - C}{n - k}$ =  numero di possibili estrazioni di n-k elementi senza C;
+    \item $\binom{N}{n}$ = numero di possibili estrazioni di n elementi da N.
+\end{itemize}
+}
+\dfn{Poisson}{
+
+Esperimento probabilistico: osservo il verificarsi di une elemento.
+
+Immagine: Im(x) = \{0, 1, 2 ,...\}
+
+PMF: $\prob_X(x) = \frac{\lambda^x}{x!} * e^{-\lambda}$
+
+Media: $E(x) = \lambda$
+
+Varianza: $var(x) = \lambda$
+}
+\subsubsection{Media e varianza}
+
+\dfn{Media}{La \textcolor{purple}{media} delle variabili aleatorie discrete è la quantità: 
+$$E(x) = \sum_{x \in Im(x)} x * \prob_X(x)$$
+}
+
+\cor{}{Per la legge dei grandi numeri: 
+$$lim_{N\rightarrow \infty} \frac{k}{N} = \prob(A)$$
+}
+
+\dfn{Momento di ordine k}{Il \textcolor{purple}{momento di ordine k} è la seguente quantità:
+$$E(x^k) = \sum_{x \in Im(x)} x^k * \prob_X(x)$$
+}
+
+\dfn{Varianza}{La \textcolor{purple}{varianza} di x è la seguente quantità:
+$$var(x) = E[[x - E(x)]^2]$$
+}
+
+\begin{itemize}
+    \item $[x - E]^2$ = scarto quadratico medio.
+    \item $\sqrt{var(x)}$ = deviazione standard.
+\end{itemize}
+
+\paragraph{Proprietà di media e varianza}
+
+\begin{itemize}
+    \item $E(aX + bY) = a * E(X) + b * E(Y)$.
+    \item $var(x) = E(x^2) - E(x)^2$.
+    \item $var(aX + b) = a^2 * var(x)$
+\end{itemize}
+
+\subsection{PMF congiunte}
+
+Le \textcolor{purple}{PMF congiunte} servono per considerare più variabili aleatorie sullo stesso esperimento.
+
+\nt{Dalle PMF congiunte si possono dedurre le \textcolor{purple}{PMF marginali}}
+
+\subsection{Indipendenza}
+
+Se le variabili aleatorie x e y sono indipendenti: $E(x * y) = E(x) * E(y)$ e $var(x + y) = var (x) + var(y)$
+
+\section{Variabili aleatorie continue}
+
+L'immagine di x è un sottoinsieme di $\mathbb{R}$ ed è più che numerabile. Esempio: lunghezza, altezza, tempo.
+
+\subsection{Probability density-function (PDF)}
+
+\dfn{PDF}{La \textcolor{purple}{funzione di densità di probabilità} è così definita:
+
+$f_x: \mathbb{R} \rightarrow \mathbb{R}^+ [0, +\infty)$
+
+$\prob(X \in A) = \int_{a}^{b} f_x(t)dt$
+}
+\subsection{Variabili aleatorie note}
+
+\dfn{Esponenziale}{
+L'esponenziale è la variante continua della geometrica. Ha media $E(x) = \frac{1}{\lambda}$ e varianza $var = \frac{1}{\lambda^2}$}
+
+\dfn{Gaussiana (normale)}{
+
+PDF: $f(x) = \frac{1}{\sqrt{2 * \pi * \sigma}} * e^{-\frac{(x - \mu)^2}{2 * \sigma}}$
+
+Se $\sigma$ è grande la curva è larga, se è piccolo la curva è stretta.
+}
+\subsection{Media e varianza}
+
+\dfn{Media nella V. A. Continue}{
+La \textcolor{purple}{media} delle variabili aleatorie continue è la quantità:
+$$E(x) = \int_{-\infty}^{+\infty} x * f(x) dx$$
+}
+
+\dfn{Varianza nelle V. A. Continue}{
+La \textcolor{purple}{varianza} delle variabili aleatorie continue è la quantità:
+$$var(x) = \int_{-\infty}^{+\infty} (x - E(x))^2 * f(x) dx$$
+}
+
+\section{Funzione di distribuzione cumulata (CDF)}
+\dfn{CDF}{
+La \textcolor{purple}{funzione di distribuzione cumulata} è così definita: 
+$$F(x): \mathbb{R} \rightarrow \mathbb{R}$$
+Nel caso discreto:
+$$x \rightarrow F_x = \sum_{k \in Im(x)} p_x(k)$$
+
+Nel caso continuo:
+$$x \rightarrow F_x = \int_{-\infty}^x f_x(t) dt$$
+}

@@ -1,0 +1,380 @@
+\chapter{Processi per lo sviluppo software}
+
+\section{Introduzione}
+
+In questa sezione verranno mostrati, anche in chiave storica,
+i principali processi per lo \newfancyglitter{sviluppo software}, \newfancyglitter{modelli di
+processi software}, sviluppo \newfancyglitter{iterativo} ed evolutivo, 
+sviluppo \newfancyglitter{agile}.
+
+\dfn{Software di qualità}{
+    \begin{itemize}
+        \item Non è un semplice programma o gruppo di programmi;
+        \item Include \newfancyglitter{documentazione}, \newfancyglitter{test}, \newfancyglitter{manutenzione}, \newfancyglitter{aggiornamenti};
+    \end{itemize}
+}
+
+\cor{Caratteristiche essenziali}{
+    \begin{itemize}
+        \item [$\Rightarrow$] \fancyglitter{Mantenibilità}: il software deve 
+        evolversi in base alle necessità dei clienti\footnote{Da questo si hanno i maggiori introiti.};
+        \item [$\Rightarrow$] \fancyglitter{Fidatezza}: il software non dovrebbe causare danni
+        fisici o economici;
+        \item [$\Rightarrow$] \fancyglitter{Efficienza}: il software deve fare 
+        un uso efficiente delle risorse;
+        \item [$\Rightarrow$] \fancyglitter{Accettabilità}: il software deve essere comprensibile, usabile e compatibile
+        con altri sistemi. 
+    \end{itemize}
+}
+
+\nt{A volte può convenire vendere il software "sottoprezzo" per
+poi guadagnare con la manutenzione.}
+
+\qs{}{Cosa descrive un processo software?}
+
+\paragraph{Risposta:} descrive \textbf{\newfancyglitter{chi}} fa \textbf{\newfancyglitter{che cosa}}, \textbf{\newfancyglitter{come}} e \textbf{\newfancyglitter{quando}} per
+raggiungere un \fancyglitter{obiettivo}.
+
+\dfn{Un processo per lo sviluppo software}{
+    Un processo software descrive un approccio \newfancyglitter{disciplinato} alla
+    \newfancyglitter{costruzione}, al \newfancyglitter{rilascio} ed eventualmente alla
+    \newfancyglitter{manutenzione} del software.
+}
+
+\subsubsection{Si possono distinguere quattro attività di processo comuni:}
+
+\begin{itemize}
+    \item [$\Rightarrow$] \fancyglitter{Specifiche del software:} clienti e sviluppatori
+    definiscono le funzionalità del software (e i relativi vincoli);
+    \item [$\Rightarrow$] \fancyglitter{Sviluppo del software:} il software viene progettato e sviluppato;
+    \item [$\Rightarrow$] \fancyglitter{Convalida del software:} il software viene convalidato
+    per garantire che soddisfi le specifiche del cliente;
+    \item [$\Rightarrow$] \fancyglitter{Evoluzione del software:} il software viene modificato
+    per riflettere i cambiamenti nei requisiti del cliente e del mercato.
+\end{itemize}
+
+\subsection{Specifica dei requisiti}
+
+Anche detta "\fancyglitter{ingegneria dei requisiti}", è l'attività per
+capire e definire quali sono i requisiti richiesti dal sistema e identificare i vincoli 
+all'operabilità e allo sviluppo del sistema.
+\subsubsection{Le fasi principali di questa attività sono:}
+
+\begin{itemize}
+    \item [$\Rightarrow$] \fancyglitter{Deduzione e analisi dei requisiti:} 
+    osservazione di sistemi esistenti, discussioni con possibili utenti, analisi, etc.
+    \item [$\Rightarrow$] \fancyglitter{Specifica dei requisiti:} si traducono le informazioni raccolte in un 
+    \newfancyglitter{documento};
+    \item [$\Rightarrow$] \fancyglitter{Convalida dei requisiti:} si controlla che i requisiti
+    siano realistici, coerenti e completi.
+\end{itemize}
+
+\subsection{Sviluppo del software}
+
+Anche detta "\fancyglitter{progettazione e implementazione del software}", è l'attività
+di conversione delle specifiche del software in un sistema da consegnare al cliente.
+Nelle \newfancyglitter{metodologie agili} la progettazione e l'implementazione
+sono spesso \newfancyglitter{integrate} e, tipicamente, non producono documenti formali. 
+
+\subsubsection{Le fasi principali di questa attività sono:}
+
+\begin{itemize}
+    \item [$\Rightarrow$] \fancyglitter{Progettazione dell'architettura:} identifica la struttura
+    complessiva del sistema, dei componenti, delle loro relazioni e della loro distribuzione; 
+    \item [$\Rightarrow$] \fancyglitter{Progettazione del database:} si progetta la rappresentazione
+    delle strutture dati che verranno utilizzate e la loro rappresentazione in un database\footnote{Non verrà trattata
+    in questo corso. È stata parzialmente trattata nel corso "Basi di dati".}; 
+    \item [$\Rightarrow$] \fancyglitter{Progettazione dell'interfaccia:} definisce l'interfaccia 
+    utente e le modalità di interazione con il sistema\footnote{Non verrà trattato lo sviluppo di un'interfaccia. È stato parzialmente trattata
+    in "Programmazione III".};
+    \item [$\Rightarrow$] \fancyglitter{Progettazione e scelta dei componenti:} si ricercano i componenti
+    riutilizzabili o vengono progettati nuovi componenti.
+\end{itemize}
+
+\nt{La scelta dei componenti è particolarmente facile nel caso di linguaggi 
+object-oriented.}
+
+\subsection{Convalida del software}
+
+L'attività di verifica e convalida serve a dimostrare che un sistema sia 
+\newfancyglitter{conforme} alle specifiche e che \newfancyglitter{soddisfi}
+le esigenze del cliente.
+La convalida richiede anche attività di \newfancyglitter{controllo}, \newfancyglitter{ispezione} e \newfancyglitter{revisione}
+a ogni stadio del processo di sviluppo. In alcune meteodologie agili
+si scrivono i test prima di scrivere il codice (eXtreame Programming).
+
+\nt{In questo corso ci si concentrerà sul processo di testing. 
+Per una modo formale di verificare la correttezza di un sistema
+si può fare riferimento al corso "Metodi formali dell'informatica".}
+
+\subsubsection{I test possono essere:}
+
+\begin{itemize}
+    \item [$\Rightarrow$] \fancyglitter{Test di unità (o dei componenti):} i componenti vengono
+    testato singolarmente\footnote{Visti nel corso "Algoritmi e strutture dati".};
+    \item [$\Rightarrow$] \fancyglitter{Test del sistema:} si testa il sistema nel suo complesso;
+    \item  [$\Rightarrow$] \fancyglitter{Test del cliente:} il sistema viene testato dal cliente con i propri dati. 
+\end{itemize}
+
+\subsection{Evoluzione del software}
+
+Anche detto "\fancyglitter{manutenzione del software}", è l'attività di
+modifica durante o dopo lo sviluppo di un sistema software. La distinzione
+(storica) tra sviluppo e manutenzione è sempre più irrilevante. L'ingegneria
+del software è un unico processo evolutivo.
+
+\nt{Può capitare che si debba far fronte a cambiamenti improvvisi per esigenze di mercato
+o per incomprensioni con il cliente.}
+
+\subsubsection{Bisogna \newfancyglitter{ridurre} i costi di rilavorazione:}
+
+\begin{itemize}
+    \item [$\Rightarrow$] \fancyglitter{Anticipazione dei cambiamenti:} si possono prevedere
+    o anticipare eventuali cambiamenti prima di una richiesta di rilavorazione;
+    \item [$\Rightarrow$] \fancyglitter{Tolleranza ai cambiamenti:} si progetta il sistema in modo
+    da rendere facili eventuali cambiamenti.
+\end{itemize}
+
+\subsubsection{Ci sono due metodi per far fronte ai cambiamenti:}
+
+\begin{itemize}
+    \item [$\Rightarrow$] \fancyglitter{Prototipazione del sistema:} il sistema
+    viene sviluppato rapidamente per verificare i requisiti del cliente. Ciò consente
+    eventuali modifiche prima di sviluppare il sistema completo;
+    \item [$\Rightarrow$] \fancyglitter{Consegna incrementale:} vengono consegnati al cliente
+    parti del sistema in modo incrementale in modo che il cliente possa provarlo e commentarlo. 
+\end{itemize}
+
+\nt{Il refactoring è un importante meccanismo per supportare la tolleranza ai cambiamenti}
+
+\section{Modelli di processo software}
+
+Esitono veri modelli di processo software: \newfancyglitter{cascata}, \newfancyglitter{Unified Process}, \newfancyglitter{Scrum}, \newfancyglitter{XP}, \newfancyglitter{RUP}, \newfancyglitter{RAD}, \newfancyglitter{Spirale}, etc. Le quattro attività
+fondamentali sono organizzate in modo diverso in ciascun modello: in sequenza nel modello a cascata e intrecciate negli altri (modelli incrementali).
+Un ulteriore modello è il modello a integrazione e configurazione che però è poco trattato
+a livello ingegneristico.
+
+\dfn{Paradigma di processo}{
+    Il modello di processo software è una rappresentazione semplificata di un 
+    processo software. Sono strutture di processo da \newfancyglitter{estendere}
+    e \newfancyglitter{adattare} per soddisfare le esigenze specifiche di un progetto.
+}
+
+\clm{}{}{Non esiste un modello di processo software "universale", ma la scelta
+del modello dipende dai requisiti del cliente:
+\begin{itemize}
+    \item [$\Rightarrow$]i software a sicurezza critica richiedono un modello a cascata
+    per via delle analisi e della documentazione;
+    \item [$\Rightarrow$] i software per il mercato richiedono un modello incrementale;
+    \item [$\Rightarrow$] i sistemi aziendali richiedono un modello a configurazione e integrazione.
+\end{itemize}
+Inoltre, in grandi sistemi, si possono combinare più modelli.
+}
+
+\subsection{Modello a cascata}
+
+\dfn{Modello a cascata}{
+    Il modello a cascata è un modello di processo software in cui le fasi di sviluppo
+    sono viste come \newfancyglitter{fasi distinte} e \newfancyglitter{non sovrapposte}.
+
+    Questo modello era l'unico modello utilizzato fino agli anni '80.
+}
+
+\nt{Si contrappone ai modelli incrementali in cui le fasi di sviluppo sono sovrapposte
+e iterate.}
+
+\cor{Fasi del modello a cascata}{
+    \begin{itemize}
+        \item [$\Rightarrow$] All'inizio si definiscono i requisiti;
+        \item [$\Rightarrow$] All'inizio si definisce un piano temporale;
+        \item [$\Rightarrow$] Si progetta e modella il sistema;
+        \item [$\Rightarrow$] Si crea un progetto completo del software;
+        \item [$\Rightarrow$] Si inizia la programmazione del sistema;
+        \item [$\Rightarrow$] Si testa il sistema, si rilascia e si prosegue con la manutenzione.
+    \end{itemize}
+}
+
+\subsubsection{Il modello a cascata:}
+
+\begin{itemize}
+    \item [$\Rightarrow$] Non è adatto allo sviluppo in team;
+    \item [$\Rightarrow$] Si dovevano definire spesso modelli matematici;
+    \item [$\Rightarrow$] Costava molto in termini di tempo e denaro.
+\end{itemize}
+
+\subsection{Modello incrementale}
+
+\dfn{Modello incrementale}{
+    Il modello incrementale è un modello di processo software in cui il sistema
+    viene sviluppato in \newfancyglitter{incrementi} (o \newfancyglitter{iterazioni}).
+    Si effettuano \newfancyglitter{feedback veloci} e \newfancyglitter{rilasci}.
+}
+
+\nt{Negli anni '80 e '90 molte persone si avvicinano al mondo della progettazione 
+e nasce la necessità di sviluppare software in modo incrementale.}
+
+\cor{I casi d'uso}{
+    I casi d'uso sono il modo migliore per definire i requisiti:
+    il cliente racconta una storia e il programmatore la traduce in un caso d'uso.
+}
+
+\subsubsection{Lo sviluppo incrementale:}
+
+\begin{itemize}
+    \item [$\Rightarrow$] È un approccio \newfancyglitter{plan-driven}, \newfancyglitter{agile} o una combinazione di questi approcci;
+    \item [$\Rightarrow$] Se \fancyglitter{plan-driven}, si pianificano in anticipo gli incrementi;
+    \item [$\Rightarrow$] Se \fancyglitter{agile}, si identificano gli incrementi iniziali ma si dà priorità
+    al rilascio di incrementi che soddisfano i requisiti più importanti;
+    \item [$\Rightarrow$] Il costo di implementazione di modifiche è ridotto;
+    \item [$\Rightarrow$] È più facile ottenere un feedback dal cliente;
+\end{itemize}
+
+\nt{Tuttavia si devono avere consegne regolari e frequenti, la struttura
+dei sistemi tende a degradarsi e richiede pianificazione in anticipo per grandi team.}
+
+\subsection{Integrazione e configurazione}
+
+\dfn{Riutilizzo del software}{
+    \begin{itemize}
+        \item [$\Rightarrow$] Dagli anni 2000 si sono diffusi software che riutilizzano
+        software già esistente;
+        \item [$\Rightarrow$] Collezioni di oggetti che sono sviluppati 
+        come un componente o un pacchetto da integrare tramite framework;
+        \item [$\Rightarrow$] Servizi web che possono essere integrati in un sistema.
+    \end{itemize}
+}
+
+\subsubsection{Le fasi principali sono:}
+
+\begin{itemize}
+    \item [$\Rightarrow$] \fancyglitter{Specifica dei requisiti};
+    \item [$\Rightarrow$] \fancyglitter{Ricerca e valutazione del software:} se esiste 
+    un software che soddisfa i requisiti;
+    \item [$\Rightarrow$] \fancyglitter{Perfezionamento dei requisiti:} utilizzando le informazioni trovate nella ricerca;
+    \item  [$\Rightarrow$] \fancyglitter{Configurazione del sistema di applicazioni}; 
+    \item [$\Rightarrow$] \fancyglitter{Adattamento e integrazione:} si integra il sistema con i componenti
+    riutilizzabili.
+\end{itemize}
+
+
+\clm{}{}{
+    Questo approccio riduce la quantità di software da sviluppare, riducendo i costi e i rischi.
+    Però bisogna scendere a compromessi con i requisiti e si perdwe il controllo sull'evoluzione del 
+    sistema.
+}
+
+\subsection{Sviluppo incrementale, iterativo ed evolutivo}
+
+Questo modello è:
+
+\begin{itemize}
+    \item \textbf{Incrementale:} si incrementa il codice man mano che si sviluppa;
+    \item  \textbf{Iterativo:} si sviluppa il software in cicli (iterazioni);
+    \item \textbf{Evolutivo:} si sviluppa il software in modo che possa evolvere a ogni iterazione richiedendo un feedback.
+\end{itemize}
+
+\dfn{Approccio iterativo}{
+    Nell'approccio iterativo:
+    \begin{itemize}
+        \item [$\Rightarrow$] lo sviluppo è organizzato in mini-progetti brevi (le iterazioni);
+        \item [$\Rightarrow$] il risultato di ogni iterazione è un sistema parzialmente funzionante (testato e integrato);
+        \item [$\Rightarrow$] ogni iterazione dura poche settimane\footnote{Un'iterazione di lunghezza fissata è detta \newfancyglitter{timeboxed}.} e comprende le proprie attività di analisi, sviluppo, etc.;
+        \item [$\Rightarrow$] si ottiene un feedback a ogni iterazione.
+    \end{itemize}
+}
+
+\nt{Git supporta lo sviluppo incrementale, iterativo ed evolutivo.}
+
+\section{Sviluppo agile}
+
+\dfn{Sviluppo agile}{
+    Lo sviluppo \newfancyglitter{agile} è un insieme di metodi di sviluppo software.
+}
+
+\paragraph{Contesto:}
+
+\begin{itemize}
+    \item [$\Rightarrow$] Il software è parte essenziale delle operazioni aziendali;
+    \item [$\Rightarrow$] La rapidità della consegna è un fattore critico;
+    \item [$\Rightarrow$] Spesso non si possono ottenere requisiti stabili;
+    \item [$\Rightarrow$] I requisiti diventano chiari solo dopo che il sistema
+    è stato consegnato e utilizzato;
+    \item [$\Rightarrow$] In successive iterazioni si possono ottenere requisiti
+    più chiari.
+\end{itemize}
+
+\subsection{I principi dello sviluppo agile}
+
+\dfn{Agile Modelling}{
+    Lo scopo della modellazione (UML) è principalmente quello
+    di \newfancyglitter{comprendere} e di agevolare la \newfancyglitter{comunicazione}, non di documentare.
+}
+
+\begin{itemize}
+    \item [$\Rightarrow$] Adottare un metodo agile non significa evitare del tutto
+    la modellazione;
+    \item [$\Rightarrow$] Non si deve applicare UML per eseguire per intero o per la maggior parte la
+    progettazione software;
+    \item [$\Rightarrow$] Va utilizzato l'approccio più semplice e che comporta il minor dispendio 
+    di energie. Esempio: abbozzo di UML su una lavagna;
+    \item [$\Rightarrow$] La modellazione non va fatta da soli ma in coppie o in gruppo;
+    \item [$\Rightarrow$] Solo il codice verificato dimostra il vero progetto, i diagrammi precedenti
+    sono suggerimenti incompleti (usa e getta);
+    \item [$\Rightarrow$] La modellazione per OO dovrebbe essere eseguita degli stessi sviluppatori che andranno
+    effettivamente a scrivere il codice. 
+\end{itemize}
+
+\paragraph{Pratiche innovative:}
+
+\begin{itemize}
+    \item [$\Rightarrow$] \fancyglitter{Storie utente:} scenari d'uso in cui potrebbe trovarsi un utente. Il cliente 
+    lavora a stretto contatto con il team di sviluppo e discute di possibili scenari;
+    \item [$\Rightarrow$] \fancyglitter{Refactoring:} il codice va costantemente rifattorizzato per proteggerlo dal deterioramento causato dallo sviluppo incrementale;
+    \item [$\Rightarrow$] \fancyglitter{Sviluppo con test iniziali:} lo sviluppo non può procedere finchè tutti i test non sono stati superati;
+    \item [$\Rightarrow$] \fancyglitter{Programmazione a coppie:} i programmatori lavorano a coppie nella stessa postazione per sviluppare il software.
+\end{itemize}
+
+\subsection{eXtreame Programming (XP)}
+
+\dfn{eXtreame Programming}{
+    eXtreame Programming (XP) è un metodo di sviluppo software che si basa su
+    valori e principi di base:
+    \begin{itemize}
+        \item [$\Rightarrow$] sviluppo incrementale attraverso piccole e frequenti release;
+        \item [$\Rightarrow$] il cliente è parte attiva dello sviluppo;
+        \item [$\Rightarrow$] il progetto è supportato da test, refactoring e integrazione continua;
+        \item [$\Rightarrow$] si punta a mantenere la semplicità.
+    \end{itemize}
+}
+
+\subsection{Scrum}
+
+\dfn{Scrum}{
+    Scrum offre un framework per organizzare progetti agili e fornire una visibilità esterna su ciò che 
+    sta accadendo, ossia si occupa dell'organizzazione del lavoro e della gestione dei progetti.
+
+    Scrum è un approccio iterativo e incrementale in cui ciascuna iterazione 
+    ha una durata fissata denominata Sprint (non si hanno estensioni).
+}
+
+\paragraph{Sono presenti tre ruoli:}
+
+\begin{itemize}
+    \item [$\Rightarrow$] \fancyglitter{Product Owner:} rappresenta il cliente, definisce i requisiti
+    e specifica le priorità attraverso il \newfancyglitter{Product Backlog}\footnote{Un elenco di voci, funzionalità e requisiti.};
+    \item [$\Rightarrow$] \fancyglitter{Development Team:} le persone che sviluppano il software;
+    \item [$\Rightarrow$] \fancyglitter{Scrum Master:} garantisce che il team segua le regole di Scrum.
+\end{itemize}
+
+\subsubsection{Gestione agile della progettazione:}
+
+\begin{itemize}
+    \item [$\Rightarrow$] Il Development Team seleziona dal Product Backlog un insieme di voci
+    da sviluppare durante quell'iterazione (\newfancyglitter{Sprint Goal}), compila 
+    lo \newfancyglitter{Sprint Backlog} (ossia i compiti dettagliati per raggiungere il goal);
+    \item [$\Rightarrow$] Il risultato di ciascuno Sprint è un prodotto software funzionante
+    chiamato "incremento di prodotto potenzialmente rilasciabile" (integrato, verificato e documentato);
+    \item [$\Rightarrow$] Nello \newfancyglitter{Sprint Review} il Product Owner e il Development Team presentano le parti
+    coinvolte dall'incremento, ne fanno la dimostrazione, ottengono un feedback e decidono cosa fare nello Sprint successivo;
+    \item [$\Rightarrow$] Si dà enffasi all'adozione di Team auto-organizzati e auto-gestiti.
+\end{itemize}

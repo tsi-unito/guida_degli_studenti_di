@@ -1,0 +1,83 @@
+\chapter{Appendice - Formule}
+
+\section{Probabilità}
+
+\paragraph{Legge uniforme discreta:}
+
+$\\\prob(A) = \frac{\#A}{\#\Omega}$
+
+\paragraph{Probabilità condizionata:}
+
+ $\\\prob(A | B) = \frac{\prob(A \cap B)}{\prob(B)}$
+
+\paragraph{Regola della moltiplicazione:} 
+
+$\\\prob(A \cap B \cap C) = \prob (C|A \cap B) * \prob (B|A) * \prob (A)$
+
+\paragraph{Formula delle probabilità totali:}
+
+$\\\prob(B) = \sum_{i = 1}^{n} \prob (B|A_i) * \prob (A_i) = \sum_{i = 1}^{n} \prob (B \cap A_i)$
+
+\paragraph{Formula di Bayes:} 
+
+$\\\prob (A|B) * \prob (B) = \prob (B|A) * \prob (A)$
+
+\section{Variabili aleatorie}
+
+\paragraph{Bernoulli}
+
+\begin{itemize}
+    \item Immagine: Im(x) = \{0, 1\};
+    \item PMF: $\prob_X(x) =  1 - p $ se x = 0,  $\prob_X(x) =  p $ se x = 1. $p \in \{0, 1\}$;
+    \item Media: $E(x) = p$;
+    \item Varianza: $E(x) = p * (1 - p)$.
+\end{itemize}
+
+\paragraph{Binomiali}
+
+\begin{itemize}
+    \item Immagine: Im(x) = $\{(w_1, w_2, ..., w_n), w_i \in \{s, f\}\}$;
+    \item PMF: $\prob_X(x) =  \binom{n}{k} * p^k * (1- p)^{n-k}$;
+    \item Media: $E(x) = n * p$;
+    \item Varianza: $var(x) = n * p * (1-p)$.
+\end{itemize}
+
+\paragraph{Geometriche}
+
+\begin{itemize}
+    \item Immagine: Im(x) = $\{1, 2, 3, ...\}$;
+    \item PMF: $\prob_X(x) =  (1 - p)^{x - 1} * p$;
+    \item Media: $E(x) = \frac{1}{p}$;
+    \item Varianza: $var(x) = \frac{1 - p}{p^2}$.
+\end{itemize}
+
+\paragraph{Iper geometriche}
+
+\begin{itemize}
+    \item Immagine: Im(x) = \{0, 1, 2, ..., min\{N, C\}\};
+    \item PMF: $\prob_X(x) =  \frac{\binom{C}{k} * \binom{N - C}{n - k}}{\binom{N}{n}}$.
+\end{itemize}
+
+\paragraph{Poisson}
+
+\begin{itemize}
+    \item Immagine: Im(x) = \{0, 1, 2 ,...\};
+    \item PMF: $\prob_X(x) = \frac{\lambda^x}{x!} * e^{-\lambda}$;
+    \item Media: $E(x) = \lambda$;
+    \item Varianza: $var(x) = \lambda$.
+\end{itemize}
+
+\paragraph{Esponenziale}
+
+\begin{itemize}
+    \item Media: $E(x) = \frac{1}{\lambda}$;
+    \item Varianza: $var = \frac{1}{\lambda^2}$.
+\end{itemize}
+
+\paragraph{Gaussiana}
+
+\begin{itemize}
+    \item PDF: $f(x) = \frac{1}{\sqrt{2 * \pi * \sigma}} * e^{-\frac{(x - \mu)^2}{2 * \sigma}}$;
+    \item Media: $\mu$;
+    \item Varianza: $\sigma^2$.
+\end{itemize}
