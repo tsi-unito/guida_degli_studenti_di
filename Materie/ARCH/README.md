@@ -8,6 +8,8 @@ le sezioni del corso presi durante l'anno
 o da fonti terze al corso.
 Di seguto l'alberatura della cartella:
 
+- [Appunti 2023_2024](https://docs.google.com/document/d/1tRRy1nZ-HGqe11AMCxHn82GBfmZanBUQa7d1sBBtHzc/edit?usp=sharing), di Davide Trapani (AA 2023-2024):  
+  in alternativa [pdf degli appunti](./appunti/appunti_2023_2024/Architettura_degli_elaboratori.pdf)
 - [appunti_2023_2024](./appunti/appunti_2023_2024/): appunti presi durante
     l'anno 2023-2024
 - [Appunti live su Notion](https://lopsided-flavor-398.notion.site/28033e45ec154a9cbb6d367e9e2497f8?v=cd6bf9b0f6154df7a75694776b53de9f), di Leoluca D'Atri (AA 2021-2022):  
