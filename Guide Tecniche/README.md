@@ -10,6 +10,7 @@ Per altre guide di carattere generale sulla vita studentesca al dipartimento di 
 | [Office](Office)                                                                  | Guida per installare Microsoft Office **gratis** con la convenzione tra Microsoft e UniTO |
 | [Linux](Linux)                                                                    | Guida per installare Linux e per utilizzarlo al meglio                                    |
 | [Compilare con GCC e Make](GCC_Make_guida_alla_compilazione_ed_all_esecuzione.pdf) | Guida alla compilazione ed all'esecuzione di piccoli progetti C                           |
+| [Guida italiana a TypeScript](https://gibbok.github.io/typescript-book/it-it/) | Libro gratuito e open source per imparare TypeScript, con contenuti aggiornati a TypeScript 7 |
 
 ## Contribuire
 
